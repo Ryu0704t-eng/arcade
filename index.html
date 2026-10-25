@@ -292,9 +292,51 @@
   @media (prefers-reduced-motion: reduce) { .mc, .mc span, .rx-pad { transition: none; } .mc.boom { animation: none; } }
   .sumline { margin: 6px 0 0; font-size: 13px; color: var(--mint); font-weight: 700; }
   .omakase { margin-top: 10px; }
-  .namebox { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--mute); }
-  .namebox input { flex: 1; min-width: 0; max-width: 220px; background: var(--panel); border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 14px; }
-  .namebox input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+  /* スライドパズル・れんだ */
+  .sl { width: var(--cs); height: var(--cs); padding: 0; border-radius: 12px; border: 1px solid var(--line); background: linear-gradient(150deg, #2f37a0, #1d2377); color: var(--ink); font-family: var(--display); font-size: calc(var(--cs) * 0.42); line-height: 1; font-variant-numeric: tabular-nums; transition: background 0.1s; }
+  .sl:hover { border-color: var(--gold); }
+  .sl.home { background: linear-gradient(150deg, #2a8f80, #1d5f6b); }
+  .sl.blank { background: transparent; border-color: rgba(163, 170, 224, 0.15); pointer-events: none; }
+  .rx-pad.hitp { animation: hitp 0.08s; }
+  @keyframes hitp { 0% { transform: scale(0.97); } 100% { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .rx-pad.hitp { animation: none; } .sl { transition: none; } }
+  .gcard { position: relative; }
+  .gcard.today::after { content: 'きょう'; position: absolute; top: 6px; right: 6px; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--gold); color: var(--gold-ink); }
+  .rankhint { margin: 0; font-size: 13px; color: var(--gold); font-weight: 700; min-height: 18px; }
+
+  /* ナンバーメモリー・かぞえてタッチ・やじるし */
+  .nm-disp { min-height: 76px; display: grid; place-items: center; font-family: var(--display); font-size: 44px; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; border: 1px solid var(--line); border-radius: 16px; background: rgba(18, 22, 74, 0.7); width: var(--gw, 340px); max-width: 100%; text-align: center; padding: 8px; }
+  .nm-disp.show { color: var(--gold); }
+  .nm-disp.ok { color: var(--mint); border-color: var(--mint); }
+  .nm-disp.ng { color: var(--coral); border-color: var(--coral); }
+  .nm-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(100%, 300px); }
+  .kp { padding: 14px 0; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-family: var(--display); font-size: 22px; }
+  .kp:hover { border-color: var(--gold); }
+  .dotshow { font-size: 30px; line-height: 1.3; letter-spacing: 0.1em; animation: dothide 0.01s linear forwards; }
+  @keyframes dothide { to { opacity: 0; visibility: hidden; } }
+  /* 対戦のじゃま・難易度・BGM */
+  .diffsel { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--mute); }
+  .diffsel .pill[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); font-weight: 700; }
+  .ytbox { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--mute); text-align: left; }
+  .ytbox input { background: var(--panel); border: 1px solid var(--line); color: var(--ink); border-radius: 10px; padding: 9px 12px; font: inherit; font-size: 14px; }
+  #ytBox { position: fixed; right: 8px; top: 62px; width: 200px; height: 113px; z-index: 6; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+  #ytBox iframe { width: 100%; height: 100%; display: block; }
+  .bt-live { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 4; pointer-events: none; padding: 3px 14px; border-radius: 999px; background: rgba(255, 107, 129, 0.2); border: 1px solid rgba(255, 107, 129, 0.5); color: #ffb0bd; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bt-toast { position: absolute; left: 50%; top: 22%; transform: translateX(-50%); z-index: 5; pointer-events: none; padding: 10px 18px; border-radius: 14px; background: rgba(255, 107, 129, 0.9); color: #2a0a12; font-weight: 700; font-size: 18px; }
+  .fx-blur > .pg, .fx-blur > .gm, .fx-blur > .rx, .fx-blur > .qz { filter: blur(5px); }
+  .fx-flip > .pg, .fx-flip > .gm, .fx-flip > .rx, .fx-flip > .qz { transform: rotate(180deg); }
+  .fx-shake > .pg, .fx-shake > .gm, .fx-shake > .rx, .fx-shake > .qz { animation: fxshake 0.12s infinite; }
+  @keyframes fxshake { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-6px, 3px); } 75% { transform: translate(6px, -3px); } }
+  .fx-blot { position: absolute; z-index: 3; pointer-events: none; border-radius: 50%; background: radial-gradient(circle, rgba(10, 8, 30, 0.97) 55%, rgba(10, 8, 30, 0) 72%); }
+  @media (prefers-reduced-motion: reduce) { .fx-shake > .pg, .fx-shake > .gm, .fx-shake > .rx, .fx-shake > .qz { animation: none; } }
+  /* アカウント */
+  .acct { position: fixed; inset: 0; z-index: 1000; background: rgba(5, 7, 30, 0.96); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px 16px; overflow-y: auto; }
+  .acct-in { width: min(100%, 380px); display: flex; flex-direction: column; gap: 12px; margin: auto; }
+  .acct-in h2 { margin: 0; font-size: 20px; }
+  .acct-tabs { display: flex; gap: 8px; }
+  .acct-tabs .pill[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); font-weight: 700; }
+  .acctline { margin: 10px 0 0; font-size: 13px; color: var(--mute); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   /* 対戦モード */
   .battle-btn { margin-top: 14px; }
   .bt-card { border: 1px solid var(--line); border-radius: 16px; background: rgba(18, 22, 74, 0.7); padding: 14px; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
@@ -333,9 +375,10 @@
   <div class="wrap">
     <div class="hero">
       <h1>ひまつぶしアーケード</h1>
-      <p>1回1〜3分で遊べるミニゲームが20本。スコアはランキングに残ります。</p>
+      <p id="heroTxt">1回1〜3分で遊べるミニゲームが並んでいます。スコアはランキングに残ります。</p>
       <p class="sumline" id="sumLine"></p>
-      <label class="namebox">ランキングの名前 <input id="myName" type="text" maxlength="12" placeholder="なまえ(12文字まで)" autocomplete="off"></label>
+      <p class="sumline today" id="todayLine"></p>
+      <p class="acctline" id="acctLine"></p>
       <button class="btn battle-btn" id="battleBtn" type="button">⚔ 対戦モード</button>
     </div>
     <section class="sec">
@@ -732,7 +775,7 @@
     k('cards').addEventListener('click', onCards);
 
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play') update(dt);
       draw(ts / 1000);
@@ -1063,7 +1106,7 @@
       api.end(S.score, [['当てた数', S.hits], ['最大コンボ', S.maxCombo], ['命中率', acc + '%']]);
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play') update(dt);
       draw(ts / 1000);
@@ -1223,7 +1266,7 @@
     stage.addEventListener('pointerdown', onDown);
     window.addEventListener('keydown', onKey);
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play' || S.mode === 'dying') update(dt);
       draw(ts / 1000);
@@ -1549,7 +1592,7 @@
     window.addEventListener('keydown', onKey);
 
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play' || S.mode === 'dying') update(dt);
       draw(ts / 1000);
@@ -1713,7 +1756,7 @@
     window.addEventListener('keydown', onKey);
 
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play') update(dt);
       else if (S.mode === 'idle') { S.t += dt; moveMarker(dt); }
@@ -1862,7 +1905,7 @@
       if (cache.cs !== sc) { cache.cs = sc; k('combo').classList.toggle('off', !sc); }
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (phase === 'play' && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
       hud();
@@ -2144,7 +2187,7 @@
     window.addEventListener('keyup', onKeyUp);
 
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play') update(dt);
       draw(ts / 1000);
@@ -2250,7 +2293,7 @@
       if (cache.cs !== sc) { cache.cs = sc; k('combo').classList.toggle('off', !sc); }
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if ((phase === 'play' || phase === 'clear') && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
       hud();
@@ -2358,7 +2401,7 @@
       if (cache.cs !== sc) { cache.cs = sc; k('combo').classList.toggle('off', !sc); }
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (phase === 'play' && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
       hud();
@@ -2619,7 +2662,7 @@
     window.addEventListener('keydown', onKey);
 
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play' || S.mode === 'dying') update(dt);
       else if (S.mode === 'idle') S.scroll += 60 * dt;
@@ -2801,7 +2844,7 @@
     window.addEventListener('keydown', onKey);
 
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (S.mode === 'play') update(dt);
       draw(ts / 1000);
@@ -2897,7 +2940,7 @@
       setText('sz', curN + '×' + curN);
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if ((phase === 'play' || phase === 'clear') && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
       hud();
@@ -3008,7 +3051,7 @@
       if (cache.cs !== sc) { cache.cs = sc; k('combo').classList.toggle('off', !sc); }
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if ((phase === 'play' || phase === 'wait') && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
       hud();
@@ -3147,7 +3190,7 @@
       if (cache.cs !== sc) { cache.cs = sc; k('combo').classList.toggle('off', !sc); }
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (phase === 'play' && !paused) {
         time -= dt; elapsed += dt; spawnLeft -= dt;
@@ -3246,7 +3289,7 @@
       api.end(score, [['いちばん速い(ms)', best], ['へいきん(ms)', avg], ['はやすぎ', early]]);
     }
     function frame(ts) {
-      const dt = Math.min(0.05, (ts - last) / 1000 || 0);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
       if (phase === 'wait' && !paused) {
         waitLeft -= dt;
@@ -3334,6 +3377,568 @@
   const ICON_RPS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="40" font-size="30" text-anchor="middle">✌️</text><text x="12" y="20" font-size="13" text-anchor="middle">✊</text><text x="48" y="20" font-size="13" text-anchor="middle">🖐️</text></svg>';
   const ICON_CMP = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="16" y="35" font-size="22" font-weight="700" fill="#6fe3cf" text-anchor="middle">8</text><text x="30" y="35" font-size="20" font-weight="700" fill="#ffd45e" text-anchor="middle">&gt;</text><text x="45" y="35" font-size="22" font-weight="700" fill="#ff6b81" text-anchor="middle">3</text><rect x="12" y="44" width="36" height="4" rx="2" fill="#2f37a0"/></svg>';
 
+
+  /* ===== ゲーム21: スライドパズル ===== */
+  function createSlide(stage, api) {
+    const root = el('div', 'pg', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+        <div class="pg-time"><span class="chip" data-k="tm">90秒</span><div class="lv-track wide"><i data-k="tFill" style="width:100%"></i></div></div>
+      </div>
+      <div class="pg-sub"><span data-k="mv">1から順にならべよう</span><span class="chip" data-k="sz">3×3</span></div>
+      <div class="ng-grid" data-k="grid"></div>
+      <div class="pg-foot"><span data-k="msg"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const grid = k('grid');
+    const TOTAL = 90, TMAX = 120;
+    let raf = 0, last = 0, timers = [], phase = 'idle', paused = false, quitArm = 0, N = 3;
+    let time = TOTAL, score = 0, solved = 0, moves = 0, totalMoves = 0, tiles = [], bStart = 0, bTime = 0;
+    const cache = {};
+    const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
+    const sizeFor = (b) => (b < 2 ? 3 : 4);
+
+    function solvedState(n) { const a = []; for (let i = 1; i < n * n; i++) a.push(i); a.push(0); return a; }
+    function shuffled(n) {
+      let a = solvedState(n), e = n * n - 1, prev = -1;
+      const steps = n === 3 ? 26 : 44;
+      for (let s = 0; s < steps; s++) {
+        const r = Math.floor(e / n), c = e % n, nb = [];
+        if (r > 0) nb.push(e - n); if (r < n - 1) nb.push(e + n); if (c > 0) nb.push(e - 1); if (c < n - 1) nb.push(e + 1);
+        const opts = nb.filter((x) => x !== prev), pick = opts[rndInt(0, opts.length - 1)];
+        a[e] = a[pick]; a[pick] = 0; prev = e; e = pick;
+      }
+      return a;
+    }
+    const isSolved = () => tiles.every((v, i) => v === (i === tiles.length - 1 ? 0 : i + 1));
+    function paint() {
+      Array.prototype.forEach.call(grid.children, (b, i) => {
+        const v = tiles[i];
+        b.textContent = v ? String(v) : '';
+        b.classList.toggle('blank', !v);
+        b.classList.toggle('home', v === i + 1);
+        b.tabIndex = v ? 0 : -1;
+      });
+    }
+    function build(n) {
+      N = n; gridSize(root, stage, n);
+      do { tiles = shuffled(n); } while (isSolved());
+      grid.innerHTML = tiles.map((v, i) => '<button class="sl" type="button" data-i="' + i + '"></button>').join('');
+      paint(); moves = 0; bTime = 0;
+    }
+    function slide(i) {
+      const e = tiles.indexOf(0), r = Math.floor(i / N), c = i % N, er = Math.floor(e / N), ec = e % N;
+      if (r !== er && c !== ec) return false;
+      if (i === e) return false;
+      if (r === er) { const d = c < ec ? 1 : -1; for (let x = ec; x !== c; x -= d) tiles[er * N + x] = tiles[er * N + x - d]; }
+      else { const d = r < er ? 1 : -1; for (let y = er; y !== r; y -= d) tiles[y * N + ec] = tiles[(y - d) * N + ec]; }
+      tiles[i] = 0; return true;
+    }
+    function newBoard() { build(sizeFor(solved)); phase = 'play'; k('msg').textContent = ''; }
+    function onGrid(e) {
+      const b = e.target.closest('.sl[data-i]');
+      if (!b || phase !== 'play' || paused) return;
+      if (!slide(parseInt(b.dataset.i, 10))) return;
+      moves++; totalMoves++; paint();
+      A.beep(380 + (moves % 5) * 30, 0.04, 'sine', 0.05);
+      if (isSolved()) {
+        phase = 'clear'; solved++;
+        const pts = 100 + Math.max(0, Math.round(60 - bTime * 2));
+        score += pts; time = Math.min(TMAX, time + 10);
+        k('msg').textContent = 'クリア! +' + pts + '点 ・ +10秒';
+        [523, 659, 784, 1047].forEach((f, n) => A.beep(f, 0.16, 'triangle', 0.06, 0, n * 0.07));
+        later(newBoard, 800);
+      }
+    }
+    function finish() {
+      if (phase === 'over') return;
+      phase = 'over';
+      [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.25, 'triangle', 0.06, 0, i * 0.14));
+      api.end(score, [['クリア', solved], ['手数', totalMoves], ['最大サイズ', sizeFor(Math.max(0, solved)) + '×' + sizeFor(Math.max(0, solved))]]);
+    }
+    function setText(key, v) { if (cache[key] !== v) { cache[key] = v; k(key).textContent = v; } }
+    function hud() {
+      setText('score', String(score));
+      setText('tm', Math.max(0, Math.ceil(time)) + '秒');
+      const w = clampN(time / TOTAL * 100, 0, 100).toFixed(1) + '%';
+      if (cache.w !== w) { cache.w = w; k('tFill').style.width = w; }
+      setText('mv', phase === 'idle' ? '1から順にならべよう' : '手数 ' + moves);
+      setText('sz', N + '×' + N);
+    }
+    function frame(ts) {
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
+      last = ts;
+      if (phase === 'play' && !paused) { time -= dt; bTime += dt; if (time <= 0) { time = 0; finish(); } }
+      else if (phase === 'clear' && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
+      hud();
+      raf = requestAnimationFrame(frame);
+    }
+    const onQuit = () => {
+      if (phase === 'over' || phase === 'idle') return;
+      if (!quitArm) {
+        k('quit').textContent = '本当におわる?';
+        quitArm = setTimeout(() => { quitArm = 0; k('quit').textContent = 'おわる'; }, 2500);
+        timers.push(quitArm);
+      } else { clearTimeout(quitArm); quitArm = 0; k('quit').textContent = 'おわる'; finish(); }
+    };
+    grid.addEventListener('click', onGrid);
+    k('quit').addEventListener('click', onQuit);
+    build(3);
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => gridSize(root, stage, N)) : null;
+    if (ro) ro.observe(stage);
+    raf = requestAnimationFrame(frame);
+    return {
+      start() {
+        timers.forEach(clearTimeout); timers = [];
+        time = TOTAL; score = 0; solved = 0; totalMoves = 0; paused = false; quitArm = 0;
+        k('quit').textContent = 'おわる';
+        Object.keys(cache).forEach((n) => delete cache[n]);
+        newBoard();
+      },
+      pause() { paused = true; },
+      resume() { paused = false; },
+      destroy() { cancelAnimationFrame(raf); timers.forEach(clearTimeout); if (ro) ro.disconnect(); grid.removeEventListener('click', onGrid); }
+    };
+  }
+
+  /* ===== ゲーム22: ハイ&ロー ===== */
+  let hiloCur = 7;
+  function hiloNext(ctx) {
+    if (ctx.n === 0) hiloCur = rndInt(4, 10);
+    const cur = hiloCur;
+    let nxt = rndInt(1, 13);
+    while (nxt === cur) nxt = rndInt(1, 13);
+    hiloCur = nxt;
+    return { html: '<span class="tag t-ink">つぎの数は?</span><div class="big" style="font-size:72px">' + cur + '</div><div class="sub">1〜13のカード</div>', opts: ['↑ 高い', '↓ 低い'], ans: nxt > cur ? 0 : 1 };
+  }
+  const createHilo = (stage, api) => createQuiz(stage, api, {
+    total: 40, penalty: 3, quick: 1.2, next: hiloNext,
+    stats: (s) => [['あたり', s.correct], ['最大コンボ', s.maxCombo], ['はずれ', s.wrong]]
+  });
+
+  /* ===== ゲーム23: ほしよけ ===== */
+  function createDodge(stage, api) {
+    const root = el('div', 'gm', `
+      <canvas class="cv" aria-label="ほしよけのゲーム画面"></canvas>
+      <div class="hud">
+        <div class="hud-row">
+          <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+          <div class="score" style="align-items:flex-end"><span class="lbl">ライフ</span><span class="num" style="font-size:24px" data-k="life">♥♥♥</span></div>
+        </div>
+        <div class="hud-row"><span class="chip" data-k="stars">ほし 0</span></div>
+      </div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const cv = $('canvas', root), ctx = cv.getContext('2d');
+    const R = 15;
+    let W = 360, H = 600, raf = 0, last = 0, S = null, held = 0;
+    const cache = {};
+    const pop = (x, y, text, c, size) => S.pops.push({ x, y, text, c, size: size || 16, life: 0 });
+    const scoreOf = () => Math.floor(S.t * 8) + S.stars * 30;
+    function resize() { const d = fitCanvas(cv, ctx, stage); W = d.W; H = d.H; if (S) S.x = clampN(S.x, R, W - R); }
+    function makeState(mode) { return { mode, t: 0, x: W / 2, lives: 3, inv: 0, stars: 0, hits: 0, items: [], gap: 0.5, parts: [], pops: [], shake: 0, flash: 0, dead: 0 }; }
+    function spawn() {
+      const lvl = Math.min(1, S.t / 60), star = Math.random() < 0.16;
+      const r = star ? 11 : rndInt(11, 19);
+      S.items.push({ x: rndInt(r, Math.max(r + 1, Math.floor(W - r))), y: -r, r, star, vy: (star ? 150 : 190) + lvl * 230 + Math.random() * 60, rot: Math.random() * 6 });
+      S.gap = (0.72 - 0.45 * lvl) * (0.7 + Math.random() * 0.6);
+      if (!star && S.t > 20 && Math.random() < 0.25) spawn();
+    }
+    function update(dt) {
+      if (S.mode === 'dying') { S.dead -= dt; if (S.dead <= 0) { endGame(); return; } }
+      else {
+        S.t += dt; S.inv = Math.max(0, S.inv - dt);
+        if (held) S.x = clampN(S.x + held * 420 * dt, R, W - R);
+        S.gap -= dt; if (S.gap <= 0) spawn();
+        const py = H - 70;
+        for (let i = S.items.length - 1; i >= 0; i--) {
+          const o = S.items[i];
+          o.y += o.vy * dt; o.rot += dt * 2;
+          if (o.y > H + 30) { S.items.splice(i, 1); continue; }
+          if (Math.hypot(o.x - S.x, o.y - py) < o.r + R * 0.78) {
+            S.items.splice(i, 1);
+            if (o.star) { S.stars++; burstTo(S.parts, o.x, o.y, '#fff0a0', 7, 110); pop(o.x, o.y - 14, '+30', '#fff0a0', 15); A.beep(SCALE[S.stars % 8] * 2, 0.07, 'sine', 0.05); }
+            else if (S.inv <= 0) {
+              S.lives--; S.hits++; S.inv = 1.1; S.shake = 0.3; S.flash = 1;
+              burstTo(S.parts, S.x, py, '#ff6b81', 14, 170); A.beep(170, 0.25, 'sawtooth', 0.07, -100);
+              if (S.lives <= 0) { S.mode = 'dying'; S.dead = 0.7; }
+            }
+          }
+        }
+      }
+      S.shake = Math.max(0, S.shake - dt); S.flash = Math.max(0, S.flash - dt * 2.5);
+      stepParts(S.parts, dt); stepPops(S.pops, dt);
+    }
+    function draw(time) {
+      ctx.save();
+      if (S.shake > 0 && !reduce) ctx.translate((Math.random() - 0.5) * S.shake * 16, (Math.random() - 0.5) * S.shake * 16);
+      drawSky(ctx, W, H, time, false);
+      for (const o of S.items) {
+        if (o.star) { ctx.save(); ctx.shadowColor = '#ffd45e'; ctx.shadowBlur = 12; starPath(ctx, o.x, o.y, o.r + 2, o.rot); ctx.fillStyle = '#ffd45e'; ctx.fill(); ctx.restore(); }
+        else {
+          const g = ctx.createRadialGradient(o.x - o.r * 0.3, o.y - o.r * 0.3, 2, o.x, o.y, o.r);
+          g.addColorStop(0, '#9a96ff'); g.addColorStop(1, '#4a48c0');
+          ctx.fillStyle = g; ctx.beginPath(); ctx.arc(o.x, o.y, o.r, 0, 6.283); ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(o.x, o.y, o.r - 3, o.rot, o.rot + 1.2); ctx.stroke();
+        }
+      }
+      if (S.mode !== 'dying' || S.dead > 0.3) {
+        const py = H - 70;
+        if (S.inv <= 0 || Math.floor(S.t * 14) % 2 === 0) {
+          ctx.save(); ctx.shadowColor = '#6fe3cf'; ctx.shadowBlur = 14;
+          ctx.fillStyle = '#6fe3cf'; ctx.beginPath(); ctx.moveTo(S.x, py - R - 4); ctx.lineTo(S.x + R, py + R - 2); ctx.lineTo(S.x, py + R * 0.4); ctx.lineTo(S.x - R, py + R - 2); ctx.closePath(); ctx.fill();
+          ctx.restore();
+        }
+      }
+      drawParts(ctx, S.parts); drawPops(ctx, S.pops);
+      if (S.flash > 0) { ctx.fillStyle = 'rgba(255,107,129,' + (S.flash * 0.25).toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
+      ctx.restore();
+    }
+    function setText(key, v) { if (cache[key] !== v) { cache[key] = v; k(key).textContent = v; } }
+    function hud() {
+      setText('score', String(scoreOf()));
+      setText('life', '♥'.repeat(Math.max(0, S.lives)) || '—');
+      setText('stars', 'ほし ' + S.stars);
+    }
+    function endGame() {
+      S.mode = 'over';
+      [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.25, 'triangle', 0.06, 0, i * 0.14));
+      api.end(scoreOf(), [['生きた時間', Math.floor(S.t) + '秒'], ['ほし', S.stars], ['当たった', S.hits]]);
+    }
+    const onMove = (e) => { if (S && S.mode === 'play') { const r = stage.getBoundingClientRect(); S.x = clampN(e.clientX - r.left, R, W - R); } };
+    const keyDir = (e) => (e.code === 'ArrowLeft' || e.code === 'KeyA' ? -1 : e.code === 'ArrowRight' || e.code === 'KeyD' ? 1 : 0);
+    const onKey = (e) => { const d = keyDir(e); if (d) { e.preventDefault(); held = d; } };
+    const onKeyUp = (e) => { if (keyDir(e) === held) held = 0; };
+    stage.addEventListener('pointermove', onMove); stage.addEventListener('pointerdown', onMove);
+    window.addEventListener('keydown', onKey); window.addEventListener('keyup', onKeyUp);
+    function frame(ts) {
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
+      last = ts;
+      if (S.mode === 'play' || S.mode === 'dying') update(dt);
+      draw(ts / 1000); hud();
+      raf = requestAnimationFrame(frame);
+    }
+    resize(); S = makeState('idle');
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
+    if (ro) ro.observe(stage);
+    raf = requestAnimationFrame(frame);
+    return {
+      start() { S = makeState('play'); held = 0; Object.keys(cache).forEach((n) => delete cache[n]); },
+      pause() { if (S.mode === 'play') S.mode = 'paused'; },
+      resume() { if (S.mode === 'paused') S.mode = 'play'; },
+      destroy() { cancelAnimationFrame(raf); if (ro) ro.disconnect(); stage.removeEventListener('pointermove', onMove); stage.removeEventListener('pointerdown', onMove); window.removeEventListener('keydown', onKey); window.removeEventListener('keyup', onKeyUp); }
+    };
+  }
+
+  /* ===== ゲーム24: れんだチャレンジ ===== */
+  function createMash(stage, api) {
+    const root = el('div', 'rx', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+        <div class="pg-time"><span class="chip" data-k="tm">12秒</span><div class="lv-track wide"><i data-k="tFill" style="width:100%"></i></div></div>
+      </div>
+      <button class="rx-pad idle" type="button" data-k="pad"><span class="rx-t" data-k="t">タップ!</span><span class="rx-s" data-k="s">はじめるとカウントが進みます</span></button>
+      <div class="rx-hist"><span class="chip" data-k="mul">×1</span></div>
+      <div class="pg-foot rx-foot"><span data-k="msg"></span></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const pad = k('pad'), TOTAL = 12;
+    let raf = 0, last = 0, phase = 'idle', paused = false, time = TOTAL, score = 0, taps = 0, bonusTaps = 0;
+    const cache = {};
+    const inBonus = () => { const e = TOTAL - time; return phase === 'play' && ((e >= 3 && e < 5) || (e >= 7 && e < 9)); };
+    function tap() {
+      if (phase !== 'play' || paused) return;
+      const m = inBonus() ? 3 : 1;
+      taps++; if (m > 1) bonusTaps++;
+      score += m;
+      pad.classList.remove('hitp'); void pad.offsetWidth; pad.classList.add('hitp');
+      A.beep(420 + Math.min(500, taps * 4), 0.03, 'square', 0.03);
+    }
+    function finish() {
+      if (phase === 'over') return;
+      phase = 'over';
+      [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.25, 'triangle', 0.06, 0, i * 0.14));
+      api.end(score, [['タップ数', taps], ['ボーナス中', bonusTaps], ['1秒あたり', (taps / TOTAL).toFixed(1)]]);
+    }
+    function setText(key, v) { if (cache[key] !== v) { cache[key] = v; k(key).textContent = v; } }
+    function frame(ts) {
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
+      last = ts;
+      if (phase === 'play' && !paused) { time -= dt; if (time <= 0) { time = 0; finish(); } }
+      const b = inBonus();
+      setText('score', String(score)); setText('tm', Math.max(0, Math.ceil(time)) + '秒');
+      const w = clampN(time / TOTAL * 100, 0, 100).toFixed(1) + '%'; if (cache.w !== w) { cache.w = w; k('tFill').style.width = w; }
+      setText('mul', b ? '×3 ボーナス!' : '×1');
+      if (cache.b !== b) { cache.b = b; pad.classList.toggle('go', b); pad.classList.toggle('idle', !b); }
+      raf = requestAnimationFrame(frame);
+    }
+    const onDown = (e) => { e.preventDefault(); tap(); };
+    const onKey = (e) => { if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); if (!e.repeat) tap(); } };
+    pad.addEventListener('pointerdown', onDown); window.addEventListener('keydown', onKey);
+    raf = requestAnimationFrame(frame);
+    return {
+      start() { time = TOTAL; score = 0; taps = 0; bonusTaps = 0; paused = false; Object.keys(cache).forEach((n) => delete cache[n]); phase = 'play'; k('s').textContent = '3〜5秒と7〜9秒は ×3 ボーナス'; },
+      pause() { paused = true; },
+      resume() { paused = false; },
+      destroy() { cancelAnimationFrame(raf); pad.removeEventListener('pointerdown', onDown); window.removeEventListener('keydown', onKey); }
+    };
+  }
+
+  const ICON_SLIDE = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="9" y="9" width="12" height="12" rx="3" fill="#2f37a0"/><rect x="24" y="9" width="12" height="12" rx="3" fill="#2f37a0"/><rect x="39" y="9" width="12" height="12" rx="3" fill="#2f37a0"/><rect x="9" y="24" width="12" height="12" rx="3" fill="#2f37a0"/><rect x="24" y="24" width="12" height="12" rx="3" fill="#6fe3cf"/><rect x="9" y="39" width="12" height="12" rx="3" fill="#2f37a0"/><rect x="24" y="39" width="12" height="12" rx="3" fill="#2f37a0"/></svg>';
+  const ICON_HILO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="14" y="12" width="32" height="38" rx="6" fill="#eef0ff"/><text x="30" y="38" font-size="22" font-weight="700" fill="#171c58" text-anchor="middle">7</text><path d="M48 14l5 7h-10z" fill="#6fe3cf"/><path d="M48 46l5-7h-10z" fill="#ff6b81"/></svg>';
+  const ICON_DODGE = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="16" cy="14" r="6" fill="#6a66e0"/><circle cx="42" cy="22" r="8" fill="#6a66e0"/><path d="M30 30l2.4 5 5.4.6-4 3.8 1 5.4L30 42l-4.8 2.8 1-5.4-4-3.8 5.4-.6z" fill="#ffd45e"/><path d="M30 44l8 10-8-3-8 3z" fill="#6fe3cf"/></svg>';
+  const ICON_MASH = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="30" cy="32" r="16" fill="#ff6b81"/><circle cx="30" cy="29" r="13" fill="#ff8aa0"/><path d="M13 12l5 6M30 7v8M47 12l-5 6" stroke="#ffd45e" stroke-width="3" stroke-linecap="round"/></svg>';
+  const DIFFS = [{ n: 'かんたん', dt: 0.85, mul: 0.8 }, { n: 'ふつう', dt: 1.1, mul: 1 }, { n: 'むずかしい', dt: 1.4, mul: 1.25 }];
+  const LS_DIFF = 'arcade-diff-v1';
+  let DIFF = 1;
+  try { const dv = parseInt(localStorage.getItem(LS_DIFF), 10); if (dv >= 0 && dv <= 2) DIFF = dv; } catch (e) {}
+  const DT = () => DIFFS[DIFF].dt;
+  /* --- YouTubeのBGM(リズムタップ用・おまけ) --- */
+  const LS_YT = 'arcade-yt-v1';
+  let ytPlayer = null;
+  const ytId = (u) => { const m = /(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/.exec(String(u || '')); return m ? m[1] : ''; };
+  function bgmStart() {
+    const inp = document.getElementById('ytUrl'), url = inp ? inp.value.trim() : '';
+    try { localStorage.setItem(LS_YT, url); } catch (e) {}
+    const id = ytId(url); if (!id) return;
+    let box = document.getElementById('ytBox');
+    if (!box) { box = document.createElement('div'); box.id = 'ytBox'; const inner = document.createElement('div'); inner.id = 'ytInner'; box.append(inner); document.body.append(box); }
+    box.hidden = false;
+    const make = () => {
+      try {
+        if (ytPlayer && ytPlayer.loadVideoById) { ytPlayer.loadVideoById(id); return; }
+        ytPlayer = new YT.Player('ytInner', { videoId: id, width: '200', height: '113', playerVars: { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 }, events: { onReady: (e) => { try { e.target.playVideo(); } catch (x) {} } } });
+      } catch (e) {}
+    };
+    if (window.YT && window.YT.Player) make();
+    else { window.onYouTubeIframeAPIReady = make; if (!document.getElementById('ytApi')) { const sc = document.createElement('script'); sc.id = 'ytApi'; sc.src = 'https://www.youtube.com/iframe_api'; document.head.append(sc); } }
+  }
+  function bgmStop() {
+    try { if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo(); } catch (e) {}
+    const box = document.getElementById('ytBox'); if (box) box.hidden = true;
+  }
+  function withBgm(make, stage, api) {
+    const inst = make(stage, Object.assign({}, api, { end: (sc, st) => { bgmStop(); api.end(sc, st); } }));
+    return {
+      start() { bgmStart(); inst.start(); },
+      pause() { try { if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo(); } catch (e) {} inst.pause(); },
+      resume() { try { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); } catch (e) {} inst.resume(); },
+      destroy() { bgmStop(); inst.destroy(); }
+    };
+  }
+
+  /* ===== ゲーム25: ナンバーメモリー ===== */
+  function createNumMem(stage, api) {
+    const root = el('div', 'pg', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+        <div class="score" style="align-items:flex-end"><span class="lbl">ライフ</span><span class="num" style="font-size:24px" data-k="life">♥♥♥</span></div>
+      </div>
+      <div class="pg-sub"><span data-k="mm">数字をおぼえて、同じ順に入れよう</span><span class="chip" data-k="len">3けた</span></div>
+      <div class="nm-disp" data-k="disp" aria-live="polite"></div>
+      <div class="nm-pad" data-k="pad"></div>
+      <div class="pg-foot"><span data-k="msg"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const pad = k('pad'), disp = k('disp');
+    const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', 'OK'];
+    pad.innerHTML = KEYS.map((t) => '<button class="kp" type="button" data-v="' + t + '">' + t + '</button>').join('');
+    let raf = 0, last = 0, phase = 'idle', paused = false, quitArm = 0, timer = 0;
+    let len = 3, seq = '', typed = '', score = 0, lives = 3, cleared = 0, best = 0;
+    const cache = {};
+    const msg = (t) => { k('msg').textContent = t || ''; };
+    function newRound() {
+      seq = ''; for (let i = 0; i < len; i++) seq += String(rndInt(0, 9));
+      typed = ''; phase = 'show'; timer = 0.9 + len * 0.42;
+      disp.textContent = seq; disp.className = 'nm-disp show'; msg('おぼえてね');
+    }
+    function showTyped() { disp.textContent = typed.padEnd(len, '・').split('').join(' '); }
+    function submit() {
+      if (phase !== 'input') return;
+      phase = 'fb';
+      if (typed === seq) {
+        const pts = len * 10 + (len >= 6 ? 20 : 0); score += pts; cleared++; best = Math.max(best, len);
+        disp.className = 'nm-disp ok'; msg('せいかい! +' + pts); [523, 659, 784].forEach((f, i) => A.beep(f, 0.12, 'triangle', 0.06, 0, i * 0.07));
+        len++; timer = 0.7;
+      } else {
+        lives--; disp.className = 'nm-disp ng'; disp.textContent = seq; msg('こたえは ' + seq); A.beep(170, 0.25, 'sawtooth', 0.06, -90);
+        len = Math.max(3, len - 1); timer = 1.2;
+      }
+    }
+    function press(v) {
+      if (phase !== 'input' || paused) return;
+      if (v === '⌫') typed = typed.slice(0, -1);
+      else if (v === 'OK') { submit(); return; }
+      else if (typed.length < len) typed += v;
+      showTyped(); A.beep(400 + Number(v) * 30 || 300, 0.03, 'sine', 0.04);
+      if (typed.length === len && v !== '⌫') submit();
+    }
+    function finish() {
+      if (phase === 'over') return;
+      phase = 'over';
+      [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.25, 'triangle', 0.06, 0, i * 0.14));
+      api.end(score, [['クリア', cleared], ['最大けた数', best], ['ミス', 3 - lives]]);
+    }
+    function setText(key, v) { if (cache[key] !== v) { cache[key] = v; k(key).textContent = v; } }
+    function frame(ts) {
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
+      last = ts;
+      if (!paused && phase === 'show') { timer -= dt; if (timer <= 0) { phase = 'input'; typed = ''; disp.className = 'nm-disp'; showTyped(); msg('おぼえた数字を入れてね'); } }
+      else if (!paused && phase === 'fb') { timer -= dt; if (timer <= 0) { if (lives <= 0) finish(); else newRound(); } }
+      setText('score', String(score)); setText('life', '♥'.repeat(Math.max(0, lives)) || '—'); setText('len', len + 'けた');
+      raf = requestAnimationFrame(frame);
+    }
+    const onPad = (e) => { const b = e.target.closest('.kp'); if (b) press(b.dataset.v); };
+    const onKey = (e) => {
+      if (phase !== 'input') return;
+      if (/^(Digit|Numpad)\d$/.test(e.code)) { e.preventDefault(); press(e.code.slice(-1)); }
+      else if (e.code === 'Backspace') { e.preventDefault(); press('⌫'); }
+      else if (e.code === 'Enter') { e.preventDefault(); press('OK'); }
+    };
+    const onQuit = () => {
+      if (phase === 'over' || phase === 'idle') return;
+      if (!quitArm) { k('quit').textContent = '本当におわる?'; quitArm = setTimeout(() => { quitArm = 0; k('quit').textContent = 'おわる'; }, 2500); }
+      else { clearTimeout(quitArm); quitArm = 0; k('quit').textContent = 'おわる'; finish(); }
+    };
+    pad.addEventListener('click', onPad); window.addEventListener('keydown', onKey); k('quit').addEventListener('click', onQuit);
+    raf = requestAnimationFrame(frame);
+    return {
+      start() { len = 3; score = 0; lives = 3; cleared = 0; best = 0; paused = false; quitArm = 0; k('quit').textContent = 'おわる'; Object.keys(cache).forEach((n) => delete cache[n]); newRound(); },
+      pause() { paused = true; }, resume() { paused = false; },
+      destroy() { cancelAnimationFrame(raf); clearTimeout(quitArm); pad.removeEventListener('click', onPad); window.removeEventListener('keydown', onKey); }
+    };
+  }
+
+  /* ===== ゲーム26: つみあげ ===== */
+  function createStack(stage, api) {
+    const root = el('div', 'gm', `
+      <canvas class="cv" aria-label="つみあげのゲーム画面"></canvas>
+      <div class="hud">
+        <div class="hud-row">
+          <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+          <div class="score" style="align-items:flex-end"><span class="lbl">たかさ</span><span class="num" style="font-size:24px" data-k="fl">0</span></div>
+        </div>
+        <div class="hud-row"><span class="chip off" data-k="pf">ぴったり ×0</span></div>
+      </div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const cv = $('canvas', root), ctx = cv.getContext('2d');
+    const BH = 26;
+    let W = 360, H = 600, raf = 0, last = 0, S = null;
+    const cache = {};
+    const baseW = () => Math.min(220, W * 0.56);
+    const scoreOf = () => S.floors * 10 + S.perfects * 5;
+    function resize() { const d = fitCanvas(cv, ctx, stage); W = d.W; H = d.H; }
+    function makeState(mode) {
+      const w = baseW();
+      return { mode, t: 0, blocks: [{ x: (W - w) / 2, w: w }], m: { x: 0, w: w, dir: 1 }, floors: 0, perfects: 0, streak: 0, cut: [], parts: [], pops: [], cam: 0, shake: 0 };
+    }
+    const pop = (x, y, text, c, size) => S.pops.push({ x, y, text, c, size: size || 16, life: 0 });
+    const speed = () => 150 + Math.min(260, S.floors * 9);
+    function drop() {
+      if (!S || S.mode !== 'play') return;
+      const top = S.blocks[S.blocks.length - 1], m = S.m;
+      const left = Math.max(m.x, top.x), right = Math.min(m.x + m.w, top.x + top.w), ol = right - left;
+      const y = H - 90 - S.blocks.length * BH + S.cam;
+      if (ol <= 3) {
+        S.cut.push({ x: m.x, y: y, w: m.w, vy: 0, h: BH });
+        S.mode = 'dying'; S.dead = 0.8; A.beep(180, 0.3, 'sawtooth', 0.07, -100); return;
+      }
+      if (Math.abs(m.x - top.x) < 5) {
+        S.blocks.push({ x: top.x, w: top.w }); S.perfects++; S.streak++;
+        pop(W / 2, y - 10, 'ぴったり!', '#fff0a0', 16); burstTo(S.parts, W / 2, y, '#fff0a0', 10, 140); A.beep(SCALE[Math.min(7, S.streak)] * 2, 0.1, 'sine', 0.06);
+      } else {
+        S.blocks.push({ x: left, w: ol }); S.streak = 0;
+        if (m.x < top.x) S.cut.push({ x: m.x, y: y, w: left - m.x, vy: 0, h: BH }); else S.cut.push({ x: right, y: y, w: m.x + m.w - right, vy: 0, h: BH });
+        A.beep(330, 0.06, 'triangle', 0.05);
+      }
+      S.floors++;
+      const nb = S.blocks[S.blocks.length - 1];
+      S.m = { x: S.floors % 2 ? -nb.w : W, w: nb.w, dir: S.floors % 2 ? 1 : -1 };
+    }
+    function update(dt) {
+      if (S.mode === 'dying') { S.dead -= dt; if (S.dead <= 0) { endGame(); return; } }
+      else {
+        S.t += dt; const m = S.m;
+        m.x += m.dir * speed() * dt;
+        if (m.x + m.w > W + 20) { m.x = W + 20 - m.w; m.dir = -1; }
+        if (m.x < -20) { m.x = -20; m.dir = 1; }
+        const target = Math.max(0, S.blocks.length * BH - H * 0.5);
+        S.cam += (target - S.cam) * Math.min(1, dt * 6);
+      }
+      for (const c of S.cut) { c.vy += 900 * dt; c.y += c.vy * dt; }
+      S.cut = S.cut.filter((c) => c.y < H + 40);
+      stepParts(S.parts, dt); stepPops(S.pops, dt);
+    }
+    const col = (i) => 'hsl(' + ((i * 17 + 190) % 360) + ',70%,62%)';
+    function draw(time) {
+      drawSky(ctx, W, H, time, false);
+      S.blocks.forEach((b, i) => { const y = H - 90 - (i + 1) * BH + S.cam; if (y > H || y < -BH) return; ctx.fillStyle = col(i); rrect(ctx, b.x, y, b.w, BH - 2, 5); ctx.fill(); });
+      if (S.mode !== 'dying') { const y = H - 90 - (S.blocks.length + 1) * BH + S.cam; ctx.fillStyle = col(S.blocks.length); rrect(ctx, S.m.x, y, S.m.w, BH - 2, 5); ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 2; ctx.stroke(); }
+      for (const c of S.cut) { ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(c.x, c.y, c.w, c.h - 2); }
+      drawParts(ctx, S.parts); drawPops(ctx, S.pops);
+    }
+    function setText(key, v) { if (cache[key] !== v) { cache[key] = v; k(key).textContent = v; } }
+    function hud() {
+      setText('score', String(scoreOf())); setText('fl', String(S.floors)); setText('pf', 'ぴったり ×' + S.streak);
+      const on = S.streak >= 2; if (cache.pfs !== on) { cache.pfs = on; k('pf').classList.toggle('off', !on); }
+    }
+    function endGame() {
+      S.mode = 'over';
+      [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.25, 'triangle', 0.06, 0, i * 0.14));
+      api.end(scoreOf(), [['たかさ', S.floors], ['ぴったり', S.perfects]]);
+    }
+    const onDown = (e) => { if (e.target.closest('.pill')) return; drop(); };
+    const onKey = (e) => { if (e.code === 'Space' && S && S.mode === 'play') { e.preventDefault(); if (!e.repeat) drop(); } };
+    stage.addEventListener('pointerdown', onDown); window.addEventListener('keydown', onKey);
+    function frame(ts) {
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
+      last = ts;
+      if (S.mode === 'play' || S.mode === 'dying') update(dt);
+      draw(ts / 1000); hud();
+      raf = requestAnimationFrame(frame);
+    }
+    resize(); S = makeState('idle'); S.m.x = (W - S.m.w) / 2;
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null; if (ro) ro.observe(stage);
+    raf = requestAnimationFrame(frame);
+    return {
+      start() { S = makeState('play'); S.m.x = -S.m.w; Object.keys(cache).forEach((n) => delete cache[n]); },
+      pause() { if (S.mode === 'play') S.mode = 'paused'; }, resume() { if (S.mode === 'paused') S.mode = 'play'; },
+      destroy() { cancelAnimationFrame(raf); if (ro) ro.disconnect(); stage.removeEventListener('pointerdown', onDown); window.removeEventListener('keydown', onKey); }
+    };
+  }
+
+  /* ===== ゲーム27: かぞえてタッチ ===== */
+  function dotsNext(ctx) {
+    const lv = Math.min(6, Math.floor(ctx.n / 4)), cnt = rndInt(3 + lv, 6 + lv * 2);
+    const hideAt = Math.max(0.7, 1.5 - lv * 0.12).toFixed(2);
+    const rows = []; for (let i = 0, left = cnt; left > 0; i++) { const r = Math.min(left, 5); rows.push('⭐'.repeat(r)); left -= r; }
+    const cand = shuffle([cnt - 3, cnt - 2, cnt - 1, cnt + 1, cnt + 2, cnt + 3]).filter((v) => v > 0).slice(0, 3);
+    const opts = shuffle([cnt].concat(cand));
+    return { html: '<span class="tag t-ink">星はいくつ?</span><div class="dotshow" style="animation-delay:' + hideAt + 's">' + rows.join('<br>') + '</div><div class="sub">すぐ消えるよ</div>', opts: opts.map(String), ans: opts.indexOf(cnt) };
+  }
+  const createDots = (stage, api) => createQuiz(stage, api, {
+    total: 45, penalty: 3, quick: 2.5, next: dotsNext,
+    stats: (s) => [['せいかい', s.correct], ['最大コンボ', s.maxCombo], ['まちがい', s.wrong]]
+  });
+
+  /* ===== ゲーム28: やじるし ===== */
+  const ARROWS = ['←', '↑', '↓', '→'];
+  function arrowNext(ctx) {
+    const d = rndInt(0, 3), lv = Math.floor(ctx.n / 6) % 2, same = ctx.n < 6 ? true : (Math.random() < 0.5);
+    const opp = [3, 2, 1, 0], target = same ? d : opp[d];
+    const tag = same ? '<span class="tag t-ink">おなじ向きをえらぶ</span>' : '<span class="tag t-read">ぎゃくの向きをえらぶ</span>';
+    return { html: tag + '<div class="big" style="font-size:84px;color:' + (same ? '#6fe3cf' : '#ff8aa0') + '">' + ARROWS[d] + '</div>', opts: ARROWS.slice(), ans: target };
+  }
+  const createArrows = (stage, api) => createQuiz(stage, api, {
+    total: 40, penalty: 2, quick: 0.9, next: arrowNext,
+    stats: (s) => [['せいかい', s.correct], ['最大コンボ', s.maxCombo], ['まちがい', s.wrong]]
+  });
+
+  const ICON_NMEM = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="30" font-size="20" font-weight="700" fill="#ffd45e" text-anchor="middle" letter-spacing="3">4829</text><rect x="12" y="38" width="36" height="10" rx="5" fill="#2f37a0"/><circle cx="20" cy="43" r="2.5" fill="#6fe3cf"/><circle cx="30" cy="43" r="2.5" fill="#6fe3cf"/><circle cx="40" cy="43" r="2.5" fill="#6fe3cf"/></svg>';
+  const ICON_STACK = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="18" y="38" width="26" height="7" rx="2" fill="#6fe3cf"/><rect x="16" y="30" width="28" height="7" rx="2" fill="#7fd1ff"/><rect x="20" y="22" width="24" height="7" rx="2" fill="#b48cff"/><rect x="8" y="12" width="22" height="7" rx="2" fill="#ffd45e"/></svg>';
+  const ICON_DOTS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="18" cy="20" r="5" fill="#ffd45e"/><circle cx="34" cy="16" r="5" fill="#ffd45e"/><circle cx="44" cy="30" r="5" fill="#ffd45e"/><circle cx="24" cy="38" r="5" fill="#ffd45e"/><circle cx="40" cy="46" r="5" fill="#ffd45e"/></svg>';
+  const ICON_ARROW = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><path d="M12 30h30M32 18l12 12-12 12" stroke="#6fe3cf" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M48 12H30M38 6l-8 6 8 6" stroke="#ff8aa0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/></svg>';
   const GAMES = [
     { id: 'star', name: '星ひろい', short: '星ひろい', desc: 'カゴで星をキャッチ。レベルアップで強化を選ぶ。', icon: ICON_STAR, create: createStar,
       intro: 'カゴで夜空の星をひろっていきます。レベルが上がるたびに、好きな強化を1つ選べます。',
@@ -3374,9 +3979,9 @@
     { id: 'runner', name: 'ほしランナー', short: 'ランナー', desc: '星のこが走る。ジャンプでよけて星を集める。', icon: ICON_RUN, create: createRunner,
       intro: '走りつづける星のこを、ジャンプで操作します。障害物をよけながら、星を集めて遠くまで進みましょう。',
       how: ['画面をタップ、スペースキーでジャンプ。空中でもう1回とべる', '紫の岩と赤いトゲは、ジャンプでこえる', '低くとぶ赤いかけらは、地面にいればぶつからない。ジャンプすると当たる'], legend: '' },
-    { id: 'rhythm', name: 'リズムタップ', short: 'リズム', desc: '落ちてくる光を、リズムに合わせてタップ。', icon: ICON_RHYTHM, create: createRhythm,
+    { id: 'rhythm', name: 'リズムタップ', short: 'リズム', desc: '落ちてくる光を、リズムに合わせてタップ。', icon: ICON_RHYTHM, create: (stage, api) => withBgm(createRhythm, stage, api),
       intro: '4つのレーンを光が落ちてきます。下の輪にぶつかる瞬間にタップしましょう。曲は約45秒です。',
-      how: ['光が輪に重なる瞬間に、そのレーンをタップ(キーは D F J K)', 'ぴったりなほど高得点。つづけて決めると倍率アップ', 'タップしないで通りすぎるとミス。音が出るのでイヤホンがおすすめ'], legend: '' },
+      how: ['光が輪に重なる瞬間に、そのレーンをタップ(キーは D F J K)', 'ぴったりなほど高得点。つづけて決めると倍率アップ', 'タップしないで通りすぎるとミス。音が出るのでイヤホンがおすすめ'], legend: '<label class="ytbox">BGM(おまけ): YouTubeのURLをはると、曲を流しながら遊べます<input id="ytUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/watch?v=…" autocomplete="off"><span>音符は曲には合わせません。小さなプレーヤーで流れます(自動で始まらないときは、再生ボタンを押してください)。</span></label>' },
     { id: 'lights', name: 'ライトオフ', short: 'ライトオフ', desc: 'ライトを全部消す。押すと上下左右も切りかわる。', icon: ICON_LIGHTS, create: createLights,
       intro: 'ライトを押すと、そのライトと上下左右のライトが切りかわります。全部消せばクリアです。',
       how: ['光っているライトをすべて消す', '少ない手数でクリアするほど高得点(めやすの手数が出ます)', 'クリアすると +8秒。盤面は3×3から5×5まで大きくなる。制限時間は90秒'], legend: '' },
@@ -3394,17 +3999,62 @@
       how: ['上に出るルールに合う手をタップ(1〜3キーでも選べます)', '1秒いないに答えると +5点', 'まちがえると -2秒。制限時間は40秒'], legend: '' },
     { id: 'cmp', name: 'どっちがおおきい', short: 'くらべる', desc: '2つの数のどちらが大きい(小さい)かを選ぶ。', icon: ICON_CMP, create: createCmp,
       intro: '2つの数や式のうち、大きいほう(小さいほう)をすばやく選びます。進むほど式は複雑になります。',
-      how: ['ルールに合うほうをタップ(1・2キーでも選べます)', '1.8秒いないに答えると +5点', '8問ごとに「大きい」「小さい」が切りかわる。まちがえると -3秒'], legend: '' }
+      how: ['ルールに合うほうをタップ(1・2キーでも選べます)', '1.8秒いないに答えると +5点', '8問ごとに「大きい」「小さい」が切りかわる。まちがえると -3秒'], legend: '' },
+    { id: 'slide', name: 'スライド', short: 'スライド', desc: '数字を1から順にならべるパズル。', icon: ICON_SLIDE, create: createSlide,
+      intro: 'マスをスライドさせて、数字を1から順にならべます。空いているマスに向かって、同じ列のマスをまとめて動かせます。',
+      how: ['動かしたいマスをタップ(空きと同じ行か列なら、まとめて動く)', '速くそろえるほど高得点。クリアで +10秒', '3×3から始まり、3問目からは4×4。制限時間は90秒'], legend: '' },
+    { id: 'hilo', name: 'ハイ&ロー', short: 'ハイロー', desc: '次のカードが高いか低いかを当てる。', icon: ICON_HILO, create: createHilo,
+      intro: '今のカード(1〜13)より、次のカードが高いか低いかを当てます。連続で当てるほど倍率アップです。',
+      how: ['「高い」か「低い」をタップ(1・2キーでも選べます)', '1.2秒いないに答えると +5点', 'はずれると -3秒。制限時間は40秒'], legend: '' },
+    { id: 'dodge', name: 'ほしよけ', short: 'ほしよけ', desc: '降ってくる岩をよけて、星を集める。', icon: ICON_DODGE, create: createDodge,
+      intro: '画面の下の船を左右に動かして、降ってくる岩をよけます。星を取ると高得点です。',
+      how: ['指やマウスで船を動かす(キーボードは ← → か A D)', '星は +30点。生きた時間もスコアになる', 'ライフは3つ。当たると1秒だけ無敵になる'], legend: '' },
+    { id: 'mash', name: 'れんだチャレンジ', short: 'れんだ', desc: '12秒間、とにかくタップしまくる。', icon: ICON_MASH, create: createMash,
+      intro: '12秒間、画面をできるだけたくさんタップします。ボーナスの時間は、1回が3点になります。',
+      how: ['大きなボタンをタップ(スペースキーでもOK)', '3〜5秒と7〜9秒は ×3 のボーナスタイム(ボタンが緑になる)', '指を痛めないように、ほどほどに'], legend: '' },
+    { id: 'nmem', name: 'ナンバー記憶', short: '記憶', desc: '一瞬だけ見える数字を、同じ順に入れる。', icon: ICON_NMEM, create: createNumMem,
+      intro: '数字が一瞬だけ表示されます。消えたら、同じ数字を同じ順に入力しましょう。成功するたびに、けた数が増えます。',
+      how: ['数字をおぼえて、キーパッドで入力(キーボードの数字キーもOK)', '成功すると1けた増える。点数はけた数が多いほど高い', 'ライフは3つ。まちがえると少し簡単になる'], legend: '' },
+    { id: 'stack', name: 'つみあげ', short: 'つみあげ', desc: '動くブロックを重ねて、できるだけ高く積む。', icon: ICON_STACK, create: createStack,
+      intro: '左右に動くブロックを、タップで落として積み上げます。ずれた部分は切り落とされて、だんだん細くなります。',
+      how: ['タイミングよくタップ(スペースキーでもOK)', 'ほぼぴったりなら、切り落とされずボーナス', '完全に外すと終わり。高く積むほどスピードアップ'], legend: '' },
+    { id: 'dots', name: 'ほしかぞえ', short: 'かぞえる', desc: '一瞬だけ見える星の数を当てる。', icon: ICON_DOTS, create: createDots,
+      intro: '星がパッと出て、すぐ消えます。いくつあったかを答えましょう。進むほど数が増え、見える時間は短くなります。',
+      how: ['星の数を、4つの選択肢からタップ(1〜4キーでもOK)', '2.5秒いないに答えると +5点', 'まちがえると -3秒。制限時間は45秒'], legend: '' },
+    { id: 'arrow', name: 'やじるし', short: 'やじるし', desc: '矢印と「同じ・逆」のルールで向きを選ぶ。', icon: ICON_ARROW, create: createArrows,
+      intro: '矢印が出ます。ルールに合わせて、同じ向きか逆向きの矢印をタップしましょう。反射と切りかえの勝負です。',
+      how: ['緑の矢印は「同じ向き」、ピンクの矢印は「逆の向き」を選ぶ', '0.9秒いないに答えると +5点', '1〜4キーは ←・↑・↓・→ の順。まちがえると -2秒'], legend: '' }
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; });
 
   /* ===== 記録とランキング ===== */
   const LS = 'arcade-records-v1';
   const rec = {}; GAMES.forEach((g) => { rec[g.id] = 0; });
   try { Object.assign(rec, JSON.parse(localStorage.getItem(LS) || '{}')); } catch (e) {}
+  const LS_PLAYS = 'arcade-plays-v1', LS_DAYS = 'arcade-days-v1';
+  const plays = {}; let days = [];
+  try { Object.assign(plays, JSON.parse(localStorage.getItem(LS_PLAYS) || '{}')); } catch (e) {}
+  try { const d = JSON.parse(localStorage.getItem(LS_DAYS) || '[]'); if (Array.isArray(d)) days = d.filter((x) => typeof x === 'string').slice(-60); } catch (e) {}
+  const dayStr = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  function streak() {
+    let n = 0; const d = new Date();
+    if (days.indexOf(dayStr(d)) < 0) d.setDate(d.getDate() - 1);
+    while (days.indexOf(dayStr(d)) >= 0 && n < 60) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function bumpPlay(id) {
+    plays[id] = (plays[id] || 0) + 1;
+    const t = dayStr(new Date()); if (days.indexOf(t) < 0) { days.push(t); days = days.slice(-60); }
+    try { localStorage.setItem(LS_PLAYS, JSON.stringify(plays)); localStorage.setItem(LS_DAYS, JSON.stringify(days)); } catch (e) {}
+  }
+  function todayGame() {
+    const t = dayStr(new Date()); let h = 7;
+    for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) % 100003;
+    return GAMES[h % GAMES.length];
+  }
   const saveRec = () => { try { localStorage.setItem(LS, JSON.stringify(rec)); } catch (e) {} };
 
   const board = {}; GAMES.forEach((g) => { board[g.id] = []; });
@@ -3431,6 +4081,7 @@
       refreshBoards();
     },
     async submit(g, score) {
+      if (!lsGet('arcade-acct')) return 'failed';
       try {
         const res = await window.fetch(FB + '/scores/' + g + '/' + this.uid + '.json', { method: 'PUT', body: JSON.stringify({ name: this.name(), score: score, at: Date.now() }) });
         if (res.ok) { this.fetch(g); return 'saved'; }
@@ -3512,18 +4163,29 @@
     GAMES.forEach((g) => {
       const tile = $('.gcard[data-g="' + g.id + '"]');
       tile.hidden = !(filterId === 'すべて' || g.cat === filterId);
+      tile.classList.toggle('today', g === todayGame());
       const gs = $('.gs', tile);
       gs.className = 'gs' + (rec[g.id] ? '' : ' new');
       gs.innerHTML = rec[g.id] ? 'ベスト <b>' + rec[g.id] + '</b>' : '未プレイ';
     });
     const played = GAMES.filter((g) => rec[g.id] > 0).length;
-    $('#sumLine').textContent = '遊んだゲーム ' + played + ' / ' + GAMES.length + ' ・ ベストの合計 ' + GAMES.reduce((a, g) => a + (rec[g.id] || 0), 0);
+    $('#heroTxt').textContent = '1回1〜3分で遊べるミニゲームが' + GAMES.length + '本。スコアはランキングに残ります。';
+    $('#sumLine').textContent = '遊んだゲーム ' + played + ' / ' + GAMES.length + ' ・ ベストの合計 ' + GAMES.reduce((a, g) => a + (rec[g.id] || 0), 0) + (streak() ? ' ・ れんぞく ' + streak() + '日' : '');
+    const tg = todayGame(); $('#todayLine').textContent = 'きょうのゲーム: ' + tg.name + '(まずはこれから)';
     $('#filters').querySelectorAll('.pill').forEach((f) => f.setAttribute('aria-pressed', String(f.dataset.f === filterId)));
     $('#tabs').querySelectorAll('.pill').forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.g === tabId)));
     $('#rankSub').textContent = byId(tabId).name + ' の上位10人です。あなたのベストは ' + rec[tabId] + ' です。';
     renderBoard($('#homeBoard'), tabId, 10);
   }
+  function updateHint() {
+    if (!ovResult || ovResult.hidden || !curG) return;
+    const h = $('.rankhint', ovResult); if (!h) return;
+    const b = board[curG.id] || [], i = b.findIndex((x) => x.uid === Rank.uid);
+    if (i < 0) { h.textContent = ''; return; }
+    h.textContent = 'いまの順位 ' + (i + 1) + '位' + (i === 0 ? ' ・ 1位です!' : ' ・ 1つ上まであと ' + (b[i - 1].score - b[i].score + 1) + '点');
+  }
   function refreshBoards() {
+    updateHint();
     if (!viewHome.hidden) renderHome();
     if (ovResult && !ovResult.hidden && curG) { const rb = $('.rbox', ovResult); if (rb) renderBoard(rb, curG.id, 5); }
   }
@@ -3551,6 +4213,7 @@
   });
 
   function openGame(g) {
+    if (typeof requireAcct === 'function' && !requireAcct()) return;
     closeGame();
     curG = g;
     setView('game');
@@ -3566,7 +4229,19 @@
     $('h2', ovIntro).textContent = g.name;
     $('.intro', ovIntro).textContent = g.intro;
     g.how.forEach((t) => { const li = el('li'); li.textContent = t; $('.how', ovIntro).append(li); });
+    const ds = el('div', 'diffsel'), dn = el('span');
+    const showMul = () => { dn.textContent = 'スコア ×' + DIFFS[DIFF].mul; };
+    ds.append(document.createTextNode('むずかしさ'));
+    DIFFS.forEach((d, i) => {
+      const b = el('button', 'pill'); b.type = 'button'; b.textContent = d.n; b.setAttribute('aria-pressed', String(i === DIFF));
+      b.addEventListener('click', () => { DIFF = i; try { localStorage.setItem(LS_DIFF, String(i)); } catch (e) {} ds.querySelectorAll('.pill').forEach((x, j) => x.setAttribute('aria-pressed', String(j === i))); showMul(); });
+      ds.append(b);
+    });
+    showMul(); ds.append(dn);
+    $('.mybest', ovIntro).before(ds);
+    const yi = ovIntro.querySelector('#ytUrl'); if (yi) { try { yi.value = localStorage.getItem(LS_YT) || ''; } catch (e) {} }
     $('.mybest b', ovIntro).textContent = String(rec[g.id]);
+    $('.mybest', ovIntro).append(document.createTextNode(' ・ あそんだ回数 ' + (plays[g.id] || 0) + '回'));
     $('.btn', ovIntro).addEventListener('click', startPlay);
     stage.append(ovIntro, ovResult, ovPause);
     try { $('.btn', ovIntro).focus({ preventScroll: true }); } catch (e) {}
@@ -3575,6 +4250,7 @@
   function startPlay() {
     if (!inst) return;
     ovIntro.hidden = true; ovResult.hidden = true;
+    if (curG) bumpPlay(curG.id);
     A.unlock();
     playing = true; ended = false;
     $('#pz').hidden = false;
@@ -3582,6 +4258,7 @@
   }
 
   async function finish(g, score, stats) {
+    score = Math.round(score * DIFFS[DIFF].mul);
     if (!playing || ended) return;
     ended = true; playing = false;
     $('#pz').hidden = true;
@@ -3590,7 +4267,7 @@
     if (isRec) { rec[g.id] = score; saveRec(); }
     ovResult.innerHTML = '<div class="ov-in"><h3>おつかれさま</h3>' +
       '<div class="res"><span class="lbl">スコア</span><span class="big"></span><span class="rec" hidden>じぶんのベスト更新です</span><span class="lbl best"></span></div>' +
-      '<div class="stats"></div><p class="status">ランキングに登録しています…</p>' +
+      '<div class="stats"></div><p class="status">ランキングに登録しています…</p><p class="rankhint"></p>' +
       '<div><h4>みんなのランキング</h4><div class="rbox" style="margin-top:6px"></div></div>' +
       '<div class="btns"><button class="btn again" type="button">もういちど</button><button class="btn ghost home" type="button">ホームへ</button></div></div>';
     $('.big', ovResult).textContent = String(score);
@@ -3649,11 +4326,60 @@
   const bbox = $('#battleBox');
   function bt(tag, cls, text) { const e = el(tag, cls); if (text != null) e.textContent = text; return e; }
 
+
+  const FX_KINDS = ['blur', 'flip', 'blots', 'shake'];
+  function btToast(text) { const t = bt('div', 'bt-toast', text); stage.append(t); setTimeout(() => t.remove(), 1300); }
+  function fxClear() {
+    ['fx-blur', 'fx-flip', 'fx-shake'].forEach((c) => stage.classList.remove(c));
+    stage.querySelectorAll('.fx-blot').forEach((x) => x.remove());
+  }
+  function applyFx(kind) {
+    btToast('じゃまされた!');
+    A.beep(200, 0.2, 'sawtooth', 0.06, -60);
+    if (kind === 'blots') {
+      const r = stage.getBoundingClientRect(), blots = [];
+      for (let i = 0; i < 5; i++) {
+        const d = bt('div', 'fx-blot'), sz = rndInt(90, 170);
+        d.style.width = d.style.height = sz + 'px';
+        d.style.left = rndInt(0, Math.max(1, Math.floor(r.width - sz))) + 'px'; d.style.top = rndInt(40, Math.max(41, Math.floor(r.height - sz))) + 'px';
+        stage.append(d); blots.push(d);
+      }
+      setTimeout(() => blots.forEach((d) => d.remove()), 4500);
+    } else {
+      const cls = 'fx-' + (FX_KINDS.indexOf(kind) >= 0 ? kind : 'blur');
+      stage.classList.add(cls);
+      setTimeout(() => stage.classList.remove(cls), kind === 'flip' ? 4000 : 3500);
+    }
+  }
+  function battleSampleStop() { const b = battle; if (b && b.samp) { clearInterval(b.samp); b.samp = 0; } }
+  function battleSampleStart(g) {
+    const b = battle; if (!b) return;
+    battleSampleStop();
+    b.step = clampN(Math.round(Math.max(rec[g.id] || 0, 120) * 0.25 / 10) * 10, 30, 400);
+    b.next = b.step; b.lastPush = 0; b.lastFx = 0; b.fxn = 0; b.fxSeen = 0;
+    const chip = bt('div', 'bt-live', 'あいて 0'); stage.append(chip); b.chip = chip;
+    b.samp = setInterval(() => {
+      if (battle !== b || !b.inGame) return;
+      const t = stage.querySelector('[data-k="score"]'), v = t ? (parseInt(t.textContent, 10) || 0) : 0, now = Date.now();
+      if (now - b.lastPush > 900) { b.lastPush = now; rtdb('PATCH', '/rooms/' + b.code + '/live/' + Rank.uid, { s: v }).catch(() => {}); }
+      while (v >= b.next) {
+        b.next += b.step;
+        if (now - b.lastFx > 4000) {
+          b.lastFx = now; b.fxn++;
+          rtdb('PATCH', '/rooms/' + b.code + '/fx/' + Rank.uid, { n: b.fxn, kind: FX_KINDS[rndInt(0, FX_KINDS.length - 1)] }).catch(() => {});
+          btToast('じゃまを送った!');
+        }
+      }
+    }, 500);
+  }
+
   async function battleLeave() {
     const b = battle; if (!b) return;
     battle = null;
     if (b.poll) clearInterval(b.poll);
     if (b.cd) clearTimeout(b.cd);
+    if (b.samp) clearInterval(b.samp);
+    fxClear();
     try {
       if (b.role === 'host') await rtdb('DELETE', '/rooms/' + b.code);
       else await rtdb('PATCH', '/rooms/' + b.code, { guestUid: null, guestName: null });
@@ -3661,17 +4387,20 @@
   }
 
   function battleMenu(msg) {
+    if (typeof requireAcct === 'function' && !requireAcct()) return;
     closeGame(); setView('battle'); bbox.textContent = '';
     bbox.append(bt('h1', '', '対戦モード'));
-    bbox.append(bt('p', 'sub', '友だちと同じゲームを同時に遊んで、スコアで勝負します。部屋をつくって、コードを友だちに伝えてください。'));
+    bbox.append(bt('p', 'sub', '友だちと同じゲームを同時に遊んで、スコアで勝負します。スコアがある程度まで上がるたびに、あいての画面に「じゃま」が入ります(ぼやける・逆さま・黒いしみ・ゆれる)。部屋をつくって、コードを友だちに伝えてください。'));
     bbox.append(bt('p', 'bt-me', 'あなたの名前: ' + Rank.name() + '(ホームで変えられます)'));
     const c1 = bt('section', 'bt-card');
     c1.append(bt('h2', '', '部屋をつくる'));
     const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲームを選ぶ');
     GAMES.forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
+    const dsel = bt('select', 'bt-sel'); dsel.setAttribute('aria-label', 'むずかしさ');
+    DIFFS.forEach((d, i) => { const o = bt('option', '', 'むずかしさ: ' + d.n); o.value = String(i); if (i === DIFF) o.selected = true; dsel.append(o); });
     const mk = bt('button', 'btn', '部屋をつくる'); mk.type = 'button';
-    mk.addEventListener('click', () => battleCreate(sel.value, mk));
-    c1.append(sel, mk);
+    mk.addEventListener('click', () => battleCreate(sel.value, Number(dsel.value), mk));
+    c1.append(sel, dsel, mk);
     const c2 = bt('section', 'bt-card');
     c2.append(bt('h2', '', '部屋に入る'));
     const inp = bt('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off'; inp.setAttribute('aria-label', '部屋のコード');
@@ -3683,7 +4412,7 @@
   }
   const btMsg = (t) => { const m = $('#btMsg'); if (m) m.textContent = t || ''; };
 
-  async function battleCreate(gid, btn) {
+  async function battleCreate(gid, diff, btn) {
     btn.disabled = true; btMsg('部屋をつくっています…');
     try {
       let code = '';
@@ -3692,7 +4421,7 @@
         if ((await rtdb('GET', '/rooms/' + c)) === null) code = c;
       }
       if (!code) throw new Error('code');
-      await rtdb('PUT', '/rooms/' + code, { game: gid, hostUid: Rank.uid, hostName: Rank.name(), state: 'wait', round: 0, at: Date.now() });
+      await rtdb('PUT', '/rooms/' + code, { game: gid, diff: diff, hostUid: Rank.uid, hostName: Rank.name(), state: 'wait', round: 0, at: Date.now() });
       battleEnter(code, 'host', { round: 0 });
     } catch (e) { btn.disabled = false; btMsg('部屋をつくれませんでした。通信とFirebaseのルールを確認してください。'); }
   }
@@ -3728,6 +4457,11 @@
   function battleOnRoom() {
     const b = battle, room = b.room;
     if (room.state === 'play' && Number(room.round) !== b.lastRound && !b.counting) { battleBegin(room); return; }
+    if (b.inGame) {
+      const op = oppOf(room), lv = room.live && op.uid && room.live[op.uid], fx = room.fx && op.uid && room.fx[op.uid];
+      if (lv && b.chip) b.chip.textContent = 'あいて ' + (Number(lv.s) || 0);
+      if (fx && Number(fx.n) > (b.fxSeen || 0)) { b.fxSeen = Number(fx.n); applyFx(String(fx.kind)); }
+    }
     if (b.waiting) { battleShowResult(); return; }
     if (!b.inGame && !b.counting) {
       const sig = [room.guestUid || '', room.guestName || '', room.game, room.round].join('|');
@@ -3741,7 +4475,7 @@
     bbox.append(bt('p', 'sub', '部屋のコード(友だちに伝えてください)'));
     bbox.append(bt('div', 'bt-code', b.code));
     const gc = bt('section', 'bt-card');
-    gc.append(bt('h2', '', g.name), bt('p', 'sub', g.intro));
+    gc.append(bt('h2', '', g.name), bt('p', 'sub', g.intro), bt('p', 'bt-me', 'むずかしさ: ' + DIFFS[clampN(Number(room.diff) || 1, 0, 2)].n));
     const ul = bt('ul', 'how'); g.how.forEach((t) => ul.append(bt('li', '', t))); gc.append(ul);
     const pl = bt('section', 'bt-card'); pl.append(bt('h2', '', 'さんかする人'));
     const opp = oppOf(room);
@@ -3754,7 +4488,7 @@
       const st = bt('button', 'btn', opp.uid ? '対戦スタート' : '友だちが入るまで待ってね'); st.type = 'button'; st.disabled = !opp.uid;
       st.addEventListener('click', async () => {
         st.disabled = true;
-        try { await rtdb('PATCH', '/rooms/' + b.code, { state: 'play', round: (Number(b.room.round) || 0) + 1, scores: null }); battleTick(); }
+        try { await rtdb('PATCH', '/rooms/' + b.code, { state: 'play', round: (Number(b.room.round) || 0) + 1, scores: null, live: null, fx: null }); battleTick(); }
         catch (e) { st.disabled = false; }
       });
       bbox.append(st);
@@ -3766,6 +4500,7 @@
   function battleBegin(room) {
     const b = battle, g = byId(room.game) || GAMES[0];
     b.lastRound = Number(room.round) || 0; b.counting = true; b.inGame = false; b.waiting = false; b.myScore = null; b.verdictShown = false;
+    DIFF = clampN(Number(room.diff) || 1, 0, 2);
     openGame(g);
     ovIntro.hidden = true;
     const cd = el('section', 'ov', '<div class="ov-in"><p>まもなく開始。' + g.name + '</p><h2 class="bt-cd">3</h2><p>じゅんびしてね</p></div>');
@@ -3776,7 +4511,7 @@
       n--;
       if (n > 0) { $('.bt-cd', cd).textContent = String(n); A.beep(660, 0.08, 'sine', 0.06); b.cd = setTimeout(step, 1000); return; }
       cd.remove(); b.counting = false; b.inGame = true;
-      startPlay(); $('#pz').hidden = true;
+      startPlay(); $('#pz').hidden = true; battleSampleStart(g);
     };
     A.unlock(); A.beep(660, 0.08, 'sine', 0.06);
     b.cd = setTimeout(step, 1000);
@@ -3784,6 +4519,7 @@
   async function battleFinish(g, score, stats) {
     const b = battle; if (!b) return;
     b.inGame = false; b.waiting = true; b.myScore = score; b.waitSince = Date.now();
+    battleSampleStop(); fxClear();
     ovResult.innerHTML = '<div class="ov-in"><h3>対戦けっか</h3><div class="res"><span class="lbl">あなたのスコア</span><span class="big"></span></div><div class="bt-vs"></div><p class="status">あいての終わりを待っています…</p><div class="btns"><button class="btn again" type="button" disabled>もういちど</button><button class="btn ghost home" type="button">ホームへ</button></div></div>';
     $('.big', ovResult).textContent = String(score);
     $('.home', ovResult).addEventListener('click', goHome);
@@ -3811,14 +4547,96 @@
     if (!b.verdictShown) { b.verdictShown = true; (mine >= os ? [523, 659, 784, 1047] : [392, 349, 311]).forEach((f, i) => A.beep(f, 0.18, 'triangle', 0.06, 0, i * 0.1)); }
   }
 
+  /* ===== アカウント(なまえ + 4けたのあいことば) ===== */
+  const LS_ACCT = 'arcade-acct';
+  function hashStr(str) {
+    let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
+  }
+  const nameKey = (n) => 'n' + Array.from(new TextEncoder().encode(String(n).normalize('NFKC').toLowerCase().trim()), (x) => x.toString(16).padStart(2, '0')).join('');
+  const pinHash = (key, pin) => hashStr('arcade|' + key + '|' + pin);
+
+  function requireAcct() {
+    if (lsGet(LS_ACCT)) return true;
+    if (!document.querySelector('.acct')) acctModal();
+    return false;
+  }
+  function acctLine() {
+    const a = $('#acctLine'); if (!a) return;
+    a.textContent = '';
+    if (!lsGet(LS_ACCT)) return;
+    a.append(document.createTextNode('ログイン中: ' + Rank.name() + ' '));
+    const out = el('button', 'pill'); out.type = 'button'; out.textContent = 'ログアウト';
+    out.addEventListener('click', () => {
+      if (!window.confirm('ログアウトしますか?(同じ名前とあいことばで、またログインできます)')) return;
+      lsSet(LS_ACCT, ''); lsSet('arcade-name', ''); lsSet('arcade-uid', ''); location.reload();
+    });
+    a.append(out);
+  }
+  function acctModal() {
+    const back = el('div', 'acct'); back.setAttribute('role', 'dialog'); back.setAttribute('aria-modal', 'true'); back.setAttribute('aria-label', 'アカウント');
+    const box = el('div', 'acct-in'); back.append(box);
+    let mode = 'new';
+    const render = () => {
+      box.textContent = '';
+      box.append(bt('h2', '', 'ひまつぶしアーケードへようこそ'));
+      box.append(bt('p', 'sub', 'ランキングや対戦に使う、あなたのアカウントをつくります。なまえと、4けたの数字(あいことば)だけです。'));
+      const tabs = el('div', 'acct-tabs');
+      [['new', 'はじめて'], ['login', 'ログイン']].forEach(([m, label]) => {
+        const t = bt('button', 'pill', label); t.type = 'button'; t.setAttribute('aria-pressed', String(mode === m));
+        t.addEventListener('click', () => { mode = m; render(); }); tabs.append(t);
+      });
+      box.append(tabs);
+      const nm = bt('input', 'bt-sel'); nm.type = 'text'; nm.maxLength = 12; nm.placeholder = 'なまえ(12文字まで)'; nm.autocomplete = 'off'; nm.setAttribute('aria-label', 'なまえ'); nm.value = lsGet('arcade-name');
+      const pn = bt('input', 'bt-sel'); pn.type = 'password'; pn.inputMode = 'numeric'; pn.maxLength = 4; pn.placeholder = 'あいことば(数字4けた)'; pn.autocomplete = 'off'; pn.setAttribute('aria-label', 'あいことば');
+      const go = bt('button', 'btn', mode === 'new' ? 'アカウントをつくる' : 'ログイン'); go.type = 'button';
+      const msg = bt('p', 'bt-msg', '');
+      box.append(nm, pn, go, msg);
+      if (mode === 'new') box.append(bt('p', 'sub', 'あいことばは、ほかの端末でログインするときに使います。わすれないでね。'));
+      go.addEventListener('click', async () => {
+        const name = nm.value.trim().slice(0, 12), pin = pn.value;
+        if (!name) { msg.textContent = 'なまえを入れてください。'; return; }
+        if (!/^\d{4}$/.test(pin)) { msg.textContent = 'あいことばは数字4けたです。'; return; }
+        go.disabled = true; msg.textContent = 'かくにん中…';
+        const key = nameKey(name);
+        try {
+          const cur = await rtdb('GET', '/accounts/' + key);
+          if (mode === 'new') {
+            if (cur) { msg.textContent = 'その名前はすでに使われています。自分の名前なら「ログイン」へ。'; go.disabled = false; return; }
+            await rtdb('PUT', '/accounts/' + key, { name: name, pin: pinHash(key, pin), uid: Rank.uid, at: Date.now() });
+            lsSet('arcade-name', name); lsSet(LS_ACCT, '1');
+            back.remove(); acctLine(); Rank.fetch(tabId);
+          } else {
+            if (!cur) { msg.textContent = 'その名前のアカウントが見つかりません。'; go.disabled = false; return; }
+            if (cur.pin !== pinHash(key, pin)) { msg.textContent = 'あいことばがちがいます。'; go.disabled = false; return; }
+            lsSet('arcade-uid', String(cur.uid)); lsSet('arcade-name', String(cur.name)); lsSet(LS_ACCT, '1'); lsSet('arcade-sync', '1');
+            location.reload();
+          }
+        } catch (e) { msg.textContent = '通信できませんでした。もう一度ためしてください。'; go.disabled = false; }
+      });
+    };
+    render(); document.body.append(back);
+    try { $('input', box).focus({ preventScroll: true }); } catch (e) {}
+  }
+  async function acctSync() {
+    if (lsGet('arcade-sync') !== '1') return;
+    lsSet('arcade-sync', '');
+    await Promise.all(GAMES.map(async (g) => {
+      try { const d = await rtdb('GET', '/scores/' + g.id + '/' + Rank.uid); if (d && Number(d.score) > (rec[g.id] || 0)) rec[g.id] = Number(d.score); } catch (e) {}
+    }));
+    saveRec(); renderHome();
+  }
+
   $('#battleBtn').addEventListener('click', () => { battleMenu(); });
-  const nameIn = $('#myName');
-  nameIn.value = lsGet('arcade-name');
-  nameIn.addEventListener('input', () => { lsSet('arcade-name', nameIn.value.slice(0, 12)); });
-  nameIn.addEventListener('change', () => { Rank.fetch(tabId); });
+  acctLine();
   setView('home');
   renderHome();
   Rank.init();
+  acctSync();
+  if (!lsGet(LS_ACCT)) acctModal();
 })();
 </script>
 
