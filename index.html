@@ -292,6 +292,9 @@
   @media (prefers-reduced-motion: reduce) { .mc, .mc span, .rx-pad { transition: none; } .mc.boom { animation: none; } }
   .sumline { margin: 6px 0 0; font-size: 13px; color: var(--mint); font-weight: 700; }
   .omakase { margin-top: 10px; }
+  .namebox { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--mute); }
+  .namebox input { flex: 1; min-width: 0; max-width: 220px; background: var(--panel); border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 14px; }
+  .namebox input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
 </style>
 
 </head>
@@ -313,6 +316,7 @@
       <h1>ひまつぶしアーケード</h1>
       <p>1回1〜3分で遊べるミニゲームが20本。スコアはランキングに残ります。</p>
       <p class="sumline" id="sumLine"></p>
+      <label class="namebox">ランキングの名前 <input id="myName" type="text" maxlength="12" placeholder="なまえ(12文字まで)" autocomplete="off"></label>
     </div>
     <section class="sec">
       <h2>ゲーム一覧</h2>
@@ -3383,37 +3387,33 @@
 
   const board = {}; GAMES.forEach((g) => { board[g.id] = []; });
   const names = {};
+  const FB = 'https://arcade-21de4-default-rtdb.asia-southeast1.firebasedatabase.app';
+  const lsGet = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  let myUid = lsGet('arcade-uid');
+  if (!/^[a-z0-9]{12,}$/.test(myUid)) { myUid = Array.from({ length: 16 }, () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]).join(''); lsSet('arcade-uid', myUid); }
   const Rank = {
-    db: null, user: null, uid: null, shared: false, state: 'loading',
-    async init() {
+    uid: myUid, shared: true, state: 'ready', offline: false,
+    name() { return (lsGet('arcade-name').trim().slice(0, 12)) || 'ななし'; },
+    async init() { this.fetch(tabId); setInterval(() => { if (!viewHome.hidden && !document.hidden) this.fetch(tabId); }, 20000); },
+    async fetch(g) {
       try {
-        if (window.claude && claude.use) {
-          const got = await Promise.all([claude.use('db'), claude.use('user')]);
-          this.db = got[0]; this.user = got[1];
-          this.uid = this.user ? await this.user.id() : null;
-        }
-      } catch (e) {}
-      this.shared = !!(this.db && this.uid);
-      this.state = 'ready';
-      if (this.shared) GAMES.forEach((g) => this.sub(g.id));
+        const res = await window.fetch(FB + '/scores/' + g + '.json?orderBy=%22score%22&limitToLast=50');
+        if (!res.ok) throw new Error('http ' + res.status);
+        const data = (await res.json()) || {};
+        board[g] = Object.keys(data).map((u) => ({ uid: u, score: Number((data[u] || {}).score) || 0, name: String((data[u] || {}).name || '') }))
+          .filter((d) => d.score >= 0).sort((x, y) => y.score - x.score);
+        board[g].forEach((d) => { if (d.name) names[d.uid] = d.name; });
+        this.offline = false;
+      } catch (e) { this.offline = true; }
       refreshBoards();
     },
-    sub(g) {
-      try {
-        this.db.collection('scores').where('game', '==', g).orderBy('score', 'desc').limit(50).onSnapshot((snap) => {
-          board[g] = snap.docs.map((d) => d.data()).filter((d) => d && typeof d.uid === 'string').map((d) => ({ uid: d.uid, score: Number(d.score) || 0 }));
-          refreshBoards();
-        }, () => {});
-      } catch (e) {}
-    },
     async submit(g, score) {
-      if (!this.shared) return 'local';
       try {
-        const ref = this.db.doc('scores/' + g + '-' + this.uid);
-        const cur = await ref.get();
-        const prev = cur.exists ? Number((cur.data() || {}).score) || 0 : 0;
-        if (score > prev) { await ref.set({ game: g, uid: this.uid, score: score, at: Date.now() }); return 'saved'; }
-        return 'kept';
+        const res = await window.fetch(FB + '/scores/' + g + '/' + this.uid + '.json', { method: 'PUT', body: JSON.stringify({ name: this.name(), score: score, at: Date.now() }) });
+        if (res.ok) { this.fetch(g); return 'saved'; }
+        if (res.status === 401 || res.status === 403) return 'kept';
+        return 'failed';
       } catch (e) { return 'failed'; }
     }
   };
@@ -3421,10 +3421,7 @@
 
   function renderBoard(box, gid, limit) {
     box.textContent = '';
-    if (!Rank.shared) {
-      box.append(el('p', 'empty', Rank.state === 'loading' ? '読み込み中…' : 'この画面ではみんなのランキングを使えません。自分の記録だけ残ります。'));
-      return;
-    }
+    if (Rank.offline && !board[gid].length) { box.append(el('p', 'empty', 'ランキングにつながりません。通信を確認してください。')); return; }
     const rows = board[gid].slice(0, limit);
     if (!board[gid].length) { box.append(el('p', 'empty', 'まだ記録がありません。最初の1位をねらおう。')); return; }
     const ol = el('ol', 'rank');
@@ -3473,7 +3470,7 @@
       const tabs = $('#tabs');
       GAMES.forEach((g) => {
         const t = el('button', 'pill'); t.type = 'button'; t.textContent = g.short; t.dataset.g = g.id;
-        t.addEventListener('click', () => { tabId = g.id; renderHome(); });
+        t.addEventListener('click', () => { tabId = g.id; renderHome(); Rank.fetch(g.id); });
         tabs.append(t);
       });
       const fl = $('#filters');
@@ -3522,7 +3519,7 @@
     stage.textContent = '';
     ovIntro = ovResult = ovPause = null;
   }
-  function goHome() { closeGame(); curG = null; setView('home'); renderHome(); }
+  function goHome() { closeGame(); curG = null; setView('home'); renderHome(); Rank.fetch(tabId); }
 
   const gameApi = (g) => ({
     best: () => rec[g.id],
@@ -3583,7 +3580,7 @@
     renderBoard($('.rbox', ovResult), g.id, 5);
     try { $('.again', ovResult).focus({ preventScroll: true }); } catch (e) {}
     const r = await Rank.submit(g.id, score);
-    const msg = { saved: 'ランキングに登録しました。', kept: 'ランキングには、これまでのベストが残っています。', local: 'この画面ではランキングに登録できません。自分の記録だけ保存しました。', failed: 'ランキングに登録できませんでした。自分の記録は保存しています。' }[r];
+    const msg = { saved: 'ランキングに登録しました。', kept: 'ランキングには、これまでのベストが残っています(自己ベスト未更新)。', local: 'この画面ではランキングに登録できません。自分の記録だけ保存しました。', failed: 'ランキングに登録できませんでした。自分の記録は保存しています。' }[r];
     const sEl = $('.status', ovResult);
     if (sEl) sEl.textContent = msg;
     refreshBoards();
@@ -3615,6 +3612,10 @@
     if (!A.muted) A.unlock();
   });
 
+  const nameIn = $('#myName');
+  nameIn.value = lsGet('arcade-name');
+  nameIn.addEventListener('input', () => { lsSet('arcade-name', nameIn.value.slice(0, 12)); });
+  nameIn.addEventListener('change', () => { Rank.fetch(tabId); });
   setView('home');
   renderHome();
   Rank.init();
