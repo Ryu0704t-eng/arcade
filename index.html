@@ -295,6 +295,25 @@
   .namebox { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--mute); }
   .namebox input { flex: 1; min-width: 0; max-width: 220px; background: var(--panel); border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 14px; }
   .namebox input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+  /* 対戦モード */
+  .battle-btn { margin-top: 14px; }
+  .bt-card { border: 1px solid var(--line); border-radius: 16px; background: rgba(18, 22, 74, 0.7); padding: 14px; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .bt-card h2 { margin: 0; font-size: 17px; }
+  .bt-sel, .bt-in { background: var(--panel); border: 1px solid var(--line); color: var(--ink); border-radius: 12px; padding: 12px; font: inherit; font-size: 16px; }
+  .bt-in { text-transform: uppercase; letter-spacing: 0.3em; text-align: center; font-family: var(--display); font-size: 24px; }
+  .bt-code { font-family: var(--display); font-size: 56px; letter-spacing: 0.25em; color: var(--gold); text-align: center; margin: 4px 0; }
+  .bt-me, .bt-msg { color: var(--mint); font-size: 13px; font-weight: 700; margin: 10px 0 0; min-height: 18px; }
+  .bt-pl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .bt-pl li { padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); }
+  .bt-pl li.me { border-color: var(--mint); }
+  .bt-pl li.wait { color: var(--mute); border-style: dashed; }
+  #battleBox .btn { margin-top: 12px; }
+  .bt-cd { font-family: var(--display); font-size: 88px; margin: 0; color: var(--gold); }
+  .bt-vs { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+  .bt-r { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); }
+  .bt-r.me { border-color: var(--mint); }
+  .bt-r b { font-family: var(--display); font-size: 22px; }
+  .bt-verdict { font-size: 22px; font-weight: 700; color: var(--gold); }
 </style>
 
 </head>
@@ -317,6 +336,7 @@
       <p>1回1〜3分で遊べるミニゲームが20本。スコアはランキングに残ります。</p>
       <p class="sumline" id="sumLine"></p>
       <label class="namebox">ランキングの名前 <input id="myName" type="text" maxlength="12" placeholder="なまえ(12文字まで)" autocomplete="off"></label>
+      <button class="btn battle-btn" id="battleBtn" type="button">⚔ 対戦モード</button>
     </div>
     <section class="sec">
       <h2>ゲーム一覧</h2>
@@ -332,6 +352,8 @@
     </section>
   </div>
 </main>
+
+<main class="home" id="viewBattle" hidden><div class="wrap" id="battleBox"></div></main>
 
 <main class="play" id="viewGame" hidden>
   <div class="stage" id="stage"></div>
@@ -3451,7 +3473,7 @@
   }
 
   /* ===== 画面の切り替え ===== */
-  const viewHome = $('#viewHome'), viewGame = $('#viewGame'), stage = $('#stage');
+  const viewHome = $('#viewHome'), viewGame = $('#viewGame'), viewBattle = $('#viewBattle'), stage = $('#stage');
   let curG = null, inst = null, playing = false, ended = false, tabId = 'star', filterId = 'すべて';
   const LS_FILTER = 'arcade-filter-v1';
   try { const sf = localStorage.getItem(LS_FILTER); if (sf && CAT_LIST.indexOf(sf) >= 0) filterId = sf; } catch (e) {}
@@ -3509,8 +3531,9 @@
   function setView(name) {
     viewHome.hidden = name !== 'home';
     viewGame.hidden = name !== 'game';
+    viewBattle.hidden = name !== 'battle';
     $('#bk').hidden = name === 'home';
-    $('#ttl').textContent = name === 'home' ? 'ひまつぶしアーケード' : (curG ? curG.name : '');
+    $('#ttl').textContent = name === 'home' ? 'ひまつぶしアーケード' : name === 'battle' ? '対戦' : (curG ? curG.name : '');
   }
   function closeGame() {
     if (inst) { try { inst.destroy(); } catch (e) {} }
@@ -3519,7 +3542,7 @@
     stage.textContent = '';
     ovIntro = ovResult = ovPause = null;
   }
-  function goHome() { closeGame(); curG = null; setView('home'); renderHome(); Rank.fetch(tabId); }
+  function goHome() { battleLeave(); closeGame(); curG = null; setView('home'); renderHome(); Rank.fetch(tabId); }
 
   const gameApi = (g) => ({
     best: () => rec[g.id],
@@ -3562,6 +3585,7 @@
     if (!playing || ended) return;
     ended = true; playing = false;
     $('#pz').hidden = true;
+    if (battle && battle.inGame) { if (score > rec[g.id]) { rec[g.id] = score; saveRec(); } Rank.submit(g.id, score); battleFinish(g, score, stats); return; }
     const isRec = score > rec[g.id];
     if (isRec) { rec[g.id] = score; saveRec(); }
     ovResult.innerHTML = '<div class="ov-in"><h3>おつかれさま</h3>' +
@@ -3587,6 +3611,7 @@
   }
 
   function pauseGame(reason) {
+    if (battle && (battle.inGame || battle.counting)) return;
     if (!playing || !inst || !ovPause || !ovPause.hidden) return;
     inst.pause();
     $('p', ovPause).textContent = reason;
@@ -3612,6 +3637,181 @@
     if (!A.muted) A.unlock();
   });
 
+
+  /* ===== 対戦モード(部屋コードで同時スコア勝負) ===== */
+  let battle = null;
+  const CODE_CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const rtdb = async (method, path, body) => {
+    const res = await window.fetch(FB + path + '.json', body === undefined ? { method } : { method, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error('http ' + res.status);
+    return res.json();
+  };
+  const bbox = $('#battleBox');
+  function bt(tag, cls, text) { const e = el(tag, cls); if (text != null) e.textContent = text; return e; }
+
+  async function battleLeave() {
+    const b = battle; if (!b) return;
+    battle = null;
+    if (b.poll) clearInterval(b.poll);
+    if (b.cd) clearTimeout(b.cd);
+    try {
+      if (b.role === 'host') await rtdb('DELETE', '/rooms/' + b.code);
+      else await rtdb('PATCH', '/rooms/' + b.code, { guestUid: null, guestName: null });
+    } catch (e) {}
+  }
+
+  function battleMenu(msg) {
+    closeGame(); setView('battle'); bbox.textContent = '';
+    bbox.append(bt('h1', '', '対戦モード'));
+    bbox.append(bt('p', 'sub', '友だちと同じゲームを同時に遊んで、スコアで勝負します。部屋をつくって、コードを友だちに伝えてください。'));
+    bbox.append(bt('p', 'bt-me', 'あなたの名前: ' + Rank.name() + '(ホームで変えられます)'));
+    const c1 = bt('section', 'bt-card');
+    c1.append(bt('h2', '', '部屋をつくる'));
+    const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲームを選ぶ');
+    GAMES.forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
+    const mk = bt('button', 'btn', '部屋をつくる'); mk.type = 'button';
+    mk.addEventListener('click', () => battleCreate(sel.value, mk));
+    c1.append(sel, mk);
+    const c2 = bt('section', 'bt-card');
+    c2.append(bt('h2', '', '部屋に入る'));
+    const inp = bt('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off'; inp.setAttribute('aria-label', '部屋のコード');
+    const jn = bt('button', 'btn', '入る'); jn.type = 'button';
+    jn.addEventListener('click', () => battleJoin(inp.value, jn));
+    c2.append(inp, jn);
+    const m = bt('p', 'bt-msg', msg || ''); m.id = 'btMsg';
+    bbox.append(c1, c2, m);
+  }
+  const btMsg = (t) => { const m = $('#btMsg'); if (m) m.textContent = t || ''; };
+
+  async function battleCreate(gid, btn) {
+    btn.disabled = true; btMsg('部屋をつくっています…');
+    try {
+      let code = '';
+      for (let i = 0; i < 6 && !code; i++) {
+        const c = Array.from({ length: 4 }, () => CODE_CH[Math.floor(Math.random() * CODE_CH.length)]).join('');
+        if ((await rtdb('GET', '/rooms/' + c)) === null) code = c;
+      }
+      if (!code) throw new Error('code');
+      await rtdb('PUT', '/rooms/' + code, { game: gid, hostUid: Rank.uid, hostName: Rank.name(), state: 'wait', round: 0, at: Date.now() });
+      battleEnter(code, 'host', { round: 0 });
+    } catch (e) { btn.disabled = false; btMsg('部屋をつくれませんでした。通信とFirebaseのルールを確認してください。'); }
+  }
+  async function battleJoin(raw, btn) {
+    const code = String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (code.length !== 4) { btMsg('コードは4文字です。'); return; }
+    btn.disabled = true; btMsg('さがしています…');
+    try {
+      const room = await rtdb('GET', '/rooms/' + code);
+      if (!room) { btn.disabled = false; btMsg('その部屋が見つかりません。'); return; }
+      if (room.hostUid === Rank.uid) { btn.disabled = false; btMsg('自分がつくった部屋です。'); return; }
+      if (room.guestUid && room.guestUid !== Rank.uid) { btn.disabled = false; btMsg('その部屋はもういっぱいです。'); return; }
+      await rtdb('PATCH', '/rooms/' + code, { guestUid: Rank.uid, guestName: Rank.name() });
+      battleEnter(code, 'guest', room);
+    } catch (e) { btn.disabled = false; btMsg('入れませんでした。通信を確認してください。'); }
+  }
+  function battleEnter(code, role, room) {
+    battle = { code: code, role: role, room: null, inGame: false, counting: false, waiting: false, lastRound: Number(room.round) || 0, busy: false, sig: '', cd: 0, poll: 0, myScore: null, waitSince: 0 };
+    battle.poll = setInterval(battleTick, 800);
+    battleTick();
+  }
+  async function battleTick() {
+    const b = battle; if (!b || b.busy) return;
+    b.busy = true;
+    try {
+      const room = await rtdb('GET', '/rooms/' + b.code);
+      if (battle !== b) return;
+      if (!room) { await battleLeave(); battleMenu('部屋がなくなりました。'); return; }
+      b.room = room; battleOnRoom();
+    } catch (e) { /* 通信の一時的な失敗は次のtickで再試行 */ } finally { b.busy = false; }
+  }
+  function oppOf(room) { return battle.role === 'host' ? { uid: room.guestUid, name: room.guestName } : { uid: room.hostUid, name: room.hostName }; }
+  function battleOnRoom() {
+    const b = battle, room = b.room;
+    if (room.state === 'play' && Number(room.round) !== b.lastRound && !b.counting) { battleBegin(room); return; }
+    if (b.waiting) { battleShowResult(); return; }
+    if (!b.inGame && !b.counting) {
+      const sig = [room.guestUid || '', room.guestName || '', room.game, room.round].join('|');
+      if (sig !== b.sig) { b.sig = sig; battleLobby(); }
+    }
+  }
+  function battleLobby() {
+    const b = battle, room = b.room, g = byId(room.game) || GAMES[0];
+    closeGame(); setView('battle'); bbox.textContent = '';
+    b.sig = [room.guestUid || '', room.guestName || '', room.game, room.round].join('|');
+    bbox.append(bt('p', 'sub', '部屋のコード(友だちに伝えてください)'));
+    bbox.append(bt('div', 'bt-code', b.code));
+    const gc = bt('section', 'bt-card');
+    gc.append(bt('h2', '', g.name), bt('p', 'sub', g.intro));
+    const ul = bt('ul', 'how'); g.how.forEach((t) => ul.append(bt('li', '', t))); gc.append(ul);
+    const pl = bt('section', 'bt-card'); pl.append(bt('h2', '', 'さんかする人'));
+    const opp = oppOf(room);
+    const ol = bt('ol', 'bt-pl');
+    ol.append(bt('li', 'me', Rank.name() + ' (あなた)'));
+    ol.append(bt('li', opp.uid ? '' : 'wait', opp.uid ? (opp.name || 'プレイヤー') : '友だちを待っています…'));
+    pl.append(ol);
+    bbox.append(gc, pl);
+    if (b.role === 'host') {
+      const st = bt('button', 'btn', opp.uid ? '対戦スタート' : '友だちが入るまで待ってね'); st.type = 'button'; st.disabled = !opp.uid;
+      st.addEventListener('click', async () => {
+        st.disabled = true;
+        try { await rtdb('PATCH', '/rooms/' + b.code, { state: 'play', round: (Number(b.room.round) || 0) + 1, scores: null }); battleTick(); }
+        catch (e) { st.disabled = false; }
+      });
+      bbox.append(st);
+    } else bbox.append(bt('p', 'bt-msg', '部屋の人が開始するのを待っています…'));
+    const lv = bt('button', 'btn ghost', 'ぬける'); lv.type = 'button';
+    lv.addEventListener('click', async () => { await battleLeave(); battleMenu(); });
+    bbox.append(lv);
+  }
+  function battleBegin(room) {
+    const b = battle, g = byId(room.game) || GAMES[0];
+    b.lastRound = Number(room.round) || 0; b.counting = true; b.inGame = false; b.waiting = false; b.myScore = null; b.verdictShown = false;
+    openGame(g);
+    ovIntro.hidden = true;
+    const cd = el('section', 'ov', '<div class="ov-in"><p>まもなく開始。' + g.name + '</p><h2 class="bt-cd">3</h2><p>じゅんびしてね</p></div>');
+    stage.append(cd);
+    let n = 3;
+    const step = () => {
+      if (battle !== b) return;
+      n--;
+      if (n > 0) { $('.bt-cd', cd).textContent = String(n); A.beep(660, 0.08, 'sine', 0.06); b.cd = setTimeout(step, 1000); return; }
+      cd.remove(); b.counting = false; b.inGame = true;
+      startPlay(); $('#pz').hidden = true;
+    };
+    A.unlock(); A.beep(660, 0.08, 'sine', 0.06);
+    b.cd = setTimeout(step, 1000);
+  }
+  async function battleFinish(g, score, stats) {
+    const b = battle; if (!b) return;
+    b.inGame = false; b.waiting = true; b.myScore = score; b.waitSince = Date.now();
+    ovResult.innerHTML = '<div class="ov-in"><h3>対戦けっか</h3><div class="res"><span class="lbl">あなたのスコア</span><span class="big"></span></div><div class="bt-vs"></div><p class="status">あいての終わりを待っています…</p><div class="btns"><button class="btn again" type="button" disabled>もういちど</button><button class="btn ghost home" type="button">ホームへ</button></div></div>';
+    $('.big', ovResult).textContent = String(score);
+    $('.home', ovResult).addEventListener('click', goHome);
+    $('.again', ovResult).addEventListener('click', () => { b.waiting = false; b.sig = ''; battleOnRoom(); });
+    ovResult.hidden = false;
+    try { await rtdb('PUT', '/rooms/' + b.code + '/scores/' + Rank.uid, { name: Rank.name(), score: score }); } catch (e) {}
+    battleTick();
+  }
+  function battleShowResult() {
+    const b = battle; if (!b || !ovResult || !b.room) return;
+    const opp = oppOf(b.room), sc = b.room.scores || {}, os = opp.uid && sc[opp.uid] ? Number(sc[opp.uid].score) : null;
+    const st = $('.status', ovResult), vs = $('.bt-vs', ovResult);
+    if (!st) return;
+    if (os === null) {
+      if (Date.now() - b.waitSince > 120000) st.textContent = 'あいてがまだ終わっていません。もう少し待つか、ホームへ戻ってください。';
+      return;
+    }
+    const mine = b.myScore, verdict = mine > os ? 'あなたの勝ち!' : mine < os ? 'あなたの負け…' : '引き分け';
+    vs.textContent = '';
+    const r1 = bt('div', 'bt-r me'); r1.append(bt('span', '', Rank.name() + ' (あなた)'), bt('b', '', String(mine)));
+    const r2 = bt('div', 'bt-r'); r2.append(bt('span', '', opp.name || 'プレイヤー'), bt('b', '', String(os)));
+    vs.append(r1, r2);
+    st.textContent = verdict; st.className = 'status bt-verdict';
+    $('.again', ovResult).disabled = false;
+    if (!b.verdictShown) { b.verdictShown = true; (mine >= os ? [523, 659, 784, 1047] : [392, 349, 311]).forEach((f, i) => A.beep(f, 0.18, 'triangle', 0.06, 0, i * 0.1)); }
+  }
+
+  $('#battleBtn').addEventListener('click', () => { battleMenu(); });
   const nameIn = $('#myName');
   nameIn.value = lsGet('arcade-name');
   nameIn.addEventListener('input', () => { lsSet('arcade-name', nameIn.value.slice(0, 12)); });
