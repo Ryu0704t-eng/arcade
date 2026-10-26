@@ -423,6 +423,32 @@
   .wlog { width: min(100%, 400px); flex: 1 1 0; min-height: 120px; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; font-size: 14px; line-height: 1.55; }
   .wl { margin: 0 0 4px; } .wl.sys { color: var(--mute); } .wl.me { color: var(--gold); } .wl.res { color: #8bf0d8; font-weight: 700; } .wl.dead { color: #ff8aa0; font-weight: 700; }
   .wacts { min-height: 56px; max-height: 128px; overflow-y: auto; align-content: flex-start; }
+  .dopps { width: min(100%, 400px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .dopp { background: rgba(0, 0, 0, 0.22); border: 2px solid transparent; border-radius: 10px; padding: 5px 4px 6px; text-align: center; display: grid; gap: 1px; }
+  .dopp.turn { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 212, 94, 0.5); }
+  .dopp.out { opacity: 0.55; }
+  .dopp b { font-size: 13px; font-weight: 700; } .dopp .cnt { font-family: var(--display); font-size: 20px; color: var(--gold); line-height: 1.1; }
+  .dopp em { font-style: normal; font-size: 11px; min-height: 14px; color: var(--mute); }
+  .dopp .fan { display: flex; justify-content: center; min-height: 26px; padding-left: 8px; }
+  .dopp .fan .tc { --cw: 17px; margin-left: -8px; border-width: 1px; border-radius: 3px; }
+  .drules { display: flex; gap: 6px; justify-content: center; min-height: 24px; flex-wrap: wrap; }
+  .dr { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--line); }
+  .dr.rv { background: #7a1830; color: #fff; border-color: #ff7a93; } .dr.lk { background: #1d4d8a; color: #fff; border-color: #7fd1ff; }
+  .dsub { font-size: 11px; color: var(--mute); }
+  .wnet { justify-content: flex-start; padding-top: 10px; }
+  .wn-body { width: min(100%, 420px); flex: 1 1 0; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+  .wn-p { margin: 0; font-size: 14px; line-height: 1.5; } .wn-p.small { font-size: 12px; color: var(--mute); }
+  .wn-ban { font-family: var(--display); font-size: 18px; text-align: center; padding: 6px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); }
+  .wn-role { background: var(--panel); border: 1px solid var(--gold); border-radius: 10px; padding: 8px 12px; display: grid; gap: 3px; }
+  .wn-act { align-content: flex-start; min-height: 48px; }
+  .wn-act .wn-p { flex-basis: 100%; text-align: center; }
+  .btn.mini.on { background: var(--gold); color: var(--gold-ink); box-shadow: 0 4px 0 #b8902a; }
+  .btn.mini.call { background: #2a7a5a; color: #fff; box-shadow: 0 4px 0 #17482f; }
+  .wn-ev { flex: none; height: 96px; min-height: 0; }
+  .wn-chat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 6px; margin-bottom: 6px; display: grid; gap: 4px; }
+  .wn-ch { font-size: 12px; color: var(--mute); }
+  .wn-cl { height: 96px; overflow-y: auto; font-size: 13px; line-height: 1.45; }
+  .wn-cr { display: flex; gap: 6px; } .wn-cr .bt-in { flex: 1; min-width: 0; width: auto; }
   /* アカウント */
   .acct { position: fixed; inset: 0; z-index: 1000; background: rgba(5, 7, 30, 0.96); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px 16px; overflow-y: auto; }
   .acct-in { width: min(100%, 380px); display: flex; flex-direction: column; gap: 12px; margin: auto; }
@@ -449,6 +475,10 @@
   .bt-r.me { border-color: var(--mint); }
   .bt-r b { font-family: var(--display); font-size: 22px; }
   .bt-verdict { font-size: 22px; font-weight: 700; color: var(--gold); }
+
+  .bt-warn { position: absolute; left: 50%; top: 22%; transform: translateX(-50%); z-index: 60; background: rgba(200, 30, 60, 0.94); color: #fff; font-family: var(--display); font-size: 24px; line-height: 1.35; text-align: center; white-space: pre-line; padding: 12px 22px; border-radius: 16px; border: 3px solid #fff; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5); pointer-events: none; animation: btwarn 0.5s ease-out; }
+  @keyframes btwarn { from { transform: translateX(-50%) scale(0.5); opacity: 0; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .bt-warn { animation: none; } }
 </style>
 
 </head>
@@ -4835,95 +4865,133 @@
     const root = el('div', 'pg tbl-game dai', `
       <div class="pg-hud">
         <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
-        <span class="chip" data-k="info">8切りあり</span>
+        <span class="chip" data-k="info">1戦目</span>
       </div>
-      <div class="sv-info" data-k="who"></div>
+      <div class="dopps" data-k="opps"></div>
+      <div class="drules" data-k="rules"></div>
       <div class="field" data-k="field"></div>
       <p class="tmsg" data-k="msg" aria-live="polite"></p>
       <div class="hand dai-hand" data-k="hand"></div>
       <div class="acts" data-k="acts"></div>
-      <div class="pg-foot"><span></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+      <div class="pg-foot"><span class="dsub">8切り・縛り・革命あり</span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
     const T = mkTimers(), NAMES = ['あなた', 'ハル', 'ミナ', 'ソラ'];
-    let phase = 'idle', hands = [], field = null, passed = [], finished = [], turn = 0, last = -1, sel = [], over = false;
+    let phase = 'idle', hands = [], field = null, passed = [], finished = [], turn = 0, last = -1, sel = [], over = false, rev = false, lock = null, score = 0, round = 1, revs = 0;
     const active = (p) => hands[p].length > 0;
-    const groups = (h) => { const g = {}; h.forEach((c) => { (g[c.r] = g[c.r] || []).push(c); }); return Object.values(g).sort((a, b) => dStr(a[0]) - dStr(b[0])); };
+    const str = (c) => (rev ? 16 - dStr(c) : dStr(c));
+    const suitKey = (cs) => cs.map((c) => c.s).sort().join('');
+    const groups = (h) => { const g = {}; h.forEach((c) => { (g[c.r] = g[c.r] || []).push(c); }); return Object.values(g).sort((a, b) => str(a[0]) - str(b[0])); };
+    function pickMatching(g, n, lk) {
+      if (g.length < n) return null;
+      if (!lk) return g.slice(0, n);
+      const need = lk.split('').map(Number), out = [], pool = g.slice();
+      for (const s of need) { const i = pool.findIndex((c) => c.s === s); if (i < 0) return null; out.push(pool.splice(i, 1)[0]); }
+      return out;
+    }
+    function validPlay(cs) {
+      if (!cs.length || !cs.every((c) => c.r === cs[0].r)) return false;
+      if (!field) return true;
+      if (cs.length !== field.cards.length || str(cs[0]) <= str(field.cards[0])) return false;
+      return !lock || suitKey(cs) === lock;
+    }
     function render() {
       const fb = k('field'); fb.textContent = '';
-      if (field) field.cards.forEach((c) => fb.append(cardEl(c, false))); else fb.append(bt0('場は空です'));
-      k('who').textContent = NAMES.slice(1).map((n, i) => n + ' ' + hands[i + 1].length + '枚' + (finished.indexOf(i + 1) >= 0 ? '(上がり)' : passed[i + 1] && !finished.includes(i + 1) ? '(パス)' : '')).join(' / ');
+      if (field) field.cards.forEach((c) => fb.append(cardEl(c, false))); else { const s = el('span', 'sv-empty'); s.textContent = '場は空です'; fb.append(s); }
+      const ob = k('opps'); ob.textContent = '';
+      for (let i = 1; i <= 3; i++) {
+        const d = el('div', 'dopp' + (turn === i && phase === 'cpu' ? ' turn' : '') + (!active(i) ? ' out' : ''));
+        const tag = finished.indexOf(i) >= 0 ? (finished.indexOf(i) + 1) + '位' : (passed[i] ? 'パス' : (last === i ? '親' : ''));
+        d.innerHTML = '<b></b><span class="cnt"></span><em></em><div class="fan"></div>';
+        d.children[0].textContent = NAMES[i]; d.children[1].textContent = hands[i].length + '枚'; d.children[2].textContent = tag;
+        const fan = d.children[3]; for (let j = 0; j < Math.min(hands[i].length, 13); j++) fan.append(cardEl(null, true));
+        ob.append(d);
+      }
+      const rl = k('rules'); rl.textContent = '';
+      const chip = (t, c) => { const s = el('span', 'dr ' + c); s.textContent = t; rl.append(s); };
+      chip(rev ? '革命中(弱いほうが強い)' : '通常(2が最強)', rev ? 'rv' : '');
+      if (lock) chip('縛り: ' + lock.split('').map((s) => SUITS[s]).join(''), 'lk');
       const hb = k('hand'); hb.textContent = '';
-      hands[0].forEach((c, i) => { const e = cardEl(c, false); e.classList.add('pick'); if (sel.indexOf(c) >= 0) e.classList.add('sel'); e.dataset.i = String(i); hb.append(e); });
+      const mine = phase === 'me';
+      const okIds = new Set();
+      if (mine) groups(hands[0]).forEach((g) => { if (!field) g.forEach((c) => okIds.add(c)); else { const m = pickMatching(g, field.cards.length, lock); if (m && str(g[0]) > str(field.cards[0])) m.forEach((c) => okIds.add(c)); } });
+      hands[0].forEach((c, i) => { const e = cardEl(c, false); if (mine && okIds.has(c)) { e.classList.add('pick'); e.dataset.i = String(i); } else if (mine) e.classList.add('dim'); if (sel.indexOf(c) >= 0) e.classList.add('sel'); hb.append(e); });
+      k('score').textContent = String(score); k('info').textContent = round + '戦目';
     }
-    function bt0(t) { const s = el('span', 'sv-empty'); s.textContent = t; return s; }
     function acts(list) { const box = k('acts'); box.textContent = ''; list.forEach(([l, fn, dis]) => { const x = el('button', 'btn mini'); x.type = 'button'; x.textContent = l; x.disabled = !!dis; x.addEventListener('click', fn); box.append(x); }); }
-    const validSel = () => sel.length > 0 && sel.every((c) => c.r === sel[0].r) && (!field || (sel.length === field.cards.length && dStr(sel[0]) > dStr(field.cards[0])));
-    function updActs() { acts([['だす', doPlay, !validSel()], ['パス', doPass, !field]]); }
+    function updActs() { acts([['だす', doPlay, !validPlay(sel)], ['パス', doPass, !field]]); }
     function setup() {
       const d = shuffle(mkDeck(13)); hands = [[], [], [], []]; d.forEach((c, i) => hands[i % 4].push(c));
+      rev = false; lock = null; field = null; passed = [false, false, false, false]; finished = []; last = -1; sel = []; over = false;
       hands.forEach((h) => h.sort((a, b) => dStr(a) - dStr(b)));
-      field = null; passed = [false, false, false, false]; finished = []; last = -1; sel = []; over = false;
       turn = hands.findIndex((h) => h.some((c) => c.s === 3 && c.r === 3)); if (turn < 0) turn = 0; next();
     }
-    function clearField(leader) { field = null; passed = [false, false, false, false]; last = -1; turn = leader; }
+    function resort() { hands.forEach((h) => h.sort((a, b) => str(a) - str(b))); }
+    function clearField(leader) { field = null; lock = null; passed = [false, false, false, false]; last = -1; turn = leader; }
     function next() {
       if (over) return;
-      const rem = [0, 1, 2, 3].filter(active);
-      if (hands[0].length === 0 || rem.length <= 1) { finish(); return; }
+      if (hands[0].length === 0 || [0, 1, 2, 3].filter(active).length <= 1) { finish(); return; }
       while (!active(turn)) turn = (turn + 1) % 4;
-      // 全員パスなら場を流す
       if (field && last >= 0) {
         const others = [0, 1, 2, 3].filter((p) => p !== last && active(p));
         if (others.every((p) => passed[p])) { k('msg').textContent = '場が流れました'; const lead = active(last) ? last : turn; clearField(lead); while (!active(turn)) turn = (turn + 1) % 4; }
       }
-      render();
-      if (turn === 0) { phase = 'me'; sel = []; render(); k('msg').textContent = field ? '同じ枚数で強いカードを出すか、パス' : 'あなたが親。出すカードをえらんでね'; updActs(); }
-      else {
-        phase = 'cpu'; acts([]); const who = turn; k('msg').textContent = NAMES[who] + 'の番…';
-        T.later(() => cpuMove(who), 800);
-      }
+      if (turn === 0) { phase = 'me'; sel = []; render(); k('msg').textContent = field ? ('同じ枚数で強いカードを出すか、パス' + (lock ? '(縛り中)' : '')) : 'あなたが親。出すカードをえらんでね'; updActs(); }
+      else { phase = 'cpu'; render(); acts([]); const who = turn; k('msg').textContent = NAMES[who] + 'の番…'; T.later(() => cpuMove(who), 800); }
     }
     function cpuMove(p) {
-      const gs = groups(hands[p]);
-      let choice = null;
-      if (!field) { const small = gs.filter((g) => dStr(g[0]) < 12); choice = (small.length ? small : gs)[0]; if (gs.length > 1 && Math.random() < 0.35) { const multi = gs.find((g) => g.length >= 2 && dStr(g[0]) < 13); if (multi) choice = multi; } }
-      else {
-        const n = field.cards.length, cand = gs.filter((g) => g.length >= n && dStr(g[0]) > dStr(field.cards[0]));
-        if (cand.length && !(Math.random() < 0.12 && hands[p].length > 4)) choice = cand[0];
+      const gs = groups(hands[p]); let choice = null;
+      if (!field) {
+        const big = gs.find((g) => g.length >= 4);
+        if (big && Math.random() < (rev ? 0.2 : 0.5)) choice = big;
+        else { const small = gs.filter((g) => str(g[0]) < 12 && g[0].r !== 8); choice = (small.length ? small : gs)[0]; if (gs.length > 1 && Math.random() < 0.3) { const multi = gs.find((g) => g.length >= 2 && str(g[0]) < 13); if (multi) choice = multi; } }
+        choice = choice.slice(0, choice.length >= 4 ? 4 : choice.length > 2 && Math.random() < 0.5 ? 2 : choice.length);
+      } else {
+        const n = field.cards.length;
+        for (const g of gs) { if (str(g[0]) <= str(field.cards[0])) continue; const m = pickMatching(g, n, lock); if (m) { choice = m; break; } }
+        if (choice && Math.random() < 0.12 && hands[p].length > 4) choice = null;
       }
-      if (!choice) { passed[p] = true; k('msg').textContent = NAMES[p] + 'はパス'; render(); turn = (p + 1) % 4; T.later(next, 600); return; }
-      commit(p, choice.slice(0, field ? field.cards.length : choice.length));
+      if (!choice) { passed[p] = true; k('msg').textContent = NAMES[p] + 'はパス'; turn = (p + 1) % 4; render(); T.later(next, 600); return; }
+      commit(p, choice);
     }
     function commit(p, cards) {
+      const prevKey = field ? suitKey(field.cards) : null, newKey = suitKey(cards);
       cards.forEach((c) => { const i = hands[p].indexOf(c); if (i >= 0) hands[p].splice(i, 1); });
+      let note = '';
+      if (field && !lock && prevKey === newKey) { lock = newKey; note += ' 縛り!'; }
       field = { cards: cards }; last = p; passed = [false, false, false, false]; sel = [];
-      A.beep(400 + dStr(cards[0]) * 30, 0.06, 'triangle', 0.05);
-      k('msg').textContent = NAMES[p] + ':' + cards.map((c) => RANKS[c.r]).join('・');
-      if (!hands[p].length) { finished.push(p); k('msg').textContent = NAMES[p] + 'が上がり!'; if (p === 0) winJingle(); }
-      if (cards[0].r === 8) { k('msg').textContent += '(8切り!)'; field = null; passed = [false, false, false, false]; last = -1; render(); turn = active(p) ? p : (p + 1) % 4; T.later(next, 900); return; }
-      render(); turn = (p + 1) % 4; T.later(next, 700);
+      A.beep(400 + str(cards[0]) * 30, 0.06, 'triangle', 0.05);
+      if (cards.length >= 4) { rev = !rev; note += ' 革命!!'; resort(); A.beep(880, 0.3, 'square', 0.05, -400); if (p === 0) { score += 30; revs++; } }
+      k('msg').textContent = NAMES[p] + ':' + cards.map((c) => SUITS[c.s] + RANKS[c.r]).join(' ') + note;
+      if (!hands[p].length) { finished.push(p); k('msg').textContent = NAMES[p] + 'が上がり!' + note; if (p === 0) winJingle(); }
+      if (cards[0].r === 8) { k('msg').textContent += ' 8切り!'; clearField(active(p) ? p : (p + 1) % 4); render(); T.later(next, 1000); return; }
+      turn = (p + 1) % 4; render(); T.later(next, 900);
     }
-    function doPlay() { if (phase !== 'me' || !validSel()) return; phase = 'cpu'; acts([]); commit(0, sel.slice()); }
-    function doPass() { if (phase !== 'me' || !field) return; phase = 'cpu'; passed[0] = true; acts([]); k('msg').textContent = 'あなたはパス'; render(); turn = 1; T.later(next, 500); }
+    function doPlay() { if (phase !== 'me' || !validPlay(sel)) return; phase = 'cpu'; acts([]); commit(0, sel.slice()); }
+    function doPass() { if (phase !== 'me' || !field) return; phase = 'cpu'; passed[0] = true; acts([]); k('msg').textContent = 'あなたはパス'; turn = 1; render(); T.later(next, 500); }
     const onHand = (e) => {
       const c = e.target.closest('.tc.pick'); if (!c || phase !== 'me') return;
-      const card = hands[0][Number(c.dataset.i)]; const i = sel.indexOf(card);
+      const card = hands[0][Number(c.dataset.i)], i = sel.indexOf(card);
       if (i >= 0) sel.splice(i, 1); else { if (sel.length && sel[0].r !== card.r) sel = []; sel.push(card); }
       A.beep(420, 0.03, 'sine', 0.04); render(); updActs();
     };
     k('hand').addEventListener('click', onHand);
     function finish() {
-      if (phase === 'over') return;
-      over = true; phase = 'over'; T.clear();
+      if (phase === 'over' || phase === 'between') return;
+      over = true; T.clear();
       let place = finished.indexOf(0); place = place >= 0 ? place + 1 : 4;
       if (place === 4 && finished.length < 3) place = Math.max(place, finished.length + 1);
-      const pts = [0, 150, 100, 50, 0][Math.min(4, place)];
-      endJingle(); api.end(pts, [['順位', Math.min(4, place) + '位']]);
+      place = Math.min(4, place); score += [0, 150, 100, 50, 0][place];
+      k('score').textContent = String(score);
+      if (place <= 2 && !quitting) {
+        phase = 'between'; k('msg').textContent = place + '位! つぎの戦へ(2位以内なら連戦できる)'; winJingle();
+        acts([['つぎの戦', () => { round++; phase = 'cpu'; setup(); }]]);
+      } else { phase = 'over'; endJingle(); api.end(score, [['戦', round], ['革命', revs], ['最後の順位', place + '位']]); }
     }
-    const resetQuit = quitBtn(root, finish);
+    let quitting = false;
+    const resetQuit = quitBtn(root, () => { quitting = true; finish(); });
     return {
-      start() { T.clear(); resetQuit(); phase = 'cpu'; setup(); },
+      start() { T.clear(); resetQuit(); score = 0; round = 1; revs = 0; quitting = false; phase = 'cpu'; setup(); },
       pause() { T.pause(); }, resume() { T.resume(); },
       destroy() { T.clear(); k('hand').removeEventListener('click', onHand); }
     };
@@ -5104,6 +5172,465 @@
   const ICON_SEVENS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><rect x="8" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="8" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="25" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="8" y="44" width="9" height="10" rx="2" fill="#fffdf5" opacity="0.5"/><rect x="30" y="43" width="11" height="12" rx="2" fill="#ffd45e"/></svg>';
   const ICON_DAIFUGO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><g transform="rotate(-14 20 34)"><rect x="8" y="14" width="24" height="34" rx="4" fill="#fffdf5"/><text x="20" y="38" font-size="18" font-weight="700" fill="#222" text-anchor="middle">8</text></g><g transform="rotate(4 32 34)"><rect x="22" y="12" width="24" height="34" rx="4" fill="#fffdf5"/><text x="34" y="36" font-size="18" font-weight="700" fill="#c8283c" text-anchor="middle">2</text></g><text x="46" y="20" font-size="14" text-anchor="middle">👑</text></svg>';
   const ICON_WOLF = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a0c2e"/><circle cx="42" cy="16" r="8" fill="#ffe9a8"/><circle cx="46" cy="14" r="7" fill="#1a0c2e"/><path d="M12 48l4-18 7 8 7-14 7 14 7-8 4 18z" fill="#6a3fa8"/><circle cx="24" cy="38" r="2" fill="#ff6b81"/><circle cx="36" cy="38" r="2" fill="#ff6b81"/></svg>';
+  /* ===== ブロックボールパズル ===== */
+  function createBlockBall(stage, api) {
+    const root = el('div', 'gm', `
+      <canvas class="cv" aria-label="ブロックボールパズルのゲーム画面" style="touch-action:none"></canvas>
+      <div class="hud">
+        <div class="hud-row">
+          <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+          <div class="lv"><span data-k="lvTxt">1ターン</span></div>
+        </div>
+        <div class="hud-row"><span class="chip" data-k="balls">ボール ×1</span><span class="chip off" data-k="hint">指をはなして発射</span></div>
+      </div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const cv = $('canvas', root), ctx = cv.getContext('2d');
+    const COLS = 7, ROWS = 9, R = 6;
+    let W = 360, H = 600, cs = 46, ox = 12, oy = 70, floorY = 500, raf = 0, last = 0, paused = false, ended = false;
+    let S = null, aim = null;
+    const hpm = () => [0.8, 1, 1.3][DIFF];
+    function layout() {
+      const d = fitCanvas(cv, ctx, stage); W = d.W; H = d.H;
+      cs = Math.floor(Math.min((W - 16) / COLS, (H - 70 - 70) / (ROWS + 0.4))); ox = Math.floor((W - cs * COLS) / 2); oy = 74; floorY = oy + cs * ROWS + 8;
+    }
+    const cx = (c) => ox + c * cs, cy = (r) => oy + r * cs;
+    function addRow() {
+      const t = S.turn, row = [];
+      const free = rndInt(0, COLS - 1);
+      for (let c = 0; c < COLS; c++) {
+        if (c === free) continue;
+        if (Math.random() < 0.55) { const base = Math.max(1, Math.round(t * hpm())); row.push({ c, r: 0, hp: Math.random() < 0.15 ? base * 2 : base + rndInt(0, Math.max(0, Math.floor(t / 4))), item: false }); }
+        else if (Math.random() < 0.18 && !row.some((x) => x.item)) row.push({ c, r: 0, hp: 0, item: true });
+      }
+      if (!row.some((x) => x.item) && Math.random() < 0.5 && !row.some((x) => x.c === free)) row.push({ c: free, r: 0, hp: 0, item: true });
+      S.cells.push.apply(S.cells, row);
+    }
+    function reset() {
+      S = { cells: [], turn: 1, balls: 1, got: 0, score: 0, lx: W / 2, phase: 'aim', fly: [], queue: 0, qt: 0, ft: 0, landed: 0, firstX: null, parts: [], pops: [], shot: null };
+      addRow(); S.cells.forEach((b) => { b.r = 1; }); S.turn++; addRow(); S.turn--;
+      hud(); k('hint').textContent = 'ドラッグでねらって、はなして発射';
+    }
+    function hud() { k('score').textContent = String(S.score); k('lvTxt').textContent = S.turn + 'ターン'; k('balls').textContent = 'ボール ×' + S.balls; }
+    function fire(dx, dy) {
+      const m = Math.hypot(dx, dy) || 1, sp = 640; S.vx = dx / m * sp; S.vy = dy / m * sp;
+      S.phase = 'fire'; S.queue = S.balls; S.qt = 0; S.ft = 0; S.landed = 0; S.firstX = null; S.got = 0; k('hint').textContent = 'ボールが戻るのを待とう';
+    }
+    function hitBlock(bl, b) {
+      const x0 = cx(bl.c) + 1, y0 = cy(bl.r) + 1, x1 = x0 + cs - 2, y1 = y0 + cs - 2;
+      const px = Math.max(x0, Math.min(b.x, x1)), py = Math.max(y0, Math.min(b.y, y1)), dx = b.x - px, dy = b.y - py, d2 = dx * dx + dy * dy;
+      if (d2 >= R * R) return false;
+      if (bl.item) { bl.hp = -1; S.got++; A.beep(880, 0.06, 'sine', 0.05); return false; }
+      if (d2 === 0 || Math.abs(dx) === Math.abs(dy)) { b.vy = -b.vy; b.vx = -b.vx; } else if (Math.abs(dx) > Math.abs(dy)) { b.vx = Math.abs(b.vx) * (dx > 0 ? 1 : -1); b.x = px + (dx > 0 ? R : -R); } else { b.vy = Math.abs(b.vy) * (dy > 0 ? 1 : -1); b.y = py + (dy > 0 ? R : -R); }
+      bl.hp--; S.score++; if (bl.hp <= 0) { S.score += 5; A.beep(420 + Math.random() * 200, 0.05, 'triangle', 0.05); for (let i = 0; i < 6; i++) S.parts.push({ x: cx(bl.c) + cs / 2, y: cy(bl.r) + cs / 2, vx: (Math.random() - 0.5) * 220, vy: (Math.random() - 0.5) * 220, l: 0 }); } else A.beep(300, 0.02, 'square', 0.02);
+      return true;
+    }
+    function stepBall(b, dt) {
+      const sp = (S.ft > 16 ? 3 : S.ft > 8 ? 1.8 : 1) * DT();
+      let dist = Math.hypot(b.vx, b.vy) * dt * sp, n = Math.max(1, Math.ceil(dist / 3)), f = dt * sp / n;
+      for (let i = 0; i < n; i++) {
+        b.x += b.vx * f; b.y += b.vy * f;
+        if (b.x < R) { b.x = R; b.vx = Math.abs(b.vx); } else if (b.x > W - R) { b.x = W - R; b.vx = -Math.abs(b.vx); }
+        if (b.y < oy - 4 + R) { b.y = oy - 4 + R; b.vy = Math.abs(b.vy); }
+        if (b.y >= floorY - R && b.vy > 0) { return 'land'; }
+        const c0 = Math.max(0, Math.floor((b.x - R - ox) / cs)), c1 = Math.min(COLS - 1, Math.floor((b.x + R - ox) / cs)), r0 = Math.max(0, Math.floor((b.y - R - oy) / cs)), r1 = Math.min(ROWS - 1, Math.floor((b.y + R - oy) / cs));
+        for (const bl of S.cells) if (bl.hp >= 0 && (bl.item || bl.hp > 0) && bl.c >= c0 && bl.c <= c1 && bl.r >= r0 && bl.r <= r1) hitBlock(bl, b);
+        if (Math.abs(b.vy) < 40) b.vy = (b.vy < 0 ? -1 : 1) * 40;
+      }
+      return null;
+    }
+    function turnEnd() {
+      S.cells = S.cells.filter((b) => b.hp > 0 || (b.item && b.hp >= 0));
+      S.balls += S.got; S.lx = clampN(S.firstX == null ? S.lx : S.firstX, R, W - R);
+      S.cells.forEach((b) => { b.r++; });
+      S.score += 10;
+      const lose = S.cells.some((b) => !b.item && b.r >= ROWS);
+      S.cells = S.cells.filter((b) => !(b.item && b.r >= ROWS));
+      S.turn++; hud();
+      if (lose) { finish(); return; }
+      addRow(); S.phase = 'aim'; k('hint').textContent = 'ドラッグでねらって、はなして発射';
+    }
+    function finish() { if (ended) return; ended = true; cancelAnimationFrame(raf); endJingle(); api.end(S.score, [['ターン', S.turn], ['ボール', S.balls]]); }
+    function tick(ts) {
+      raf = requestAnimationFrame(tick);
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0); last = ts;
+      if (paused || ended) return;
+      if (S.phase === 'fire') {
+        S.ft += dt; S.qt -= dt;
+        while (S.queue > 0 && S.qt <= 0) { S.fly.push({ x: S.lx, y: floorY - R, vx: S.vx, vy: S.vy }); S.queue--; S.qt += 0.075; }
+        for (let i = S.fly.length - 1; i >= 0; i--) { const b = S.fly[i]; if (stepBall(b, dt) === 'land') { if (S.firstX == null) S.firstX = b.x; S.fly.splice(i, 1); S.landed++; } }
+        if (S.queue === 0 && S.fly.length === 0) turnEnd();
+      }
+      S.parts.forEach((p) => { p.l += dt; p.x += p.vx * dt; p.y += p.vy * dt; }); S.parts = S.parts.filter((p) => p.l < 0.5);
+      draw();
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.fillRect(ox, oy, cs * COLS, cs * ROWS);
+      ctx.strokeStyle = '#ff6b81'; ctx.lineWidth = 2; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.moveTo(ox, floorY); ctx.lineTo(ox + cs * COLS, floorY); ctx.stroke(); ctx.setLineDash([]);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '700 ' + Math.floor(cs * 0.42) + 'px sans-serif';
+      for (const b of S.cells) {
+        if (b.hp < 0) continue;
+        const x = cx(b.c), y = cy(b.r);
+        if (b.item) { ctx.fillStyle = '#6fe3cf'; ctx.beginPath(); ctx.arc(x + cs / 2, y + cs / 2, cs * 0.2, 0, 6.283); ctx.fill(); ctx.fillStyle = '#062a22'; ctx.fillText('+', x + cs / 2, y + cs / 2 + 1); continue; }
+        const t = Math.min(1, b.hp / Math.max(8, S.turn * 1.4)), hue = 200 - 200 * t;
+        ctx.fillStyle = 'hsl(' + hue + ',75%,58%)'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x + 2, y + 2, cs - 4, cs - 4, 7) : ctx.rect(x + 2, y + 2, cs - 4, cs - 4); ctx.fill();
+        ctx.fillStyle = '#10131f'; ctx.fillText(String(b.hp), x + cs / 2, y + cs / 2 + 1);
+      }
+      ctx.fillStyle = '#fff';
+      S.fly.forEach((b) => { ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 6.283); ctx.fill(); });
+      if (S.phase === 'aim') { ctx.beginPath(); ctx.arc(S.lx, floorY - R, R, 0, 6.283); ctx.fill(); ctx.font = '700 12px sans-serif'; ctx.fillText('×' + S.balls, S.lx, floorY + 14); }
+      else if (S.firstX != null) { ctx.beginPath(); ctx.arc(S.firstX, floorY - R, R, 0, 6.283); ctx.fill(); }
+      if (aim && S.phase === 'aim') {
+        ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.setLineDash([3, 6]); ctx.lineWidth = 2; ctx.beginPath();
+        let x = S.lx, y = floorY - R, vx = aim.dx, vy = aim.dy; const m = Math.hypot(vx, vy); vx /= m; vy /= m; ctx.moveTo(x, y);
+        for (let i = 0; i < 2; i++) { let tt = 1e9; if (vx > 0) tt = Math.min(tt, (W - R - x) / vx); else if (vx < 0) tt = Math.min(tt, (R - x) / vx); if (vy < 0) tt = Math.min(tt, (oy - y) / vy); x += vx * tt; y += vy * tt; ctx.lineTo(x, y); if (tt === 1e9) break; if (x <= R + 1 || x >= W - R - 1) vx = -vx; else vy = -vy; }
+        ctx.stroke(); ctx.setLineDash([]);
+      }
+      ctx.fillStyle = '#fff'; S.parts.forEach((p) => { ctx.globalAlpha = 1 - p.l * 2; ctx.fillRect(p.x, p.y, 3, 3); }); ctx.globalAlpha = 1;
+    }
+    const pt = (e) => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+    const setAim = (e) => { const p = pt(e), dx = p.x - S.lx, dy = p.y - (floorY - R); aim = dy < -12 ? { dx, dy } : null; };
+    const onDown = (e) => { if (paused || ended || S.phase !== 'aim') return; try { cv.setPointerCapture(e.pointerId); } catch (x) { /* noop */ } setAim(e); };
+    const onMove = (e) => { if (e.buttons || e.pointerType === 'touch') { if (S.phase === 'aim' && !paused) setAim(e); } };
+    const onUp = () => { if (S.phase === 'aim' && aim && !paused && !ended) { const a = aim; aim = null; fire(a.dx, a.dy); } else aim = null; };
+    cv.addEventListener('pointerdown', onDown); cv.addEventListener('pointermove', onMove); cv.addEventListener('pointerup', onUp); cv.addEventListener('pointercancel', () => { aim = null; });
+    const onResize = () => { const ow = W; layout(); if (S && ow) { S.lx *= W / ow; if (S.firstX != null) S.firstX *= W / ow; } };
+    window.addEventListener('resize', onResize);
+    return {
+      start() { ended = false; paused = false; aim = null; layout(); reset(); last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); },
+      pause() { paused = true; }, resume() { paused = false; last = performance.now(); },
+      destroy() { cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); }
+    };
+  }
+  const ICON_BBP = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a2140"/><rect x="8" y="9" width="12" height="12" rx="3" fill="#ff6b81"/><rect x="24" y="9" width="12" height="12" rx="3" fill="#ffd45e"/><rect x="40" y="9" width="12" height="12" rx="3" fill="#7fd1ff"/><rect x="24" y="25" width="12" height="12" rx="3" fill="#8fe08f"/><circle cx="30" cy="50" r="4" fill="#fff"/><path d="M30 46L40 28" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/></svg>';
+  /* ===== 人狼オンライン(友だちと部屋コード) ===== */
+  function createWolfNet(stage, api) {
+    const root = el('div', 'pg wolf wnet', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+        <span class="chip" data-k="day">人狼オンライン</span>
+      </div>
+      <div class="wn-body" data-k="body"></div>
+      <div class="pg-foot"><span data-k="role"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const body = k('body');
+    const g = (n) => body.querySelector('[data-k="' + n + '"]');
+    const RN = { villager: '村人', seer: '占い師', medium: '霊媒師', knight: '騎士', wolf: '人狼', mad: '狂人', fox: '妖狐' };
+    const RD = {
+      villager: '能力はありません。話し合いと投票で人狼を見つけよう。',
+      seer: '夜に1人を占い、人狼か人間かが分かる。妖狐を占うと呪い殺せる。',
+      medium: '処刑された人が人狼だったかどうかが分かる。',
+      knight: '夜に1人を護衛し、人狼の襲撃から守る(自分は守れない)。',
+      wolf: '夜に仲間と相談して1人を襲う。1日目の夜は襲えない。',
+      mad: '人狼の味方。占いでは「人間」と出る。人狼が誰かは知らない。',
+      fox: 'どの陣営でもない第三陣営。襲撃されないが、占われると死ぬ。最後まで生き残れば単独勝利。'
+    };
+    const TEAM = { villager: 'v', seer: 'v', medium: 'v', knight: 'v', wolf: 'w', mad: 'w', fox: 'f' };
+    const TN = { v: '村人陣営', w: '人狼陣営', f: '第三陣営(妖狐)' };
+    const online = () => typeof rtdb === 'function' && typeof FB !== 'undefined' && typeof Rank !== 'undefined' && !!Rank.uid;
+    const MAXP = 12, MINP = 4;
+    let code = '', room = null, isHost = false, poll = 0, clock = 0, busy = false, view = '', finished = false, sigKey = '', sendAt = 0;
+    const chatN = { chat: -1, wchat: -1 };
+    const path = (s) => '/wolf/' + code + (s || '');
+    const me = () => Rank.uid;
+    function comp(n) {
+      const w = n < 7 ? 1 : n < 10 ? 2 : 3, l = [];
+      for (let i = 0; i < w; i++) l.push('wolf');
+      l.push('seer'); l.push('mad'); if (n >= 5) l.push('knight'); if (n >= 6) l.push('medium'); if (n >= 7) l.push('fox');
+      while (l.length < n) l.push('villager');
+      return l.slice(0, n);
+    }
+    const compText = (n) => { const c = {}; comp(n).forEach((r) => { c[r] = (c[r] || 0) + 1; }); return Object.keys(RN).filter((r) => c[r]).map((r) => RN[r] + c[r]).join('・'); };
+    const nm = (u) => (room && room.players && room.players[u] ? room.players[u].n : 'だれか');
+    const plist = () => Object.keys((room && room.players) || {}).sort((a, b) => (room.players[a].t || 0) - (room.players[b].t || 0));
+    const btn = (label, fn, cls) => { const b = el('button', 'btn mini' + (cls ? ' ' + cls : '')); b.type = 'button'; b.textContent = label; b.addEventListener('click', fn); return b; };
+    const para = (t, c) => { const p = el('p', c || 'wn-p'); p.textContent = t; return p; };
+    function callBtn() { return btn('📞 通話をひらく', () => { window.open('https://meet.jit.si/ArcadeWolf' + code + 'Room', '_blank', 'noopener'); }, 'call'); }
+
+    /* ---------- メニュー ---------- */
+    function toMenu(msg) {
+      clearInterval(poll); poll = 0; code = ''; room = null; view = 'menu'; sigKey = '';
+      body.textContent = ''; k('day').textContent = '人狼オンライン'; k('role').textContent = '';
+      if (!online()) { body.append(para('オンライン人狼は、アカウントを作ってから、ネットにつながる index.html 版で遊べます。', 'wn-p')); return; }
+      body.append(para('友だちと遊ぶ人狼です。4〜12人。部屋をつくってコードを友だちに伝えてください。話し合いは文字チャット、通話をしながらもできます。', 'wn-p'));
+      const c1 = el('section', 'bt-card'); c1.append(el('h2'));
+      c1.firstChild.textContent = '部屋をつくる';
+      const tsel = el('select', 'bt-sel'); [[120, '話し合い 2分'], [180, '話し合い 3分'], [300, '話し合い 5分']].forEach(([v, t], i) => { const o = el('option'); o.value = String(v); o.textContent = t; if (i === 1) o.selected = true; tsel.append(o); });
+      const mk = btn('部屋をつくる', () => create(Number(tsel.value), mk), ''); mk.classList.remove('mini');
+      c1.append(tsel, mk);
+      const c2 = el('section', 'bt-card'); c2.append(el('h2')); c2.firstChild.textContent = '部屋に入る';
+      const inp = el('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off';
+      const jn = btn('入る', () => join(inp.value, jn)); jn.classList.remove('mini');
+      c2.append(inp, jn);
+      const m = para('', 'bt-msg'); m.dataset.k = 'msg';
+      body.append(c1, c2, m);
+    }
+    const menuMsg = (t) => { const m = g('msg'); if (m) m.textContent = t || ''; };
+    async function create(talk, b) {
+      b.disabled = true; menuMsg('');
+      try {
+        let c = '';
+        for (let i = 0; i < 6; i++) { c = Array.from({ length: 4 }, () => CODE_CH[rndInt(0, CODE_CH.length - 1)]).join(''); if (!(await rtdb('GET', '/wolf/' + c))) break; c = ''; }
+        if (!c) { menuMsg('部屋をつくれませんでした。もう一度ためしてください。'); b.disabled = false; return; }
+        await rtdb('PUT', '/wolf/' + c, { host: me(), cfg: { talk: talk }, state: 'lobby', created: Date.now(), players: { [me()]: { n: Rank.name(), t: Date.now() } } });
+        enter(c);
+      } catch (e) { menuMsg('通信できませんでした。'); b.disabled = false; }
+    }
+    async function join(raw, b) {
+      const c = String(raw || '').trim().toUpperCase();
+      if (c.length !== 4) { menuMsg('コードは4文字です。'); return; }
+      b.disabled = true; menuMsg('');
+      try {
+        const r = await rtdb('GET', '/wolf/' + c);
+        if (!r) { menuMsg('その部屋は見つかりません。'); b.disabled = false; return; }
+        const ps = r.players || {};
+        if (!ps[me()]) {
+          if (r.state !== 'lobby') { menuMsg('その部屋はもうゲーム中です。'); b.disabled = false; return; }
+          if (Object.keys(ps).length >= MAXP) { menuMsg('その部屋はいっぱいです。'); b.disabled = false; return; }
+          await rtdb('PUT', '/wolf/' + c + '/players/' + me(), { n: Rank.name(), t: Date.now() });
+        }
+        enter(c);
+      } catch (e) { menuMsg('通信できませんでした。'); b.disabled = false; }
+    }
+    function enter(c) { code = c; room = null; view = ''; sigKey = ''; chatN.chat = -1; chatN.wchat = -1; finished = false; clearInterval(poll); poll = setInterval(tick, 1000); tick(); }
+    async function leaveRoom() {
+      const c = code, wasHost = room && room.host === me(), st = room && room.state; clearInterval(poll); poll = 0; code = '';
+      try { if (c && st === 'lobby') { if (wasHost) await rtdb('DELETE', '/wolf/' + c); else await rtdb('DELETE', '/wolf/' + c + '/players/' + me()); } } catch (e) { /* noop */ }
+    }
+
+    /* ---------- ポーリング ---------- */
+    async function tick() {
+      if (busy || !code) return; busy = true;
+      try {
+        const r = await rtdb('GET', path());
+        if (!code) return;
+        if (!r) { if (!finished) { await leaveRoom(); toMenu(); menuMsg('部屋がなくなりました。'); } return; }
+        room = r; isHost = r.host === me();
+        if (!(r.players && r.players[me()]) && r.state === 'lobby') { await leaveRoom(); toMenu(); menuMsg('部屋から外れました。'); return; }
+        if (isHost && r.state === 'play') await hostStep();
+        sync();
+      } catch (e) { /* 次のtickで再試行 */ } finally { busy = false; }
+    }
+    function sync() {
+      if (!room) return;
+      if (room.state === 'lobby') renderLobby();
+      else if (room.state === 'play') renderGame();
+      else if (room.state === 'end') renderEnd();
+    }
+
+    /* ---------- ロビー ---------- */
+    function renderLobby() {
+      const ids = plist(), sig = 'L|' + ids.map((u) => u + nm(u)).join(',') + '|' + (isHost ? 1 : 0);
+      if (view === 'lobby' && sig === sigKey) return;
+      view = 'lobby'; sigKey = sig; body.textContent = ''; k('day').textContent = '部屋 ' + code;
+      body.append(para('部屋のコード(友だちに伝えてください)', 'wn-p'));
+      const cd = el('div', 'bt-code'); cd.textContent = code; body.append(cd);
+      const pl = el('section', 'bt-card'); const h = el('h2'); h.textContent = 'さんかする人 (' + ids.length + '/' + MAXP + ')'; pl.append(h);
+      const ol = el('ol', 'bt-pl'); ids.forEach((u) => { const li = el('li', u === me() ? 'me' : ''); li.textContent = nm(u) + (u === room.host ? ' 👑' : '') + (u === me() ? ' (あなた)' : ''); ol.append(li); }); pl.append(ol);
+      pl.append(para(ids.length >= MINP ? '役の内訳: ' + compText(ids.length) : 'あと ' + (MINP - ids.length) + '人 で始められます', 'wn-p'));
+      body.append(pl);
+      body.append(para('役: 村人陣営(村人・占い師・霊媒師・騎士)/人狼陣営(人狼・狂人)/第三陣営(妖狐)。話し合いは文字チャット。声で話したいときは下の通話ボタン(外部サービス)や、LINE・Discordの通話をどうぞ。', 'wn-p small'));
+      const row = el('div', 'acts'); row.append(callBtn());
+      if (isHost) { const st = btn('ゲームスタート', startGame, ''); st.classList.remove('mini'); st.disabled = ids.length < MINP; row.append(st); }
+      else row.append(para('ホストが始めるのを待っています…', 'wn-p'));
+      body.append(row);
+    }
+    async function startGame() {
+      const ids = plist(); if (ids.length < MINP) return;
+      const roles = shuffle(comp(ids.length)), priv = {}, alive = {}, now = Date.now();
+      ids.forEach((u, i) => { priv[u] = { role: roles[i], info: ['あなたの役: ' + RN[roles[i]]] }; alive[u] = true; });
+      ids.forEach((u) => { if (priv[u].role === 'wolf') { const mates = ids.filter((x) => x !== u && priv[x].role === 'wolf').map(nm); priv[u].info.push(mates.length ? '仲間の人狼: ' + mates.join('、') : '人狼はあなた1人です'); } });
+      const pub = { ph: 'night', day: 1, dl: now + 45000, ns: now, alive: alive, ev: ['--- 1日目の夜 --- 占い師・騎士は行動をえらんでください(人狼の襲撃は2日目の夜から)'], seq: 1 };
+      try { await rtdb('PATCH', path(), { state: 'play', priv: priv, pub: pub, act: null, vote: null, ready: null }); tick(); } catch (e) { /* noop */ }
+    }
+
+    /* ---------- ホスト進行 ---------- */
+    function winnerOf(alive, priv) {
+      const al = Object.keys(alive).filter((u) => alive[u]), w = al.filter((u) => priv[u].role === 'wolf').length, h = al.length - w;
+      const fox = al.some((u) => priv[u].role === 'fox');
+      if (w === 0) return fox ? 'f' : 'v';
+      if (w >= h) return fox ? 'f' : 'w';
+      return null;
+    }
+    async function hostStep() {
+      const p = room.pub, priv = room.priv; if (!p || p.ph === 'end' || !priv) return;
+      const now = Date.now(), alive = Object.assign({}, p.alive), al = Object.keys(alive).filter((u) => alive[u]), roleOf = (u) => priv[u].role;
+      const act = room.act || {}, vote = room.vote || {}, ready = room.ready || {};
+      const ev = (p.ev || []).slice(), upd = {}; let np = null;
+      const finish = (win) => {
+        np.win = win; np.ph = 'end'; np.roles = {}; Object.keys(priv).forEach((u) => { np.roles[u] = priv[u].role; });
+        ev.push('=== ゲーム終了:' + TN[win] + 'の勝ち! ==='); np.ev = ev; upd.state = 'end';
+      };
+      if (p.ph === 'night') {
+        const key = 'n' + p.day;
+        const need = al.filter((u) => { const r = roleOf(u); return r === 'seer' || r === 'knight' || (r === 'wolf' && p.day > 1); });
+        const done = need.every((u) => act[u] && act[u].k === key && act[u].t);
+        if (!((done && now >= p.ns + 12000) || now >= p.dl)) return;
+        const deaths = [];
+        al.filter((u) => roleOf(u) === 'seer').forEach((u) => {
+          const a = act[u]; if (!(a && a.k === key && alive[a.t] !== undefined)) return;
+          const tr = roleOf(a.t), info = (priv[u].info || []).slice(); info.push(p.day + '日目の夜: ' + nm(a.t) + 'は【' + (tr === 'wolf' ? '人狼' : '人間') + '】'); upd['priv/' + u + '/info'] = info;
+          if (tr === 'fox') deaths.push([a.t, 'curse']);
+        });
+        let victim = null;
+        if (p.day > 1) {
+          const votes = {}; al.filter((u) => roleOf(u) === 'wolf').forEach((u) => { const a = act[u]; if (a && a.k === key && a.t && alive[a.t] && roleOf(a.t) !== 'wolf') votes[a.t] = (votes[a.t] || 0) + 1; });
+          const ks = Object.keys(votes);
+          if (ks.length) { const mx = Math.max.apply(null, ks.map((x) => votes[x])), tops = ks.filter((x) => votes[x] === mx); victim = tops[rndInt(0, tops.length - 1)]; }
+          else { const c = al.filter((u) => roleOf(u) !== 'wolf'); victim = c[rndInt(0, c.length - 1)]; }
+        }
+        let guard = null; al.filter((u) => roleOf(u) === 'knight').forEach((u) => { const a = act[u]; if (a && a.k === key) guard = a.t; });
+        if (victim && victim !== guard && roleOf(victim) !== 'fox') deaths.push([victim, 'atk']);
+        ev.push('--- ' + p.day + '日目の朝 ---');
+        if (!deaths.length) ev.push(p.day === 1 ? '昨夜は平和でした。' : '昨夜は誰も死亡しませんでした。');
+        deaths.forEach(([u, t]) => { alive[u] = false; ev.push(nm(u) + (t === 'atk' ? 'が無残な姿で見つかりました…' : 'が亡くなっていました…')); });
+        np = { ph: 'day', day: p.day, dl: now + (Number((room.cfg || {}).talk) || 180) * 1000, ns: p.ns, alive: alive, ev: ev, seq: (p.seq || 0) + 1 };
+        upd.ready = null;
+        const w = winnerOf(alive, priv); if (w) finish(w);
+      } else if (p.ph === 'day') {
+        const all = al.every((u) => ready[u] && ready[u].d === p.day);
+        if (!(all || now >= p.dl)) return;
+        ev.push('--- 投票の時間です ---');
+        np = { ph: 'vote', day: p.day, dl: now + 45000, ns: p.ns, alive: alive, ev: ev, seq: (p.seq || 0) + 1 };
+      } else if (p.ph === 'vote') {
+        const key = 'd' + p.day, all = al.every((u) => vote[u] && vote[u].k === key && vote[u].t);
+        if (!(all || now >= p.dl)) return;
+        const tally = {}, lines = [];
+        al.forEach((u) => { const v = vote[u]; if (v && v.k === key && alive[v.t] && v.t !== u) { tally[v.t] = (tally[v.t] || 0) + 1; lines.push(nm(u) + ' → ' + nm(v.t)); } });
+        ev.push('【投票結果】' + (lines.join(' / ') || '誰も投票しませんでした'));
+        const ks = Object.keys(tally); let ex = null;
+        if (ks.length) { const mx = Math.max.apply(null, ks.map((x) => tally[x])), tops = ks.filter((x) => tally[x] === mx); ex = tops[rndInt(0, tops.length - 1)]; if (tops.length > 1) ev.push('同票だったので、くじで決まりました。'); }
+        if (ex) {
+          alive[ex] = false; ev.push(nm(ex) + 'が処刑されました。');
+          al.filter((u) => roleOf(u) === 'medium' && alive[u]).forEach((u) => { const info = (priv[u].info || []).slice(); info.push(p.day + '日目の処刑: ' + nm(ex) + 'は【' + (roleOf(ex) === 'wolf' ? '人狼' : '人間') + '】'); upd['priv/' + u + '/info'] = info; });
+        } else ev.push('誰も処刑されませんでした。');
+        ev.push('--- ' + (p.day + 1) + '日目の夜 ---');
+        np = { ph: 'night', day: p.day + 1, dl: now + 45000, ns: now, alive: alive, ev: ev, seq: (p.seq || 0) + 1 };
+        upd.act = null; upd.vote = null;
+        const w = winnerOf(alive, priv); if (w) finish(w);
+      } else return;
+      upd.pub = np;
+      await rtdb('PATCH', path(), upd);
+      room.pub = np; if (upd.state) room.state = upd.state;
+    }
+
+    /* ---------- ゲーム画面 ---------- */
+    function chatBox(id, title, node) {
+      const box = el('section', 'wn-chat'), h = el('div', 'wn-ch'); h.textContent = title;
+      const log = el('div', 'wn-cl'); log.dataset.k = id + 'Log';
+      const row = el('div', 'wn-cr'), inp = el('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 80; inp.placeholder = 'メッセージ'; inp.dataset.k = id + 'In'; inp.autocomplete = 'off';
+      const send = btn('送る', () => submit(id, inp)); send.dataset.k = id + 'Send';
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submit(id, inp); } });
+      row.append(inp, send); box.append(h, log, row); node.append(box); return box;
+    }
+    async function submit(id, inp) {
+      const t = inp.value.trim().slice(0, 80); if (!t || Date.now() - sendAt < 600) return;
+      sendAt = Date.now(); inp.value = '';
+      try { await rtdb('POST', path('/' + id), { u: me(), n: Rank.name(), m: t, t: Date.now(), d: room.pub ? room.pub.day : 0 }); tick(); } catch (e) { inp.value = t; }
+    }
+    function fillChat(id, data) {
+      const log = g(id + 'Log'); if (!log) return;
+      const arr = Object.values(data || {}).sort((a, b) => (a.t || 0) - (b.t || 0)).slice(-60);
+      if (arr.length === chatN[id]) return; chatN[id] = arr.length;
+      const stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 30; log.textContent = '';
+      arr.forEach((m) => { const p = el('p', 'wl' + (m.u === me() ? ' me' : '')); p.textContent = String(m.n || '') .slice(0, 12) + ': ' + String(m.m || ''); log.append(p); });
+      if (stick) log.scrollTop = log.scrollHeight;
+    }
+    function buildGame() {
+      view = 'game'; body.textContent = ''; chatN.chat = -1; chatN.wchat = -1;
+      body.innerHTML = '<div class="wn-ban" data-k="ban"></div><div class="wn-role" data-k="rc"></div><div class="wplayers" data-k="pls"></div><div class="wn-act acts" data-k="act"></div><div class="wlog wn-ev" data-k="ev"></div><div data-k="chats"></div>';
+      const ch = g('chats'); chatBox('chat', 'みんなの会話', ch);
+      const r = room.priv && room.priv[me()] && room.priv[me()].role; if (r === 'wolf') chatBox('wchat', '🐺 人狼のささやき(仲間だけ)', ch);
+      const row = el('div', 'acts'); row.append(callBtn()); ch.append(row);
+    }
+    function myRole() { return room.priv && room.priv[me()] ? room.priv[me()].role : null; }
+    function renderGame() {
+      const p = room.pub; if (!p) return;
+      if (view !== 'game') buildGame();
+      const r = myRole(), al = !!p.alive[me()], act = (room.act || {})[me()], vt = (room.vote || {})[me()], rd = (room.ready || {})[me()];
+      k('day').textContent = p.day + '日目';
+      k('role').textContent = r ? 'あなた: ' + RN[r] : '';
+      const rc = g('rc'); const info = (room.priv[me()] && room.priv[me()].info) || [];
+      const rsig = r + '|' + info.length + '|' + al; if (rc.dataset.s !== rsig) {
+        rc.dataset.s = rsig; rc.textContent = ''; const h = el('b'); h.textContent = '【' + RN[r] + '】' + TN[TEAM[r]] + (al ? '' : '(死亡・観戦中)'); rc.append(h, para(RD[r], 'wn-p small'));
+        info.slice(1).forEach((t) => rc.append(para('・' + t, 'wl res')));
+      }
+      const pls = g('pls'); pls.textContent = '';
+      plist().forEach((u) => {
+        const c = el('span', 'wp' + (p.alive[u] ? '' : ' dead') + (u === me() ? ' me' : ''));
+        let mark = ''; if (p.alive[u]) { if (p.ph === 'day' && room.ready && room.ready[u] && room.ready[u].d === p.day) mark = ' ✓'; if (p.ph === 'vote' && room.vote && room.vote[u] && room.vote[u].k === 'd' + p.day) mark = ' ✓'; }
+        c.textContent = (p.alive[u] ? '' : '✝ ') + nm(u) + mark; pls.append(c);
+      });
+      const sig = [p.ph, p.day, al, act && act.t, vt && vt.t, rd && rd.d, p.seq].join('|');
+      if (sig !== sigKey) { sigKey = sig; renderActions(p, r, al, act, vt, rd); }
+      const ev = g('ev'), esig = String((p.ev || []).length); if (ev.dataset.s !== esig) { ev.dataset.s = esig; ev.textContent = ''; (p.ev || []).forEach((t) => ev.append(para(t, 'wl ' + (/^---|^===/.test(t) ? 'sys' : /死亡|亡くなって|無残|処刑されました/.test(t) ? 'dead' : '')))); ev.scrollTop = ev.scrollHeight; }
+      fillChat('chat', room.chat); fillChat('wchat', room.wchat);
+      const canPub = al && (p.ph === 'day' || p.ph === 'vote'), canWolf = al && r === 'wolf';
+      [['chat', canPub], ['wchat', canWolf]].forEach(([id, ok]) => { const i = g(id + 'In'), s = g(id + 'Send'); if (i) { i.disabled = !ok; s.disabled = !ok; i.placeholder = ok ? 'メッセージ' : (id === 'chat' ? (al ? '昼と投票のときに話せます' : '死亡した人は話せません') : '話せません'); } });
+      timerText();
+    }
+    function timerText() {
+      const p = room && room.pub, b = g('ban'); if (!p || !b || p.ph === 'end') return;
+      const left = Math.max(0, Math.ceil((p.dl - Date.now()) / 1000)), m = Math.floor(left / 60), s = String(left % 60).padStart(2, '0');
+      b.textContent = p.day + '日目 ' + ({ night: '🌙 夜', day: '☀ 昼の話し合い', vote: '🗳 投票' })[p.ph] + '  のこり ' + m + ':' + s;
+    }
+    function pickRow(act, cands, cur, fn, label) {
+      act.append(para(label, 'wn-p'));
+      cands.forEach((u) => act.append(btn(nm(u), () => fn(u), cur === u ? 'on' : '')));
+    }
+    function renderActions(p, r, al, act, vt, rd) {
+      const box = g('act'); box.textContent = '';
+      if (!al) { box.append(para('あなたは死亡しました。ゲームの行方を見守ろう。', 'wn-p')); return; }
+      const alive = Object.keys(p.alive).filter((u) => p.alive[u]), others = alive.filter((u) => u !== me());
+      if (p.ph === 'night') {
+        const key = 'n' + p.day, cur = act && act.k === key ? act.t : null, set = (t) => setAct('/act/' + me(), { k: key, t: t });
+        if (r === 'seer') pickRow(box, others, cur, set, '占う人をえらんでください');
+        else if (r === 'knight') pickRow(box, others, cur, set, '護衛する人をえらんでください');
+        else if (r === 'wolf') {
+          if (p.day === 1) box.append(para('1日目の夜は襲撃できません。仲間と作戦を立てよう。', 'wn-p'));
+          else { pickRow(box, alive.filter((u) => priv0(u) !== 'wolf'), cur, set, '襲う人をえらんでください(仲間と相談できます)'); const o = alive.filter((u) => u !== me() && priv0(u) === 'wolf' && room.act && room.act[u] && room.act[u].k === key).map((u) => nm(u) + '→' + nm(room.act[u].t)); if (o.length) box.append(para('仲間の選択: ' + o.join('、'), 'wn-p small')); }
+        } else box.append(para('夜です。朝になるのを待っています…', 'wn-p'));
+        if (cur) box.append(para('えらんだ人: ' + nm(cur) + '(夜が終わるまで変更できます)', 'wn-p small'));
+      } else if (p.ph === 'day') {
+        const n = alive.filter((u) => room.ready && room.ready[u] && room.ready[u].d === p.day).length;
+        box.append(para('話し合い中です。文字チャットで話そう。', 'wn-p'));
+        box.append(btn(rd && rd.d === p.day ? '投票へ進む(準備OK済み ' + n + '/' + alive.length + ')' : '話し合いを終えて投票へ (' + n + '/' + alive.length + ')', () => setAct('/ready/' + me(), { d: p.day }), rd && rd.d === p.day ? 'on' : ''));
+      } else if (p.ph === 'vote') {
+        const key = 'd' + p.day, cur = vt && vt.k === key ? vt.t : null;
+        pickRow(box, others, cur, (t) => setAct('/vote/' + me(), { k: key, t: t }), '処刑する人に投票してください');
+      }
+    }
+    const priv0 = (u) => (room.priv && room.priv[u] ? room.priv[u].role : null);
+    async function setAct(sub, val) {
+      try { await rtdb('PUT', path(sub), val); const parts = sub.split('/'); room[parts[1]] = room[parts[1]] || {}; room[parts[1]][parts[2]] = val; sigKey = ''; renderGame(); } catch (e) { /* noop */ }
+    }
+
+    /* ---------- 結果 ---------- */
+    function renderEnd() {
+      const p = room.pub; if (view === 'end') return;
+      view = 'end'; sigKey = ''; body.textContent = ''; k('day').textContent = '結果';
+      const roles = p.roles || {}, mine = roles[me()], win = TEAM[mine] === p.win, aliveMe = p.alive && p.alive[me()];
+      const pts = win ? 150 + (aliveMe ? 50 : 0) : 30; const h = el('div', 'bt-code'); h.textContent = win ? 'あなたの勝ち!' : 'あなたの負け…'; body.append(h);
+      body.append(para(TN[p.win] + 'の勝利', 'wn-p'));
+      const ol = el('ol', 'bt-pl'); plist().forEach((u) => { const li = el('li', u === me() ? 'me' : ''); li.textContent = nm(u) + ':' + RN[roles[u]] + '(' + TN[TEAM[roles[u]]] + ')' + (p.alive && p.alive[u] ? '' : ' ✝'); ol.append(li); });
+      body.append(ol, para('スコア +' + pts, 'wn-p'));
+      const row = el('div', 'acts'); const b = btn('けっかをみる', () => done(pts, win, mine)); b.classList.remove('mini'); row.append(b); body.append(row);
+      if (win) winJingle(); else A.beep(170, 0.3, 'sawtooth', 0.06, -90);
+    }
+    function done(pts, win, mine) { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', RN[mine] || '-'], ['けっか', win ? '勝ち' : '負け']]); }
+    const resetQuit = quitBtn(root, async () => {
+      if (finished) return; finished = true; clearInterval(poll); poll = 0;
+      await leaveRoom(); api.end(0, [['けっか', 'とちゅうでやめた']]);
+    });
+    return {
+      start() { finished = false; resetQuit(); k('score').textContent = '0'; toMenu(); clock = setInterval(timerText, 500); },
+      pause() {}, resume() {},
+      destroy() { clearInterval(poll); clearInterval(clock); }
+    };
+  }
+  const ICON_WOLFNET = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a0c2e"/><circle cx="44" cy="15" r="7" fill="#ffe9a8"/><circle cx="47" cy="13" r="6" fill="#1a0c2e"/><path d="M8 50l3-14 6 6 6-11 6 11 6-6 3 14z" fill="#6a3fa8"/><circle cx="19" cy="44" r="5" fill="#ff9ab0"/><circle cx="31" cy="44" r="5" fill="#7fd1ff"/><circle cx="43" cy="44" r="5" fill="#8fe08f"/></svg>';
   const GAMES = [
     { id: 'star', name: '星ひろい', short: '星ひろい', desc: 'カゴで星をキャッチ。レベルアップで強化を選ぶ。', icon: ICON_STAR, create: createStar,
       intro: 'カゴで夜空の星をひろっていきます。レベルが上がるたびに、好きな強化を1つ選べます。',
@@ -5212,14 +5739,20 @@
       how: ['光っているカード(出せるカード)をタップ', '出せないときは「パス」。パスは3回まで、4回目で脱落', '1位 +150、2位 +100、3位 +50。のこりパス1回につき +10'], legend: '' },
     { id: 'daifugo', name: '大富豪', short: '大富豪', th: 'felt', desc: '強いカードを出して、先に手札をなくす。', icon: ICON_DAIFUGO, create: createDaifugo,
       intro: '3人のコンピュータと大富豪(簡易ルール)。場に出ているカードと同じ枚数で、もっと強いカードを出します。いちばん強いのは「2」です。',
-      how: ['同じ数字のカードをえらんで「だす」。場が空のときは自由に出せる', '強さは 3 < 4 < … < K < A < 2。全員がパスすると場が流れる', '8を出すと場が流れる「8切り」。1位 +150、2位 +100、3位 +50'], legend: '' },
-    { id: 'wolf', name: '人狼', short: '人狼', th: 'night', desc: '5人で人狼さがし。うそを見ぬいて生きのこる。', icon: ICON_WOLF, create: createWolf,
+      how: ['同じ数字のカードをえらんで「だす」。場が空のときは自由に出せる', '強さは 3 < 4 < … < K < A < 2。全員がパスすると場が流れる', '8切り(場が流れる)・縛り(同じマークが続くとそのマークだけ)・革命(4枚出しで強さが逆転)あり','1位 +150、2位 +100、3位 +50。2位以内なら連戦、革命で +30'], legend: '' },
+    { id: 'bbp', name: 'ブロックボール', short: 'ブロックボール', desc: 'ボールを打って、せまるブロックをくずす。', icon: ICON_BBP, create: createBlockBall,
+      intro: 'ねらいをつけてボールを打ち出し、数字のブロックをくずします。ブロックは毎ターン1段おりてきて、いちばん下に着いたら終わりです。',
+      how: ['ドラッグでねらって、指をはなすと発射', '数字は、くずすのに必要な当たり回数。緑の「+」でボールが増える', 'ブロックが赤い線に着くと終わり。ボールが戻るのに時間がかかるときは自動でスピードアップ'], legend: '' },
+    { id: 'wolfnet', name: '人狼オンライン', short: '人狼ONLINE', th: 'night', desc: '友だちと部屋コードで遊ぶ本物の人狼。', icon: ICON_WOLFNET, create: createWolfNet,
+      intro: '友だち4〜12人で遊ぶ人狼です(index.html版でオンライン)。村人陣営・人狼陣営・第三陣営(妖狐)に分かれ、文字チャットで話し合い、投票で処刑します。通話しながらでもOK。ホストの画面が開いている間だけ進行します。',
+      how: ['部屋をつくってコードを伝える/コードで入る。4人からスタート', '役:村人・占い師・霊媒師・騎士/人狼・狂人/妖狐(人数で自動配分)', '夜に能力、昼は話し合い、投票で1人処刑。勝つと200点前後'], legend: '' },
+    { id: 'wolf', name: '人狼(1人用)', short: '人狼1人用', th: 'night', desc: '5人で人狼さがし。うそを見ぬいて生きのこる。', icon: ICON_WOLF, create: createWolf,
       intro: '村人5人の中に、人狼がまぎれています。話し合いと投票で人狼を処刑すれば村人の勝ち。あなたの役は最初に分かります。',
       how: ['役は 村人2・占い師1・人狼1・狂人1(狂人は人狼の味方)', '昼は発言をえらび、投票で1人を処刑。夜は占い師が占い、人狼が襲う', '勝つと 200点以上。負けるまで連戦できる'], legend: '' }
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', daifugo: 'カード', wolf: 'ボード', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
@@ -5529,8 +6062,13 @@
     ['fx-blur', 'fx-flip', 'fx-shake'].forEach((c) => stage.classList.remove(c));
     stage.querySelectorAll('.fx-blot').forEach((x) => x.remove());
   }
-  function applyFx(kind) {
-    btToast('じゃまされた!');
+  const FX_LABEL = { blur: '画面がぼやける', flip: '画面が逆さま', blots: 'インクでよごれる', shake: '画面がゆれる' };
+  function btWarn(text, ms) {
+    stage.querySelectorAll('.bt-warn').forEach((x) => x.remove());
+    const w = bt('div', 'bt-warn', text); w.setAttribute('role', 'alert'); stage.append(w); setTimeout(() => w.remove(), ms || 3200);
+  }
+  function applyFx(kind, who) {
+    btWarn('⚠ ' + (who || 'あいて') + 'にじゃまされた!\n' + (FX_LABEL[kind] || ''), kind === 'flip' ? 4000 : 3500);
     A.beep(200, 0.2, 'sawtooth', 0.06, -60);
     if (kind === 'blots') {
       const r = stage.getBoundingClientRect(), blots = [];
@@ -5562,8 +6100,9 @@
         b.next += b.step;
         if (now - b.lastFx > 4000) {
           b.lastFx = now; b.fxn++;
-          rtdb('PATCH', '/rooms/' + b.code + '/fx/' + Rank.uid, { n: b.fxn, kind: FX_KINDS[rndInt(0, FX_KINDS.length - 1)] }).catch(() => {});
-          btToast('じゃまを送った!');
+          const kd = FX_KINDS[rndInt(0, FX_KINDS.length - 1)];
+          rtdb('PATCH', '/rooms/' + b.code + '/fx/' + Rank.uid, { n: b.fxn, kind: kd }).catch(() => {});
+          btToast('じゃまを送った!(' + FX_LABEL[kd] + ')');
         }
       }
     }, 500);
@@ -5591,7 +6130,7 @@
     const c1 = bt('section', 'bt-card');
     c1.append(bt('h2', '', '部屋をつくる'));
     const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲームを選ぶ');
-    GAMES.forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
+    GAMES.filter((g) => g.id !== 'wolf' && g.id !== 'wolfnet').forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
     const dsel = bt('select', 'bt-sel'); dsel.setAttribute('aria-label', 'むずかしさ');
     DIFFS.forEach((d, i) => { const o = bt('option', '', 'むずかしさ: ' + d.n); o.value = String(i); if (i === DIFF) o.selected = true; dsel.append(o); });
     const mk = bt('button', 'btn', '部屋をつくる'); mk.type = 'button';
@@ -5656,7 +6195,7 @@
     if (b.inGame) {
       const op = oppOf(room), lv = room.live && op.uid && room.live[op.uid], fx = room.fx && op.uid && room.fx[op.uid];
       if (lv && b.chip) b.chip.textContent = 'あいて ' + (Number(lv.s) || 0);
-      if (fx && Number(fx.n) > (b.fxSeen || 0)) { b.fxSeen = Number(fx.n); applyFx(String(fx.kind)); }
+      if (fx && Number(fx.n) > (b.fxSeen || 0)) { b.fxSeen = Number(fx.n); applyFx(String(fx.kind), op.name); }
     }
     if (b.waiting) { battleShowResult(); return; }
     if (!b.inGame && !b.counting) {
