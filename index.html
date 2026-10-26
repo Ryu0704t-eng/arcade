@@ -451,6 +451,21 @@
   .wn-cr { display: flex; gap: 6px; } .wn-cr .bt-in { flex: 1; min-width: 0; width: auto; }
   .wn-opt { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.4; padding: 3px 0; } .wn-opt input { margin-top: 3px; flex: none; }
   .wn-qp { gap: 4px; } .wn-qp .btn.mini { font-size: 12px; padding: 4px 8px; }
+
+  .verdict { font-family: var(--display); font-size: 38px; text-align: center; padding: 6px 12px; border-radius: 14px; margin: 2px 0 6px; }
+  .verdict.win { color: #ffd45e; background: rgba(255, 212, 94, 0.14); border: 2px solid #ffd45e; }
+  .verdict.lose { color: #ff8aa0; background: rgba(255, 107, 129, 0.12); border: 2px solid #ff8aa0; }
+  .verdict.draw { color: #bfe3ff; background: rgba(127, 209, 255, 0.12); border: 2px solid #7fd1ff; }
+  .rbanner { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 70; pointer-events: none; font-family: var(--display); font-size: 54px; padding: 10px 34px; border-radius: 20px; color: #fff; border: 4px solid #fff; box-shadow: 0 10px 34px rgba(0, 0, 0, 0.55); animation: rbpop 0.45s ease-out; white-space: nowrap; }
+  .rbanner.win { background: rgba(230, 160, 20, 0.96); } .rbanner.lose { background: rgba(190, 30, 60, 0.96); } .rbanner.draw { background: rgba(50, 110, 170, 0.96); }
+  @keyframes rbpop { from { transform: translate(-50%, -50%) scale(0.4); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .rbanner { animation: none; } }
+  .hl-cards { display: flex; gap: 14px; justify-content: center; margin: 8px 0; } .hl-cards .tc.down { border-width: 5px; }
+  .maid .hand.fan .tc { --cw: 30px; margin-left: -14px; } .maid .hand.fan .tc:first-child { margin-left: 0; }
+  .wroster { width: min(100%, 420px); display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+  .wp2 { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px 2px; text-align: center; display: grid; line-height: 1.25; min-height: 42px; }
+  .wp2 b { font-size: 13px; } .wp2 small { font-size: 10.5px; color: var(--gold); min-height: 13px; }
+  .wp2.me { border-color: var(--gold); } .wp2.dead { opacity: 0.55; } .wp2.dead b { text-decoration: line-through; }
   /* アカウント */
   .acct { position: fixed; inset: 0; z-index: 1000; background: rgba(5, 7, 30, 0.96); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px 16px; overflow-y: auto; }
   .acct-in { width: min(100%, 380px); display: flex; flex-direction: column; gap: 12px; margin: auto; }
@@ -3644,14 +3659,14 @@
   }
 
   /* ===== ゲーム22: ハイ&ロー ===== */
-  let hiloCur = 7;
+  let hiloCur = { r: 7, s: 0 };
+  const hlCard = (c, down) => '<div class="tc' + (down ? ' down' : (c.s === 1 || c.s === 2 ? ' red' : '')) + '" style="--cw:104px">' + (down ? '' : '<b>' + RANKS[c.r] + '</b><i>' + SUITS[c.s] + '</i>') + '</div>';
   function hiloNext(ctx) {
-    if (ctx.n === 0) hiloCur = rndInt(4, 10);
+    if (ctx.n === 0) hiloCur = { r: rndInt(4, 10), s: rndInt(0, 3) };
     const cur = hiloCur;
-    let nxt = rndInt(1, 13);
-    while (nxt === cur) nxt = rndInt(1, 13);
-    hiloCur = nxt;
-    return { html: '<span class="tag t-ink">つぎの数は?</span><div class="big" style="font-size:72px">' + cur + '</div><div class="sub">1〜13のカード</div>', opts: ['↑ 高い', '↓ 低い'], ans: nxt > cur ? 0 : 1 };
+    let nr = rndInt(1, 13); while (nr === cur.r) nr = rndInt(1, 13);
+    hiloCur = { r: nr, s: rndInt(0, 3) };
+    return { html: '<span class="tag t-ink">つぎのカードは?</span><div class="hl-cards">' + hlCard(cur, false) + hlCard(null, true) + '</div><div class="sub">A(1)がいちばん弱く、K(13)がいちばん強い</div>', opts: ['↑ 高い (ハイ)', '↓ 低い (ロー)'], ans: nr > cur.r ? 0 : 1 };
   }
   const createHilo = (stage, api) => createQuiz(stage, api, {
     total: 40, penalty: 3, quick: 1.2, next: hiloNext,
@@ -3889,7 +3904,7 @@
     const box = document.getElementById('ytBox'); if (box) box.hidden = true;
   }
   function withBgm(make, stage, api) {
-    const inst = make(stage, Object.assign({}, api, { end: (sc, st) => { bgmStop(); api.end(sc, st); } }));
+    const inst = make(stage, Object.assign({}, api, { end: (sc, st, v) => { bgmStop(); api.end(sc, st, v); } }));
     let token = 0;
     return {
       start() {
@@ -4164,6 +4179,10 @@
     root.style.setProperty('--gw', (cs * cols + gap * (cols - 1)) + 'px');
     return cs;
   }
+  function flash(st, text, cls) {
+    st.querySelectorAll('.rbanner').forEach((x) => x.remove());
+    const d = el('div', 'rbanner ' + (cls || '')); d.textContent = text; d.setAttribute('role', 'status'); st.append(d); setTimeout(() => d.remove(), 1800);
+  }
   const endJingle = () => [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.25, 'triangle', 0.06, 0, i * 0.14));
   const winJingle = () => [523, 659, 784, 1047].forEach((f, i) => A.beep(f, 0.16, 'triangle', 0.06, 0, i * 0.07));
   function quitBtn(root, onConfirm) {
@@ -4246,6 +4265,7 @@
       chips += gain; peak = Math.max(peak, chips); render(false);
       k('msg').textContent = msg + '(チップ ' + chips + ')';
       if (gain > bet) winJingle(); else if (gain < bet) A.beep(170, 0.2, 'sawtooth', 0.05, -80);
+      flash(stage, gain > bet ? '勝ち!' : gain < bet ? '負け…' : '引き分け', gain > bet ? 'win' : gain < bet ? 'lose' : 'draw');
       phase = 'result';
       acts([['つぎのハンド', () => { if (phase === 'result') betPhase(); }]]);
       T.later(() => { if (phase === 'result') betPhase(); }, 2600);
@@ -4253,7 +4273,7 @@
     function finish() {
       if (phase === 'over') return;
       phase = 'over'; T.clear(); endJingle();
-      api.end(chips, [['ハンド', hands], ['勝ち', wins], ['最高チップ', peak]]);
+      api.end(chips, [['ハンド', hands], ['勝ち', wins], ['最高チップ', peak]], chips > 100 ? 'win' : chips === 100 ? 'draw' : 'lose');
     }
     const resetQuit = quitBtn(root, finish);
     return {
@@ -4332,6 +4352,7 @@
       k('msg').textContent = e.name + (gain ? ' +' + gain : '');
       k('score').textContent = String(chips);
       if (gain) winJingle(); else A.beep(170, 0.18, 'sawtooth', 0.05, -70);
+      flash(stage, gain ? 'あたり!' : 'はずれ…', gain ? 'win' : 'lose');
       acts([['つぎのハンド', () => { if (phase === 'result') ready(); }]]);
       T.later(() => { if (phase === 'result') ready(); }, 2400);
     }
@@ -4340,7 +4361,7 @@
     function finish() {
       if (phase === 'over') return;
       phase = 'over'; T.clear(); endJingle();
-      api.end(chips, [['ハンド', hands], ['あたり', hits], ['最高チップ', peak]]);
+      api.end(chips, [['ハンド', hands], ['あたり', hits], ['最高チップ', peak]], chips > 100 ? 'win' : chips === 100 ? 'draw' : 'lose');
     }
     const resetQuit = quitBtn(root, finish);
     return {
@@ -4360,6 +4381,7 @@
       <div class="tbl">
         <div class="hand-lbl"><span>ハル</span><span data-k="n1"></span></div><div class="hand fan" data-k="h1"></div>
         <div class="hand-lbl"><span>ミナ</span><span data-k="n2"></span></div><div class="hand fan" data-k="h2"></div>
+        <div class="hand-lbl"><span>ソラ</span><span data-k="n3"></span></div><div class="hand fan" data-k="h3"></div>
         <p class="tmsg" data-k="msg" aria-live="polite"></p>
         <div class="hand-lbl"><span>あなた</span><span data-k="n0"></span></div><div class="hand fan" data-k="h0"></div>
       </div>
@@ -4368,8 +4390,8 @@
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
     const T = mkTimers();
-    const NAMES = ['あなた', 'ハル', 'ミナ'];
-    let phase = 'idle', hands = [[], [], []], out = [], turn = 0, score = 0, round = 1, wins = 0, lastDrew = '';
+    const NAMES = ['あなた', 'ハル', 'ミナ', 'ソラ'];
+    let phase = 'idle', hands = [[], [], [], []], out = [], turn = 0, score = 0, round = 1, wins = 0, lastDrew = '';
     function discardPairs(h) {
       const by = {}; h.forEach((c) => { if (c.joker) return; (by[c.r] = by[c.r] || []).push(c); });
       const keep = h.filter((c) => c.joker); let pairs = 0;
@@ -4377,9 +4399,9 @@
       return { hand: shuffle(keep), pairs: pairs };
     }
     const alive = (i) => hands[i].length > 0 && out.indexOf(i) < 0;
-    const aliveList = () => [0, 1, 2].filter(alive);
+    const aliveList = () => [0, 1, 2, 3].filter(alive);
     function render(pick) {
-      [0, 1, 2].forEach((i) => {
+      [0, 1, 2, 3].forEach((i) => {
         const box = k('h' + i); box.textContent = '';
         hands[i].forEach((c, idx) => {
           const e = i === 0 ? cardEl(c, false) : cardEl(c, true);
@@ -4395,10 +4417,10 @@
       list.forEach(([label, fn]) => { const b = el('button', 'btn mini'); b.type = 'button'; b.textContent = label; b.addEventListener('click', fn); box.append(b); });
     }
     function startRound() {
-      const d = shuffle(mkDeck(8, true)); hands = [[], [], []]; out = []; lastDrew = '';
-      d.forEach((c, i) => hands[i % 3].push(c));
+      const d = shuffle(mkDeck(13, true)); hands = [[], [], [], []]; out = []; lastDrew = '';
+      d.forEach((c, i) => hands[i % 4].push(c));
       hands = hands.map((h) => discardPairs(h).hand);
-      out = []; [0, 1, 2].forEach((i) => { if (!hands[i].length) out.push(i); });
+      out = []; [0, 1, 2, 3].forEach((i) => { if (!hands[i].length) out.push(i); });
       turn = 0; phase = 'turn'; acts([]); nextTurn();
     }
     function checkEnd() {
@@ -4408,24 +4430,24 @@
     }
     function nextTurn() {
       if (checkEnd()) return;
-      while (!alive(turn)) turn = (turn + 1) % 3;
+      while (!alive(turn)) turn = (turn + 1) % 4;
       render(false);
       if (turn === 0) {
-        const tg = [1, 2].filter(alive);
+        const tg = [1, 2, 3].filter(alive);
         k('msg').textContent = (lastDrew ? lastDrew + ' ' : '') + 'あいての手札から1枚えらんで引こう';
-        render(true); phase = 'mypick';
+        render(true); phase = 'mypick'; acts([['手札をシャッフル', () => { hands[0] = shuffle(hands[0]); render(true); }]]);
         if (!tg.length) { phase = 'turn'; turn = 1; T.later(nextTurn, 300); }
       } else {
         phase = 'cpu'; const who = turn;
         T.later(() => {
-          const tg = [0, 1, 2].filter((i) => i !== who && alive(i)); if (!tg.length) { nextTurn(); return; }
+          const tg = [0, 1, 2, 3].filter((i) => i !== who && alive(i)); if (!tg.length) { nextTurn(); return; }
           const t = tg[rndInt(0, tg.length - 1)], idx = rndInt(0, hands[t].length - 1);
           doDraw(who, t, idx);
         }, 750);
       }
     }
     function doDraw(who, target, idx) {
-      const c = hands[target].splice(idx, 1)[0]; hands[who].push(c);
+      acts([]); const c = hands[target].splice(idx, 1)[0]; hands[who].push(c);
       const r = discardPairs(hands[who]); hands[who] = r.hand;
       const nm = NAMES[who];
       lastDrew = who === 0 ? (c.joker ? 'ババを引いた!' : (r.pairs ? 'ペア!' : 'ペアなし')) : nm + 'が' + NAMES[target] + 'から引いた';
@@ -4434,7 +4456,7 @@
       k('msg').textContent = lastDrew;
       if (c.joker && who === 0) A.beep(180, 0.2, 'sawtooth', 0.05, -60);
       render(false);
-      turn = (who + 1) % 3;
+      turn = (who + 1) % 4;
       T.later(nextTurn, who === 0 ? 650 : 800);
     }
     const onHand = (e) => {
@@ -4446,18 +4468,18 @@
       phase = 'roundEnd'; render(false);
       const place = out.indexOf(0);
       if (loser === 0) {
-        k('msg').textContent = 'ババが残った… ゲームオーバー'; A.beep(170, 0.3, 'sawtooth', 0.06, -90);
+        k('msg').textContent = 'ババが残った… 負け!'; flash(stage, '負け…', 'lose'); A.beep(170, 0.3, 'sawtooth', 0.06, -90);
         T.later(finish, 1500); return;
       }
-      const pts = place === 0 ? 120 : 60; score += pts; wins++; winJingle();
-      k('msg').textContent = (place + 1) + '位でセーフ! +' + pts;
+      const pts = [150, 100, 50][Math.min(2, place)]; score += pts; wins++; winJingle();
+      k('msg').textContent = (place + 1) + '位でセーフ! 勝ち! +' + pts; flash(stage, '勝ち!', 'win');
       render(false);
       acts([['つぎの回戦', () => { if (phase === 'roundEnd') { round++; startRound(); } }]]);
     }
     function finish() {
       if (phase === 'over') return;
       phase = 'over'; T.clear(); endJingle();
-      api.end(score, [['勝ちぬいた回', wins], ['回戦', round]]);
+      api.end(score, [['勝ちぬいた回', wins], ['回戦', round]], 'lose');
     }
     const resetQuit = quitBtn(root, finish);
     return {
@@ -4556,7 +4578,8 @@
       const res = mine > theirs ? 'かち!' : mine < theirs ? 'まけ…' : 'ひきわけ';
       k('msg').textContent = res + ' ' + mine + ' 対 ' + theirs;
       if (mine > theirs) winJingle(); else A.beep(200, 0.25, 'sawtooth', 0.05, -80);
-      T.later(() => { phase = 'over'; api.end(mine * 5 + (mine > theirs ? 100 : mine === theirs ? 40 : 0), [['あなた', mine], ['あいて', theirs], ['けっか', res]]); }, 1600);
+      flash(stage, mine > theirs ? '勝ち!' : mine < theirs ? '負け…' : '引き分け', mine > theirs ? 'win' : mine < theirs ? 'lose' : 'draw');
+      T.later(() => { phase = 'over'; api.end(mine * 5 + (mine > theirs ? 100 : mine === theirs ? 40 : 0), [['あなた', mine], ['あいて', theirs], ['けっか', res]], mine > theirs ? 'win' : mine < theirs ? 'lose' : 'draw'); }, 2000);
     }
     const onGrid = (e) => {
       const c = e.target.closest('.rv'); if (!c || phase !== 'me') return;
@@ -4564,7 +4587,7 @@
       b = rvApply(b, { i: i, f: f }, 1); last = i; A.beep(520, 0.06, 'triangle', 0.05); paint(); after(1);
     };
     grid.addEventListener('click', onGrid);
-    const resetQuit = quitBtn(root, () => { if (phase === 'over' || phase === 'done') return; phase = 'over'; T.clear(); const mine = b.filter((x) => x === 1).length; endJingle(); api.end(0, [['あなた', mine], ['けっか', '途中でおわる']]); });
+    const resetQuit = quitBtn(root, () => { if (phase === 'over' || phase === 'done') return; phase = 'over'; T.clear(); const mine = b.filter((x) => x === 1).length; endJingle(); api.end(0, [['あなた', mine], ['けっか', '途中でおわる']], 'lose'); });
     const fit = () => { fitBoard(root, stage, 8, 8, 3, 160); };
     fit();
     const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(fit) : null; if (ro) ro.observe(stage);
@@ -4638,9 +4661,9 @@
     function depthNow() { return clampN(2 + (round - 1) + DIFF, 2, 7); }
     function result(kind) {
       phase = 'done'; paint();
-      if (kind === 'win') { const pts = 100 + Math.max(0, 42 - moves) * 2; score += pts; wins++; k('msg').textContent = 'かち! +' + pts; winJingle(); acts([['つぎの回戦', () => { round++; startRound(); }]]); }
-      else if (kind === 'draw') { score += 30; k('msg').textContent = 'ひきわけ +30'; acts([['つぎの回戦', () => { round++; startRound(); }]]); }
-      else { k('msg').textContent = 'まけ… ゲームオーバー'; A.beep(180, 0.3, 'sawtooth', 0.06, -90); T.later(finish, 1500); }
+      if (kind === 'win') { const pts = 100 + Math.max(0, 42 - moves) * 2; score += pts; wins++; k('msg').textContent = 'かち! +' + pts; flash(stage, '勝ち!', 'win'); winJingle(); acts([['つぎの回戦', () => { round++; startRound(); }]]); }
+      else if (kind === 'draw') { score += 30; k('msg').textContent = 'ひきわけ +30'; flash(stage, '引き分け', 'draw'); acts([['つぎの回戦', () => { round++; startRound(); }]]); }
+      else { k('msg').textContent = 'まけ… ゲームオーバー'; flash(stage, '負け…', 'lose'); A.beep(180, 0.3, 'sawtooth', 0.06, -90); T.later(finish, 1500); }
     }
     function place(c, p) {
       const r = c4Drop(b, c, p); if (!r) return false;
@@ -4717,7 +4740,7 @@
     function checkWin() {
       if (open.filter(Boolean).length === W * H - M) {
         phase = 'clear'; const pts = 100 + boardNo * 40 + Math.max(0, 120 - Math.floor(tsec)); score += pts; cleared++; boardNo++;
-        k('msg').textContent = 'クリア! +' + pts; winJingle(); paint();
+        k('msg').textContent = 'クリア! +' + pts; flash(stage, 'クリア!', 'win'); winJingle(); paint();
         T.later(() => { build(); k('msg').textContent = 'つぎの盤面(' + W + '×' + H + ' 地雷' + M + ')'; }, 1500);
       }
     }
@@ -4735,7 +4758,7 @@
       flood(i); A.beep(480 + Math.min(10, open.filter(Boolean).length) * 10, 0.04, 'sine', 0.05); paint(); checkWin();
     }
     function boom(i) {
-      open[i] = true; phase = 'dead'; paint(true); k('msg').textContent = 'ドカン! ゲームオーバー'; A.beep(120, 0.4, 'sawtooth', 0.08, -90);
+      open[i] = true; phase = 'dead'; paint(true); k('msg').textContent = 'ドカン! ゲームオーバー'; flash(stage, '負け…', 'lose'); A.beep(120, 0.4, 'sawtooth', 0.08, -90);
       T.later(finish, 1500);
     }
     function finish() { if (phase === 'over') return; phase = 'over'; T.clear(); endJingle(); api.end(score, [['クリアした盤面', cleared], ['いまの大きさ', W + '×' + H]]); }
@@ -4851,7 +4874,7 @@
       let place;
       if (elim.indexOf(0) >= 0) place = 4; else { const fi = finished.indexOf(0); place = fi >= 0 ? fi + 1 : Math.min(4, finished.length + 1); }
       const pts = [0, 150, 100, 50, 0][place] + (elim.indexOf(0) >= 0 ? 0 : Math.max(0, passes[0]) * 10);
-      endJingle(); api.end(pts, [['順位', place + '位'], ['のこりパス', Math.max(0, passes[0])]]);
+      flash(stage, place === 1 ? '勝ち!' : place >= 4 ? '負け…' : place + '位', place === 1 ? 'win' : place >= 4 ? 'lose' : 'draw'); endJingle(); api.end(pts, [['順位', place + '位'], ['のこりパス', Math.max(0, passes[0])]], place === 1 ? 'win' : place >= 3 ? 'lose' : 'draw');
     }
     const resetQuit = quitBtn(root, () => { over = true; finish(); });
     return {
@@ -4985,10 +5008,11 @@
       if (place === 4 && finished.length < 3) place = Math.max(place, finished.length + 1);
       place = Math.min(4, place); score += [0, 150, 100, 50, 0][place];
       k('score').textContent = String(score);
+      flash(stage, place === 1 ? '勝ち!' : place >= 4 ? '負け…' : place + '位', place === 1 ? 'win' : place >= 4 ? 'lose' : 'draw');
       if (place <= 2 && !quitting) {
         phase = 'between'; k('msg').textContent = place + '位! つぎの戦へ(2位以内なら連戦できる)'; winJingle();
         acts([['つぎの戦', () => { round++; phase = 'cpu'; setup(); }]]);
-      } else { phase = 'over'; endJingle(); api.end(score, [['戦', round], ['革命', revs], ['最後の順位', place + '位']]); }
+      } else { phase = 'over'; endJingle(); api.end(score, [['戦', round], ['革命', revs], ['最後の順位', place + '位']], 'lose'); }
     }
     let quitting = false;
     const resetQuit = quitBtn(root, () => { quitting = true; finish(); });
@@ -4999,167 +5023,184 @@
     };
   }
 
-  /* ===== ゲーム37: 人狼(5人・1人用) ===== */
+  /* ===== ゲーム37: 人狼(7人・1人用) ===== */
   function createWolf(stage, api) {
     const root = el('div', 'pg wolf', `
       <div class="pg-hud">
         <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
         <span class="chip" data-k="day">1日目</span>
       </div>
-      <div class="wplayers" data-k="pl"></div>
+      <div class="wroster" data-k="ros"></div>
       <div class="wlog" data-k="log" aria-live="polite"></div>
       <div class="acts wacts" data-k="acts"></div>
       <div class="pg-foot"><span data-k="role"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
-    const T = mkTimers(), NAMES = ['あなた', 'ハル', 'ミナ', 'ソラ', 'レン'];
-    const RN = { villager: '村人', seer: '占い師', wolf: '人狼', mad: '狂人' };
-    let roles = [], alive = [], day = 1, phase = 'idle', score = 0, round = 1, wins = 0, claims = [], divined = [], accused = [], over = false, myDiv = null;
-    const aliveList = () => [0, 1, 2, 3, 4].filter((i) => alive[i]);
-    const wolfIdx = () => roles.indexOf('wolf');
-    const nm = (i) => NAMES[i];
-    function say(text, cls) { const p = el('p', 'wl ' + (cls || '')); p.textContent = text; const log = k('log'); log.append(p); log.scrollTop = log.scrollHeight; }
-    function pls() {
-      k('pl').innerHTML = '';
-      NAMES.forEach((n, i) => { const c = el('span', 'wp' + (alive[i] ? '' : ' dead') + (i === 0 ? ' me' : '')); c.textContent = (alive[i] ? '' : '✝ ') + n; k('pl').append(c); });
+    const T = mkTimers(), N = 7, NAMES = ['あなた', 'ハル', 'ミナ', 'ソラ', 'レン', 'ユイ', 'カイ'];
+    const RN = { villager: '村人', seer: '占い師', medium: '霊媒師', knight: '騎士', mason: '共有者', wolf: '人狼', mad: '狂人' };
+    const RD = { villager: '能力はありません。話し合いと投票で人狼を見つけよう。', seer: '夜に1人占い、人狼か人間かが分かる。', medium: '処刑された人が人狼だったかが、翌朝に分かる。', knight: '夜に1人を護衛して、襲撃から守る(自分は守れない)。', mason: 'もう1人の共有者が誰か分かる。確実な味方!', wolf: '夜に1人を襲う。1日目の夜は襲えない。村人をだまそう。', mad: '人狼の味方(人狼が誰かは知らない)。占い師などのふりをして村をまどわそう。' };
+    const wolfSide = (r) => r === 'wolf' || r === 'mad';
+    let roles = [], alive = [], day = 1, phase = 'idle', score = 0, round = 1, wins = 0, claims = [], co = [], divined = [], accused = [], over = false, myRes = [], lastExec = null, guard = null, atk = null, mate = -1, talks = 0;
+    const aliveList = () => [...Array(N).keys()].filter((i) => alive[i]);
+    const nm = (i) => NAMES[i], rnd = (a) => a[rndInt(0, a.length - 1)];
+    const hum = (b) => (b ? '人狼' : '人間');
+    function say(t, c) { const p = el('p', 'wl ' + (c || '')); p.textContent = t; const l = k('log'); l.append(p); l.scrollTop = l.scrollHeight; }
+    function roster() {
+      const box = k('ros'); box.textContent = '';
+      for (let i = 0; i < N; i++) {
+        const c = el('div', 'wp2' + (alive[i] ? '' : ' dead') + (i === 0 ? ' me' : '')), a = el('b'), b = el('small');
+        a.textContent = (alive[i] ? '' : '✝ ') + nm(i);
+        let tag = '';
+        if (i === 0) tag = RN[roles[0]];
+        else if (!alive[i]) tag = RN[roles[i]];
+        else if (i === mate) tag = '共有者(味方)';
+        else if (co[i]) tag = RN[co[i]] + 'CO';
+        b.textContent = tag; c.append(a, b); box.append(c);
+      }
       k('score').textContent = String(score); k('day').textContent = day + '日目 / ' + round + '戦目';
+      k('role').textContent = 'あなた: ' + RN[roles[0]];
     }
     function acts(list) { const box = k('acts'); box.textContent = ''; list.forEach(([l, fn]) => { const x = el('button', 'btn mini'); x.type = 'button'; x.textContent = l; x.addEventListener('click', fn); box.append(x); }); }
-    function pickTarget(prompt, cands, cb, extra) { say(prompt, 'sys'); acts(cands.map((i) => [nm(i), () => { acts([]); cb(i); }]).concat(extra || [])); }
+    function pick(prompt, cands, cb, extra) { say(prompt, 'sys'); acts(cands.map((i) => [nm(i), () => { acts([]); cb(i); }]).concat(extra || [])); }
     function setup() {
-      roles = shuffle(['villager', 'villager', 'seer', 'wolf', 'mad']); alive = [true, true, true, true, true]; day = 1; claims = []; divined = []; accused = []; over = false; myDiv = null;
-      k('log').textContent = ''; pls(); k('role').textContent = 'あなた: ' + RN[roles[0]];
-      say('--- ' + round + '戦目 ---', 'sys');
-      const r = roles[0];
-      say('あなたは【' + RN[r] + '】です。' + ({ villager: '人狼を見つけて処刑しよう。', seer: '夜に1人占って、人間か人狼かが分かります。', wolf: '村人をだまして生き残ろう。夜に1人襲えます。', mad: '人狼の味方です(人狼が誰かは知りません)。村をまどわそう。' })[r], 'sys');
-      if (r === 'wolf') say('人狼は ' + nm(wolfIdx()) + ' (あなた)のみ。', 'sys');
-      T.later(() => night(), 900);
+      const base = Math.random() < 0.5 ? ['villager', 'villager'] : ['mason', 'mason'];
+      roles = shuffle(['wolf', 'mad', 'seer', 'medium', 'knight'].concat(base)); alive = Array(N).fill(true); day = 1; claims = []; co = Array(N).fill(null); divined = []; accused = []; over = false; myRes = []; lastExec = null; guard = null; atk = null; talks = 0;
+      mate = roles[0] === 'mason' ? roles.findIndex((r, i) => i !== 0 && r === 'mason') : -1;
+      k('log').textContent = ''; roster();
+      say('--- ' + round + '戦目 --- 7人の村。役: 村人系(村人2 または 共有者2)・占い師・霊媒師・騎士、人狼1、狂人1', 'sys');
+      say('あなたは【' + RN[roles[0]] + '】。' + RD[roles[0]], 'res');
+      if (mate >= 0) say('もう1人の共有者は ' + nm(mate) + ' です。', 'res');
+      if (roles[0] === 'wolf') say('人狼はあなた1人です。', 'res');
+      T.later(night, 1100);
     }
     function winner() {
-      const w = aliveList().filter((i) => roles[i] === 'wolf').length, h = aliveList().length - w;
+      const al = aliveList(), w = al.filter((i) => roles[i] === 'wolf').length, h = al.length - w;
       if (!w) return 'village'; if (h <= w) return 'wolf'; return null;
     }
-    // ---- 夜 ----
     function night() {
-      if (over) return;
-      phase = 'night'; say('夜になりました…', 'sys'); pls();
-      const wolf = wolfIdx(), me = roles[0], others = aliveList().filter((i) => i !== 0);
-      let nightDone = 0; const need = (me === 'seer' || (me === 'wolf' && day > 1)) && alive[0] ? 1 : 0;
-      const finishNight = () => { T.later(morning, 700); };
-      // CPU 占い師
-      roles.forEach((r, i) => { if (i !== 0 && alive[i] && r === 'seer') { const c = aliveList().filter((x) => x !== i && !divined.some((d) => d.by === i && d.t === x)); if (c.length) { const t = c[rndInt(0, c.length - 1)]; divined.push({ by: i, t: t, wolf: roles[t] === 'wolf', day: day }); } } });
-      let victim = null;
-      const cpuAttack = () => {
-        if (day === 1 || roles[0] === 'wolf' || !alive[wolf]) return null;
-        const cand = aliveList().filter((i) => roles[i] !== 'wolf'), cl = cand.filter((i) => claims.some((c) => c.who === i));
-        if (cl.length && Math.random() < 0.6) return cl[rndInt(0, cl.length - 1)];
-        return cand[rndInt(0, cand.length - 1)];
-      };
-      const resolve = () => { victim = victim != null ? victim : cpuAttack(); window.__v = victim; finishNight(); };
-      const afterSeer = () => {
-        if (me === 'wolf' && day > 1 && alive[0]) pickTarget('だれを襲いますか?', aliveList().filter((i) => roles[i] !== 'wolf'), (t) => { victim = t; say(nm(t) + 'を襲撃します。', 'sys'); resolve(); });
-        else { if (me === 'wolf' && day === 1) say('1日目の夜は襲撃できません。', 'sys'); resolve(); }
-      };
-      if (me === 'seer' && alive[0]) pickTarget('だれを占いますか?', others, (t) => { const wolfy = roles[t] === 'wolf'; myDiv = { t: t, wolf: wolfy, day: day }; divined.push({ by: 0, t: t, wolf: wolfy, day: day }); say(nm(t) + 'は【' + (wolfy ? '人狼' : '人間') + '】でした。', 'res'); afterSeer(); });
-      else if (alive[0] && (me === 'villager' || me === 'mad')) { acts([['ねる', () => { acts([]); resolve(); }]]); }
-      else afterSeer();
-      night._victim = () => victim;
-      void nightDone; void need;
+      if (over) return; phase = 'night'; guard = null; atk = null; say('--- ' + day + '日目の夜 ---', 'sys'); roster();
+      roles.forEach((r, i) => { if (i && alive[i] && r === 'seer') { const c = aliveList().filter((x) => x !== i && !divined.some((d) => d.by === i && d.t === x)); if (c.length) { const t = rnd(c); divined.push({ by: i, t: t, wolf: roles[t] === 'wolf', day: day }); } } });
+      const me = roles[0], others = aliveList().filter((i) => i !== 0), done = () => { cpuNight(); T.later(morning, 800); };
+      if (!alive[0]) { done(); return; }
+      if (me === 'seer') pick('だれを占いますか?', others, (t) => { const w = roles[t] === 'wolf'; myRes.push({ t: t, wolf: w, day: day }); say(nm(t) + 'は【' + hum(w) + '】でした。', 'res'); done(); });
+      else if (me === 'knight') pick('だれを護衛しますか?', others, (t) => { guard = t; say(nm(t) + 'を護衛します。', 'res'); done(); });
+      else if (me === 'wolf' && day > 1) pick('だれを襲いますか?', others, (t) => { atk = t; say(nm(t) + 'を襲撃します。', 'res'); done(); });
+      else acts([['ねる', () => { acts([]); done(); }]]);
+    }
+    function cpuNight() {
+      const al = aliveList();
+      roles.forEach((r, i) => { if (i && alive[i] && r === 'knight' && !guard) { const c = al.filter((x) => x !== i), sc = c.filter((x) => co[x] === 'seer'); guard = Math.random() < 0.5 && sc.length ? rnd(sc) : rnd(c); } });
+      if (roles[0] !== 'wolf' && day > 1) { const w = roles.findIndex((r, i) => r === 'wolf' && alive[i]); if (w >= 0) { const c = al.filter((x) => roles[x] !== 'wolf'), cl = c.filter((x) => co[x] === 'seer' || co[x] === 'medium'); atk = Math.random() < 0.55 && cl.length ? rnd(cl) : rnd(c); } }
     }
     function morning() {
-      if (over) return;
-      const wolf = wolfIdx(); let v = null;
-      // 襲撃対象の再計算を避けるため window.__v を使う
-      v = window.__v; window.__v = null;
-      if (v != null && alive[v] && day > 1) { alive[v] = false; say('朝になりました。' + nm(v) + 'が襲撃されました…', 'dead'); } else say('朝になりました。昨夜は誰も襲われませんでした。', 'sys');
-      pls();
-      if (!alive[0]) { endRound(false, '襲撃されてしまった'); return; }
-      const w = winner(); if (w) { endRound(w === 'village', null); return; }
+      if (over) return; say('--- ' + day + '日目の朝 ---', 'sys');
+      if (atk != null && alive[atk] && day > 1) { if (atk === guard) say('昨夜は誰も襲われませんでした。(護衛成功?)', 'sys'); else { alive[atk] = false; say(nm(atk) + 'が襲撃されました…(役職は【' + RN[roles[atk]] + '】)', 'dead'); } }
+      else say('昨夜は誰も襲われませんでした。', 'sys');
+      if (roles[0] === 'medium' && alive[0] && lastExec) { myRes.push({ t: lastExec.t, wolf: lastExec.wolf, day: day, med: true }); say('霊媒結果: 昨日処刑された' + nm(lastExec.t) + 'は【' + hum(lastExec.wolf) + '】でした。', 'res'); }
+      roster();
+      if (!alive[0]) { endRound(false); return; }
+      const w = winner(); if (w) { endRound(w === 'village'); return; }
       T.later(discuss, 900);
     }
-    // ---- 昼 ----
-    function cpuStatements() {
+    function mk(i, role, t, w) { claims.push({ who: i, role: role, t: t, wolf: w, day: day }); co[i] = role; }
+    function fakeSeer(i, lines) {
+      const pool = aliveList().filter((x) => x !== i), t = rnd(pool); let res = Math.random() < 0.3; if (roles[i] === 'wolf' && roles[t] === 'wolf') res = false;
+      mk(i, 'seer', t, res); lines.push(nm(i) + ':占い師です。' + nm(t) + 'さんを占って【' + hum(res) + '】でした。');
+    }
+    function cpuTalk() {
       const lines = [];
       aliveList().filter((i) => i !== 0).forEach((i) => {
         const r = roles[i], pool = aliveList().filter((x) => x !== i);
-        const mine = divined.filter((d) => d.by === i), mineLast = mine[mine.length - 1];
-        const already = claims.some((c) => c.who === i);
-        if (r === 'seer' && mineLast && !claims.some((c) => c.who === i && c.day === day)) {
-          claims.push({ who: i, t: mineLast.t, wolf: mineLast.wolf, day: day });
-          lines.push(nm(i) + ':占い師です。' + nm(mineLast.t) + 'さんを占って、【' + (mineLast.wolf ? '人狼' : '人間') + '】でした。');
-        } else if ((r === 'mad' && (day === 1 ? Math.random() < 0.7 : already)) || (r === 'wolf' && (day === 1 ? Math.random() < 0.35 : already))) {
-          const t = pool[rndInt(0, pool.length - 1)];
-          let res = Math.random() < 0.5; if (r === 'wolf' && roles[t] === 'wolf') res = false;
-          claims.push({ who: i, t: t, wolf: res, day: day });
-          lines.push(nm(i) + ':占い師です。' + nm(t) + 'さんを占って、【' + (res ? '人狼' : '人間') + '】でした。');
-        } else {
-          const t = pool[rndInt(0, pool.length - 1)];
-          lines.push(nm(i) + ':' + (Math.random() < 0.5 ? 'まだ決め手がない… ' + nm(t) + 'さんが少し気になる。' : '話をきいて決めたい。' + nm(t) + 'さんの意見は?'));
-          if (roles[i] !== 'wolf' || Math.random() < 0.5) accused.push({ by: i, t: t });
+        if (r === 'seer') { const d = divined.filter((x) => x.by === i), l = d[d.length - 1]; if (l && !claims.some((c) => c.who === i && c.role === 'seer' && c.day === day)) { mk(i, 'seer', l.t, l.wolf); lines.push(nm(i) + ':占い師COします。' + nm(l.t) + 'さんを占って【' + hum(l.wolf) + '】でした。'); return; } }
+        else if (r === 'medium') { if (lastExec && !claims.some((c) => c.who === i && c.role === 'medium' && c.day === day)) { mk(i, 'medium', lastExec.t, lastExec.wolf); lines.push(nm(i) + ':霊媒師です。処刑された' + nm(lastExec.t) + 'さんは【' + hum(lastExec.wolf) + '】でした。'); return; } }
+        else if (r === 'mason') { if (!co[i]) { co[i] = 'mason'; const m = roles.findIndex((x, j) => j !== i && x === 'mason'); lines.push(nm(i) + ':共有者です。' + nm(m) + 'さんも共有者です。'); return; } }
+        else if (r === 'knight') { if (!co[i] && aliveList().length <= 4 && Math.random() < 0.7) { co[i] = 'knight'; lines.push(nm(i) + ':騎士です。みんなを守ってきました。'); return; } }
+        else if (r === 'wolf' || r === 'mad') {
+          if (co[i] === 'seer') { fakeSeer(i, lines); return; }
+          if (!co[i] && day === 1 && Math.random() < (r === 'mad' ? 0.75 : 0.4)) { fakeSeer(i, lines); return; }
+          if (r === 'mad' && lastExec && !co[i] && Math.random() < 0.3) { const w = Math.random() < 0.4; mk(i, 'medium', lastExec.t, w); lines.push(nm(i) + ':霊媒師です。処刑された' + nm(lastExec.t) + 'さんは【' + hum(w) + '】でした。'); return; }
         }
+        const t = rnd(pool); lines.push(nm(i) + ':' + (Math.random() < 0.5 ? '決め手がないな…' + nm(t) + 'さんが少し気になる。' : nm(t) + 'さん、どう思う?'));
+        if (r !== 'wolf' || Math.random() < 0.5) accused.push({ by: i, t: t });
       });
       return lines;
     }
     function discuss() {
-      if (over) return;
-      phase = 'day'; say('--- ' + day + '日目の話し合い ---', 'sys'); pls();
-      const lines = cpuStatements(); let i = 0;
-      const step = () => { if (i < lines.length) { say(lines[i++]); A.beep(500, 0.03, 'sine', 0.03); T.later(step, 900); } else myTurn(); };
+      if (over) return; phase = 'day'; talks = 0; say('--- ' + day + '日目の話し合い ---', 'sys'); roster();
+      const lines = cpuTalk(); let i = 0;
+      const step = () => { if (i < lines.length) { say(lines[i++]); A.beep(500, 0.03, 'sine', 0.03); roster(); T.later(step, 850); } else myTurn(); };
       T.later(step, 500);
     }
     function myTurn() {
+      if (over) return;
       const others = aliveList().filter((x) => x !== 0), opts = [];
-      opts.push(['だれかを疑う', () => pickTarget('だれが怪しいと言いますか?', others, (t) => { say('あなた:' + nm(t) + 'さんが怪しいと思う。', 'me'); accused.push({ by: 0, t: t, me: true }); T.later(vote, 700); })]);
-      if (roles[0] === 'seer' && myDiv) opts.push(['占い結果を報告', () => { acts([]); claims.push({ who: 0, t: myDiv.t, wolf: myDiv.wolf, day: day }); say('あなた:占い師です。' + nm(myDiv.t) + 'さんは【' + (myDiv.wolf ? '人狼' : '人間') + '】でした。', 'me'); T.later(vote, 700); }]);
-      else opts.push(['占い師だとウソをつく', () => pickTarget('だれを占ったことにしますか?', others, (t) => { acts([['人間だった', () => { acts([]); fake(t, false); }], ['人狼だった', () => { acts([]); fake(t, true); }]]); })]);
-      opts.push(['だまっている', () => { acts([]); say('あなた:……', 'me'); T.later(vote, 600); }]);
-      say('あなたの発言をえらんでください。', 'sys'); acts(opts);
+      opts.push(['だれかを疑う', () => pick('だれが怪しいと言いますか?', others, (t) => { say('あなた:' + nm(t) + 'さんが怪しいと思う。', 'me'); accused.push({ by: 0, t: t, me: true }); talks++; myTurn(); }, [['もどる', myTurn]])]);
+      opts.push(['COする', coMenu]);
+      opts.push(['投票へすすむ', () => { acts([]); vote(); }]);
+      say('あなたの行動をえらんでください。', 'sys'); acts(opts);
     }
-    function fake(t, res) { claims.push({ who: 0, t: t, wolf: res, day: day }); say('あなた:占い師です。' + nm(t) + 'さんは【' + (res ? '人狼' : '人間') + '】でした。', 'me'); T.later(vote, 700); }
-    function cpuVoteTarget(i) {
-      const s = [0, 0, 0, 0, 0], r = roles[i], al = aliveList();
-      const claimants = Array.from(new Set(claims.filter((c) => alive[c.who] && c.who !== i).map((c) => c.who)));
+    function coMenu() {
+      const me = roles[0], others = aliveList().filter((x) => x !== 0);
+      const say1 = (role, t, w, text) => { mk(0, role, t, w); say('あなた:' + text, 'me'); roster(); talks++; myTurn(); };
+      acts([
+        ['占い師CO', () => {
+          if (me === 'seer' && myRes.length) { const l = myRes.filter((x) => !x.med).slice(-1)[0]; if (l) { say1('seer', l.t, l.wolf, '占い師です。' + nm(l.t) + 'さんは【' + hum(l.wolf) + '】でした。'); return; } }
+          pick('占ったことにする人は?', others, (t) => { acts([['人間だった', () => { acts([]); say1('seer', t, false, '占い師です。' + nm(t) + 'さんは【人間】でした。'); }], ['人狼だった', () => { acts([]); say1('seer', t, true, '占い師です。' + nm(t) + 'さんは【人狼】でした。'); }]]); }, [['もどる', coMenu]]);
+        }],
+        ['霊媒師CO', () => {
+          if (!lastExec) { say('まだ処刑された人がいません。', 'sys'); return; }
+          if (me === 'medium') { say1('medium', lastExec.t, lastExec.wolf, '霊媒師です。' + nm(lastExec.t) + 'さんは【' + hum(lastExec.wolf) + '】でした。'); return; }
+          acts([['人間だった', () => { acts([]); say1('medium', lastExec.t, false, '霊媒師です。' + nm(lastExec.t) + 'さんは【人間】でした。'); }], ['人狼だった', () => { acts([]); say1('medium', lastExec.t, true, '霊媒師です。' + nm(lastExec.t) + 'さんは【人狼】でした。'); }]]);
+        }],
+        ['騎士CO', () => { mk(0, 'knight', null, false); say('あなた:騎士です。', 'me'); roster(); talks++; myTurn(); }],
+        ['共有者CO', () => { mk(0, 'mason', null, false); say('あなた:共有者です。', 'me'); roster(); talks++; myTurn(); }],
+        ['もどる', myTurn]
+      ]);
+    }
+    function cpuVote(i) {
+      const al = aliveList(), s = Array(N).fill(0), r = roles[i];
       al.forEach((j) => { s[j] = Math.random() * 2; });
-      if (r === 'seer') { divined.filter((d) => d.by === i).forEach((d) => { s[d.t] += d.wolf ? 20 : -10; }); claimants.forEach((x) => { s[x] += 8; }); }
-      else if (r === 'wolf') { claimants.forEach((x) => { s[x] += claimants.length === 1 ? 6 : 3; }); al.forEach((j) => { if (roles[j] === 'wolf') s[j] = -99; }); }
+      const seerC = Array.from(new Set(claims.filter((c) => c.role === 'seer' && alive[c.who] && c.who !== i).map((c) => c.who)));
+      const medC = Array.from(new Set(claims.filter((c) => c.role === 'medium' && alive[c.who] && c.who !== i).map((c) => c.who)));
+      if (r === 'seer') { divined.filter((d) => d.by === i).forEach((d) => { s[d.t] += d.wolf ? 20 : -10; }); seerC.forEach((x) => { s[x] += 9; }); }
+      else if (r === 'medium') { medC.forEach((x) => { s[x] += 9; }); }
+      else if (r === 'mason') { const m = roles.findIndex((x, j) => j !== i && x === 'mason'); s[m] = -99; claims.forEach((c) => { if (c.t === m && c.wolf && alive[c.who]) s[c.who] += 12; }); if (seerC.length > 1) seerC.forEach((x) => { s[x] += 3; }); }
+      else if (r === 'wolf') { claims.forEach((c) => { if (c.t === i && c.wolf && alive[c.who]) s[c.who] += 12; }); (seerC.concat(medC)).forEach((x) => { s[x] += 2.5; }); al.forEach((j) => { if (roles[j] === 'wolf') s[j] = -99; }); }
       else {
-        if (claimants.length === 1) { claims.filter((c) => c.who === claimants[0]).forEach((c) => { s[c.t] += c.wolf ? 6 : -3; }); }
-        else claimants.forEach((x) => { s[x] += 3.5; });
-        claims.forEach((c) => { if (c.wolf) s[c.t] += 1.5; });
+        if (seerC.length === 1) claims.filter((c) => c.who === seerC[0]).forEach((c) => { s[c.t] += c.wolf ? 6 : -3; }); else seerC.forEach((x) => { s[x] += 3.2; });
+        if (medC.length > 1) medC.forEach((x) => { s[x] += 2.5; });
+        claims.forEach((c) => { if (c.wolf && c.t != null) s[c.t] += 1.2; });
       }
       accused.forEach((a) => { if (a.by !== i) s[a.t] += a.me ? 2.2 : 0.6; });
-      s[i] = -99;
-      let best = -1, bv = -1e9; al.forEach((j) => { if (s[j] > bv) { bv = s[j]; best = j; } }); return best;
+      s[i] = -99; let best = -1, bv = -1e9; al.forEach((j) => { if (s[j] > bv) { bv = s[j]; best = j; } }); return best;
     }
     function vote() {
-      if (over) return;
-      say('--- 投票 ---', 'sys');
-      pickTarget('処刑する人をえらんでください', aliveList().filter((x) => x !== 0), (t) => {
+      if (over) return; phase = 'vote'; say('--- 投票 ---', 'sys');
+      pick('処刑する人をえらんでください', aliveList().filter((x) => x !== 0), (t) => {
         const votes = {}; votes[t] = 1; say('あなた → ' + nm(t));
-        aliveList().filter((x) => x !== 0).forEach((i) => { const v = cpuVoteTarget(i); votes[v] = (votes[v] || 0) + 1; say(nm(i) + ' → ' + nm(v)); });
-        const mx = Math.max.apply(null, Object.values(votes)), tops = Object.keys(votes).filter((x) => votes[x] === mx).map(Number), ex = tops[rndInt(0, tops.length - 1)];
+        aliveList().filter((x) => x !== 0).forEach((i) => { const v = cpuVote(i); votes[v] = (votes[v] || 0) + 1; say(nm(i) + ' → ' + nm(v)); });
+        const mx = Math.max.apply(null, Object.values(votes)), tops = Object.keys(votes).filter((x) => votes[x] === mx).map(Number), ex = rnd(tops);
         T.later(() => {
-          alive[ex] = false; pls();
-          say(nm(ex) + 'が処刑されました。(' + (roles[ex] === 'wolf' ? '人狼でした!' : '人間でした') + ')', 'dead');
-          const w = winner(); if (!alive[0]) { endRound(w === 'village', '処刑された'); return; }
-          if (w) { endRound(w === 'village', null); return; }
+          alive[ex] = false; lastExec = { t: ex, wolf: roles[ex] === 'wolf' }; roster();
+          say(nm(ex) + 'が処刑されました。(役職は【' + RN[roles[ex]] + '】)', 'dead');
+          const w = winner(); if (!alive[0]) { endRound(w === 'village'); return; }
+          if (w) { endRound(w === 'village'); return; }
           day++; accused = []; T.later(night, 1200);
         }, 900);
       });
     }
-    function endRound(villageWin, why) {
-      over = true; phase = 'roundEnd';
-      const myWin = roles[0] === 'wolf' || roles[0] === 'mad' ? !villageWin : villageWin;
-      say('--- けっか ---', 'sys');
-      say(NAMES.map((n, i) => n + ':' + RN[roles[i]]).join(' / '), 'res');
+    function endRound(villageWin) {
+      over = true; phase = 'roundEnd'; roster();
+      const myWin = wolfSide(roles[0]) ? !villageWin : villageWin;
+      say('--- けっか ---', 'sys'); say(NAMES.map((n, i) => n + ':' + RN[roles[i]]).join(' / '), 'res');
+      flash(stage, myWin ? '勝ち!' : '負け…', myWin ? 'win' : 'lose');
       if (myWin) {
-        const pts = 200 + (alive[0] ? 50 : 0) + (roles[0] === 'wolf' ? 50 : roles[0] === 'mad' ? 30 : 0) - (day - 1) * 10;
-        score += Math.max(100, pts); wins++; say((villageWin ? '村人' : '人狼') + 'チームの勝ち! あなたの勝ちです! +' + Math.max(100, pts), 'res'); winJingle(); pls();
+        const pts = Math.max(100, 200 + (alive[0] ? 50 : 0) + (roles[0] === 'wolf' ? 50 : roles[0] === 'mad' ? 30 : 0) - (day - 1) * 10);
+        score += pts; wins++; say((villageWin ? '村人' : '人狼') + 'チームの勝ち! あなたの勝ちです! +' + pts, 'res'); winJingle(); roster();
         acts([['つぎの1戦', () => { round++; setup(); }]]);
       } else {
-        const pts = (day - 1) * 20; score += pts;
-        say((villageWin ? '村人' : '人狼') + 'チームの勝ち…あなたの負けです。+' + pts, 'res'); A.beep(170, 0.3, 'sawtooth', 0.06, -90); pls();
-        T.later(finish, 2200);
+        const pts = (day - 1) * 20; score += pts; say((villageWin ? '村人' : '人狼') + 'チームの勝ち…あなたの負けです。+' + pts, 'res'); A.beep(170, 0.3, 'sawtooth', 0.06, -90); roster();
+        T.later(finish, 2600);
       }
     }
     function finish() { if (phase === 'over') return; phase = 'over'; over = true; T.clear(); endJingle(); api.end(score, [['勝った回', wins], ['戦', round]]); }
@@ -5170,7 +5211,6 @@
       destroy() { T.clear(); }
     };
   }
-
   const ICON_SEVENS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><rect x="8" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="8" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="25" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="8" y="44" width="9" height="10" rx="2" fill="#fffdf5" opacity="0.5"/><rect x="30" y="43" width="11" height="12" rx="2" fill="#ffd45e"/></svg>';
   const ICON_DAIFUGO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><g transform="rotate(-14 20 34)"><rect x="8" y="14" width="24" height="34" rx="4" fill="#fffdf5"/><text x="20" y="38" font-size="18" font-weight="700" fill="#222" text-anchor="middle">8</text></g><g transform="rotate(4 32 34)"><rect x="22" y="12" width="24" height="34" rx="4" fill="#fffdf5"/><text x="34" y="36" font-size="18" font-weight="700" fill="#c8283c" text-anchor="middle">2</text></g><text x="46" y="20" font-size="14" text-anchor="middle">👑</text></svg>';
   const ICON_WOLF = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a0c2e"/><circle cx="42" cy="16" r="8" fill="#ffe9a8"/><circle cx="46" cy="14" r="7" fill="#1a0c2e"/><path d="M12 48l4-18 7 8 7-14 7 14 7-8 4 18z" fill="#6a3fa8"/><circle cx="24" cy="38" r="2" fill="#ff6b81"/><circle cx="36" cy="38" r="2" fill="#ff6b81"/></svg>';
@@ -5694,7 +5734,7 @@
       const row = el('div', 'acts'); const b = btn('けっかをみる', () => done(pts, win, mine)); b.classList.remove('mini'); row.append(b); body.append(row);
       if (win) winJingle(); else A.beep(170, 0.3, 'sawtooth', 0.06, -90);
     }
-    function done(pts, win, mine) { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', RN[mine] || '-'], ['けっか', win ? '勝ち' : '負け']]); }
+    function done(pts, win, mine) { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', RN[mine] || '-'], ['けっか', win ? '勝ち' : '負け']], win ? 'win' : 'lose'); }
     const resetQuit = quitBtn(root, async () => {
       if (finished) return; finished = true; clearInterval(poll); poll = 0;
       await leaveRoom(); api.end(0, [['けっか', 'とちゅうでやめた']]);
@@ -5876,7 +5916,7 @@
       const iAmM = p.m === me(), win = (p.win === 'm') === iAmM, pts = win ? 150 + (iAmM ? 50 : 0) : 30;
       const h = el('div', 'bt-code'); h.textContent = win ? 'あなたの勝ち!' : 'あなたの負け…'; body.append(h);
       body.append(para((p.win === 'm' ? 'ウルフ' : 'みんな') + 'の勝利'), para('みんなのお題: ' + p.maj + ' / ウルフのお題: ' + p.min + ' / ウルフ: ' + nm(p.m)), para('スコア +' + pts));
-      const row = el('div', 'acts'), b = btn('けっかをみる', () => { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', iAmM ? 'ウルフ' : 'みんな'], ['けっか', win ? '勝ち' : '負け']]); }); b.classList.remove('mini'); row.append(b); body.append(row);
+      const row = el('div', 'acts'), b = btn('けっかをみる', () => { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', iAmM ? 'ウルフ' : 'みんな'], ['けっか', win ? '勝ち' : '負け']], win ? 'win' : 'lose'); }); b.classList.remove('mini'); row.append(b); body.append(row);
       if (win) winJingle(); else A.beep(170, 0.3, 'sawtooth', 0.06, -90);
     }
     const resetQuit = quitBtn(root, async () => { if (finished) return; finished = true; clearInterval(poll); poll = 0; await leaveRoom(); api.end(0, [['けっか', 'とちゅうでやめた']]); });
@@ -5951,7 +5991,7 @@
     { id: 'slide', name: 'スライド', short: 'スライド', desc: '数字を1から順にならべるパズル。', icon: ICON_SLIDE, create: createSlide,
       intro: 'マスをスライドさせて、数字を1から順にならべます。空いているマスに向かって、同じ列のマスをまとめて動かせます。',
       how: ['動かしたいマスをタップ(空きと同じ行か列なら、まとめて動く)', '速くそろえるほど高得点。クリアで +10秒', '3×3から始まり、3問目からは4×4。制限時間は90秒'], legend: '' },
-    { id: 'hilo', name: 'ハイ&ロー', short: 'ハイロー', desc: '次のカードが高いか低いかを当てる。', icon: ICON_HILO, create: createHilo,
+    { id: 'hilo', name: 'ハイ&ロー', short: 'ハイロー', th: 'felt', desc: 'トランプで、次のカードが高いか低いかを当てる。', icon: ICON_HILO, create: createHilo,
       intro: '今のカード(1〜13)より、次のカードが高いか低いかを当てます。連続で当てるほど倍率アップです。',
       how: ['「高い」か「低い」をタップ(1・2キーでも選べます)', '1.2秒いないに答えると +5点', 'はずれると -3秒。制限時間は40秒'], legend: '' },
     { id: 'dodge', name: 'ほしよけ', short: 'ほしよけ', desc: '降ってくる岩をよけて、星を集める。', icon: ICON_DODGE, create: createDodge,
@@ -6006,8 +6046,8 @@
       intro: '友だち4〜12人で遊ぶ人狼です(index.html版でオンライン)。村人陣営・人狼陣営・第三陣営(妖狐)に分かれ、文字チャットで話し合い、投票で処刑します。通話しながらでもOK。ホストの画面が開いている間だけ進行します。',
       how: ['部屋をつくってコードを伝える/コードで入る。4人からスタート', '役:村人・占い師・霊媒師・騎士/人狼・狂人/妖狐(人数で自動配分)', '夜に能力、昼は話し合い、投票で1人処刑。勝つと200点前後'], legend: '' },
     { id: 'wolf', name: '人狼(1人用)', short: '人狼1人用', th: 'night', desc: '5人で人狼さがし。うそを見ぬいて生きのこる。', icon: ICON_WOLF, create: createWolf,
-      intro: '村人5人の中に、人狼がまぎれています。話し合いと投票で人狼を処刑すれば村人の勝ち。あなたの役は最初に分かります。',
-      how: ['役は 村人2・占い師1・人狼1・狂人1(狂人は人狼の味方)', '昼は発言をえらび、投票で1人を処刑。夜は占い師が占い、人狼が襲う', '勝つと 200点以上。負けるまで連戦できる'], legend: '' }
+      intro: '7人の村に、人狼がまぎれています。村人側にも占い師・霊媒師・騎士・共有者などの役があり、全員の役職と状況が画面の名簿で分かります。話し合いと投票で人狼を処刑すれば村人の勝ち。',
+      how: ['役: 占い師・霊媒師・騎士・人狼・狂人と、村人2人(または共有者2人)', '名簿に、COした役職・死んだ人の役職・あなたの役が表示される。昼は疑う/COする/投票。夜は能力を使う', '勝つと200点以上。勝ち負けは大きく表示。負けるまで連戦'], legend: '' }
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
@@ -6195,7 +6235,7 @@
   const gameApi = (g) => ({
     best: () => rec[g.id],
     ended: () => ended || !playing,
-    end: (score, stats) => finish(g, score, stats)
+    end: (score, stats, verdict) => finish(g, score, stats, verdict)
   });
 
   function openGame(g) {
@@ -6245,7 +6285,7 @@
     inst.start();
   }
 
-  async function finish(g, score, stats) {
+  async function finish(g, score, stats, verdict) {
     score = Math.round(score * DIFFS[DIFF].mul);
     if (!playing || ended) return;
     ended = true; playing = false;
@@ -6253,12 +6293,13 @@
     if (battle && battle.inGame) { if (score > rec[g.id]) { rec[g.id] = score; saveRec(); } Rank.submit(g.id, score); battleFinish(g, score, stats); return; }
     const isRec = score > rec[g.id];
     if (isRec) { rec[g.id] = score; saveRec(); }
-    ovResult.innerHTML = '<div class="ov-in"><h3>おつかれさま</h3>' +
+    const vd = verdict || (isRec ? 'win' : 'lose'), vtxt = verdict ? { win: '勝ち!', lose: '負け…', draw: '引き分け' }[verdict] : (isRec ? 'ベストに勝った!' : 'ベストには届かず…');
+    ovResult.innerHTML = '<div class="ov-in"><h3>おつかれさま</h3><div class="verdict ' + vd + '"></div>' +
       '<div class="res"><span class="lbl">スコア</span><span class="big"></span><span class="rec" hidden>じぶんのベスト更新です</span><span class="lbl best"></span></div>' +
       '<div class="stats"></div><p class="status">ランキングに登録しています…</p><p class="rankhint"></p>' +
       '<div><h4>みんなのランキング</h4><div class="rbox" style="margin-top:6px"></div></div>' +
       '<div class="btns"><button class="btn again" type="button">もういちど</button><button class="btn ghost home" type="button">ホームへ</button></div></div>';
-    $('.big', ovResult).textContent = String(score);
+    $('.big', ovResult).textContent = String(score); $('.verdict', ovResult).textContent = vtxt;
     $('.rec', ovResult).hidden = !isRec;
     $('.best', ovResult).textContent = 'ベスト ' + rec[g.id];
     const st = $('.stats', ovResult);
