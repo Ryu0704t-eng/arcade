@@ -423,14 +423,14 @@
   .wlog { width: min(100%, 400px); flex: 1 1 0; min-height: 120px; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; font-size: 14px; line-height: 1.55; }
   .wl { margin: 0 0 4px; } .wl.sys { color: var(--mute); } .wl.me { color: var(--gold); } .wl.res { color: #8bf0d8; font-weight: 700; } .wl.dead { color: #ff8aa0; font-weight: 700; }
   .wacts { min-height: 56px; max-height: 128px; overflow-y: auto; align-content: flex-start; }
-  .dopps { width: min(100%, 400px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .dopp { background: rgba(0, 0, 0, 0.22); border: 2px solid transparent; border-radius: 10px; padding: 5px 4px 6px; text-align: center; display: grid; gap: 1px; }
+  .dopps { width: min(100%, 400px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .dopp { min-width: 0; overflow: hidden; background: rgba(0, 0, 0, 0.22); border: 2px solid transparent; border-radius: 10px; padding: 5px 4px 6px; text-align: center; display: grid; gap: 1px; }
   .dopp.turn { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 212, 94, 0.5); }
   .dopp.out { opacity: 0.55; }
   .dopp b { font-size: 13px; font-weight: 700; } .dopp .cnt { font-family: var(--display); font-size: 20px; color: var(--gold); line-height: 1.1; }
   .dopp em { font-style: normal; font-size: 11px; min-height: 14px; color: var(--mute); }
   .dopp .fan { display: flex; justify-content: center; min-height: 26px; padding-left: 8px; }
-  .dopp .fan .tc { --cw: 17px; margin-left: -8px; border-width: 1px; border-radius: 3px; }
+  .dopp .fan .tc { --cw: 14px; margin-left: -7px; border-width: 1px; border-radius: 3px; }
   .drules { display: flex; gap: 6px; justify-content: center; min-height: 24px; flex-wrap: wrap; }
   .dr { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--line); }
   .dr.rv { background: #7a1830; color: #fff; border-color: #ff7a93; } .dr.lk { background: #1d4d8a; color: #fff; border-color: #7fd1ff; }
@@ -5927,6 +5927,357 @@
   }
   const ICON_WW = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#2a1a4a"/><rect x="7" y="12" width="20" height="14" rx="5" fill="#ffd45e"/><rect x="33" y="12" width="20" height="14" rx="5" fill="#ffd45e"/><rect x="20" y="32" width="20" height="14" rx="5" fill="#ff9ab0"/><text x="17" y="23" font-size="9" text-anchor="middle" fill="#2a1a4a" font-weight="700">ワード</text><text x="43" y="23" font-size="9" text-anchor="middle" fill="#2a1a4a" font-weight="700">ワード</text><text x="30" y="43" font-size="9" text-anchor="middle" fill="#2a1a4a" font-weight="700">ワード?</text></svg>';
   const ICON_WOLFNET = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a0c2e"/><circle cx="44" cy="15" r="7" fill="#ffe9a8"/><circle cx="47" cy="13" r="6" fill="#1a0c2e"/><path d="M8 50l3-14 6 6 6-11 6 11 6-6 3 14z" fill="#6a3fa8"/><circle cx="19" cy="44" r="5" fill="#ff9ab0"/><circle cx="31" cy="44" r="5" fill="#7fd1ff"/><circle cx="43" cy="44" r="5" fill="#8fe08f"/></svg>';
+  /* ===== バカ人狼(Feign風・友だち/CPU) ===== */
+  const FR = {
+    villager: { n: 'イノセント', d: '能力はありません。話し合いと投票で人外を見つけよう。' },
+    rat: { n: 'ねずみ', d: 'ゲーム中1回だけ、対象の陣営と役職が分かる。' },
+    inv: { n: 'インベスティゲーター', d: '対象の役職の候補を2つ教えてもらう。片方は正解、もう片方は必ずイノセント系の役職。' },
+    police: { n: 'ポリス', d: '対象の外出を止め、その夜は何もできなくする。同じ相手は連続で止められない。止められた側は相手が分かる。' },
+    lookout: { n: 'ルックアウト', d: '対象の家を見張り、その夜に訪れた人が分かる。' },
+    tracker: { n: 'トラッカー', d: '対象がその夜にどこを訪れたかが分かる。' },
+    doctor: { n: 'ドクター', d: '対象をその夜の殺害から守る。同じ相手は連続で守れない。(イノセントのみ)' },
+    fool: { n: 'バカ', d: '自分を別の役職だと思い込んでいる。能力は必ず不発で、結果もデタラメ。死ぬまで本人も気づかない…' },
+    imp: { n: 'インポスター', d: '夜に1人を襲撃できる。仲間と専用チャットで相談できる。' },
+    cleaner: { n: 'クリーナー', d: '(インポスター)襲撃のかわりに能力で、対象が今夜死ぬと、その役職を「?」にして隠す。' },
+    sk: { n: 'シリアルキラー', d: '(中立)毎晩1人を殺せる。最後まで生き残れば単独勝利。' }
+  };
+  const FG_TEAM = { inn: 'イノセント(村人側)', imp: 'インポスター(人狼側)', neu: 'ニュートラル(中立)' };
+  const FG_ABL = ['rat', 'inv', 'police', 'lookout', 'tracker', 'doctor'];
+  const FG_BOTN = ['ハル', 'ミナ', 'ソラ', 'レン', 'ユイ', 'カイ', 'ノア', 'リク'];
+  function memDb() {
+    const root = {};
+    const walk = (segs, create) => { let n = root; for (const s of segs) { if (n[s] == null || typeof n[s] !== 'object') { if (!create) return undefined; n[s] = {}; } n = n[s]; } return n; };
+    let seq = 0;
+    return async (m, path, d) => {
+      const segs = path.split('/').filter(Boolean), last = segs.pop(), clone = (x) => (x === undefined ? null : JSON.parse(JSON.stringify(x)));
+      if (m === 'GET') { const par = walk(segs, false); return par && last in par ? clone(par[last]) : null; }
+      if (m === 'DELETE') { const par = walk(segs, false); if (par) delete par[last]; return null; }
+      if (m === 'POST') { const par = walk(segs.concat(last), true); const id = 'p' + String(++seq).padStart(6, '0'); par[id] = clone(d); return { name: id }; }
+      const par = walk(segs, true);
+      if (m === 'PUT') { if (d === null) delete par[last]; else par[last] = clone(d); }
+      else { let t = par[last]; if (t == null || typeof t !== 'object') t = par[last] = {}; for (const key of Object.keys(d)) { const ks = key.split('/'); let n = t; for (let i = 0; i < ks.length - 1; i++) { if (n[ks[i]] == null || typeof n[ks[i]] !== 'object') n[ks[i]] = {}; n = n[ks[i]]; } if (d[key] === null) delete n[ks[ks.length - 1]]; else n[ks[ks.length - 1]] = clone(d[key]); } }
+      return clone(d);
+    };
+  }
+  function createFeign(stage, api) {
+    const root = el('div', 'pg wolf wnet', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+        <span class="chip" data-k="day">バカ人狼</span>
+      </div>
+      <div class="wn-body" data-k="body"></div>
+      <div class="pg-foot"><span data-k="role"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const body = k('body'), g = (n) => body.querySelector('[data-k="' + n + '"]');
+    const onlineOK = () => typeof rtdb === 'function' && typeof FB !== 'undefined' && typeof Rank !== 'undefined' && !!Rank.uid;
+    const myId = () => (solo ? 'me' : Rank.uid), myName = () => (typeof Rank !== 'undefined' && typeof Rank.name === 'function' ? Rank.name() : 'あなた');
+    const MAXP = 12, MINP = 4;
+    let solo = false, mem = null, db = null, code = '', room = null, isHost = false, poll = 0, clock = 0, busy = false, view = '', finished = false, sigKey = '', sendAt = 0, chatN = { chat: -1, wchat: -1 }, canChat = false, canWolf = false, mode = 'atk', botLast = 0;
+    const path = (s) => '/feign/' + code + (s || '');
+    const me = () => myId();
+    const nm = (u) => (room && room.players && room.players[u] ? room.players[u].n : 'だれか');
+    const plist = () => Object.keys((room && room.players) || {}).sort((a, b) => (room.players[a].t || 0) - (room.players[b].t || 0));
+    const rn = (r) => (FR[r] ? FR[r].n : r);
+    const btn = (label, fn, cls) => { const b = el('button', 'btn mini' + (cls ? ' ' + cls : '')); b.type = 'button'; b.textContent = label; b.addEventListener('click', fn); return b; };
+    const para = (t, c) => { const p = el('p', c || 'wn-p'); p.textContent = t; return p; };
+    const callBtn = () => btn('📞 通話をひらく', () => { window.open('https://meet.jit.si/ArcadeFeign' + code + 'Room', '_blank', 'noopener'); }, 'call');
+    const dispRole = (u) => { const p = room.priv && room.priv[u]; if (!p) return '?'; return rn(p.role === 'fool' ? p.shown : p.role); };
+
+    /* ---------- メニュー ---------- */
+    function toMenu(msg) {
+      clearInterval(poll); poll = 0; code = ''; room = null; view = 'menu'; sigKey = ''; solo = false; mem = null; db = null;
+      body.textContent = ''; k('day').textContent = 'バカ人狼'; k('role').textContent = '';
+      body.append(para('「Feign」を参考にした人狼です。村人側にも全員に役職(ねずみ・ポリス・ドクターなど)があり、自分を役職持ちだと思い込んでいる「バカ」が混ざります。中立のシリアルキラーもいます。', 'wn-p'));
+      const c0 = el('section', 'bt-card'), h0 = el('h2'); h0.textContent = '1人で遊ぶ(CPU 5人)'; c0.append(h0);
+      const sb = btn('1人でスタート', () => startSolo()); sb.classList.remove('mini'); c0.append(para('CPUは役職の能力を使って動き、ときどき発言します。ネットなしでも遊べます。', 'wn-p small'), sb); body.append(c0);
+      if (!onlineOK()) { body.append(para('友だちとのオンライン対戦は、アカウントを作ってから、ネットにつながる index.html 版で遊べます。', 'wn-p small')); return; }
+      const c1 = el('section', 'bt-card'), h1 = el('h2'); h1.textContent = '友だちと部屋をつくる'; c1.append(h1);
+      const tsel = el('select', 'bt-sel'); [[120, '話し合い 2分'], [180, '話し合い 3分'], [300, '話し合い 5分']].forEach(([v, t], i) => { const o = el('option'); o.value = String(v); o.textContent = t; if (i === 1) o.selected = true; tsel.append(o); });
+      const mk = btn('部屋をつくる', () => create(Number(tsel.value), mk)); mk.classList.remove('mini'); c1.append(tsel, mk);
+      const c2 = el('section', 'bt-card'), h2 = el('h2'); h2.textContent = '部屋に入る'; c2.append(h2);
+      const inp = el('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off';
+      const jn = btn('入る', () => join(inp.value, jn)); jn.classList.remove('mini'); c2.append(inp, jn);
+      const m = para('', 'bt-msg'); m.dataset.k = 'msg'; body.append(c1, c2, m);
+    }
+    const menuMsg = (t) => { const m = g('msg'); if (m) m.textContent = t || ''; };
+    function startSolo() {
+      solo = true; mem = memDb(); db = mem; code = 'SOLO';
+      const players = { me: { n: myName(), t: 1 } }; FG_BOTN.slice(0, 5).forEach((n, i) => { players['bot' + (i + 1)] = { n: n + '(CPU)', t: 2 + i, bot: true }; });
+      db('PUT', path(), { host: 'me', cfg: { talk: 120 }, state: 'lobby', players: players }).then(() => { room = null; view = ''; sigKey = ''; chatN = { chat: -1, wchat: -1 }; finished = false; clearInterval(poll); poll = setInterval(tick, 700); return tick().then(() => startGame()); });
+    }
+    async function create(talk, b) {
+      b.disabled = true; menuMsg('');
+      try {
+        db = rtdb; let c = '';
+        for (let i = 0; i < 6; i++) { c = Array.from({ length: 4 }, () => CODE_CH[rndInt(0, CODE_CH.length - 1)]).join(''); if (!(await rtdb('GET', '/feign/' + c))) break; c = ''; }
+        if (!c) { menuMsg('部屋をつくれませんでした。'); b.disabled = false; return; }
+        await rtdb('PUT', '/feign/' + c, { host: me(), cfg: { talk: talk }, state: 'lobby', created: Date.now(), players: { [me()]: { n: myName(), t: Date.now() } } });
+        enter(c);
+      } catch (e) { menuMsg('通信できませんでした。'); b.disabled = false; }
+    }
+    async function join(raw, b) {
+      const c = String(raw || '').trim().toUpperCase(); if (c.length !== 4) { menuMsg('コードは4文字です。'); return; }
+      b.disabled = true; menuMsg('');
+      try {
+        db = rtdb; const r = await rtdb('GET', '/feign/' + c);
+        if (!r) { menuMsg('その部屋は見つかりません。'); b.disabled = false; return; }
+        const ps = r.players || {};
+        if (!ps[me()]) {
+          if (r.state !== 'lobby') { menuMsg('その部屋はもうゲーム中です。'); b.disabled = false; return; }
+          if (Object.keys(ps).length >= MAXP) { menuMsg('その部屋はいっぱいです。'); b.disabled = false; return; }
+          await rtdb('PUT', '/feign/' + c + '/players/' + me(), { n: myName(), t: Date.now() });
+        }
+        enter(c);
+      } catch (e) { menuMsg('通信できませんでした。'); b.disabled = false; }
+    }
+    function enter(c) { code = c; room = null; view = ''; sigKey = ''; chatN = { chat: -1, wchat: -1 }; finished = false; clearInterval(poll); poll = setInterval(tick, 1000); tick(); }
+    async function leaveRoom() {
+      const c = code, wasHost = room && room.host === me(), st = room && room.state; clearInterval(poll); poll = 0; code = '';
+      try { if (c && !solo && st === 'lobby') { if (wasHost) await db('DELETE', '/feign/' + c); else await db('DELETE', '/feign/' + c + '/players/' + me()); } } catch (e) { /* noop */ }
+    }
+    async function tick() {
+      if (busy || !code) return; busy = true;
+      try {
+        const r = await db('GET', path()); if (!code) return;
+        if (!r) { if (!finished) { await leaveRoom(); toMenu(); menuMsg('部屋がなくなりました。'); } return; }
+        room = r; isHost = r.host === me();
+        if (!(r.players && r.players[me()]) && r.state === 'lobby') { await leaveRoom(); toMenu(); menuMsg('部屋から外れました。'); return; }
+        if (isHost && r.state === 'play') await hostStep();
+        if (room.state === 'lobby') renderLobby(); else if (room.state === 'play') renderGame(); else renderEnd();
+      } catch (e) { /* 再試行 */ } finally { busy = false; }
+    }
+
+    /* ---------- ロビー ---------- */
+    function renderLobby() {
+      if (solo) return;
+      const ids = plist(), sig = 'L|' + ids.map((u) => u + nm(u)).join(',') + '|' + (isHost ? 1 : 0);
+      if (view === 'lobby' && sig === sigKey) return;
+      view = 'lobby'; sigKey = sig; body.textContent = ''; k('day').textContent = '部屋 ' + code;
+      body.append(para('部屋のコード(友だちに伝えてください)'));
+      const cd = el('div', 'bt-code'); cd.textContent = code; body.append(cd);
+      const pl = el('section', 'bt-card'), h = el('h2'); h.textContent = 'さんかする人 (' + ids.length + '/' + MAXP + ')'; pl.append(h);
+      const ol = el('ol', 'bt-pl'); ids.forEach((u) => { const li = el('li', u === me() ? 'me' : ''); li.textContent = nm(u) + (u === room.host ? ' 👑' : '') + (u === me() ? ' (あなた)' : ''); ol.append(li); }); pl.append(ol);
+      pl.append(para(ids.length >= MINP ? '準備OK! ' + ids.length + '人で始められます。(足りないときは、ホストがCPUを足せます)' : 'あと ' + (MINP - ids.length) + '人 で始められます(CPUでうめることもできます)')); body.append(pl);
+      const row = el('div', 'acts'); row.append(callBtn());
+      if (isHost) {
+        row.append(btn('CPUを1人ふやす', async () => { const n = ids.length; if (n >= MAXP) return; const id = 'bot' + (Date.now() % 100000); try { await db('PUT', path('/players/' + id), { n: FG_BOTN[n % FG_BOTN.length] + '(CPU)', t: Date.now(), bot: true }); tick(); } catch (e) { /* noop */ } }));
+        const st = btn('ゲームスタート', () => startGame()); st.classList.remove('mini'); st.disabled = ids.length < MINP; row.append(st);
+      } else row.append(para('ホストが始めるのを待っています…'));
+      body.append(row);
+    }
+    function comp(n) {
+      const l = [], imps = n < 8 ? 1 : 2;
+      for (let i = 0; i < imps; i++) l.push({ role: rnd(['imp', 'imp', 'cleaner', 'rat', 'police', 'tracker', 'lookout', 'inv']), team: 'imp' });
+      if (n >= 6) l.push({ role: 'sk', team: 'neu' });
+      if (n >= 5) l.push({ role: 'fool', team: 'inn' });
+      const pool = shuffle(FG_ABL.slice());
+      while (l.length < n) l.push({ role: pool.length ? pool.pop() : 'villager', team: 'inn' });
+      return l.slice(0, n);
+    }
+    const rnd = (a) => a[rndInt(0, a.length - 1)];
+    async function startGame() {
+      const ids = plist(); if (ids.length < MINP) return;
+      const cs = shuffle(comp(ids.length)), priv = {}, alive = {}, now = Date.now();
+      ids.forEach((u, i) => { const c = cs[i]; priv[u] = { role: c.role, team: c.team, info: [], used: false }; if (c.role === 'fool') priv[u].shown = rnd(FG_ABL); alive[u] = true; });
+      ids.forEach((u) => { if (priv[u].team === 'imp') { const m = ids.filter((x) => x !== u && priv[x].team === 'imp').map(nm); priv[u].info.push(m.length ? 'インポスターの仲間: ' + m.join('、') : 'インポスターはあなた1人です'); } });
+      const pub = { ph: 'night', day: 1, dl: now + 50000, ns: now, alive: alive, rev: {}, ev: ['--- 1日目の夜 --- 能力のある人は行動をえらんでください'], seq: 1 };
+      try { await db('PATCH', path(), { state: 'play', priv: priv, pub: pub, act: null, vote: null, ready: null }); room = (await db('GET', path())) || room; tick(); } catch (e) { /* noop */ }
+    }
+
+    /* ---------- 進行(ホスト) ---------- */
+    const botsOf = (ids) => ids.filter((u) => room.players[u] && room.players[u].bot);
+    function winnerOf(alive, priv) {
+      const al = Object.keys(alive).filter((u) => alive[u]), imps = al.filter((u) => priv[u].team === 'imp').length, sk = al.filter((u) => priv[u].team === 'neu').length, inn = al.length - imps - sk;
+      if (!imps && !sk) return 'inn';
+      if (!imps && sk && inn <= 1) return 'neu';
+      if (imps && !sk && imps >= inn) return 'imp';
+      if (!imps && !inn) return 'neu';
+      return null;
+    }
+    function botNight(u, priv, al, key) {
+      const r = priv[u].role, team = priv[u].team, others = al.filter((x) => x !== u), foes = others.filter((x) => priv[x].team !== team || team === 'neu');
+      if (r === 'villager' || r === 'doctor' && !others.length) return null;
+      let t, m = 'abl';
+      if (team === 'imp') { if (r === 'imp' || Math.random() < 0.55) { m = 'atk'; t = rnd(foes.length ? foes : others); } else t = rnd(others); }
+      else if (r === 'sk') { m = 'atk'; t = rnd(others); }
+      else if (r === 'rat' && priv[u].used) return null;
+      else t = rnd(others);
+      return t ? { k: key, t: t, m: m } : null;
+    }
+    const BOT_LINES = ['だれか能力の結果ある?', 'ぼくは怪しくないよ!', 'まだ決め手がないね…', '役職COしたほうがいい?', 'だれかが嘘をついてる気がする', 'バカがいるかもしれないよ?'];
+    async function hostStep() {
+      const p = room.pub, priv = room.priv; if (!p || p.ph === 'end' || !priv) return;
+      const now = Date.now(), alive = Object.assign({}, p.alive), al = Object.keys(alive).filter((u) => alive[u]), bots = botsOf(al);
+      const act = Object.assign({}, room.act || {}), vote = Object.assign({}, room.vote || {}), ready = Object.assign({}, room.ready || {});
+      const ev = (p.ev || []).slice(), upd = {}; let np = null;
+      const finish = (win) => { np.win = win; np.ph = 'end'; np.roles = {}; Object.keys(priv).forEach((u) => { np.roles[u] = priv[u].role; }); ev.push('=== ゲーム終了:' + ({ inn: 'イノセント', imp: 'インポスター', neu: 'ニュートラル' })[win] + 'の勝ち! ==='); np.ev = ev; upd.state = 'end'; };
+      if (p.ph === 'night') {
+        const key = 'n' + p.day;
+        bots.forEach((u) => { if (!(act[u] && act[u].k === key)) { const a = botNight(u, priv, al, key); if (a) act[u] = a; } });
+        const need = al.filter((u) => { const r = priv[u].role, sr = r === 'fool' ? priv[u].shown : r; return priv[u].team === 'imp' || r === 'sk' || (sr !== 'villager' && !(sr === 'rat' && priv[u].used)); });
+        const done = need.every((u) => act[u] && act[u].k === key && act[u].t) || need.length === 0;
+        const humansNeed = need.filter((u) => !(room.players[u] && room.players[u].bot));
+        if (!((done && now >= p.ns + 10000) || now >= p.dl)) return;
+        void humansNeed;
+        const r = resolveNight(p, priv, alive, act, key, upd); ev.push.apply(ev, r.ev);
+        np = { ph: 'day', day: p.day, dl: now + (Number((room.cfg || {}).talk) || 180) * 1000, ns: p.ns, alive: r.alive, rev: r.rev, ev: ev, seq: (p.seq || 0) + 1 };
+        upd.ready = null; upd.act = null; const w = winnerOf(r.alive, priv); if (w) finish(w);
+      } else if (p.ph === 'day') {
+        if (now - botLast > 9000 && bots.length && now < p.dl) { botLast = now; const b = rnd(bots), o = rnd(al.filter((x) => x !== b)); const line = Math.random() < 0.4 ? nm(o) + 'さんが気になるな…' : rnd(BOT_LINES); try { await db('POST', path('/chat'), { u: b, n: nm(b), m: line, t: now, d: p.day }); } catch (e) { /* noop */ } }
+        bots.forEach((u) => { ready[u] = { d: p.day }; });
+        const all = al.every((u) => ready[u] && ready[u].d === p.day);
+        if (!(all || now >= p.dl)) return;
+        if (p.day === 1) { ev.push('初日は追放の投票はありません。夜になります。', '--- 2日目の夜 ---'); np = { ph: 'night', day: 2, dl: now + 50000, ns: now, alive: alive, rev: p.rev || {}, ev: ev, seq: (p.seq || 0) + 1 }; upd.act = null; }
+        else { ev.push('--- 投票の時間です(生存者の過半数が必要) ---'); np = { ph: 'vote', day: p.day, dl: now + 45000, ns: p.ns, alive: alive, rev: p.rev || {}, ev: ev, seq: (p.seq || 0) + 1 }; }
+      } else if (p.ph === 'vote') {
+        const key = 'd' + p.day;
+        bots.forEach((u) => { if (!(vote[u] && vote[u].k === key)) { const c = al.filter((x) => x !== u && (priv[u].team !== 'imp' || priv[x].team !== 'imp')); vote[u] = { k: key, t: Math.random() < 0.8 && c.length ? rnd(c) : 'skip' }; } });
+        const all = al.every((u) => vote[u] && vote[u].k === key && vote[u].t);
+        if (!(all || now >= p.dl)) return;
+        const tally = {}, lines = []; al.forEach((u) => { const v = vote[u]; if (v && v.k === key && v.t && v.t !== 'skip' && alive[v.t] && v.t !== u) { tally[v.t] = (tally[v.t] || 0) + 1; lines.push(nm(u) + ' → ' + nm(v.t)); } else if (v && v.t === 'skip') lines.push(nm(u) + ' → 棄権'); });
+        ev.push('【投票結果】' + (lines.join(' / ') || '誰も投票しませんでした'));
+        const ks = Object.keys(tally), mx = ks.length ? Math.max.apply(null, ks.map((x) => tally[x])) : 0, tops = ks.filter((x) => tally[x] === mx), rev = Object.assign({}, p.rev || {});
+        if (ks.length && tops.length === 1 && mx > al.length / 2) { const ex = tops[0]; alive[ex] = false; rev[ex] = rn(priv[ex].role); ev.push(nm(ex) + 'が追放されました。役職は【' + rev[ex] + '】でした。'); }
+        else ev.push('過半数に届かず、だれも追放されませんでした。');
+        ev.push('--- ' + (p.day + 1) + '日目の夜 ---');
+        np = { ph: 'night', day: p.day + 1, dl: now + 50000, ns: now, alive: alive, rev: rev, ev: ev, seq: (p.seq || 0) + 1 }; upd.act = null; upd.vote = null;
+        const w = winnerOf(alive, priv); if (w) finish(w);
+      } else return;
+      upd.pub = np; await db('PATCH', path(), upd); room.pub = np; if (upd.state) room.state = upd.state;
+    }
+    function resolveNight(p, priv, aliveIn, act, key, upd) {
+      const alive = Object.assign({}, aliveIn), al = Object.keys(alive).filter((u) => alive[u]), day = p.day, rev = Object.assign({}, p.rev || {}), ev = [], info = {};
+      const add = (u, t) => { (info[u] = info[u] || []).push(day + '日目の夜: ' + t); };
+      const A = {}; al.forEach((u) => { const a = act[u]; if (a && a.k === key && a.t && alive[a.t] !== undefined && a.t !== u) A[u] = { t: a.t, m: a.m || 'abl' }; });
+      const R = (u) => priv[u].role, SR = (u) => (R(u) === 'fool' ? priv[u].shown : R(u));
+      const blocked = {};
+      al.forEach((u) => { if (R(u) === 'police' && A[u] && A[u].m !== 'atk') blocked[A[u].t] = u; });
+      const acting = (u) => A[u] && !blocked[u];
+      Object.keys(blocked).forEach((t) => { if (A[t]) add(t, 'ポリスの' + nm(blocked[t]) + 'に外出を止められ、何もできなかった。'); else add(t, 'ポリスの' + nm(blocked[t]) + 'に外出を止められた。'); });
+      const visits = {}, went = {};
+      al.forEach((u) => { if (acting(u) && R(u) !== 'fool') { (visits[A[u].t] = visits[A[u].t] || []).push(u); went[u] = A[u].t; } });
+      const prot = {}, clean = {}; al.forEach((u) => { if (!acting(u)) return; if (R(u) === 'doctor') prot[A[u].t] = u; if (R(u) === 'cleaner' && A[u].m !== 'atk') clean[A[u].t] = true; });
+      const kills = [], impAtk = {}; al.forEach((u) => { if (!acting(u)) return; if (priv[u].team === 'imp' && A[u].m === 'atk') impAtk[A[u].t] = (impAtk[A[u].t] || 0) + 1; if (R(u) === 'sk') kills.push([A[u].t, 'sk']); });
+      const iks = Object.keys(impAtk); if (iks.length) { const mx = Math.max.apply(null, iks.map((x) => impAtk[x])), tops = iks.filter((x) => impAtk[x] === mx); kills.push([rnd(tops), 'imp']); }
+      const dead = [];
+      kills.forEach(([t]) => { if (prot[t]) { add(t, '何者かに襲われたが、ドクターに守られて助かった!'); add(prot[t], '守った' + nm(t) + 'は、襲われていた!'); } else if (dead.indexOf(t) < 0) dead.push(t); });
+      al.forEach((u) => {
+        if (!acting(u) && R(u) !== 'fool') return; const a = A[u]; if (!a || blocked[u]) return; const t = a.t, sr = SR(u), imp = priv[u].team === 'imp'; if (imp && a.m === 'atk') return;
+        const fool = R(u) === 'fool', rolesAll = Object.keys(FR).filter((x) => x !== 'fool');
+        if (sr === 'rat') { if (priv[u].used) return; upd['priv/' + u + '/used'] = true; priv[u].used = true; if (fool) add(u, nm(t) + 'は【陣営: ' + FG_TEAM[rnd(['inn', 'imp', 'neu'])] + ' / 役職: ' + rn(rnd(rolesAll)) + '】だった。'); else add(u, nm(t) + 'は【陣営: ' + FG_TEAM[priv[t].team] + ' / 役職: ' + rn(R(t)) + '】だった。'); }
+        else if (sr === 'inv') { const real = fool ? rnd(rolesAll) : R(t), wrong = rnd(['villager'].concat(FG_ABL).filter((x) => x !== real)), pair = shuffle([real, wrong]); add(u, nm(t) + 'の役職は【' + rn(pair[0]) + '】か【' + rn(pair[1]) + '】のどちらか。'); }
+        else if (sr === 'police') add(u, nm(t) + 'の外出を止めた。');
+        else if (sr === 'doctor') add(u, nm(t) + 'を守った。');
+        else if (sr === 'lookout') { const vs = fool ? (Math.random() < 0.5 ? [rnd(al.filter((x) => x !== u && x !== t))] : []) : (visits[t] || []).filter((x) => x !== u); add(u, nm(t) + 'の家を訪れたのは: ' + (vs.length ? vs.map(nm).join('、') : 'だれもいない') + '。'); }
+        else if (sr === 'tracker') { const to = fool ? (Math.random() < 0.6 ? rnd(al.filter((x) => x !== t)) : null) : went[t]; add(u, nm(t) + 'は' + (to ? nm(to) + 'の家を訪れていた。' : 'どこにも行かなかった。')); }
+      });
+      ev.push('--- ' + day + '日目の朝 ---');
+      if (!dead.length) ev.push('昨夜はだれも殺されませんでした。');
+      dead.forEach((u) => { alive[u] = false; rev[u] = clean[u] ? '?' : rn(R(u)); ev.push(nm(u) + 'が殺されました。役職は【' + rev[u] + '】' + (clean[u] ? '(隠されている)' : '') + '。'); });
+      Object.keys(info).forEach((u) => { upd['priv/' + u + '/info'] = (priv[u].info || []).concat(info[u]); });
+      return { alive: alive, rev: rev, ev: ev };
+    }
+
+    /* ---------- ゲーム画面 ---------- */
+    function chatBox(id, title, node) {
+      const box = el('section', 'wn-chat'), h = el('div', 'wn-ch'); h.textContent = title;
+      const log = el('div', 'wn-cl'); log.dataset.k = id + 'Log';
+      const row = el('div', 'wn-cr'), inp = el('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 80; inp.placeholder = 'メッセージ'; inp.dataset.k = id + 'In'; inp.autocomplete = 'off';
+      const send = btn('送る', () => submit(id, inp)); send.dataset.k = id + 'Send';
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); submit(id, inp); } });
+      row.append(inp, send); box.append(h, log, row); node.append(box);
+    }
+    async function sendText(id, t) {
+      t = String(t).trim().slice(0, 80); if (!t || Date.now() - sendAt < 600) return false; sendAt = Date.now();
+      try { await db('POST', path('/' + id), { u: me(), n: myName(), m: t, t: Date.now(), d: room.pub ? room.pub.day : 0 }); tick(); return true; } catch (e) { return false; }
+    }
+    async function submit(id, inp) { const t = inp.value; inp.value = ''; if (!(await sendText(id, t))) inp.value = t; }
+    function buildGame() {
+      view = 'game'; body.textContent = ''; chatN = { chat: -1, wchat: -1 };
+      body.innerHTML = '<div class="wn-ban" data-k="ban"></div><div class="wn-role" data-k="rc"></div><div class="wplayers" data-k="pls"></div><div class="wn-act acts" data-k="act"></div><div class="wlog wn-ev" data-k="ev"></div><div data-k="chats"></div>';
+      const ch = g('chats'); chatBox('chat', 'みんなの会話', ch);
+      const pv = room.priv && room.priv[me()]; if (pv && pv.team === 'imp') chatBox('wchat', '😈 インポスターのひそひそ話', ch);
+      const qp = el('div', 'acts wn-qp');
+      ['私はイノセントです', '能力の結果を言います', 'だれか怪しい?', '同意!', '私がバカかも…'].forEach((t) => qp.append(btn(t, () => { if (canChat) sendText('chat', t); })));
+      ch.append(qp); if (!solo) { const row = el('div', 'acts'); row.append(callBtn()); ch.append(row); }
+    }
+    function renderGame() {
+      const p = room.pub; if (!p) return; if (view !== 'game') buildGame();
+      const pv = room.priv[me()], al = !!p.alive[me()], act = (room.act || {})[me()], vt = (room.vote || {})[me()], rd = (room.ready || {})[me()];
+      k('day').textContent = p.day + '日目'; const shown = pv.role === 'fool' ? pv.shown : pv.role;
+      k('role').textContent = 'あなた: ' + rn(shown);
+      const rc = g('rc'), info = pv.info || [], rsig = shown + '|' + info.length + '|' + al; if (rc.dataset.s !== rsig) {
+        rc.dataset.s = rsig; rc.textContent = ''; const h = el('b'); h.textContent = '【' + rn(shown) + '】' + (pv.team === 'imp' ? 'インポスター側' : pv.team === 'neu' ? '中立' : 'イノセント側') + (al ? '' : '(死亡・観戦中)'); rc.append(h, para(FR[shown].d, 'wn-p small'));
+        info.forEach((t) => rc.append(para('・' + t, 'wl res')));
+      }
+      const pls = g('pls'); pls.textContent = '';
+      plist().forEach((u) => { const c = el('span', 'wp' + (p.alive[u] ? '' : ' dead') + (u === me() ? ' me' : '')); let mark = ''; if (!p.alive[u]) mark = ' 【' + ((p.rev || {})[u] || '?') + '】'; else if (p.ph === 'day' && room.ready && room.ready[u] && room.ready[u].d === p.day) mark = ' ✓'; else if (p.ph === 'vote' && room.vote && room.vote[u] && room.vote[u].k === 'd' + p.day) mark = ' ✓'; c.textContent = (p.alive[u] ? '' : '✝ ') + nm(u) + mark; pls.append(c); });
+      const sig = [p.ph, p.day, al, act && act.t, act && act.m, vt && vt.t, rd && rd.d, p.seq, mode, pv.used, info.length].join('|');
+      if (sig !== sigKey) { sigKey = sig; renderActions(p, pv, al, act, vt, rd); }
+      const ev = g('ev'), es = String((p.ev || []).length); if (ev.dataset.s !== es) { ev.dataset.s = es; ev.textContent = ''; (p.ev || []).forEach((t) => ev.append(para(t, 'wl ' + (/^---|^===/.test(t) ? 'sys' : /殺され|追放されました/.test(t) ? 'dead' : '')))); ev.scrollTop = ev.scrollHeight; }
+      fillChat('chat', room.chat); fillChat('wchat', room.wchat);
+      canChat = al && (p.ph === 'day' || p.ph === 'vote'); canWolf = al && pv.team === 'imp';
+      [['chat', canChat], ['wchat', canWolf]].forEach(([id, ok]) => { const i = g(id + 'In'), s = g(id + 'Send'); if (i) { i.disabled = !ok; s.disabled = !ok; i.placeholder = ok ? 'メッセージ' : (id === 'chat' ? (al ? '昼と投票のときに話せます' : '死亡した人は話せません') : '話せません'); } });
+      timerText();
+    }
+    function fillChat(id, data) {
+      const log = g(id + 'Log'); if (!log) return; const arr = Object.values(data || {}).sort((a, b) => (a.t || 0) - (b.t || 0)).slice(-60);
+      if (arr.length === chatN[id]) return; chatN[id] = arr.length; const stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 30; log.textContent = '';
+      arr.forEach((m) => { const q = el('p', 'wl' + (m.u === me() ? ' me' : '')); q.textContent = String(m.n || '').slice(0, 14) + ': ' + String(m.m || ''); log.append(q); }); if (stick) log.scrollTop = log.scrollHeight;
+    }
+    function timerText() {
+      const p = room && room.pub, b = g('ban'); if (!p || !b || p.ph === 'end') return;
+      const left = Math.max(0, Math.ceil((p.dl - Date.now()) / 1000)); b.textContent = p.day + '日目 ' + ({ night: '🌙 夜', day: '☀ 昼の話し合い', vote: '🗳 投票' })[p.ph] + '  のこり ' + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
+    }
+    async function setAct(sub, val) { try { await db('PUT', path(sub), val); const ps = sub.split('/'); room[ps[1]] = room[ps[1]] || {}; room[ps[1]][ps[2]] = val; sigKey = ''; renderGame(); } catch (e) { /* noop */ } }
+    function renderActions(p, pv, al, act, vt, rd) {
+      const box = g('act'); box.textContent = '';
+      if (!al) { box.append(para('あなたは死亡しました。ゲームの行方を見守ろう。', 'wn-p')); return; }
+      const alive = Object.keys(p.alive).filter((u) => p.alive[u]), others = alive.filter((u) => u !== me()), shown = pv.role === 'fool' ? pv.shown : pv.role;
+      const pickRow = (cands, cur, fn, label) => { box.append(para(label, 'wn-p')); cands.forEach((u) => box.append(btn(nm(u), () => fn(u), cur === u ? 'on' : ''))); };
+      if (p.ph === 'night') {
+        const key = 'n' + p.day, cur = act && act.k === key ? act.t : null, curM = act && act.k === key ? act.m : null;
+        const imp = pv.team === 'imp', hasAbl = shown !== 'imp' && shown !== 'villager', canAbl = hasAbl && !(shown === 'rat' && pv.used && pv.role !== 'fool');
+        if (shown === 'villager' && !imp) { box.append(para('夜です。あなたには夜の能力がありません。朝を待とう。', 'wn-p')); return; }
+        if (imp && canAbl) { box.append(btn('襲撃する', () => { mode = 'atk'; sigKey = ''; renderGame(); }, mode === 'atk' ? 'on' : ''), btn(rn(shown) + 'の能力', () => { mode = 'abl'; sigKey = ''; renderGame(); }, mode === 'abl' ? 'on' : '')); }
+        const m = imp ? (canAbl ? mode : 'atk') : (pv.role === 'sk' ? 'atk' : 'abl');
+        if (m === 'abl' && !canAbl) { box.append(para('能力はもう使えません。', 'wn-p')); return; }
+        const cands = (imp && m === 'atk') ? others.filter((u) => room.priv[u] && false) .concat(others.filter((u) => !pvTeamKnown(u))) : others;
+        const label = m === 'atk' ? '襲う人をえらんでください' : ({ rat: '調べる人(1回だけ!)', inv: '役職を調べる人', police: '外出を止める人', lookout: '見張る家', tracker: '行き先を追う人', doctor: '守る人', cleaner: '役職を隠す人(襲撃のかわり)' })[shown] || '対象をえらんでください';
+        pickRow(cands, cur, (u) => setAct('/act/' + me(), { k: key, t: u, m: m }), label);
+        if (cur) box.append(para('えらんだ人: ' + nm(cur) + '(夜が終わるまで変更できます)', 'wn-p small'));
+      } else if (p.ph === 'day') {
+        const n = alive.filter((u) => room.ready && room.ready[u] && room.ready[u].d === p.day).length;
+        box.append(para('話し合い中です。能力の結果や疑いを文字チャットで話そう。(あなたの役がバカかも?)', 'wn-p'));
+        box.append(btn(rd && rd.d === p.day ? '準備OK済み ' + n + '/' + alive.length : (p.day === 1 ? '話し合いを終えて夜へ' : '話し合いを終えて投票へ') + ' (' + n + '/' + alive.length + ')', () => setAct('/ready/' + me(), { d: p.day }), rd && rd.d === p.day ? 'on' : ''));
+      } else if (p.ph === 'vote') {
+        const key = 'd' + p.day, cur = vt && vt.k === key ? vt.t : null;
+        pickRow(others, cur, (u) => setAct('/vote/' + me(), { k: key, t: u }), '追放する人に投票(過半数の票が必要)'); box.append(btn('棄権', () => setAct('/vote/' + me(), { k: key, t: 'skip' }), cur === 'skip' ? 'on' : ''));
+      }
+    }
+    const pvTeamKnown = (u) => { const pv = room.priv[me()]; return pv.team === 'imp' && room.priv[u] && room.priv[u].team === 'imp'; };
+
+    /* ---------- 結果 ---------- */
+    function renderEnd() {
+      const p = room.pub; if (view === 'end') return; view = 'end'; sigKey = ''; body.textContent = ''; k('day').textContent = '結果';
+      const roles = p.roles || {}, pv = room.priv[me()], team = pv.team, win = team === p.win, alive = p.alive && p.alive[me()];
+      const pts = win ? (team === 'neu' ? 200 : 150) + (alive ? 50 : 0) : 30;
+      const h = el('div', 'bt-code'); h.textContent = win ? 'あなたの勝ち!' : 'あなたの負け…'; body.append(h);
+      body.append(para(({ inn: 'イノセント', imp: 'インポスター', neu: 'ニュートラル' })[p.win] + 'の勝利'));
+      const ol = el('ol', 'bt-pl'); plist().forEach((u) => { const pr = room.priv[u], li = el('li', u === me() ? 'me' : ''); li.textContent = nm(u) + ':' + rn(roles[u]) + (pr.role === 'fool' ? '(「' + rn(pr.shown) + '」だと思い込んでいた)' : '') + '/' + FG_TEAM[pr.team] + (p.alive && p.alive[u] ? '' : ' ✝'); ol.append(li); });
+      body.append(ol, para('スコア +' + pts));
+      const row = el('div', 'acts'), b = btn('けっかをみる', () => done(pts, win, roles[me()])); b.classList.remove('mini'); row.append(b); body.append(row);
+      if (win) winJingle(); else A.beep(170, 0.3, 'sawtooth', 0.06, -90);
+    }
+    function done(pts, win, role) { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', rn(role) || '-'], ['けっか', win ? '勝ち' : '負け']], win ? 'win' : 'lose'); }
+    const resetQuit = quitBtn(root, async () => { if (finished) return; finished = true; clearInterval(poll); poll = 0; await leaveRoom(); api.end(0, [['けっか', 'とちゅうでやめた']], 'lose'); });
+    return {
+      start() { finished = false; resetQuit(); k('score').textContent = '0'; toMenu(); clock = setInterval(timerText, 500); },
+      pause() {}, resume() {}, destroy() { clearInterval(poll); clearInterval(clock); }
+    };
+  }
+  const ICON_FEIGN = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#2b1840"/><circle cx="21" cy="26" r="9" fill="#ffd9b0"/><circle cx="39" cy="26" r="9" fill="#9fd8ff"/><circle cx="18" cy="24" r="2" fill="#2b1840"/><circle cx="24" cy="24" r="2" fill="#2b1840"/><path d="M17 31q4 3 8 0" stroke="#2b1840" stroke-width="2" fill="none"/><circle cx="36" cy="24" r="2" fill="#2b1840"/><circle cx="42" cy="24" r="2" fill="#2b1840"/><path d="M35 31h8" stroke="#2b1840" stroke-width="2"/><text x="30" y="52" font-size="12" font-weight="700" fill="#ff9ab0" text-anchor="middle">バカ?</text></svg>';
   const GAMES = [
     { id: 'star', name: '星ひろい', short: '星ひろい', desc: 'カゴで星をキャッチ。レベルアップで強化を選ぶ。', icon: ICON_STAR, create: createStar,
       intro: 'カゴで夜空の星をひろっていきます。レベルが上がるたびに、好きな強化を1つ選べます。',
@@ -6042,6 +6393,9 @@
     { id: 'wordwolf', name: 'ワードウルフ', short: 'ワードウルフ', th: 'night', desc: '友だちと話して、少しちがうお題の人をさがす。', icon: ICON_WW, create: createWordWolf,
       intro: '全員にお題が配られますが、1人だけ少しちがうお題(ウルフ)。お題を直接言わずに話し合い、投票でウルフを当てよう(index.html版でオンライン、3〜10人)。',
       how: ['部屋をつくってコードを伝える/コードで入る', '自分のお題をヒントで話しながら、ほかの人とずれている人をさがす', 'ウルフが当てられても、みんなのお題を当てれば逆転勝ち。ホストはお題を自分で決めることもできる'], legend: '' },
+    { id: 'feign', name: 'バカ人狼', short: 'バカ人狼', th: 'night', desc: 'Feign風。全員に役職があり、「バカ」が混ざる人狼。', icon: ICON_FEIGN, create: createFeign,
+      intro: '「Feign」を参考にした人狼です。村人側にも全員に役職(ねずみ・インベスティゲーター・ポリス・ドクターなど)があり、自分を役職持ちだと思い込んでいる「バカ」が混ざります。中立のシリアルキラーもいます。1人(CPU)でも、友だち(index.html版)とでも遊べます。',
+      how: ['昼は文字チャットで話し合い、過半数の票で追放(役職が公開される)。初日の昼は追放なし', '夜は役職の能力で、ほかの人の家をおとずれる。インポスターは専用チャットで相談し、襲撃か能力のどちらか一方を使う', '能力の結果は、バカならデタラメ! 結果を信じすぎないように。勝ち条件はイノセント=人外全滅、インポスター=村人以上に増える、中立=最後まで生存'], legend: '' },
     { id: 'wolfnet', name: '人狼オンライン', short: '人狼ONLINE', th: 'night', desc: '友だちと部屋コードで遊ぶ本物の人狼。', icon: ICON_WOLFNET, create: createWolfNet,
       intro: '友だち4〜12人で遊ぶ人狼です(index.html版でオンライン)。村人陣営・人狼陣営・第三陣営(妖狐)に分かれ、文字チャットで話し合い、投票で処刑します。通話しながらでもOK。ホストの画面が開いている間だけ進行します。',
       how: ['部屋をつくってコードを伝える/コードで入る。4人からスタート', '役:村人・占い師・霊媒師・騎士/人狼・狂人/妖狐(人数で自動配分)', '夜に能力、昼は話し合い、投票で1人処刑。勝つと200点前後'], legend: '' },
@@ -6051,7 +6405,7 @@
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
@@ -6430,7 +6784,7 @@
     const c1 = bt('section', 'bt-card');
     c1.append(bt('h2', '', '部屋をつくる'));
     const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲームを選ぶ');
-    GAMES.filter((g) => g.id !== 'wolf' && g.id !== 'wolfnet' && g.id !== 'wordwolf').forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
+    GAMES.filter((g) => g.id !== 'wolf' && g.id !== 'wolfnet' && g.id !== 'wordwolf' && g.id !== 'feign').forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
     const dsel = bt('select', 'bt-sel'); dsel.setAttribute('aria-label', 'むずかしさ');
     DIFFS.forEach((d, i) => { const o = bt('option', '', 'むずかしさ: ' + d.n); o.value = String(i); if (i === DIFF) o.selected = true; dsel.append(o); });
     const mk = bt('button', 'btn', '部屋をつくる'); mk.type = 'button';
