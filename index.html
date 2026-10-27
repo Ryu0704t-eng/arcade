@@ -439,8 +439,24 @@
   .wn-body { width: min(100%, 420px); flex: 1 1 0; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
   .wn-p { margin: 0; font-size: 14px; line-height: 1.5; } .wn-p.small { font-size: 12px; color: var(--mute); }
   .wn-ban { font-family: var(--display); font-size: 18px; text-align: center; padding: 6px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); }
+  .ftown { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 20px 8px; width: min(100%, 440px); margin: 14px 0 6px; justify-items: stretch; }
+  .fh { position: relative; appearance: none; border: 0; font: inherit; font-size: 12px; color: #2a2018; background: #f3e6c8; border-radius: 3px 3px 8px 8px; padding: 6px 2px 5px; min-height: 76px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 1px; cursor: default; }
+  .fh::before { content: ''; position: absolute; left: -5px; right: -5px; top: -15px; height: 17px; background: var(--c, #c44); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .fh .av { font-size: 26px; line-height: 1.1; } .fh .nm { font-weight: 700; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fh .tg { position: absolute; top: 3px; right: 3px; font-size: 10px; background: #2a2018; color: #fff; border-radius: 6px; padding: 0 4px; }
+  .fh .tg:empty { display: none; } .fh .rl { font-size: 10px; font-weight: 700; } .fh .rl:empty { display: none; }
+  .fh.me { box-shadow: 0 0 0 2px var(--mint, #6fe3cf); } .fh.mate { box-shadow: 0 0 0 3px #d23b4a; background: #f6d6d6; }
+  .fh.dead { filter: grayscale(1); opacity: 0.6; } .fh.pick { cursor: pointer; outline: 2px dashed #ffd45e; outline-offset: 2px; } .fh.sel { outline: 3px solid #ffd45e; box-shadow: 0 0 14px #ffd45e; }
+  .t-inn-tx { color: #6fb1ff; } .t-imp-tx { color: #ff7480; } .t-neu-tx { color: #ffd45e; } .fh .t-inn-tx { color: #1d5fc2; } .fh .t-imp-tx { color: #c0283a; } .fh .t-neu-tx { color: #9a6a00; }
+  .fg-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; margin-right: 8px; } .fg-badge.t-inn, .fg-rh.t-inn { background: #2a6fdb; color: #fff; } .fg-badge.t-imp, .fg-rh.t-imp { background: #d23b4a; color: #fff; } .fg-badge.t-neu, .fg-rh.t-neu { background: #e0a81c; color: #2a2018; }
+  .wn-role.fg-t-inn { border-color: #2a6fdb; border-left-width: 6px; } .wn-role.fg-t-imp { border-color: #d23b4a; border-left-width: 6px; } .wn-role.fg-t-neu { border-color: #e0a81c; border-left-width: 6px; }
+  .fg-li.fg-t-inn { border-left: 5px solid #2a6fdb; } .fg-li.fg-t-imp { border-left: 5px solid #d23b4a; } .fg-li.fg-t-neu { border-left: 5px solid #e0a81c; }
+  .fg-side { font-weight: 700; } .fg-tc { opacity: 0.85; }
+  .fg-roles { display: grid; gap: 6px; } .fg-rh { padding: 2px 10px; border-radius: 6px; font-size: 13px; font-weight: 700; } .fg-rr { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .fg-rl { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; } .fg-det { font-size: 12px; } .fg-det summary { cursor: pointer; margin: 4px 0; }
   .wn-role { background: var(--panel); border: 1px solid var(--gold); border-radius: 10px; padding: 8px 12px; display: grid; gap: 3px; }
   .wn-act { align-content: flex-start; min-height: 48px; }
+  .wn-body > * { flex-shrink: 0; }
   .wn-act .wn-p { flex-basis: 100%; text-align: center; }
   .btn.mini.on { background: var(--gold); color: var(--gold-ink); box-shadow: 0 4px 0 #b8902a; }
   .btn.mini.call { background: #2a7a5a; color: #fff; box-shadow: 0 4px 0 #17482f; }
@@ -466,52 +482,6 @@
   .wp2 { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px 2px; text-align: center; display: grid; line-height: 1.25; min-height: 42px; }
   .wp2 b { font-size: 13px; } .wp2 small { font-size: 10.5px; color: var(--gold); min-height: 13px; }
   .wp2.me { border-color: var(--gold); } .wp2.dead { opacity: 0.55; } .wp2.dead b { text-decoration: line-through; }
-  .ftag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; border: 2px solid var(--tc); color: var(--tc); margin: 2px 0; }
-  .wn-role { border-color: var(--tc, var(--gold)); }
-  .fgh { margin-top: 8px; font-weight: 700; font-size: 14px; color: var(--tc); border-bottom: 2px solid var(--tc); padding-bottom: 2px; }
-  .fgr { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 5px 4px; border-left: 4px solid transparent; opacity: 0.7; }
-  .fgr.on { opacity: 1; border-left-color: var(--tc); background: rgba(255, 255, 255, 0.05); }
-  .fgl { display: grid; min-width: 0; } .fgn { font-size: 14px; font-weight: 700; } .fgl small { font-size: 11px; color: var(--mute); line-height: 1.3; }
-  .fgc { display: flex; align-items: center; gap: 6px; flex: none; } .fgc b { min-width: 18px; text-align: center; font-size: 16px; } .fgc .btn.mini { padding: 3px 10px; }
-  .fgset { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 11px; } .fgt { color: var(--mute); }
-  .fgchip { border: 1px solid var(--tc); color: var(--tc); border-radius: 999px; padding: 1px 8px; font-weight: 700; }
-  .fgtown { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; }
-  .hs { position: relative; display: grid; justify-items: center; gap: 1px; padding: 0 0 4px; background: transparent; border: 2px solid transparent; border-radius: 12px; color: var(--ink); font: inherit; }
-  .hs:disabled { opacity: 1; cursor: default; } .hs.ok { cursor: pointer; border-color: rgba(255, 255, 255, 0.25); } .hs.ok:hover { border-color: var(--gold); }
-  .hs.sel { border-color: var(--gold); box-shadow: 0 0 12px rgba(255, 212, 94, 0.6); background: rgba(255, 212, 94, 0.1); }
-  .hs.me .hn { color: var(--gold); }
-  .hs .roof { width: 84%; height: 20px; background: var(--pc); clip-path: polygon(50% 0, 100% 100%, 0 100%); margin-top: 4px; filter: brightness(0.85); }
-  .hs .wall { position: relative; width: 70%; height: 44px; background: #3b3158; border-radius: 3px; display: grid; place-items: center; }
-  .hs .wn { position: absolute; left: 5px; top: 6px; width: 10px; height: 10px; background: #ffe9a8; border-radius: 2px; }
-  .hs .av { width: 26px; height: 26px; border-radius: 50%; background: var(--pc); display: flex; gap: 5px; align-items: center; justify-content: center; margin-top: 8px; border: 2px solid rgba(0, 0, 0, 0.25); }
-  .hs .av i { width: 6px; height: 7px; background: #fff; border-radius: 50%; box-shadow: inset 2px 0 0 #111; }
-  .hs .hn { font-size: 12px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .hs .hr { font-size: 10.5px; min-height: 13px; font-weight: 700; color: var(--mute); }
-  .hs.dead { filter: grayscale(0.85); opacity: 0.7; } .hs.dead .wall { background: #1b1a22; }
-  .hs .mk { position: absolute; right: 6px; top: 4px; font-size: 14px; color: #6fe3a0; font-weight: 700; } .hs .bm { position: absolute; left: 6px; top: 4px; }
-  .hs .sg { display: block; font-style: normal; font-size: 9.5px; line-height: 1.2; background: #fff6c8; color: #3b2d00; border-radius: 4px; padding: 1px 4px; margin: 2px 2px 0; max-width: 98%; }
-  .t-inn { --tc: #4aa3ff; } .t-imp { --tc: #ff5a6e; } .t-neu { --tc: #ffd45e; }
-  .fg-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; color: #10131f; background: var(--tc); margin: 2px 3px 2px 0; }
-  small.t-inn, small.t-imp, small.t-neu { color: var(--tc); font-weight: 700; }
-  .fg-rc { width: 100%; background: var(--panel); border: 2px solid var(--tc, var(--line)); border-radius: 12px; padding: 8px 12px; display: grid; gap: 4px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 0 14px color-mix(in srgb, var(--tc, transparent) 35%, transparent); }
-  .fg-rh { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; } .fg-big { font-family: var(--display); font-size: 22px; }
-  .fg-lineup { display: flex; flex-wrap: wrap; gap: 2px; align-items: center; } .fg-lineup small { color: var(--mute); font-size: 11px; margin-right: 4px; }
-  .fg-lineup .fg-tag { font-size: 10.5px; padding: 1px 7px; }
-  .fg-town { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; width: 100%; }
-  .fg-house { position: relative; border: 2px solid var(--line); border-radius: 4px 4px 10px 10px; background: rgba(255, 255, 255, 0.06); color: var(--ink); padding: 14px 2px 5px; display: grid; justify-items: center; gap: 1px; font: inherit; cursor: default; min-height: 82px; }
-  .fg-house .roof { position: absolute; left: -3px; right: -3px; top: -7px; height: 14px; background: var(--rc); clip-path: polygon(0 100%, 50% 0, 100% 100%); }
-  .fg-house .av { font-size: 26px; line-height: 1.1; } .fg-house b { font-size: 12px; font-weight: 700; } .fg-house small { font-size: 10.5px; color: var(--mute); min-height: 13px; text-align: center; line-height: 1.2; }
-  .fg-house.me { border-color: var(--gold); } .fg-house.cpu b::after { content: ' 🤖'; font-size: 9px; }
-  .fg-house.tap { cursor: pointer; border-color: #8bf0d8; box-shadow: 0 0 8px rgba(139, 240, 216, 0.45); } .fg-house.tap:hover { transform: translateY(-2px); }
-  .fg-house.sel { background: rgba(255, 212, 94, 0.25); border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold); }
-  .fg-house.dead { opacity: 0.6; filter: grayscale(0.6); }
-  .fg-info { flex: none; max-height: 110px; } .fg-info[hidden] { display: none; }
-  .fg-rows { display: grid; gap: 4px; } .fg-grp { margin-top: 6px; padding: 3px 10px; border-radius: 8px; background: var(--tc); color: #10131f; font-weight: 700; font-size: 13px; }
-  .fg-row { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--line); } .fg-rl { display: grid; gap: 1px; min-width: 0; } .fg-rl b { font-size: 13px; } .fg-rl small { font-size: 11px; color: var(--mute); line-height: 1.3; }
-  .fg-st { display: flex; align-items: center; gap: 6px; flex: none; } .fg-n { min-width: 18px; text-align: center; font-family: var(--display); font-size: 18px; }
-  .fg-end { display: grid; gap: 4px; width: 100%; } .fg-erow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 5px 10px; font-size: 14px; } .fg-erow.me { border-color: var(--gold); } .fg-erow small { color: var(--mute); font-size: 11px; }
-  .fg-rc { box-sizing: border-box; max-width: 100%; min-width: 0; } .fg-rc .wn-p, .wn-act .wn-p { white-space: normal; overflow-wrap: anywhere; text-align: left; margin: 0; }
-  .wn-ban { font-size: 15px !important; padding: 6px 10px !important; }
-  .fg-town, .fg-lineup, .wn-act { flex: none; }
   /* アカウント */
   .acct { position: fixed; inset: 0; z-index: 1000; background: rgba(5, 7, 30, 0.96); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px 16px; overflow-y: auto; }
   .acct-in { width: min(100%, 380px); display: flex; flex-direction: column; gap: 12px; margin: auto; }
@@ -5446,7 +5416,7 @@
       while (l.length < n) l.push('villager');
       return l.slice(0, n);
     }
-    const compText = (n) => { const c = {}; comp(n, enabled()).forEach((r) => { c[r] = (c[r] || 0) + 1; }); return Object.keys(RN).filter((r) => c[r]).map((r) => RN[r] + c[r]).join('・'); };
+    const compText = (n) => { const c = [0, 0, 0]; comp(n, enabled()).forEach((r) => { c[/^(wolf|mad|fanatic)$/.test(r) ? 1 : /^(fox|immoral|teru)$/.test(r) ? 2 : 0]++; }); return '村人陣営' + c[0] + '人・人狼陣営' + c[1] + '人' + (c[2] ? '・第三陣営' + c[2] + '人' : ''); };
     const nm = (u) => (room && room.players && room.players[u] ? room.players[u].n : 'だれか');
     const plist = () => Object.keys((room && room.players) || {}).sort((a, b) => (room.players[a].t || 0) - (room.players[b].t || 0));
     const btn = (label, fn, cls) => { const b = el('button', 'btn mini' + (cls ? ' ' + cls : '')); b.type = 'button'; b.textContent = label; b.addEventListener('click', fn); return b; };
@@ -5974,135 +5944,43 @@
   const ICON_WW = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#2a1a4a"/><rect x="7" y="12" width="20" height="14" rx="5" fill="#ffd45e"/><rect x="33" y="12" width="20" height="14" rx="5" fill="#ffd45e"/><rect x="20" y="32" width="20" height="14" rx="5" fill="#ff9ab0"/><text x="17" y="23" font-size="9" text-anchor="middle" fill="#2a1a4a" font-weight="700">ワード</text><text x="43" y="23" font-size="9" text-anchor="middle" fill="#2a1a4a" font-weight="700">ワード</text><text x="30" y="43" font-size="9" text-anchor="middle" fill="#2a1a4a" font-weight="700">ワード?</text></svg>';
   const ICON_WOLFNET = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a0c2e"/><circle cx="44" cy="15" r="7" fill="#ffe9a8"/><circle cx="47" cy="13" r="6" fill="#1a0c2e"/><path d="M8 50l3-14 6 6 6-11 6 11 6-6 3 14z" fill="#6a3fa8"/><circle cx="19" cy="44" r="5" fill="#ff9ab0"/><circle cx="31" cy="44" r="5" fill="#7fd1ff"/><circle cx="43" cy="44" r="5" fill="#8fe08f"/></svg>';
   /* ===== バカ人狼(Feign風・友だち/CPU) ===== */
-  const FT = { inn: { n: 'イノセント', c: '#4aa3ff', side: '村人側' }, imp: { n: 'インポスター', c: '#ff5a6e', side: '人狼側' }, neu: { n: 'ニュートラル', c: '#ffd45e', side: '中立' } };
   const FR = {
-    villager: { n: 'イノセント', e: '🧑', teams: ['inn'], d: '能力はありません。話し合いと投票で人外を見つけよう。' },
-    rat: { n: 'ねずみ', e: '🐭', teams: ['inn', 'imp'], d: 'ゲーム中1回だけ、対象の陣営と役職が分かる。' },
-    inv: { n: 'インベスティゲーター', e: '🕵️', teams: ['inn', 'imp'], d: '対象の役職の候補を2つ教えてもらう。片方は正解、もう片方は必ずイノセント系の役職。' },
-    police: { n: 'ポリス', e: '👮', teams: ['inn', 'imp'], d: '対象の外出を止め、その夜は何もできなくする。同じ相手は連続で止められない。止められた側は相手が分かる。' },
-    lookout: { n: 'ルックアウト', e: '🔭', teams: ['inn', 'imp'], d: '対象の家を見張り、その夜に訪れた人が分かる。' },
-    tracker: { n: 'トラッカー', e: '👣', teams: ['inn', 'imp'], d: '対象がその夜にどこを訪れたかが分かる。' },
-    provoker: { n: '挑発者', e: '🗯️', teams: ['inn', 'imp'], d: '2回まで、対象を挑発する。翌日の投票で、その人に+2票が入る。' },
-    doctor: { n: 'ドクター', e: '🩺', teams: ['inn'], d: '対象をその夜の死から救う(魔術師の雷は防げない)。同じ相手は連続で救えない。' },
-    fool: { n: 'バカ', e: '🤪', teams: ['inn'], d: '自分を別の役職だと思い込んでいる。能力は必ず不発で、結果もデタラメ。死ぬまで本人も気づかない…' },
-    imp: { n: 'インポスター', e: '🔪', teams: ['imp'], d: '夜に1人を襲撃できる。仲間と専用チャットで相談できる。' },
-    cleaner: { n: 'クリーナー', e: '🧹', teams: ['imp'], d: '襲撃のかわりに能力で、対象が今夜死ぬと、その役職を「?」にして隠す。' },
-    blamer: { n: 'ブレイマー', e: '🎨', teams: ['imp'], d: '2回まで、対象の家にペンキをかけて、陣営の調査でインポスターに見せかける。' },
-    sk: { n: 'シリアルキラー', e: '🪓', teams: ['neu'], d: '毎晩1人を殺せる。自分以外が全滅(または村人1人だけ)になれば単独勝利。' },
-    bomber: { n: 'ボマー', e: '💣', teams: ['neu'], d: '夜ごとに他人の屋根に爆弾を仕掛け、好きな夜に一斉起爆。爆弾を持つ人が全員死ぬ。最後に生き残れば勝利。自分が死ぬと起爆できない。' },
-    thief: { n: 'シーフ', e: '🦝', teams: ['neu'], d: '対象を殺して、その役職と陣営を奪う。ドクターに救われると失敗。奪った役職の勝利条件で勝つ。' },
-    survivor: { n: 'サバイバー', e: '🛡️', teams: ['neu'], d: '3回まで夜に盾を使って、死から身を守る。最後まで生き残れば、どの陣営が勝っても追加で勝利。' },
-    wizard: { n: '魔術師', e: '🧙', teams: ['neu'], d: '対象の陣営と役職を言い当てると雷で殺す(インポスターは陣営だけでOK)。はずれると自分が死ぬ。通常の襲撃では死なない。' }
+    villager: { n: 'イノセント', tm: 'inn', d: '能力はありません。話し合いと投票で人外を見つけよう。' },
+    rat: { n: 'ねずみ', tm: 'inn', d: 'ゲーム中1回だけ、対象の陣営と役職が分かる。' },
+    inv: { n: 'インベスティゲーター', tm: 'inn', d: '対象の役職の候補を2つ教えてもらう。片方は正解、もう片方は必ずイノセント系の役職。' },
+    police: { n: 'ポリス', tm: 'inn', d: '対象の外出を止め、その夜は何もできなくする。止められた側は相手が分かる。' },
+    lookout: { n: 'ルックアウト', tm: 'inn', d: '対象の家を見張り、その夜に訪れた人が分かる。' },
+    tracker: { n: 'トラッカー', tm: 'inn', d: '対象がその夜にどこを訪れたかが分かる。' },
+    doctor: { n: 'ドクター', tm: 'inn', d: '対象をその夜の殺害から守る。(爆破は防げない)' },
+    trapper: { n: 'トラッパー', tm: 'inn', d: '対象の家に罠をしかける。その夜に家を訪れた人がいれば、その人が「イノセント側」か「それ以外」かが分かる。' },
+    magician: { n: '魔術師', tm: 'inn', d: '対象に魔法をかける。その夜、対象の行き先(能力や襲撃の相手)がランダムな別の人に変わる。' },
+    fool: { n: 'バカ', tm: 'inn', d: '自分を別の役職だと思い込んでいる。能力は必ず不発で、結果もデタラメ。死ぬまで本人も気づかない…' },
+    imp: { n: 'インポスター', tm: 'imp', d: '夜に1人を襲撃できる。仲間と専用チャットで相談できる。' },
+    cleaner: { n: 'クリーナー', tm: 'imp', d: '(インポスター側)襲撃のかわりに能力で、対象が今夜死ぬと、その役職を「?」にして隠す。' },
+    framer: { n: 'ブレイマー', tm: 'imp', d: '(インポスター側)襲撃のかわりに対象へ濡れ衣を着せる。次の夜までに調べた人には、対象が「インポスター」に見える。' },
+    sk: { n: 'シリアルキラー', tm: 'neu', d: '(中立)毎晩1人を殺せる。最後まで生き残れば単独勝利。' },
+    bomber: { n: 'ボマー', tm: 'neu', d: '(中立)夜に人の家へ爆弾をしかける(何個でも)。「爆破」を選ぶと、爆弾のある家の人が全員死ぬ。ドクターでも守れない。' },
+    survivor: { n: 'サバイバー', tm: 'neu', d: '(中立)襲撃を1回だけ耐える。どの陣営が勝っても、最後まで生きていれば勝ち。' },
+    provoker: { n: '挑発者', tm: 'neu', d: '(中立)投票で追放されれば単独勝利! 怪しまれつつ、人外のフリをしよう。' },
+    thief: { n: 'シーフ', tm: 'neu', d: '(中立)ゲーム中1回だけ、イノセント側の人と役職を入れ替える。盗めたら、盗んだ役職の陣営として戦おう。' }
   };
-  const FG_GOAL = { inn: '勝利: 人外(インポスター・殺し屋)を全員追い出す。味方=イノセント全員。敵=インポスターと中立の殺し屋。', imp: '勝利: インポスターが他の生存者と同数以上になる。味方=インポスター(仲間)。敵=イノセントと中立。', neu: '勝利: 自分の役職の条件を満たす。味方はいない。ほかの全員が敵。' };
-  const FG_ALLOW = { inn: ['villager', 'rat', 'inv', 'police', 'lookout', 'tracker', 'provoker', 'doctor', 'fool'], imp: ['imp', 'cleaner', 'blamer', 'rat', 'inv', 'police', 'lookout', 'tracker', 'provoker'], neu: ['sk', 'bomber', 'thief', 'survivor', 'wizard'] };
-  const FG_ABL = ['rat', 'inv', 'police', 'lookout', 'tracker', 'doctor', 'provoker'];
-  const FG_CH = [['🐶', '#e57373'], ['🐱', '#ffb74d'], ['🐰', '#f48fb1'], ['🐻', '#a1887f'], ['🐼', '#b0bec5'], ['🦊', '#ff8a50'], ['🐸', '#81c784'], ['🐧', '#64b5f6'], ['🐯', '#ffd54f'], ['🦁', '#ffca28'], ['🐵', '#bcaaa4'], ['🐨', '#90a4ae']];
-  const FG_BOTN = ['ハル', 'ミナ', 'ソラ', 'レン', 'ユイ', 'カイ', 'ノア', 'リク', 'アオ', 'ミオ', 'ナギ'];
-  const fgRnd = (a) => a[rndInt(0, a.length - 1)];
-  const fgRn = (r) => (r === '?' ? '?' : FR[r] ? FR[r].n : r);
-  function fgAuto(n) {
-    const sel = {}, add = (t, r) => { sel[t + ':' + r] = (sel[t + ':' + r] || 0) + 1; };
-    let left = n; const imps = n < 8 ? 1 : n < 11 ? 2 : 3;
-    for (let i = 0; i < imps && left > 0; i++) { add('imp', fgRnd(['imp', 'imp', 'cleaner', 'blamer', 'rat', 'police', 'tracker', 'lookout', 'inv'])); left--; }
-    const neus = n >= 10 ? 2 : n >= 6 ? 1 : 0, np = shuffle(['sk', 'bomber', 'thief', 'survivor', 'wizard']);
-    for (let i = 0; i < neus && left > 0; i++) { add('neu', np.pop()); left--; }
-    if (n >= 5 && left > 0) { add('inn', 'fool'); left--; }
-    const pool = shuffle(FG_ABL.slice());
-    while (left > 0) { add('inn', pool.length ? pool.pop() : 'villager'); left--; }
-    return sel;
-  }
-  const fgFaction = (pv) => (pv.team === 'imp' ? 'imp' : pv.team === 'neu' ? (['sk', 'bomber', 'wizard'].indexOf(pv.role) >= 0 ? pv.role : 'harmless') : 'inn');
-  function fgWinner(alive, priv) {
-    const al = Object.keys(alive).filter((u) => alive[u]);
-    if (!al.length) return 'inn';
-    const cnt = {}; al.forEach((u) => { const f = fgFaction(priv[u]); cnt[f] = (cnt[f] || 0) + 1; });
-    const harm = Object.keys(cnt).filter((f) => f !== 'inn' && f !== 'harmless');
-    if (!harm.length) return 'inn';
-    if (harm.length === 1) { const f = harm[0], others = al.length - cnt[f]; if (f === 'imp') return cnt[f] >= others ? 'imp' : null; return others <= 1 ? f : null; }
-    return null;
-  }
-  function fgResolveNight(p, priv, aliveIn, act, key, upd, nameOf) {
-    const alive = Object.assign({}, aliveIn), al = Object.keys(alive).filter((u) => alive[u]), day = p.day, rev = Object.assign({}, p.rev || {}), ev = [], info = {}, prov = [], know = [];
-    const add = (u, t) => { (info[u] = info[u] || []).push(day + '日目の夜: ' + t); };
-    const R = (u) => priv[u].role, TM = (u) => priv[u].team, SR = (u) => (R(u) === 'fool' ? priv[u].shown : R(u)), nm = nameOf;
-    const A = {};
-    al.forEach((u) => { const a = act[u]; if (!a || a.k !== key || a.m === 'none') return; const needT = a.m !== 'det' && a.m !== 'shield'; if (needT && !(a.t && alive[a.t] !== undefined && a.t !== u)) return; A[u] = { m: a.m || 'abl', t: a.t, gt: a.gt, gr: a.gr }; });
-    const blocked = {};
-    al.forEach((u) => { if (R(u) === 'police' && A[u] && A[u].m === 'abl' && alive[A[u].t]) blocked[A[u].t] = u; });
-    const acting = (u) => A[u] && !blocked[u];
-    Object.keys(blocked).forEach((t) => { add(t, 'ポリスの' + nm(blocked[t]) + 'に外出を止められた。' + (A[t] ? '何もできなかった。' : '')); });
-    const visits = {}, went = {}, up = (u, f, v) => { upd['priv/' + u + '/' + f] = v; priv[u][f] = v; };
-    al.forEach((u) => { if (acting(u) && R(u) !== 'fool' && A[u].t) { (visits[A[u].t] = visits[A[u].t] || []).push(u); went[u] = A[u].t; up(u, 'last', A[u].t); } });
-    // ブレイマー・挑発者
-    al.forEach((u) => {
-      if (!acting(u) || R(u) === 'fool') return;
-      if (R(u) === 'blamer' && A[u].m === 'abl' && (priv[u].uses || 0) < 2) { up(A[u].t, 'blamed', day); up(u, 'uses', (priv[u].uses || 0) + 1); add(u, nm(A[u].t) + 'の家にペンキをかけた。'); }
-      if (R(u) === 'provoker' && (priv[u].uses || 0) < 2) { prov.push(A[u].t); up(u, 'uses', (priv[u].uses || 0) + 1); add(u, nm(A[u].t) + 'を挑発した。(翌日+2票)'); }
-    });
-    const prot = {}, shielded = {}, clean = {};
-    al.forEach((u) => {
-      if (!acting(u)) return;
-      if (R(u) === 'doctor') prot[A[u].t] = u;
-      if (R(u) === 'cleaner' && A[u].m === 'abl') clean[A[u].t] = true;
-      if (R(u) === 'survivor' && A[u].m === 'shield' && (priv[u].shields == null ? 3 : priv[u].shields) > 0) { shielded[u] = true; up(u, 'shields', (priv[u].shields == null ? 3 : priv[u].shields) - 1); add(u, '盾を使った。(のこり' + priv[u].shields + '回)'); }
-    });
-    const dead = [], deadWhy = {}, kill = (t, why) => { if (dead.indexOf(t) < 0) { dead.push(t); deadWhy[t] = why; } };
-    const attempts = [];
-    const impAtk = {}; al.forEach((u) => { if (acting(u) && TM(u) === 'imp' && A[u].m === 'atk') impAtk[A[u].t] = (impAtk[A[u].t] || 0) + 1; });
-    const iks = Object.keys(impAtk); if (iks.length) { const mx = Math.max.apply(null, iks.map((x) => impAtk[x])), tops = iks.filter((x) => impAtk[x] === mx); attempts.push({ t: fgRnd(tops), by: 'imp' }); }
-    al.forEach((u) => { if (acting(u) && R(u) === 'sk' && A[u].m === 'atk') attempts.push({ t: A[u].t, by: 'sk' }); });
-    const thieves = []; al.forEach((u) => { if (acting(u) && R(u) === 'thief' && A[u].m === 'atk') thieves.push(u); });
-    const tryKill = (t, why, canSave) => {
-      if (R(t) === 'wizard' && why !== 'bomb') { add(t, '何者かに襲われたが、魔術の力で無傷だった。'); return false; }
-      if (shielded[t]) { add(t, '襲われたが、盾で身を守った!'); return false; }
-      if (canSave !== false && prot[t]) { add(t, '何者かに襲われたが、ドクターに救われた!'); add(prot[t], '救った' + nm(t) + 'は、襲われていた!'); return false; }
-      kill(t, why); return true;
-    };
-    attempts.forEach((a) => tryKill(a.t, a.by));
-    thieves.forEach((u) => {
-      const t = A[u].t;
-      if (dead.indexOf(t) >= 0 || tryKill(t, 'thief')) {
-        const nr = R(t), nt = TM(t), shown = priv[t].shown;
-        up(u, 'role', nr); up(u, 'team', nt); if (shown) up(u, 'shown', shown); up(u, 'used', false); up(u, 'uses', 0); if (nr === 'survivor') up(u, 'shields', 3);
-        add(u, nm(t) + 'を殺し、【' + fgRn(nr) + '】(' + FT[nt].n + ')の立場を奪った!');
-      } else add(u, nm(t) + 'から立場を奪えなかった…');
-    });
-    // ボマー
-    al.forEach((u) => {
-      if (!acting(u) || R(u) !== 'bomber') return; const bombs = (priv[u].bombs || []).slice();
-      if (A[u].m === 'bomb') { if (bombs.indexOf(A[u].t) < 0) bombs.push(A[u].t); up(u, 'bombs', bombs); add(u, nm(A[u].t) + 'の屋根に爆弾を仕掛けた。(仕掛けた数: ' + bombs.length + ')'); }
-      else if (A[u].m === 'det') { const tg = bombs.filter((x) => alive[x]); add(u, '起爆した! ' + (tg.length ? tg.map(nm).join('、') + 'が爆発に巻き込まれた。' : '巻き込まれた人はいなかった。')); tg.forEach((t) => tryKill(t, 'bomb')); up(u, 'bombs', []); }
-    });
-    // 魔術師
-    al.forEach((u) => {
-      if (!acting(u) || R(u) !== 'wizard' || A[u].m !== 'wiz') return; const t = A[u].t, ok = TM(t) === A[u].gt && (A[u].gt === 'imp' || R(t) === A[u].gr);
-      if (ok) { if (shielded[t]) add(u, '雷は盾にはばまれた…'); else { kill(t, 'wiz'); add(u, nm(t) + 'に雷を落とした!'); } }
-      else { kill(u, 'wizmiss'); }
-    });
-    // 能力の結果
-    const rolesAll = Object.keys(FR).filter((x) => x !== 'fool' && x !== 'villager');
-    al.forEach((u) => {
-      const a = A[u]; if (!a || blocked[u] || a.m !== 'abl') return; const t = a.t, sr = SR(u), fool = R(u) === 'fool';
-      if (sr === 'rat') { if (priv[u].used) return; up(u, 'used', true); const tm = priv[t].blamed != null && priv[t].blamed >= day - 1 ? 'imp' : TM(t); if (!fool) know.push([u, t, tm]); add(u, nm(t) + 'は【陣営: ' + (fool ? FT[fgRnd(['inn', 'imp', 'neu'])].n : FT[tm].n) + ' / 役職: ' + fgRn(fool ? fgRnd(rolesAll) : R(t)) + '】だった。'); }
-      else if (sr === 'inv') { const real = fool ? fgRnd(rolesAll) : R(t), wrong = fgRnd(['villager'].concat(FG_ABL).filter((x) => x !== real)), pair = shuffle([real, wrong]); add(u, nm(t) + 'の役職は【' + fgRn(pair[0]) + '】か【' + fgRn(pair[1]) + '】のどちらか。'); }
-      else if (sr === 'police') add(u, nm(t) + 'の外出を止めた。');
-      else if (sr === 'provoker' && fool) add(u, nm(t) + 'を挑発した。(翌日+2票)');
-      else if (sr === 'doctor') add(u, nm(t) + 'を救う準備をした。');
-      else if (sr === 'lookout') { const vs = fool ? (Math.random() < 0.5 ? [fgRnd(al.filter((x) => x !== u && x !== t))] : []) : (visits[t] || []).filter((x) => x !== u); add(u, nm(t) + 'の家を訪れたのは: ' + (vs.length ? vs.map(nm).join('、') : 'だれもいない') + '。'); }
-      else if (sr === 'tracker') { const to = fool ? (Math.random() < 0.6 ? fgRnd(al.filter((x) => x !== t)) : null) : went[t]; add(u, nm(t) + 'は' + (to ? nm(to) + 'の家を訪れていた。' : 'どこにも行かなかった。')); }
-    });
-    ev.push('--- ' + day + '日目の朝 ---');
-    if (!dead.length) ev.push('昨夜はだれも死にませんでした。');
-    dead.forEach((u) => {
-      alive[u] = false; const why = deadWhy[u];
-      rev[u] = clean[u] ? { r: '?' } : { r: priv[u].role, t: priv[u].team, f: priv[u].role === 'fool' ? priv[u].shown : null };
-      ev.push(nm(u) + ({ imp: 'が襲撃されました。', sk: 'が殺されました。', thief: 'が殺されました。', bomb: 'が爆発で亡くなりました。', wiz: 'が雷に打たれました。', wizmiss: 'は魔術に失敗して雷に打たれました。' })[why] + '役職は【' + (clean[u] ? '?' : fgRn(priv[u].role)) + '】' + (clean[u] ? '(隠されている)' : '(' + FT[priv[u].team].n + ')') + '。');
-    });
-    Object.keys(info).forEach((u) => { upd['priv/' + u + '/info'] = (priv[u].info || []).concat(info[u]); priv[u].info = (priv[u].info || []).concat(info[u]); });
-    return { alive: alive, rev: rev, ev: ev, prov: prov, know: know };
-  }
-
+  const FG_TEAM = { inn: 'イノセント(村人側)', imp: 'インポスター(人狼側)', neu: 'ニュートラル(中立)' };
+  const FG_INN = ['rat', 'inv', 'police', 'lookout', 'tracker', 'doctor', 'trapper', 'magician'];
+  const FG_ABL = FG_INN;
+  const FG_IMPR = ['cleaner', 'framer'];
+  const FG_NEU = ['sk', 'bomber', 'survivor', 'provoker', 'thief'];
+  const FG_OPT = FG_INN.concat(['fool'], FG_IMPR, FG_NEU);
+  const FG_NIGHT = ['rat', 'inv', 'police', 'lookout', 'tracker', 'doctor', 'trapper', 'magician', 'cleaner', 'framer', 'bomber', 'thief'];
+  const FG_KILL = ['sk', 'bomber'];
+  const FG_WIN = {
+    inn: 'インポスターと殺人者をぜんぶ追放(または倒)すれば勝ち。',
+    imp: 'イノセント側の数を、インポスター以下まで減らせば勝ち。',
+    sk: '最後まで生き残り、ほかの人を減らせば勝ち。', bomber: '最後まで生き残り、ほかの人を減らせば勝ち。',
+    survivor: 'どの陣営が勝っても、生きていれば勝ち。', provoker: '投票で追放されれば勝ち!', thief: '役職を盗んで、盗んだ役職の陣営で勝とう。'
+  };
+  const FG_BOTN = ['ハル', 'ミナ', 'ソラ', 'レン', 'ユイ', 'カイ', 'ノア', 'リク', 'アオ', 'モモ', 'タク', 'サキ'];
+  const FG_AV = ['🐱', '🐶', '🐰', '🦊', '🐻', '🐼', '🐸', '🐵', '🐧', '🐤', '🦁', '🐷'];
+  const FG_NAME2TEAM = {}; Object.keys(FR).forEach((r) => { FG_NAME2TEAM[FR[r].n] = FR[r].tm; });
   function memDb() {
     const root = {};
     const walk = (segs, create) => { let n = root; for (const s of segs) { if (n[s] == null || typeof n[s] !== 'object') { if (!create) return undefined; n[s] = {}; } n = n[s]; } return n; };
@@ -6118,7 +5996,6 @@
       return clone(d);
     };
   }
-
   function createFeign(stage, api) {
     const root = el('div', 'pg wolf wnet', `
       <div class="pg-hud">
@@ -6131,54 +6008,72 @@
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
     const body = k('body'), g = (n) => body.querySelector('[data-k="' + n + '"]');
     const onlineOK = () => typeof rtdb === 'function' && typeof FB !== 'undefined' && typeof Rank !== 'undefined' && !!Rank.uid;
-    const myName = () => (typeof Rank !== 'undefined' && typeof Rank.name === 'function' ? Rank.name() : 'あなた');
-    const MAXP = 12, MINP = 4, ONE = 'me';
-    let solo = false, db = null, code = '', room = null, isHost = false, poll = 0, clock = 0, busy = false, view = '', finished = false, sigKey = '', sendAt = 0, chatN = { chat: -1, wchat: -1 }, canChat = false, mode = null, wizT = null, botLast = 0, townCb = null, sel = null, selTouched = false, selN = 0, soloCpu = 5;
-    const botSaid = {}, botKnow = {};
-    const me = () => (solo ? ONE : Rank.uid);
+    const myId = () => (solo ? 'me' : Rank.uid), myName = () => (typeof Rank !== 'undefined' && typeof Rank.name === 'function' ? Rank.name() : 'あなた');
+    const MAXP = 12, MINP = 4;
+    let solo = false, mem = null, db = null, code = '', room = null, isHost = false, poll = 0, clock = 0, busy = false, view = '', finished = false, sigKey = '', sendAt = 0, chatN = { chat: -1, wchat: -1 }, canChat = false, canWolf = false, mode = 'atk', botLast = 0;
     const path = (s) => '/feign/' + code + (s || '');
+    const me = () => myId();
     const nm = (u) => (room && room.players && room.players[u] ? room.players[u].n : 'だれか');
-    const isBot = (u) => !!(room && room.players && room.players[u] && room.players[u].bot);
     const plist = () => Object.keys((room && room.players) || {}).sort((a, b) => (room.players[a].t || 0) - (room.players[b].t || 0));
+    const rn = (r) => (FR[r] ? FR[r].n : r);
     const btn = (label, fn, cls) => { const b = el('button', 'btn mini' + (cls ? ' ' + cls : '')); b.type = 'button'; b.textContent = label; b.addEventListener('click', fn); return b; };
     const para = (t, c) => { const p = el('p', c || 'wn-p'); p.textContent = t; return p; };
     const callBtn = () => btn('📞 通話をひらく', () => { window.open('https://meet.jit.si/ArcadeFeign' + code + 'Room', '_blank', 'noopener'); }, 'call');
-    const tag = (team, text) => { const s = el('span', 'fg-tag t-' + team); s.textContent = text; return s; };
-    const roleTag = (r, team, fake) => tag(team, (FR[r] ? FR[r].e + ' ' : '') + fgRn(r) + (fake ? '' : ''));
-    const SRole = (pv) => (pv.role === 'fool' ? pv.shown : pv.role);
+    const dispRole = (u) => { const p = room.priv && room.priv[u]; if (!p) return '?'; return rn(p.role === 'fool' ? p.shown : p.role); };
 
     /* ---------- メニュー ---------- */
+    const loadRs = () => { try { const s = localStorage.getItem('fgRs'); if (s !== null) return s.split(',').filter((x) => FG_OPT.indexOf(x) >= 0); } catch (e) { /* noop */ } return FG_OPT.slice(); };
+    const saveRs = (v) => { try { localStorage.setItem('fgRs', v.join(',')); } catch (e) { /* noop */ } };
+    function rolePanel(sel, onChange, readOnly) {
+      const box = el('div', 'fg-roles');
+      [['inn', '🟦 イノセント側(味方)', FG_INN.concat(['fool'])], ['imp', '🟥 インポスター側(敵)', FG_IMPR], ['neu', '🟨 中立(だれの味方でもない)', FG_NEU]].forEach(([tm, title, list]) => {
+        const h = el('div', 'fg-rh t-' + tm); h.textContent = title; box.append(h);
+        const row = el('div', 'fg-rr');
+        list.forEach((r) => {
+          const lb = el('label', 'fg-rl'), cb = el('input'); cb.type = 'checkbox'; cb.checked = sel.indexOf(r) >= 0; cb.disabled = !!readOnly;
+          cb.addEventListener('change', () => { const i = sel.indexOf(r); if (cb.checked && i < 0) sel.push(r); if (!cb.checked && i >= 0) sel.splice(i, 1); onChange(sel.slice()); });
+          const sp = el('span'); sp.textContent = FR[r].n; lb.append(cb, sp); row.append(lb);
+        });
+        box.append(row);
+      });
+      const dt = el('details', 'fg-det'), sm = el('summary'); sm.textContent = '役職のせつめい'; dt.append(sm);
+      FG_OPT.forEach((r) => { const p = el('p', 'wn-p small t-' + FR[r].tm + '-tx'); p.textContent = FR[r].n + ':' + FR[r].d; dt.append(p); });
+      box.append(dt, para('イノセントとインポスターは必ず入ります。人数が少ないと入らない役もあります。', 'wn-p small'));
+      return box;
+    }
     function toMenu(msg) {
-      clearInterval(poll); poll = 0; code = ''; room = null; view = 'menu'; sigKey = ''; solo = false; db = null; sel = null; selTouched = false;
+      clearInterval(poll); poll = 0; code = ''; room = null; view = 'menu'; sigKey = ''; solo = false; mem = null; db = null;
       body.textContent = ''; k('day').textContent = 'バカ人狼'; k('role').textContent = '';
-      body.append(para('「Feign」を参考にした人狼です。全員に役職があり、味方か敵かは色で分かります(青=イノセント、赤=インポスター、黄=ニュートラル)。自分を役職持ちだと思い込む「バカ」も混ざります。', 'wn-p'));
+      body.append(para('「バカ人狼 Feign」を参考にした人狼です。村人側にも全員に役職があり、自分を役職持ちだと思い込んでいる「バカ」が混ざります。🟦=味方側 🟥=敵側 🟨=中立。みんなに家とキャラがいて、夜は家をえらんで行動します。', 'wn-p'));
       const c0 = el('section', 'bt-card'), h0 = el('h2'); h0.textContent = '1人で遊ぶ(CPUと)'; c0.append(h0);
-      const cs = el('select', 'bt-sel'); for (let i = 3; i <= 11; i++) { const o = el('option'); o.value = String(i); o.textContent = 'CPU ' + i + '人(合計' + (i + 1) + '人)'; if (i === soloCpu) o.selected = true; cs.append(o); }
-      const sb = btn('部屋へ進む', () => { soloCpu = Number(cs.value); startSolo(); }); sb.classList.remove('mini');
-      c0.append(para('役職とCPUの人数は、次の画面で決められます。ネットなしでも遊べます。', 'wn-p small'), cs, sb); body.append(c0);
+      const soloRs = loadRs(), cpuSel = el('select', 'bt-sel');
+      for (let i = 3; i <= 11; i++) { const o = el('option'); o.value = String(i); o.textContent = 'CPU ' + i + '人(合計' + (i + 1) + '人)'; if (i === 5) o.selected = true; cpuSel.append(o); }
+      const tcl = para('', 'wn-p small'), upTc = () => { tcl.textContent = '編成: ' + tcText(Number(cpuSel.value) + 1, soloRs); };
+      cpuSel.addEventListener('change', upTc);
+      const sb = btn('1人でスタート', () => startSolo(Number(cpuSel.value), soloRs)); sb.classList.remove('mini');
+      c0.append(para('入れる役職とCPUの人数をえらべます。CPUは能力を使って動き、ときどき発言します。', 'wn-p small'), cpuSel, rolePanel(soloRs, (v) => { saveRs(v); soloRs.length = 0; v.forEach((x) => soloRs.push(x)); upTc(); }), tcl, sb); upTc(); body.append(c0);
       if (!onlineOK()) { body.append(para('友だちとのオンライン対戦は、アカウントを作ってから、ネットにつながる index.html 版で遊べます。', 'wn-p small')); return; }
       const c1 = el('section', 'bt-card'), h1 = el('h2'); h1.textContent = '友だちと部屋をつくる'; c1.append(h1);
-      const mk = btn('部屋をつくる', () => create(mk)); mk.classList.remove('mini'); c1.append(mk);
+      const tsel = el('select', 'bt-sel'); [[120, '話し合い 2分'], [180, '話し合い 3分'], [300, '話し合い 5分']].forEach(([v, t], i) => { const o = el('option'); o.value = String(v); o.textContent = t; if (i === 1) o.selected = true; tsel.append(o); });
+      const mk = btn('部屋をつくる', () => create(Number(tsel.value), mk)); mk.classList.remove('mini'); c1.append(para('役職とCPUの人数は、部屋に入ってからホストがえらびます。', 'wn-p small'), tsel, mk);
       const c2 = el('section', 'bt-card'), h2 = el('h2'); h2.textContent = '部屋に入る'; c2.append(h2);
       const inp = el('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off';
       const jn = btn('入る', () => join(inp.value, jn)); jn.classList.remove('mini'); c2.append(inp, jn);
       const m = para('', 'bt-msg'); m.dataset.k = 'msg'; body.append(c1, c2, m);
-      if (msg) menuMsg(msg);
     }
     const menuMsg = (t) => { const m = g('msg'); if (m) m.textContent = t || ''; };
-    async function startSolo() {
-      solo = true; db = memDb(); code = 'SOLO';
-      const players = { [ONE]: { n: myName(), t: 1 } }; for (let i = 0; i < soloCpu; i++) players['bot' + (i + 1)] = { n: FG_BOTN[i] + '(CPU)', t: 2 + i, bot: true };
-      await db('PUT', path(), { host: ONE, cfg: { talk: 120 }, state: 'lobby', players: players });
-      room = null; view = ''; sigKey = ''; chatN = { chat: -1, wchat: -1 }; finished = false; clearInterval(poll); poll = setInterval(tick, 700); tick();
+    function startSolo(cpu, rs) {
+      solo = true; mem = memDb(); db = mem; code = 'SOLO'; cpu = clampN(cpu || 5, 3, MAXP - 1);
+      const players = { me: { n: myName(), t: 1 } }; FG_BOTN.slice(0, cpu).forEach((n, i) => { players['bot' + (i + 1)] = { n: n + '(CPU)', t: 2 + i, bot: true }; });
+      db('PUT', path(), { host: 'me', cfg: { talk: 120, rs: (rs || FG_OPT).join(',') }, state: 'lobby', players: players }).then(() => { room = null; view = ''; sigKey = ''; chatN = { chat: -1, wchat: -1 }; finished = false; clearInterval(poll); poll = setInterval(tick, 700); return tick().then(() => startGame()); });
     }
-    async function create(b) {
+    async function create(talk, b) {
       b.disabled = true; menuMsg('');
       try {
         db = rtdb; let c = '';
         for (let i = 0; i < 6; i++) { c = Array.from({ length: 4 }, () => CODE_CH[rndInt(0, CODE_CH.length - 1)]).join(''); if (!(await rtdb('GET', '/feign/' + c))) break; c = ''; }
         if (!c) { menuMsg('部屋をつくれませんでした。'); b.disabled = false; return; }
-        await rtdb('PUT', '/feign/' + c, { host: me(), cfg: { talk: 180 }, state: 'lobby', created: Date.now(), players: { [me()]: { n: myName(), t: Date.now() } } });
+        await rtdb('PUT', '/feign/' + c, { host: me(), cfg: { talk: talk }, state: 'lobby', created: Date.now(), players: { [me()]: { n: myName(), t: Date.now() } } });
         enter(c);
       } catch (e) { menuMsg('通信できませんでした。'); b.disabled = false; }
     }
@@ -6206,143 +6101,187 @@
       if (busy || !code) return; busy = true;
       try {
         const r = await db('GET', path()); if (!code) return;
-        if (!r) { if (!finished) { await leaveRoom(); toMenu('部屋がなくなりました。'); } return; }
+        if (!r) { if (!finished) { await leaveRoom(); toMenu(); menuMsg('部屋がなくなりました。'); } return; }
         room = r; isHost = r.host === me();
-        if (!(r.players && r.players[me()]) && r.state === 'lobby') { await leaveRoom(); toMenu('部屋から外れました。'); return; }
+        if (!(r.players && r.players[me()]) && r.state === 'lobby') { await leaveRoom(); toMenu(); menuMsg('部屋から外れました。'); return; }
         if (isHost && r.state === 'play') await hostStep();
         if (room.state === 'lobby') renderLobby(); else if (room.state === 'play') renderGame(); else renderEnd();
-      } catch (e) { if (window.__fgdbg) console.error("FGTICK " + e.stack); } finally { busy = false; }
+      } catch (e) { /* 再試行 */ } finally { busy = false; }
     }
 
-    /* ---------- ロビー(役職とCPU人数の設定) ---------- */
-    const selTotal = () => Object.keys(sel || {}).reduce((a, x) => a + sel[x], 0);
-    const selText = () => Object.keys(sel || {}).filter((x) => sel[x] > 0).map((x) => { const [t, r] = x.split(':'); return FR[r].n + (t === 'imp' && FG_ALLOW.inn.indexOf(r) >= 0 ? '(赤)' : t === 'inn' && FG_ALLOW.imp.indexOf(r) >= 0 ? '(青)' : '') + '×' + sel[x]; }).join('・');
-    async function syncRs() { if (!isHost) return; try { await db('PUT', path('/cfg/rs'), selText()); } catch (e) { /* noop */ } }
+    /* ---------- ロビー ---------- */
+    const enabled = () => String(room && room.cfg && room.cfg.rs != null ? room.cfg.rs : FG_OPT.join(',')).split(',').filter(Boolean);
+    function tcOf(n, en) { const c = { inn: 0, imp: 0, neu: 0 }; comp(n, en).forEach((x) => { c[x.team]++; }); return c; }
+    function tcText(n, en) { const c = tcOf(n, en); return 'イノセント側' + c.inn + '人・インポスター側' + c.imp + '人' + (c.neu ? '・中立' + c.neu + '人' : ''); }
     function renderLobby() {
-      const ids = plist(), n = ids.length, cfg = room.cfg || {}, sig = 'L|' + ids.map((u) => u + nm(u)).join(',') + '|' + (isHost ? 1 : 0) + '|' + cfg.talk + '|' + (isHost ? '' : cfg.rs);
+      if (solo) return;
+      const ids = plist(), rsKey = String(room.cfg && room.cfg.rs), sig = 'L|' + ids.map((u) => u + nm(u)).join(',') + '|' + (isHost ? 1 : 0) + '|' + rsKey;
       if (view === 'lobby' && sig === sigKey) return;
-      view = 'lobby'; sigKey = sig; body.textContent = ''; k('day').textContent = solo ? '準備' : '部屋 ' + code;
-      if (isHost && (!sel || (!selTouched && selN !== n))) { sel = fgAuto(n); selN = n; syncRs(); }
-      if (!solo) { body.append(para('部屋のコード(友だちに伝えてください)')); const cd = el('div', 'bt-code'); cd.textContent = code; body.append(cd); }
-      const pl = el('section', 'bt-card'), h = el('h2'); h.textContent = 'さんかする人 (' + n + '/' + MAXP + ')'; pl.append(h);
-      const ol = el('ol', 'bt-pl'); ids.forEach((u) => { const li = el('li', u === me() ? 'me' : ''); li.textContent = nm(u) + (u === room.host ? ' 👑' : '') + (u === me() ? ' (あなた)' : ''); ol.append(li); }); pl.append(ol);
-      const bots = ids.filter(isBot).length;
+      view = 'lobby'; sigKey = sig; body.textContent = ''; k('day').textContent = '部屋 ' + code;
+      body.append(para('部屋のコード(友だちに伝えてください)'));
+      const cd = el('div', 'bt-code'); cd.textContent = code; body.append(cd);
+      const pl = el('section', 'bt-card'), h = el('h2'); h.textContent = 'さんかする人 (' + ids.length + '/' + MAXP + ')'; pl.append(h);
+      const ol = el('ol', 'bt-pl'); ids.forEach((u, i) => { const li = el('li', u === me() ? 'me' : ''); li.textContent = FG_AV[i % FG_AV.length] + ' ' + nm(u) + (u === room.host ? ' 👑' : '') + (u === me() ? ' (あなた)' : ''); ol.append(li); }); pl.append(ol);
+      pl.append(para(ids.length >= MINP ? '準備OK! ' + ids.length + '人で始められます。' : 'あと ' + (MINP - ids.length) + '人 で始められます(CPUでうめることもできます)'));
+      pl.append(para('いまの編成: ' + tcText(Math.max(ids.length, MINP), enabled()), 'wn-p small')); body.append(pl);
       if (isHost) {
-        const row = el('div', 'acts'); const lab = para('CPU: ' + bots + '人', 'wn-p');
-        row.append(lab, btn('− へらす', async () => { const last = ids.filter(isBot).pop(); if (!last || n <= 1) return; try { await db('DELETE', path('/players/' + last)); selTouched = false; tick(); } catch (e) { /* noop */ } }), btn('＋ ふやす', async () => { if (n >= MAXP) return; const id = 'bot' + (Date.now() % 1000000); try { await db('PUT', path('/players/' + id), { n: FG_BOTN[(bots + 3) % FG_BOTN.length] + '(CPU)', t: Date.now(), bot: true }); selTouched = false; tick(); } catch (e) { /* noop */ } }));
-        pl.append(row);
-        const tsel = el('select', 'bt-sel'); [[120, '話し合い 2分'], [180, '話し合い 3分'], [300, '話し合い 5分']].forEach(([v, t]) => { const o = el('option'); o.value = String(v); o.textContent = t; if (Number(cfg.talk) === v) o.selected = true; tsel.append(o); });
-        tsel.addEventListener('change', async () => { try { await db('PUT', path('/cfg/talk'), Number(tsel.value)); } catch (e) { /* noop */ } }); pl.append(tsel);
-      }
-      pl.append(para(n >= MINP ? '合計 ' + n + '人' : 'あと ' + (MINP - n) + '人 必要です(CPUを足せます)')); body.append(pl);
-      if (isHost) body.append(pickerNode(n)); else body.append(para('ホストが役職を設定しています。' + (cfg.rs ? ' 今回の役職: ' + cfg.rs : ''), 'wn-p'));
-      const row = el('div', 'acts'); if (!solo) row.append(callBtn());
-      if (isHost) { const st = btn('ゲームスタート', () => startGame()); st.classList.remove('mini'); st.dataset.k = 'start'; st.disabled = selTotal() !== n || n < MINP; row.append(st); } else row.append(para('ホストが始めるのを待っています…'));
+        const cs = el('section', 'bt-card'), ch = el('h2'); ch.textContent = 'ホスト設定'; cs.append(ch);
+        const bots = ids.filter((u) => room.players[u].bot), humans = ids.length - bots.length, sel = el('select', 'bt-sel');
+        for (let i = 0; i <= MAXP - humans; i++) { const o = el('option'); o.value = String(i); o.textContent = 'CPU ' + i + '人'; if (i === bots.length) o.selected = true; sel.append(o); }
+        sel.addEventListener('change', async () => { const want = Number(sel.value), upd = {}; bots.forEach((u) => { upd[u] = null; }); for (let i = 0; i < want; i++) upd['bot' + (i + 1)] = { n: FG_BOTN[i % FG_BOTN.length] + '(CPU)', t: Date.now() + i, bot: true }; try { await db('PATCH', path('/players'), upd); tick(); } catch (e) { /* noop */ } });
+        cs.append(para('CPUの人数', 'wn-p small'), sel, para('入れる役職', 'wn-p small'), rolePanel(enabled(), (v) => { db('PUT', path('/cfg/rs'), v.join(',')).then(() => tick()).catch(() => {}); }));
+        body.append(cs);
+      } else body.append(para('入る役職は、ホストが決めます。(役職の中身は、始まるまで分かりません)', 'wn-p small'));
+      const row = el('div', 'acts'); row.append(callBtn());
+      if (isHost) { const st = btn('ゲームスタート', () => startGame()); st.classList.remove('mini'); st.disabled = ids.length < MINP; row.append(st); }
+      else row.append(para('ホストが始めるのを待っています…'));
       body.append(row);
     }
-    function pickerNode(n) {
-      const box = el('section', 'bt-card'), head = el('h2'); head.textContent = '役職をえらぶ(合計 ' + n + ' 人ぶん)'; box.append(head);
-      const info = para('', 'wn-p'); info.dataset.k = 'pk-info';
-      const upd = () => { const t = selTotal(); info.textContent = '選んだ役職: ' + t + ' / ' + n + (t === n ? ' ✓' : t < n ? '(あと' + (n - t) + 'つ)' : '(' + (t - n) + 'つ多い)'); info.style.color = t === n ? '#8bf0d8' : '#ffb0b8'; const st = g('start'); if (st) st.disabled = t !== n || n < MINP; };
-      const top = el('div', 'acts'); top.append(btn('おまかせ', () => { sel = fgAuto(n); selTouched = false; selN = n; syncRs(); renderRows(); }), btn('ぜんぶ0', () => { sel = {}; selTouched = true; syncRs(); renderRows(); }));
-      box.append(top, info);
-      const rows = el('div', 'fg-rows'); box.append(rows);
-      function renderRows() {
-        rows.textContent = '';
-        ['inn', 'imp', 'neu'].forEach((team) => {
-          const hd = el('div', 'fg-grp t-' + team); hd.textContent = FT[team].n + '(' + FT[team].side + ')'; rows.append(hd);
-          FG_ALLOW[team].forEach((r) => {
-            const key = team + ':' + r, c = sel[key] || 0, row = el('div', 'fg-row');
-            const lab = el('div', 'fg-rl'), nmE = el('b'); nmE.textContent = FR[r].e + ' ' + FR[r].n; const dd = el('small'); dd.textContent = FR[r].d; lab.append(nmE, dd);
-            const st = el('div', 'fg-st'), minus = btn('−', () => { if ((sel[key] || 0) > 0) { sel[key]--; selTouched = true; syncRs(); renderRows(); } }), cn = el('span', 'fg-n'), plus = btn('＋', () => { sel[key] = (sel[key] || 0) + 1; selTouched = true; syncRs(); renderRows(); }); cn.textContent = String(c);
-            st.append(minus, cn, plus); row.append(lab, st); rows.append(row);
-          });
-        });
-        upd();
-      }
-      renderRows(); return box;
+    const rnd = (a) => a[rndInt(0, a.length - 1)];
+    function comp(n, en) {
+      const has = (r) => en.indexOf(r) >= 0, l = [], imps = n < 8 ? 1 : n < 11 ? 2 : 3, ipool = ['imp'].concat(FG_IMPR.filter(has));
+      for (let i = 0; i < imps; i++) l.push({ role: rnd(ipool), team: 'imp' });
+      const cap = n >= 10 ? 3 : n >= 8 ? 2 : n >= 5 ? 1 : 0;
+      shuffle(FG_NEU.filter(has)).slice(0, cap).forEach((r) => l.push({ role: r, team: 'neu' }));
+      if (n >= 5 && has('fool')) l.push({ role: 'fool', team: 'inn' });
+      const pool = shuffle(FG_INN.filter(has));
+      while (l.length < n) l.push({ role: pool.length ? pool.pop() : 'villager', team: 'inn' });
+      return l.slice(0, n);
     }
     async function startGame() {
-      const ids = plist(); if (ids.length < MINP || !sel || selTotal() !== ids.length) return;
-      const list = []; Object.keys(sel).forEach((x) => { const [t, r] = x.split(':'); for (let i = 0; i < sel[x]; i++) list.push({ role: r, team: t }); });
-      const cs = shuffle(list), priv = {}, alive = {}, now = Date.now(), ch = {}, chIdx = shuffle(FG_CH.map((_, i) => i));
-      ids.forEach((u, i) => { const c = cs[i]; priv[u] = { role: c.role, team: c.team, info: [], used: false, uses: 0, last: '', bombs: [] }; if (c.role === 'survivor') priv[u].shields = 3; if (c.role === 'fool') priv[u].shown = fgRnd(FG_ABL); alive[u] = true; ch[u] = chIdx[i % chIdx.length]; });
+      const ids = plist(); if (ids.length < MINP) return;
+      const en = enabled(), cs = shuffle(comp(ids.length, en)), priv = {}, alive = {}, now = Date.now(), fs = FG_INN.filter((x) => en.indexOf(x) >= 0);
+      ids.forEach((u, i) => { const c = cs[i]; priv[u] = { role: c.role, team: c.team, info: [], used: false, nb: 0 }; if (c.role === 'fool') priv[u].shown = rnd(fs.length ? fs : FG_INN); alive[u] = true; });
       ids.forEach((u) => { if (priv[u].team === 'imp') { const m = ids.filter((x) => x !== u && priv[x].team === 'imp').map(nm); priv[u].info.push(m.length ? 'インポスターの仲間: ' + m.join('、') : 'インポスターはあなた1人です'); } });
-      const lineup = list.map((c) => c.team + ':' + c.role).sort();
-      const pub = { ph: 'night', day: 1, dl: now + 50000, ns: now, alive: alive, rev: {}, ch: ch, lineup: lineup, ev: ['--- 1日目の夜 --- 家のならぶ村。夜は、ほかの人の家をおとずれて能力を使います。'], seq: 1 };
-      try { await db('PATCH', path(), { state: 'play', priv: priv, pub: pub, act: null, vote: null, ready: null, chat: null, wchat: null }); Object.keys(botKnow).forEach((x) => delete botKnow[x]); Object.keys(botSaid).forEach((x) => delete botSaid[x]); room = (await db('GET', path())) || room; tick(); } catch (e) { /* noop */ }
+      const tc = { inn: 0, imp: 0, neu: 0 }; ids.forEach((u) => { tc[priv[u].team]++; });
+      const pub = { ph: 'night', day: 1, dl: now + 50000, ns: now, alive: alive, rev: {}, tc: tc, ev: ['=== 陣営: イノセント側' + tc.inn + '人・インポスター側' + tc.imp + '人' + (tc.neu ? '・中立' + tc.neu + '人' : '') + ' ===', '--- 1日目の夜 --- 能力のある人は、家をえらんで行動してください'], seq: 1 };
+      try { await db('PATCH', path(), { state: 'play', priv: priv, pub: pub, act: null, vote: null, ready: null }); room = (await db('GET', path())) || room; tick(); } catch (e) { /* noop */ }
     }
-
     /* ---------- 進行(ホスト) ---------- */
+    const botsOf = (ids) => ids.filter((u) => room.players[u] && room.players[u].bot);
+    function winnerOf(alive, priv) {
+      const al = Object.keys(alive).filter((u) => alive[u]), imps = al.filter((u) => priv[u].team === 'imp').length, kil = al.filter((u) => FG_KILL.indexOf(priv[u].role) >= 0).length, rest = al.length - imps - kil;
+      if (!imps && !kil) return 'inn';
+      if (!imps && kil && rest <= 1) return 'neu';
+      if (imps && !kil && imps >= rest) return 'imp';
+      if (imps && kil && rest <= 0) return 'imp';
+      return null;
+    }
     function botNight(u, priv, al, key) {
-      const pv = priv[u], r = SRole(pv), team = pv.team, others = al.filter((x) => x !== u), foes = others.filter((x) => priv[x].team !== team || team !== 'imp');
-      const a = (m, t, extra) => Object.assign({ k: key, m: m, t: t }, extra || {});
-      if (r === 'villager') return null;
-      if (team === 'imp') { const ab = r !== 'imp' && (r !== 'rat' || !pv.used) && ((r !== 'blamer' && r !== 'provoker') || (pv.uses || 0) < 2); if (!ab || Math.random() < 0.55) return a('atk', fgRnd(foes.length ? foes : others)); return a('abl', fgRnd(others)); }
-      if (r === 'sk') return a('atk', fgRnd(others));
-      if (r === 'bomber') { const live = (pv.bombs || []).filter((x) => priv[x] && al.indexOf(x) >= 0); if (live.length >= 2 && Math.random() < 0.5) return { k: key, m: 'det' }; const c = others.filter((x) => (pv.bombs || []).indexOf(x) < 0); return c.length ? a('bomb', fgRnd(c)) : { k: key, m: 'none' }; }
-      if (r === 'thief') return Math.random() < 0.4 ? a('atk', fgRnd(others)) : { k: key, m: 'none' };
-      if (r === 'survivor') return (pv.shields == null ? 3 : pv.shields) > 0 && Math.random() < 0.4 ? { k: key, m: 'shield' } : { k: key, m: 'none' };
-      if (r === 'wizard') return Math.random() < 0.15 ? a('wiz', fgRnd(others), { gt: fgRnd(['inn', 'imp', 'neu']), gr: fgRnd(['villager', 'rat', 'doctor']) }) : { k: key, m: 'none' };
-      if (r === 'rat' && pv.used) return null;
-      if ((r === 'provoker') && (pv.uses || 0) >= 2) return null;
-      const c = (r === 'police' || r === 'doctor') ? others.filter((x) => x !== pv.last) : others;
-      return a('abl', fgRnd(c.length ? c : others));
+      const r = priv[u].role, team = priv[u].team, sr = r === 'fool' ? priv[u].shown : r, others = al.filter((x) => x !== u), foes = others.filter((x) => priv[x].team !== team || team === 'neu');
+      if (!others.length) return null;
+      if (team !== 'imp' && FG_KILL.indexOf(r) < 0 && FG_NIGHT.indexOf(sr) < 0) return null;
+      if ((sr === 'rat' || sr === 'thief') && priv[u].used) return null;
+      if (r === 'bomber') { if ((priv[u].nb || 0) >= 2 && Math.random() < 0.5) return { k: key, t: others[0], m: 'det' }; return { k: key, t: rnd(others.filter((x) => !priv[x].bomb).concat(others.slice(0, 1))), m: 'abl' }; }
+      let t, m = 'abl';
+      if (team === 'imp') { if (r === 'imp' || Math.random() < 0.55) { m = 'atk'; t = rnd(foes.length ? foes : others); } else t = rnd(others); }
+      else if (r === 'sk') { m = 'atk'; t = rnd(others); }
+      else t = rnd(others);
+      return t ? { k: key, t: t, m: m } : null;
     }
     const BOT_LINES = ['だれか能力の結果ある?', 'ぼくは怪しくないよ!', 'まだ決め手がないね…', '役職COしたほうがいい?', 'だれかが嘘をついてる気がする', 'バカがいるかもしれないよ?'];
-    async function botTalk(bots, al, priv, p, now) {
-      if (now - botLast < 8000 || !bots.length) return; botLast = now;
-      const b = fgRnd(bots), pv = priv[b], said = botSaid[b] || 0; let line = '';
-      if ((pv.info || []).length > said + (pv.team === 'imp' ? 1 : 0) && Math.random() < 0.7) {
-        botSaid[b] = (pv.info || []).length; const last = pv.info[pv.info.length - 1];
-        if (pv.team === 'imp') line = fgRn(fgRnd(FG_ABL)) + 'です。' + nm(fgRnd(al.filter((x) => x !== b))) + 'さんは問題なさそうでした。'; else line = fgRn(SRole(pv)) + 'です。' + last.replace(/^\d+日目の夜: /, '');
-      } else line = Math.random() < 0.4 ? nm(fgRnd(al.filter((x) => x !== b))) + 'さんが気になるな…' : fgRnd(BOT_LINES);
-      try { await db('POST', path('/chat'), { u: b, n: nm(b), m: line.slice(0, 80), t: now, d: p.day }); } catch (e) { /* noop */ }
-    }
     async function hostStep() {
       const p = room.pub, priv = room.priv; if (!p || p.ph === 'end' || !priv) return;
-      const now = Date.now(), alive = Object.assign({}, p.alive), al = Object.keys(alive).filter((u) => alive[u]), bots = al.filter(isBot);
+      const now = Date.now(), alive = Object.assign({}, p.alive), al = Object.keys(alive).filter((u) => alive[u]), bots = botsOf(al);
       const act = Object.assign({}, room.act || {}), vote = Object.assign({}, room.vote || {}), ready = Object.assign({}, room.ready || {});
-      const ev = (p.ev || []).slice(), upd = {}; let np = null;
-      const base = (o) => Object.assign({ ns: p.ns, rev: p.rev || {}, ch: p.ch, lineup: p.lineup, seq: (p.seq || 0) + 1 }, o);
-      const finish = (win) => { np.win = win; np.ph = 'end'; np.roles = {}; Object.keys(priv).forEach((u) => { np.roles[u] = { r: priv[u].role, t: priv[u].team, f: priv[u].shown || null }; }); ev.push('=== ゲーム終了:' + ({ inn: 'イノセント', imp: 'インポスター', sk: 'シリアルキラー', bomber: 'ボマー', wizard: '魔術師' })[win] + 'の勝ち! ==='); np.ev = ev; upd.state = 'end'; };
+      const ev = (p.ev || []).slice(), upd = {}; let np = null, pwU = null;
+      const finish = (win) => { np.win = win; np.pw = pwU; np.ph = 'end'; np.roles = {}; Object.keys(priv).forEach((u) => { np.roles[u] = priv[u].role; }); ev.push('=== ゲーム終了:' + ({ inn: 'イノセント', imp: 'インポスター', neu: 'ニュートラル', prov: '挑発者' })[win] + 'の勝ち! ==='); np.ev = ev; upd.state = 'end'; };
       if (p.ph === 'night') {
         const key = 'n' + p.day;
-        bots.forEach((u) => { if (!(act[u] && act[u].k === key)) { const a = botNight(u, priv, al, key); act[u] = a || { k: key, m: 'none' }; } });
-        const need = al.filter((u) => { const pv = priv[u], r = SRole(pv); if (pv.team === 'imp' || r === 'sk' || r === 'bomber' || r === 'thief' || r === 'wizard') return true; if (r === 'villager') return false; if (r === 'rat' && pv.used) return false; if ((r === 'provoker') && (pv.uses || 0) >= 2) return false; if (r === 'survivor' && (pv.shields == null ? 3 : pv.shields) <= 0) return false; return true; });
-        const done = need.every((u) => act[u] && act[u].k === key);
-        if (!((done && now >= p.ns + 8000) || now >= p.dl)) return;
-        const r = fgResolveNight(p, priv, alive, act, key, upd, nm); ev.push.apply(ev, r.ev);
-        r.know.forEach(([u, t, tm]) => { if (tm === 'imp') { (botKnow[u] = botKnow[u] || {})[t] = true; } });
-        np = base({ ph: 'day', day: p.day, dl: now + (Number((room.cfg || {}).talk) || 180) * 1000, alive: r.alive, rev: r.rev, ev: ev, prov: r.prov });
-        upd.ready = null; upd.act = null; const w = fgWinner(r.alive, priv); if (w) finish(w);
+        bots.forEach((u) => { if (!(act[u] && act[u].k === key)) { const a = botNight(u, priv, al, key); if (a) act[u] = a; } });
+        const need = al.filter((u) => { const r = priv[u].role, sr = r === 'fool' ? priv[u].shown : r; return priv[u].team === 'imp' || FG_KILL.indexOf(r) >= 0 || (FG_NIGHT.indexOf(sr) >= 0 && !((sr === 'rat' || sr === 'thief') && priv[u].used)); });
+        const done = need.every((u) => act[u] && act[u].k === key && act[u].t) || need.length === 0;
+        const humansNeed = need.filter((u) => !(room.players[u] && room.players[u].bot));
+        if (!((done && now >= p.ns + 10000) || now >= p.dl)) return;
+        void humansNeed;
+        const r = resolveNight(p, priv, alive, act, key, upd); ev.push.apply(ev, r.ev);
+        np = { ph: 'day', day: p.day, dl: now + (Number((room.cfg || {}).talk) || 180) * 1000, ns: p.ns, alive: r.alive, rev: r.rev, ev: ev, seq: (p.seq || 0) + 1 };
+        upd.ready = null; upd.act = null; const w = winnerOf(r.alive, priv); if (w) finish(w);
       } else if (p.ph === 'day') {
-        await botTalk(bots, al, priv, p, now);
+        if (now - botLast > 9000 && bots.length && now < p.dl) { botLast = now; const b = rnd(bots), o = rnd(al.filter((x) => x !== b)); const line = Math.random() < 0.4 ? nm(o) + 'さんが気になるな…' : rnd(BOT_LINES); try { await db('POST', path('/chat'), { u: b, n: nm(b), m: line, t: now, d: p.day }); } catch (e) { /* noop */ } }
         bots.forEach((u) => { ready[u] = { d: p.day }; });
         const all = al.every((u) => ready[u] && ready[u].d === p.day);
         if (!(all || now >= p.dl)) return;
-        if (p.day === 1) { ev.push('初日は追放の投票はありません。夜になります。', '--- 2日目の夜 ---'); np = base({ ph: 'night', day: 2, dl: now + 50000, ns: now, alive: alive, ev: ev }); upd.act = null; }
-        else { ev.push('--- 投票の時間です(生存者の過半数の票が必要) ---'); np = base({ ph: 'vote', day: p.day, dl: now + 45000, alive: alive, ev: ev, prov: p.prov || [] }); }
+        if (p.day === 1) { ev.push('初日は追放の投票はありません。夜になります。', '--- 2日目の夜 ---'); np = { ph: 'night', day: 2, dl: now + 50000, ns: now, alive: alive, rev: p.rev || {}, ev: ev, seq: (p.seq || 0) + 1 }; upd.act = null; }
+        else { ev.push('--- 投票の時間です(生存者の過半数が必要) ---'); np = { ph: 'vote', day: p.day, dl: now + 45000, ns: p.ns, alive: alive, rev: p.rev || {}, ev: ev, seq: (p.seq || 0) + 1 }; }
       } else if (p.ph === 'vote') {
         const key = 'd' + p.day;
-        bots.forEach((u) => { if (!(vote[u] && vote[u].k === key)) { const pv = priv[u], known = Object.keys(botKnow[u] || {}).filter((x) => alive[x]), c = al.filter((x) => x !== u && (pv.team !== 'imp' || priv[x].team !== 'imp')); vote[u] = { k: key, t: known.length && pv.team !== 'imp' ? known[0] : (Math.random() < 0.8 && c.length ? fgRnd(c) : 'skip') }; } });
+        bots.forEach((u) => { if (!(vote[u] && vote[u].k === key)) { const c = al.filter((x) => x !== u && (priv[u].team !== 'imp' || priv[x].team !== 'imp')); vote[u] = { k: key, t: Math.random() < 0.8 && c.length ? rnd(c) : 'skip' }; } });
         const all = al.every((u) => vote[u] && vote[u].k === key && vote[u].t);
         if (!(all || now >= p.dl)) return;
-        const tally = {}, lines = [];
-        al.forEach((u) => { const v = vote[u]; if (v && v.k === key && v.t && v.t !== 'skip' && alive[v.t] && v.t !== u) { tally[v.t] = (tally[v.t] || 0) + 1; lines.push(nm(u) + ' → ' + nm(v.t)); } else if (v && v.t === 'skip') lines.push(nm(u) + ' → 棄権'); });
-        (p.prov || []).forEach((t) => { if (alive[t]) { tally[t] = (tally[t] || 0) + 2; } });
-        ev.push('【投票結果】' + (lines.join(' / ') || '誰も投票しませんでした') + ((p.prov || []).length ? '(挑発された人には+2票)' : ''));
+        const tally = {}, lines = []; al.forEach((u) => { const v = vote[u]; if (v && v.k === key && v.t && v.t !== 'skip' && alive[v.t] && v.t !== u) { tally[v.t] = (tally[v.t] || 0) + 1; lines.push(nm(u) + ' → ' + nm(v.t)); } else if (v && v.t === 'skip') lines.push(nm(u) + ' → 棄権'); });
+        ev.push('【投票結果】' + (lines.join(' / ') || '誰も投票しませんでした'));
         const ks = Object.keys(tally), mx = ks.length ? Math.max.apply(null, ks.map((x) => tally[x])) : 0, tops = ks.filter((x) => tally[x] === mx), rev = Object.assign({}, p.rev || {});
-        if (ks.length && tops.length === 1 && mx > al.length / 2) { const ex = tops[0]; alive[ex] = false; rev[ex] = { r: priv[ex].role, t: priv[ex].team, f: priv[ex].shown || null }; ev.push(nm(ex) + 'が追放されました。役職は【' + fgRn(priv[ex].role) + '】(' + FT[priv[ex].team].n + ')でした。'); }
+        if (ks.length && tops.length === 1 && mx > al.length / 2) { const ex = tops[0]; alive[ex] = false; rev[ex] = rn(priv[ex].role); if (priv[ex].role === 'provoker') pwU = ex; ev.push(nm(ex) + 'が追放されました。役職は【' + rev[ex] + '】でした。'); }
         else ev.push('過半数に届かず、だれも追放されませんでした。');
         ev.push('--- ' + (p.day + 1) + '日目の夜 ---');
-        np = base({ ph: 'night', day: p.day + 1, dl: now + 50000, ns: now, alive: alive, rev: rev, ev: ev }); upd.act = null; upd.vote = null;
-        const w = fgWinner(alive, priv); if (w) finish(w);
+        np = { ph: 'night', day: p.day + 1, dl: now + 50000, ns: now, alive: alive, rev: rev, ev: ev, seq: (p.seq || 0) + 1 }; upd.act = null; upd.vote = null;
+        const w = pwU ? 'prov' : winnerOf(alive, priv); if (w) finish(w);
       } else return;
-      upd.pub = np; await db('PATCH', path(), upd); room.pub = np; if (upd.state) room.state = upd.state;
+      np.tc = p.tc || null; upd.pub = np; await db('PATCH', path(), upd); room.pub = np; if (upd.state) room.state = upd.state;
     }
-
-
+    function resolveNight(p, priv, aliveIn, act, key, upd) {
+      const alive = Object.assign({}, aliveIn), al = Object.keys(alive).filter((u) => alive[u]), day = p.day, rev = Object.assign({}, p.rev || {}), ev = [], info = {};
+      const add = (u, t) => { (info[u] = info[u] || []).push(day + '日目の夜: ' + t); };
+      const A = {}; al.forEach((u) => { const a = act[u]; if (a && a.k === key && a.t && alive[a.t] !== undefined && a.t !== u) A[u] = { t: a.t, m: a.m || 'abl' }; });
+      const R = (u) => priv[u].role, SR = (u) => (R(u) === 'fool' ? priv[u].shown : R(u));
+      const blocked = {};
+      al.forEach((u) => { if (R(u) === 'police' && A[u] && A[u].m !== 'atk') blocked[A[u].t] = u; });
+      al.forEach((u) => { if (R(u) === 'magician' && A[u] && !blocked[u]) { const t = A[u].t; if (A[t] && !blocked[t] && R(t) !== 'police' && A[t].m !== 'det') { const c = al.filter((x) => x !== t); if (c.length) A[t] = { t: rnd(c), m: A[t].m }; } } });
+      const acting = (u) => A[u] && !blocked[u];
+      Object.keys(blocked).forEach((t) => { if (A[t]) add(t, 'ポリスの' + nm(blocked[t]) + 'に外出を止められ、何もできなかった。'); else add(t, 'ポリスの' + nm(blocked[t]) + 'に外出を止められた。'); });
+      al.forEach((u) => { if (acting(u) && R(u) === 'framer' && A[u].m !== 'atk') { priv[A[u].t].fr = day; upd['priv/' + A[u].t + '/fr'] = day; } });
+      const framed = (t) => (priv[t].fr || 0) > 0 && priv[t].fr >= day - 1;
+      const visits = {}, went = {};
+      al.forEach((u) => { if (acting(u) && R(u) !== 'fool' && A[u].m !== 'det') { (visits[A[u].t] = visits[A[u].t] || []).push(u); went[u] = A[u].t; } });
+      const prot = {}, clean = {}; al.forEach((u) => { if (!acting(u)) return; if (R(u) === 'doctor') prot[A[u].t] = u; if (R(u) === 'cleaner' && A[u].m !== 'atk') clean[A[u].t] = true; });
+      const kills = [], impAtk = {}; al.forEach((u) => { if (!acting(u)) return; if (priv[u].team === 'imp' && A[u].m === 'atk') impAtk[A[u].t] = (impAtk[A[u].t] || 0) + 1; if (R(u) === 'sk') kills.push([A[u].t, 'sk']); });
+      const iks = Object.keys(impAtk); if (iks.length) { const mx = Math.max.apply(null, iks.map((x) => impAtk[x])), tops = iks.filter((x) => impAtk[x] === mx); kills.push([rnd(tops), 'imp']); }
+      const dead = [];
+      kills.forEach(([t]) => {
+        if (prot[t]) { add(t, '何者かに襲われたが、ドクターに守られて助かった!'); add(prot[t], '守った' + nm(t) + 'は、襲われていた!'); }
+        else if (R(t) === 'survivor' && !priv[t].vest) { priv[t].vest = true; upd['priv/' + t + '/vest'] = true; add(t, '何者かに襲われたが、1度だけ耐えぬいた!'); }
+        else if (dead.indexOf(t) < 0) dead.push(t);
+      });
+      al.forEach((u) => {
+        if (!acting(u) || R(u) !== 'bomber' || A[u].m !== 'det') return;
+        const vic = al.filter((x) => priv[x].bomb && x !== u); vic.forEach((x) => { if (dead.indexOf(x) < 0) dead.push(x); });
+        add(u, vic.length ? '💥 爆破! ' + vic.map(nm).join('、') + 'の家が吹き飛んだ。' : '爆破したが、爆弾のある家はなかった。');
+        Object.keys(priv).forEach((x) => { if (priv[x].bomb) { priv[x].bomb = false; upd['priv/' + x + '/bomb'] = false; } }); priv[u].nb = 0; upd['priv/' + u + '/nb'] = 0;
+      });
+      const swaps = [];
+      al.forEach((u) => {
+        if (!acting(u) && R(u) !== 'fool') return; const a = A[u]; if (!a || blocked[u]) return; const t = a.t, sr = SR(u), imp = priv[u].team === 'imp'; if (imp && a.m === 'atk') return; if (a.m === 'det') return;
+        const fool = R(u) === 'fool', rolesAll = Object.keys(FR).filter((x) => x !== 'fool'), fr = framed(t);
+        if (sr === 'rat') { if (priv[u].used) return; upd['priv/' + u + '/used'] = true; priv[u].used = true; if (fool) add(u, nm(t) + 'は【陣営: ' + FG_TEAM[rnd(['inn', 'imp', 'neu'])] + ' / 役職: ' + rn(rnd(rolesAll)) + '】だった。'); else add(u, nm(t) + 'は【陣営: ' + FG_TEAM[fr ? 'imp' : priv[t].team] + ' / 役職: ' + rn(fr ? 'imp' : R(t)) + '】だった。'); }
+        else if (sr === 'inv') { const real = fool ? rnd(rolesAll) : (fr ? 'imp' : R(t)), wrong = rnd(['villager'].concat(FG_ABL).filter((x) => x !== real)), pair = shuffle([real, wrong]); add(u, nm(t) + 'の役職は【' + rn(pair[0]) + '】か【' + rn(pair[1]) + '】のどちらか。'); }
+        else if (sr === 'police') add(u, nm(t) + 'の外出を止めた。');
+        else if (sr === 'doctor') add(u, nm(t) + 'を守った。');
+        else if (sr === 'lookout') { const vs = fool ? (Math.random() < 0.5 ? [rnd(al.filter((x) => x !== u && x !== t))] : []) : (visits[t] || []).filter((x) => x !== u); add(u, nm(t) + 'の家を訪れたのは: ' + (vs.length ? vs.map(nm).join('、') : 'だれもいない') + '。'); }
+        else if (sr === 'tracker') { const to = fool ? (Math.random() < 0.6 ? rnd(al.filter((x) => x !== t)) : null) : went[t]; add(u, nm(t) + 'は' + (to ? nm(to) + 'の家を訪れていた。' : 'どこにも行かなかった。')); }
+        else if (sr === 'trapper') { const vs = fool ? (Math.random() < 0.5 ? [rnd(al.filter((x) => x !== u && x !== t))] : []) : (visits[t] || []).filter((x) => x !== u); add(u, nm(t) + 'の家の罠にかかったのは: ' + (vs.length ? vs.map((x) => nm(x) + '(' + (priv[x].team === 'inn' && !framed(x) ? 'イノセント側' : 'それ以外') + ')').join('、') : 'だれもいない') + '。'); }
+        else if (sr === 'magician') add(u, nm(t) + 'に魔法をかけた。');
+        else if (sr === 'framer') add(u, nm(t) + 'に濡れ衣を着せた。');
+        else if (sr === 'cleaner') add(u, nm(t) + 'の家を掃除する準備をした。');
+        else if (sr === 'bomber') { priv[t].bomb = true; upd['priv/' + t + '/bomb'] = true; priv[u].nb = (priv[u].nb || 0) + 1; upd['priv/' + u + '/nb'] = priv[u].nb; add(u, nm(t) + 'の家に爆弾をしかけた。(いま' + priv[u].nb + '個)'); }
+        else if (sr === 'thief') { if (priv[u].used) return; swaps.push([u, t]); }
+      });
+      swaps.forEach(([u, t]) => {
+        if (priv[u].used) return; priv[u].used = true; upd['priv/' + u + '/used'] = true;
+        if (dead.indexOf(t) >= 0 || dead.indexOf(u) >= 0 || priv[t].team !== 'inn') { add(u, nm(t) + 'から役職を盗もうとしたが、盗めなかった…'); return; }
+        const old = { role: priv[t].role, shown: priv[t].shown, used: priv[t].used };
+        priv[u].role = old.role; priv[u].team = 'inn'; priv[u].used = !!old.used; upd['priv/' + u + '/role'] = old.role; upd['priv/' + u + '/team'] = 'inn'; upd['priv/' + u + '/used'] = !!old.used;
+        if (old.shown) { priv[u].shown = old.shown; upd['priv/' + u + '/shown'] = old.shown; }
+        priv[t].role = 'thief'; priv[t].team = 'neu'; priv[t].used = true; priv[t].shown = null; upd['priv/' + t + '/role'] = 'thief'; upd['priv/' + t + '/team'] = 'neu'; upd['priv/' + t + '/used'] = true; upd['priv/' + t + '/shown'] = null;
+        add(u, nm(t) + 'から【' + rn(old.role) + '】を盗んだ! あなたは今【' + rn(old.role) + '】(イノセント側)。');
+        add(t, '何者かに役職を盗まれた…。あなたは今【シーフ】(中立)になった。');
+      });
+      ev.push('--- ' + day + '日目の朝 ---');
+      if (!dead.length) ev.push('昨夜はだれも殺されませんでした。');
+      dead.forEach((u) => { alive[u] = false; rev[u] = clean[u] ? '?' : rn(R(u)); ev.push(nm(u) + 'が殺されました。役職は【' + rev[u] + '】' + (clean[u] ? '(隠されている)' : '') + '。'); });
+      Object.keys(info).forEach((u) => { upd['priv/' + u + '/info'] = (priv[u].info || []).concat(info[u]); });
+      return { alive: alive, rev: rev, ev: ev };
+    }
     /* ---------- ゲーム画面 ---------- */
     function chatBox(id, title, node) {
       const box = el('section', 'wn-chat'), h = el('div', 'wn-ch'); h.textContent = title;
@@ -6358,54 +6297,48 @@
     }
     async function submit(id, inp) { const t = inp.value; inp.value = ''; if (!(await sendText(id, t))) inp.value = t; }
     function buildGame() {
-      view = 'game'; body.textContent = ''; chatN = { chat: -1, wchat: -1 }; mode = null; wizT = null; townCb = null;
-      body.innerHTML = '<div class="wn-ban" data-k="ban"></div><div class="fg-rc" data-k="rc"></div><div class="fg-lineup" data-k="lu"></div><div class="fg-town" data-k="town"></div><div class="wn-act acts" data-k="act"></div><div class="wlog wn-ev" data-k="ev"></div><div class="wlog fg-info" data-k="inf"></div><div data-k="chats"></div>';
-      g('town').addEventListener('click', (e) => { const h = e.target.closest('.fg-house'); if (!h || !townCb) return; const u = h.dataset.u; if (townCb.ok(u)) townCb.fn(u); });
+      view = 'game'; body.textContent = ''; chatN = { chat: -1, wchat: -1 };
+      body.innerHTML = '<div class="wn-ban" data-k="ban"></div><div class="wn-role" data-k="rc"></div><div class="wplayers" data-k="pls"></div><div class="wn-act acts" data-k="act"></div><div class="wlog wn-ev" data-k="ev"></div><div data-k="chats"></div>';
       const ch = g('chats'); chatBox('chat', 'みんなの会話', ch);
-      const pv = room.priv && room.priv[me()]; if (pv && pv.team === 'imp') chatBox('wchat', '😈 インポスターのひそひそ話(仲間だけ)', ch);
+      const pv = room.priv && room.priv[me()]; if (pv && pv.team === 'imp') chatBox('wchat', '😈 インポスターのひそひそ話', ch);
       const qp = el('div', 'acts wn-qp');
       ['私はイノセントです', '能力の結果を言います', 'だれか怪しい?', '同意!', '私がバカかも…'].forEach((t) => qp.append(btn(t, () => { if (canChat) sendText('chat', t); })));
       ch.append(qp); if (!solo) { const row = el('div', 'acts'); row.append(callBtn()); ch.append(row); }
     }
-    function goalOf(pv) {
-      const r = SRole(pv), t = pv.role === 'fool' ? 'inn' : pv.team;
-      if (t !== 'neu') return FG_GOAL[t];
-      return ({ sk: '勝利: 最後まで生き残る(他は全員敵)。村人1人と2人きりでも勝ち。', bomber: '勝利: 最後まで生き残る(他は全員敵)。起爆で一網打尽に!', wizard: '勝利: 最後まで生き残る(他は全員敵)。', thief: '勝利: 奪った役職の陣営の条件で勝つ。まだ奪っていないと負け扱い。', survivor: '勝利: 最後まで生き残れば、どの陣営が勝っても追加で勝ち。味方はいない。' })[r] || FG_GOAL.neu;
-    }
-    function paintRole(p, pv, al) {
-      const rc = g('rc'), r = SRole(pv), t = pv.role === 'fool' ? 'inn' : pv.team, info = pv.info || [], sg = r + '|' + t + '|' + info.length + '|' + al + '|' + (pv.shields == null ? '' : pv.shields);
-      if (rc.dataset.s !== sg) {
-        rc.dataset.s = sg; rc.className = 'fg-rc t-' + t; rc.textContent = '';
-        const h = el('div', 'fg-rh'); h.append(el('span', 'fg-big')); h.firstChild.textContent = (FR[r] ? FR[r].e : '') + ' ' + fgRn(r); h.append(tag(t, FT[t].n + '(' + FT[t].side + ')'));
-        rc.append(h, para(FR[r].d, 'wn-p small'), para(goalOf(pv), 'wn-p'));
-        if (!al) rc.append(para('あなたは死亡しました。観戦中です。', 'wn-p small'));
-      }
-      const inf = g('inf'), is = String(info.length); if (inf.dataset.s !== is) { inf.dataset.s = is; inf.textContent = ''; info.forEach((x) => inf.append(para('📝 ' + x, 'wl res'))); inf.hidden = !info.length; inf.scrollTop = inf.scrollHeight; }
-      const lu = g('lu'); if (!lu.dataset.s) { lu.dataset.s = '1'; lu.textContent = ''; const l = el('small'); l.textContent = 'この村の役職: '; lu.append(l); (p.lineup || []).forEach((x) => { const [tm, rl] = x.split(':'); lu.append(tag(tm, FR[rl].e + FR[rl].n)); }); }
-    }
-    function paintTown(p, pv) {
-      const tw = g('town'), act = (room.act || {})[me()], vt = (room.vote || {})[me()]; tw.textContent = '';
-      plist().forEach((u) => {
-        const c = FG_CH[(p.ch || {})[u] || 0], al = p.alive[u], r = (p.rev || {})[u];
-        const h = el('button', 'fg-house' + (al ? '' : ' dead') + (u === me() ? ' me' : '') + (townCb && townCb.ok(u) ? ' tap' : '')); h.type = 'button'; h.dataset.u = u; h.style.setProperty('--rc', c[1]);
-        let selU = false; if (p.ph === 'night' && act && act.k === 'n' + p.day && act.t === u) selU = true; if (p.ph === 'vote' && vt && vt.k === 'd' + p.day && vt.t === u) selU = true; if (selU) h.classList.add('sel');
-        const roof = el('i', 'roof'), av = el('span', 'av'), nmE = el('b'), sm = el('small'); av.textContent = al ? c[0] : '🪦'; nmE.textContent = nm(u).replace('(CPU)', '');
-        let st = ''; if (!al) st = r ? (r.r === '?' ? '役職: ?' : fgRn(r.r)) : ''; else if (u === me()) st = 'あなた'; else if (pv.team === 'imp' && room.priv[u] && room.priv[u].team === 'imp') st = '😈仲間';
-        if (al && p.ph === 'day' && room.ready && room.ready[u] && room.ready[u].d === p.day) st = '✓ 準備OK'; if (al && p.ph === 'vote' && room.vote && room.vote[u] && room.vote[u].k === 'd' + p.day) st = (u === me() ? 'あなた ' : '') + '✓投票ずみ';
-        sm.textContent = st; if (!al && r && r.t) sm.className = 't-' + r.t; else if (st === '😈仲間') sm.className = 't-imp';
-        if (isBot(u)) h.classList.add('cpu'); h.append(roof, av, nmE, sm); tw.append(h);
-      });
-    }
+    let pickCtx = null;
+    const sideTx = (tm, role) => (tm === 'inn' ? '🟦 味方=イノセント側(正体は分からない) / 🟥 敵=インポスター・シリアルキラー・ボマー' : tm === 'imp' ? '🟥 味方=インポスター側(仲間は下に表示) / 🟦 敵=イノセント側と殺人者' : '🟨 だれの味方でもありません。' + (FG_WIN[role] ? '' : ''));
     function renderGame() {
       const p = room.pub; if (!p) return; if (view !== 'game') buildGame();
       const pv = room.priv[me()], al = !!p.alive[me()], act = (room.act || {})[me()], vt = (room.vote || {})[me()], rd = (room.ready || {})[me()];
-      k('day').textContent = p.day + '日目'; k('role').textContent = 'あなた: ' + fgRn(SRole(pv));
-      const sig = [p.ph, p.day, al, act && act.t, act && act.m, act && act.gt, vt && vt.t, rd && rd.d, p.seq, mode, wizT, pv.used, pv.uses, pv.shields, (pv.info || []).length, JSON.stringify(Object.keys(room.ready || {})), JSON.stringify(Object.keys(room.vote || {}))].join('|');
-      if (sig !== sigKey) { sigKey = sig; setupActions(p, pv, al, act, vt, rd); paintRole(p, pv, al); paintTown(p, pv); renderActionBox(p, pv, al, act, vt, rd); }
-      const ev = g('ev'), es = String((p.ev || []).length); if (ev.dataset.s !== es) { ev.dataset.s = es; ev.textContent = ''; (p.ev || []).forEach((t) => ev.append(para(t, 'wl ' + (/^---|^===/.test(t) ? 'sys' : /殺され|襲撃され|追放され|爆発|雷/.test(t) ? 'dead' : '')))); ev.scrollTop = ev.scrollHeight; }
+      k('day').textContent = p.day + '日目'; const shown = pv.role === 'fool' ? pv.shown : pv.role;
+      k('role').textContent = 'あなた: ' + rn(shown);
+      const rc = g('rc'), info = pv.info || [], rsig = shown + '|' + info.length + '|' + al + '|' + pv.team + '|' + pv.role; if (rc.dataset.s !== rsig) {
+        rc.dataset.s = rsig; rc.textContent = ''; rc.className = 'wn-role fg-t-' + pv.team;
+        const top = el('div', 'fg-top'), bd = el('span', 'fg-badge t-' + pv.team), h = el('b');
+        bd.textContent = pv.team === 'imp' ? '敵側(インポスター)' : pv.team === 'neu' ? '中立' : '味方側(イノセント)'; h.textContent = '【' + rn(shown) + '】' + (al ? '' : ' (死亡・観戦中)'); top.append(bd, h);
+        rc.append(top, para(FR[shown].d, 'wn-p small'), para(sideTx(pv.team, pv.role), 'wn-p small fg-side'), para('勝利条件: ' + (FG_WIN[pv.team === 'inn' ? 'inn' : pv.role === 'imp' || pv.role === 'cleaner' || pv.role === 'framer' ? 'imp' : pv.role] || ''), 'wn-p small'));
+        if (p.tc) rc.append(para('この村: 🟦イノセント側' + p.tc.inn + '人 / 🟥インポスター側' + p.tc.imp + '人' + (p.tc.neu ? ' / 🟨中立' + p.tc.neu + '人' : ''), 'wn-p small fg-tc'));
+        info.forEach((t) => rc.append(para('・' + t, 'wl res')));
+      }
+      const sig = [p.ph, p.day, al, act && act.t, act && act.m, vt && vt.t, rd && rd.d, p.seq, mode, pv.used, info.length].join('|');
+      if (sig !== sigKey) { sigKey = sig; renderActions(p, pv, al, act, vt, rd); }
+      const pls = g('pls'); pls.className = 'ftown'; pls.textContent = '';
+      plist().forEach((u, i) => {
+        const dead = !p.alive[u], pc = pickCtx && !dead && pickCtx.cands.indexOf(u) >= 0, mate = pv.team === 'imp' && u !== me() && room.priv[u] && room.priv[u].team === 'imp';
+        const h = el('button', 'fh' + (dead ? ' dead' : '') + (u === me() ? ' me' : '') + (mate ? ' mate' : '') + (pc ? ' pick' : '') + (pickCtx && pickCtx.cur === u ? ' sel' : '')); h.type = 'button'; h.style.setProperty('--c', 'hsl(' + ((i * 47) % 360) + ' 62% 46%)');
+        const av = el('span', 'av'), n = el('span', 'nm'), tg = el('span', 'tg'), rl = el('span', 'rl');
+        av.textContent = dead ? '🪦' : FG_AV[i % FG_AV.length]; n.textContent = nm(u).replace('(CPU)', '');
+        let mark = ''; if (!dead && p.ph === 'day' && room.ready && room.ready[u] && room.ready[u].d === p.day) mark = '✓'; else if (!dead && p.ph === 'vote' && room.vote && room.vote[u] && room.vote[u].k === 'd' + p.day) mark = '✓';
+        tg.textContent = u === me() ? 'あなた' : mate ? '😈仲間' : mark;
+        if (dead) { const rv = (p.rev || {})[u] || '?'; rl.textContent = rv; rl.className = 'rl t-' + (FG_NAME2TEAM[rv] || 'x') + '-tx'; }
+        h.append(tg, av, n, rl);
+        if (pc) h.addEventListener('click', () => pickCtx.fn(u)); else h.disabled = true;
+        pls.append(h);
+      });
+      const ev = g('ev'), es = String((p.ev || []).length); if (ev.dataset.s !== es) { ev.dataset.s = es; ev.textContent = ''; (p.ev || []).forEach((t) => ev.append(para(t, 'wl ' + (/^---|^===/.test(t) ? 'sys' : /殺され|追放されました|爆破/.test(t) ? 'dead' : '')))); ev.scrollTop = ev.scrollHeight; }
       fillChat('chat', room.chat); fillChat('wchat', room.wchat);
-      canChat = al && (p.ph === 'day' || p.ph === 'vote'); const canW = al && pv.team === 'imp';
-      [['chat', canChat], ['wchat', canW]].forEach(([id, ok]) => { const i = g(id + 'In'), s = g(id + 'Send'); if (i) { i.disabled = !ok; s.disabled = !ok; i.placeholder = ok ? 'メッセージ' : (id === 'chat' ? (al ? '昼と投票のときに話せます' : '死亡した人は話せません') : '話せません'); } });
+      canChat = al && (p.ph === 'day' || p.ph === 'vote'); canWolf = al && pv.team === 'imp';
+      [['chat', canChat], ['wchat', canWolf]].forEach(([id, ok]) => { const i = g(id + 'In'), s = g(id + 'Send'); if (i) { i.disabled = !ok; s.disabled = !ok; i.placeholder = ok ? 'メッセージ' : (id === 'chat' ? (al ? '昼と投票のときに話せます' : '死亡した人は話せません') : '話せません'); } });
       timerText();
     }
     function fillChat(id, data) {
@@ -6415,76 +6348,214 @@
     }
     function timerText() {
       const p = room && room.pub, b = g('ban'); if (!p || !b || p.ph === 'end') return;
-      const left = Math.max(0, Math.ceil((p.dl - Date.now()) / 1000)); b.textContent = p.day + '日目 ' + ({ night: '🌙 夜(家をおとずれる)', day: '☀ 昼の話し合い', vote: '🗳 投票' })[p.ph] + '  のこり ' + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
+      const left = Math.max(0, Math.ceil((p.dl - Date.now()) / 1000)); b.textContent = p.day + '日目 ' + ({ night: '🌙 夜', day: '☀ 昼の話し合い', vote: '🗳 投票' })[p.ph] + '  のこり ' + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
     }
     async function setAct(sub, val) { try { await db('PUT', path(sub), val); const ps = sub.split('/'); room[ps[1]] = room[ps[1]] || {}; room[ps[1]][ps[2]] = val; sigKey = ''; renderGame(); } catch (e) { /* noop */ } }
-    function nightModes(pv) {
-      const r = SRole(pv), imp = pv.team === 'imp', uses = pv.uses || 0, ms = [];
-      if (imp) ms.push({ m: 'atk', l: '襲撃する', t: true });
-      if (r === 'sk') ms.push({ m: 'atk', l: '殺す', t: true });
-      if (r === 'thief') ms.push({ m: 'atk', l: '殺して役職を奪う', t: true });
-      if (r === 'bomber') { ms.push({ m: 'bomb', l: '爆弾を仕掛ける', t: true }); ms.push({ m: 'det', l: '起爆する(仕掛けた数 ' + (pv.bombs || []).length + ')', t: false }); }
-      if (r === 'survivor') { const s = pv.shields == null ? 3 : pv.shields; if (s > 0) ms.push({ m: 'shield', l: '盾を使う(のこり' + s + '回)', t: false }); }
-      if (r === 'wizard') ms.push({ m: 'wiz', l: '魔術(雷を落とす)', t: true });
-      const lab = { rat: '調べる(1回だけ)', inv: '役職を調べる', police: '外出を止める', lookout: '家を見張る', tracker: '行き先を追う', doctor: '救う', provoker: '挑発する(2回)', cleaner: '役職を隠す', blamer: 'ペンキをかける(2回)' }[r];
-      if (lab && !(r === 'rat' && pv.used) && !((r === 'provoker' || r === 'blamer') && uses >= 2)) ms.push({ m: 'abl', l: lab, t: true });
-      ms.push({ m: 'none', l: '何もしない', t: false }); return ms;
-    }
-    function setupActions(p, pv, al, act, vt) {
-      townCb = null; if (!al) return;
+    function renderActions(p, pv, al, act, vt, rd) {
+      const box = g('act'); box.textContent = ''; pickCtx = null;
+      if (!al) { box.append(para('あなたは死亡しました。ゲームの行方を見守ろう。', 'wn-p')); return; }
+      const alive = Object.keys(p.alive).filter((u) => p.alive[u]), others = alive.filter((u) => u !== me()), shown = pv.role === 'fool' ? pv.shown : pv.role;
+      const setPick = (cands, cur, fn, label) => { box.append(para(label, 'wn-p')); pickCtx = { cands: cands, cur: cur, fn: fn }; };
       if (p.ph === 'night') {
-        const ms = nightModes(pv), cur = ms.find((x) => x.m === mode);
-        if (!cur || !cur.t) { const first = ms.find((x) => x.t); if (!cur) mode = first ? first.m : 'none'; }
-        const mm = ms.find((x) => x.m === mode);
-        if (mm && mm.t) townCb = { ok: (u) => u !== me() && p.alive[u] && !(mode === 'atk' && pv.team === 'imp' && room.priv[u] && room.priv[u].team === 'imp') && !((mode === 'abl') && (SRole(pv) === 'police' || SRole(pv) === 'doctor') && pv.last === u), fn: (u) => { const key = 'n' + p.day; if (mode === 'wiz') { wizT = u; sigKey = ''; renderGame(); } else setAct('/act/' + me(), { k: key, m: mode, t: u }); } };
-      } else if (p.ph === 'vote') townCb = { ok: (u) => u !== me() && p.alive[u], fn: (u) => setAct('/vote/' + me(), { k: 'd' + p.day, t: u }) };
-    }
-    function renderActionBox(p, pv, al, act, vt, rd) {
-      const box = g('act'); box.textContent = ''; if (!al) { box.append(para('ゲームの行方を見守ろう。', 'wn-p')); return; }
-      const alive = Object.keys(p.alive).filter((u) => p.alive[u]);
-      if (p.ph === 'night') {
-        const key = 'n' + p.day, ms = nightModes(pv), cur = act && act.k === key ? act : null;
-        if (ms.length === 1) { box.append(para('夜です。あなたには夜の能力がありません。朝を待とう。', 'wn-p')); }
-        ms.forEach((x) => box.append(btn(x.l, () => { mode = x.m; wizT = null; if (!x.t) setAct('/act/' + me(), { k: key, m: x.m }); else { sigKey = ''; renderGame(); } }, mode === x.m || (cur && !x.t && cur.m === x.m) ? 'on' : '')));
-        const mm = ms.find((x) => x.m === mode);
-        if (mm && mm.t) box.append(para('↑の家をタップして対象をえらぼう' + (mode === 'abl' && (SRole(pv) === 'police' || SRole(pv) === 'doctor') && pv.last ? '(昨夜と同じ相手はNG)' : ''), 'wn-p small'));
-        if (mode === 'wiz' && wizT) {
-          box.append(para('「' + nm(wizT) + '」の正体を言い当てる(インポスターは陣営だけでOK)', 'wn-p'));
-          const ts = el('select', 'bt-sel'), rs = el('select', 'bt-sel'); ['inn', 'imp', 'neu'].forEach((t) => { const o = el('option'); o.value = t; o.textContent = '陣営: ' + FT[t].n; ts.append(o); }); Object.keys(FR).forEach((r) => { const o = el('option'); o.value = r; o.textContent = '役職: ' + FR[r].n; rs.append(o); });
-          box.append(ts, rs, btn('雷を落とす!', () => setAct('/act/' + me(), { k: key, m: 'wiz', t: wizT, gt: ts.value, gr: rs.value })));
+        const key = 'n' + p.day, mine = act && act.k === key, cur = mine ? act.t : null, curM = mine ? act.m : null;
+        const imp = pv.team === 'imp', hasAbl = FG_NIGHT.indexOf(shown) >= 0 && !((shown === 'rat' || shown === 'thief') && pv.used && pv.role !== 'fool');
+        const modes = [];
+        if (imp) { modes.push(['atk', '🔪 襲撃する']); if (hasAbl) modes.push(['abl', '✨ ' + rn(shown) + 'の能力']); }
+        else if (pv.role === 'sk') modes.push(['atk', '🔪 殺す']);
+        else if (pv.role === 'bomber') { modes.push(['abl', '💣 爆弾をしかける']); modes.push(['det', '💥 爆破する']); }
+        else if (hasAbl) modes.push(['abl', '✨ ' + rn(shown) + 'の能力']);
+        if (!modes.length) { box.append(para(shown === 'rat' || shown === 'thief' ? '能力はもう使えません。朝を待とう。' : '夜です。あなたには夜の能力がありません。朝を待とう。', 'wn-p')); return; }
+        const m = modes.some((x) => x[0] === mode) ? mode : modes[0][0];
+        if (modes.length > 1) modes.forEach(([id, lb]) => box.append(btn(lb, () => { mode = id; sigKey = ''; renderGame(); }, m === id ? 'on' : '')));
+        if (m === 'det') {
+          box.append(para('爆弾をしかけた家を、ぜんぶ吹き飛ばします。', 'wn-p'));
+          box.append(btn('💥 爆破する', () => setAct('/act/' + me(), { k: key, t: others[0], m: 'det' }), curM === 'det' ? 'on' : ''));
+        } else {
+          const cands = m === 'atk' && imp ? others.filter((u) => !pvTeamKnown(u)) : others;
+          const label = m === 'atk' ? '🏠 襲う人の家をえらんでください' : '🏠 ' + (({ rat: '調べる人(1回だけ!)', inv: '役職を調べる人', police: '外出を止める人', lookout: '見張る家', tracker: '行き先を追う人', doctor: '守る人', trapper: '罠をしかける家', magician: '魔法をかける人', cleaner: '役職を隠す人(襲撃のかわり)', framer: '濡れ衣を着せる人(襲撃のかわり)', bomber: '爆弾をしかける家', thief: '役職を盗む人(1回だけ・イノセント側のみ)' })[shown] || '対象をえらんでください');
+          setPick(cands, mine && curM !== 'det' && cur !== 'none' ? cur : null, (u) => setAct('/act/' + me(), { k: key, t: u, m: m }), label);
         }
-        if (cur) box.append(para('あなたの行動: ' + ((ms.find((x) => x.m === cur.m) || {}).l || '') + (cur.t ? ' → ' + nm(cur.t) : '') + '(夜が終わるまで変更できます)', 'wn-p small'));
+        box.append(btn('今夜は何もしない', () => setAct('/act/' + me(), { k: key, t: 'none', m: 'abl' }), cur === 'none' ? 'on' : ''));
+        if (cur) box.append(para(cur === 'none' ? '今夜は何もしないにしました。' : curM === 'det' ? '爆破にしました。' : 'えらんだ家: ' + nm(cur) + '(夜が終わるまで変更できます)', 'wn-p small'));
       } else if (p.ph === 'day') {
         const n = alive.filter((u) => room.ready && room.ready[u] && room.ready[u].d === p.day).length;
-        box.append(para('話し合い中です。能力の結果を伝えたり、嘘を見ぬいたりしよう。(自分がバカの可能性も…)', 'wn-p'));
+        box.append(para('話し合い中です。能力の結果や疑いを文字チャットで話そう。(あなたの役がバカかも?)', 'wn-p'));
         box.append(btn(rd && rd.d === p.day ? '準備OK済み ' + n + '/' + alive.length : (p.day === 1 ? '話し合いを終えて夜へ' : '話し合いを終えて投票へ') + ' (' + n + '/' + alive.length + ')', () => setAct('/ready/' + me(), { d: p.day }), rd && rd.d === p.day ? 'on' : ''));
       } else if (p.ph === 'vote') {
-        const cur = vt && vt.k === 'd' + p.day ? vt.t : null;
-        box.append(para('追放する人の家をタップ(過半数の票が必要)。', 'wn-p'), btn('棄権する', () => setAct('/vote/' + me(), { k: 'd' + p.day, t: 'skip' }), cur === 'skip' ? 'on' : ''));
-        if (cur && cur !== 'skip') box.append(para('投票先: ' + nm(cur), 'wn-p small'));
+        const key = 'd' + p.day, cur = vt && vt.k === key ? vt.t : null;
+        setPick(others, cur, (u) => setAct('/vote/' + me(), { k: key, t: u }), '🗳 追放する人の家をえらぶ(過半数の票が必要)'); box.append(btn('棄権', () => setAct('/vote/' + me(), { k: key, t: 'skip' }), cur === 'skip' ? 'on' : ''));
       }
     }
+    const pvTeamKnown = (u) => { const pv = room.priv[me()]; return pv.team === 'imp' && room.priv[u] && room.priv[u].team === 'imp'; };
 
     /* ---------- 結果 ---------- */
+    function didWin(u, p) {
+      const pr = room.priv[u], al = !!(p.alive && p.alive[u]);
+      if (pr.role === 'survivor') return al;
+      if (pr.role === 'provoker') return p.win === 'prov' && p.pw === u;
+      if (pr.role === 'thief') return false;
+      if (FG_KILL.indexOf(pr.role) >= 0) return p.win === 'neu';
+      if (pr.team === 'imp') return p.win === 'imp';
+      return p.win === 'inn';
+    }
     function renderEnd() {
-      const p = room.pub; if (view === 'end') return; view = 'end'; sigKey = ''; body.textContent = ''; k('day').textContent = '結果';
-      const roles = p.roles || {}, mine = roles[me()] || { r: 'villager', t: 'inn' }, aliveMe = !!(p.alive && p.alive[me()]);
-      const win = (mine.t === 'inn' && p.win === 'inn') || (mine.t === 'imp' && p.win === 'imp') || (mine.t === 'neu' && (p.win === mine.r || (mine.r === 'survivor' && aliveMe))) || (mine.r === 'survivor' && aliveMe);
-      const pts = win ? (mine.t === 'neu' ? 200 : 150) + (aliveMe ? 50 : 0) : 30;
+      const p = room.pub; if (view === 'end') return; view = 'end'; sigKey = ''; pickCtx = null; body.textContent = ''; k('day').textContent = '結果';
+      const roles = p.roles || {}, pv = room.priv[me()], win = didWin(me(), p), alive = p.alive && p.alive[me()];
+      const pts = win ? (pv.team === 'neu' ? 200 : 150) + (alive ? 50 : 0) : 30;
       const h = el('div', 'bt-code'); h.textContent = win ? 'あなたの勝ち!' : 'あなたの負け…'; body.append(h);
-      body.append(para(({ inn: 'イノセント', imp: 'インポスター', sk: 'シリアルキラー', bomber: 'ボマー', wizard: '魔術師' })[p.win] + 'の勝利'));
-      const ol = el('div', 'fg-end'); plist().forEach((u) => { const c = FG_CH[(p.ch || {})[u] || 0], r = roles[u] || { r: 'villager', t: 'inn' }, row = el('div', 'fg-erow' + (u === me() ? ' me' : '')); const a = el('span'); a.textContent = c[0] + ' ' + nm(u).replace('(CPU)', '') + (p.alive && p.alive[u] ? '' : ' ✝'); row.append(a, tag(r.t, FR[r.r].e + FR[r.r].n)); if (r.f) { const s = el('small'); s.textContent = '「' + fgRn(r.f) + '」だと思い込んでいた'; row.append(s); } ol.append(row); });
+      body.append(para(({ inn: 'イノセント側', imp: 'インポスター側', neu: '殺人者(中立)', prov: '挑発者' })[p.win] + 'の勝利'));
+      const ol = el('ol', 'bt-pl'); plist().forEach((u, i) => { const pr = room.priv[u], li = el('li', (u === me() ? 'me ' : '') + 'fg-t-' + pr.team + ' fg-li'); li.textContent = FG_AV[i % FG_AV.length] + ' ' + nm(u) + ':' + rn(roles[u]) + (pr.role === 'fool' ? '(「' + rn(pr.shown) + '」だと思い込んでいた)' : '') + ' / ' + FG_TEAM[pr.team] + (p.alive && p.alive[u] ? '' : ' ✝') + (didWin(u, p) ? ' 🏆' : ''); ol.append(li); });
       body.append(ol, para('スコア +' + pts));
-      const row = el('div', 'acts'), b = btn('けっかをみる', () => { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', fgRn(mine.r)], ['けっか', win ? '勝ち' : '負け']], win ? 'win' : 'lose'); }); b.classList.remove('mini'); row.append(b); body.append(row);
+      const row = el('div', 'acts'), b = btn('けっかをみる', () => done(pts, win, roles[me()])); b.classList.remove('mini'); row.append(b); body.append(row);
       if (win) winJingle(); else A.beep(170, 0.3, 'sawtooth', 0.06, -90);
     }
+    function done(pts, win, role) { if (finished) return; finished = true; clearInterval(poll); poll = 0; k('score').textContent = String(pts); endJingle(); api.end(pts, [['役', rn(role) || '-'], ['けっか', win ? '勝ち' : '負け']], win ? 'win' : 'lose'); }
     const resetQuit = quitBtn(root, async () => { if (finished) return; finished = true; clearInterval(poll); poll = 0; await leaveRoom(); api.end(0, [['けっか', 'とちゅうでやめた']], 'lose'); });
     return {
       start() { finished = false; resetQuit(); k('score').textContent = '0'; toMenu(); clock = setInterval(timerText, 500); },
       pause() {}, resume() {}, destroy() { clearInterval(poll); clearInterval(clock); }
     };
   }
-  const ICON_FEIGN = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#2b1840"/><path d="M6 30l12-10 12 10v14H6z" fill="#ff8a8a"/><path d="M30 30l12-10 12 10v14H30z" fill="#7fb8ff"/><rect x="14" y="34" width="8" height="10" fill="#fff6"/><rect x="38" y="34" width="8" height="10" fill="#fff6"/><text x="12" y="30" font-size="11">🐶</text><text x="36" y="30" font-size="11">🐱</text><text x="30" y="55" font-size="11" font-weight="700" fill="#ffd45e" text-anchor="middle">バカ?</text></svg>';
+  const ICON_FEIGN = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#2b1840"/><circle cx="21" cy="26" r="9" fill="#ffd9b0"/><circle cx="39" cy="26" r="9" fill="#9fd8ff"/><circle cx="18" cy="24" r="2" fill="#2b1840"/><circle cx="24" cy="24" r="2" fill="#2b1840"/><path d="M17 31q4 3 8 0" stroke="#2b1840" stroke-width="2" fill="none"/><circle cx="36" cy="24" r="2" fill="#2b1840"/><circle cx="42" cy="24" r="2" fill="#2b1840"/><path d="M35 31h8" stroke="#2b1840" stroke-width="2"/><text x="30" y="52" font-size="12" font-weight="700" fill="#ff9ab0" text-anchor="middle">バカ?</text></svg>';
+  /* ===== ゲーム: ものしりクイズ(4択・ジャンルいろいろ) ===== */
+  const TRIVIA = [
+    ['地理', '日本でいちばん高い山は?', '富士山', '北岳', '穂高岳', '御嶽山', 0],
+    ['地理', '日本でいちばん大きい湖は?', '琵琶湖', '霞ヶ浦', '浜名湖', '猪苗代湖', 0],
+    ['地理', '日本の首都は?', '東京', '大阪', '京都', '名古屋', 0],
+    ['理科', '太陽系でいちばん大きい惑星は?', '木星', '土星', '地球', '海王星', 0],
+    ['理科', '水が氷になる温度(1気圧)は?', '0度', '10度', '-10度', '100度', 0],
+    ['理科', '光合成で植物が取り入れる気体は?', '二酸化炭素', '酸素', '窒素', '水素', 0],
+    ['理科', 'ミツバチが花から集めるものは?', '蜜と花粉', '葉', '木の皮', '種', 0],
+    ['生き物', '世界でいちばん大きい動物は?', 'シロナガスクジラ', 'アフリカゾウ', 'キリン', 'ジンベエザメ', 0],
+    ['生き物', 'カエルの子どもは?', 'オタマジャクシ', 'ボウフラ', 'ヤゴ', 'サナギ', 0],
+    ['生き物', 'パンダの主な食べ物は?', '竹', '肉', '魚', '果物', 0],
+    ['生き物', 'チョウになる前の姿は?', 'さなぎ', 'たまご', 'ヤゴ', 'ミミズ', 0],
+    ['生き物', 'クモの足は何本?', '8本', '6本', '10本', '4本', 0],
+    ['食べ物', '寿司にそえる、すっぱく味つけした薄切りの野菜は?', 'ガリ(しょうが)', 'わさび', 'ねぎ', 'きゅうり', 0],
+    ['食べ物', '納豆の原料は?', '大豆', '小麦', 'とうもろこし', '米', 0],
+    ['食べ物', 'カレーに欠かせない、黄色いスパイスは?', 'ターメリック', 'シナモン', 'バニラ', 'ミント', 0],
+    ['食べ物', '豆腐の原料は?', '大豆', '米', 'じゃがいも', '小麦', 0],
+    ['社会', '1年は何か月?', '12か月', '10か月', '13か月', '11か月', 0],
+    ['社会', '信号の「止まれ」の色は?', '赤', '青', '黄', '緑', 0],
+    ['社会', '日本のお金の単位は?', '円', 'ドル', 'ウォン', '元', 0],
+    ['社会', 'サッカーで1チームがグラウンドに出る人数は?', '11人', '9人', '10人', '12人', 0],
+    ['スポーツ', 'バレーボールの1チームのコート上の人数は?', '6人', '5人', '7人', '9人', 0],
+    ['スポーツ', '野球で3回アウトになると何が変わる?', '攻守交代', '試合終了', '選手交代', 'ホームラン', 0],
+    ['スポーツ', 'オリンピックの輪(五輪)は何個?', '5個', '4個', '6個', '7個', 0],
+    ['言葉', '「猫の手も借りたい」の意味は?', 'とても忙しい', 'とてもひま', '猫が好き', '手がきれい', 0],
+    ['言葉', '「七転び八起き」の「八」は何回目に起きる?', '8回目', '7回目', '9回目', '1回目', 0],
+    ['歴史', '江戸幕府を開いたのは?', '徳川家康', '織田信長', '豊臣秀吉', '源頼朝', 1],
+    ['歴史', '「本能寺の変」で倒れた武将は?', '織田信長', '徳川家康', '武田信玄', '上杉謙信', 1],
+    ['歴史', '鎌倉幕府を開いたのは?', '源頼朝', '足利尊氏', '平清盛', '北条時宗', 1],
+    ['歴史', '大阪城を築いたのは?', '豊臣秀吉', '徳川家康', '織田信長', '真田幸村', 1],
+    ['歴史', '遣唐使として唐にわたり、日本に戒律を伝えた僧は?', '鑑真', '空海', '最澄', '行基', 1],
+    ['歴史', '「平和の祭典」として近代オリンピックを始めたのは?', 'クーベルタン', 'ナポレオン', 'リンカーン', 'ガンジー', 2],
+    ['歴史', 'ペリーが黒船で来航した年は?', '1853年', '1603年', '1868年', '1945年', 2],
+    ['歴史', '平安京に都がうつされた年は?', '794年', '710年', '1192年', '645年', 2],
+    ['歴史', '関ヶ原の戦いが起こったのは?', '1600年', '1582年', '1615年', '1868年', 2],
+    ['歴史', 'ピラミッドで有名な古代文明は?', 'エジプト', 'ローマ', 'ギリシャ', 'マヤ', 1],
+    ['地理', '世界でいちばん面積が大きい国は?', 'ロシア', 'カナダ', 'アメリカ', '中国', 1],
+    ['地理', 'オーストラリアの首都は?', 'キャンベラ', 'シドニー', 'メルボルン', 'パース', 2],
+    ['地理', '日本でいちばん長い川は?', '信濃川', '利根川', '石狩川', '北上川', 1],
+    ['地理', '北海道の道庁所在地は?', '札幌', '函館', '旭川', '釧路', 1],
+    ['地理', '日本でいちばん面積が小さい都道府県は?', '香川県', '大阪府', '東京都', '沖縄県', 1],
+    ['地理', '「花の都」とよばれるフランスの首都は?', 'パリ', 'リヨン', 'ニース', 'マルセイユ', 1],
+    ['地理', 'ブラジルで主に話されている言語は?', 'ポルトガル語', 'スペイン語', '英語', 'フランス語', 2],
+    ['地理', 'カナダの首都は?', 'オタワ', 'トロント', 'バンクーバー', 'モントリオール', 2],
+    ['地理', '日本の都道府県はいくつ?', '47', '43', '50', '46', 1],
+    ['理科', '人間の体で、いちばん大きい臓器とされるのは?', '皮膚', '肝臓', '肺', '胃', 2],
+    ['理科', '水の化学式は?', 'H2O', 'CO2', 'O2', 'NaCl', 1],
+    ['理科', '音の速さは空気中で約秒速何メートル?', '340m', '34m', '3400m', '340km', 2],
+    ['理科', '人間の大人の歯は(親知らずを入れて)何本?', '32本', '28本', '30本', '36本', 2],
+    ['理科', '地球から太陽までの光が届くのにかかる時間は約?', '8分', '8秒', '8時間', '8日', 2],
+    ['理科', '鉄がさびる原因になる気体は?', '酸素', '窒素', 'ヘリウム', 'アルゴン', 1],
+    ['理科', '虹の色は何色といわれる?(日本)', '7色', '5色', '6色', '8色', 1],
+    ['理科', '地球でいちばん多い気体は?', '窒素', '酸素', '二酸化炭素', 'アルゴン', 2],
+    ['理科', '電気の流れる量(電流)の単位は?', 'アンペア', 'ボルト', 'ワット', 'オーム', 2],
+    ['理科', '元素記号「Fe」は何?', '鉄', '金', '銀', '銅', 2],
+    ['理科', '元素記号「Au」は何?', '金', '銀', 'アルミ', '亜鉛', 2],
+    ['理科', '太陽系で、いちばん太陽に近い惑星は?', '水星', '金星', '火星', '地球', 1],
+    ['理科', '「リンゴが落ちるのを見て万有引力を発見した」といわれる人は?', 'ニュートン', 'アインシュタイン', 'ガリレオ', 'エジソン', 1],
+    ['生き物', '世界でいちばん速く走る陸の動物は?', 'チーター', 'ライオン', 'ウマ', 'シマウマ', 1],
+    ['生き物', 'コアラが主に食べるものは?', 'ユーカリの葉', '竹', '草の根', '木の実', 1],
+    ['生き物', 'タコの心臓はいくつ?', '3つ', '1つ', '2つ', '8つ', 2],
+    ['生き物', 'ペンギンがくらす地域は主にどこ?', '南半球', '北極', 'アフリカの砂漠', '日本の山', 1],
+    ['生き物', '昆虫の足は何本?', '6本', '4本', '8本', '10本', 1],
+    ['食べ物', 'イタリア発祥の、トマトソースとチーズの丸い料理は?', 'ピザ', 'クレープ', 'カレー', 'タコス', 0],
+    ['食べ物', 'パンをふくらませるのに使う生き物(菌)は?', '酵母(イースト)', '乳酸菌', 'こうじ菌', '納豆菌', 1],
+    ['食べ物', 'しょうゆの原料に使われるのは?', '大豆と小麦', '米と砂糖', 'とうもろこし', 'じゃがいも', 1],
+    ['食べ物', '「たこ焼き」の発祥といわれる都市は?', '大阪', '京都', '福岡', '名古屋', 1],
+    ['食べ物', 'ビタミンCが多く、すっぱい果物は?', 'レモン', 'バナナ', 'メロン', 'ぶどう', 0],
+    ['言葉', '「花より団子」の意味は?', '見た目より実利', '花が好き', '団子が高い', '春が来た', 1],
+    ['言葉', '「十人十色」の意味は?', '人によって考えがちがう', '十人で出かける', '色がきれい', '十回やる', 1],
+    ['言葉', '「石の上にも三年」の意味は?', 'がまん強くやれば成功する', '石は重い', '三年待つと壊れる', '石をつむ', 1],
+    ['言葉', '「猿も木から落ちる」の意味は?', '名人でも失敗する', '猿は木が苦手', '木が弱い', '落ちたら痛い', 1],
+    ['言葉', '「急がば回れ」の意味は?', '急ぐときこそ安全な道を', '走ると速い', '回ると楽しい', '道に迷う', 1],
+    ['言葉', '「餅は餅屋」の意味は?', 'その道の専門家に任せるのがいい', '餅は安い', '餅は店でしか買えない', '餅がおいしい', 2],
+    ['言葉', '「雨降って地固まる」の意味は?', '困難のあとのほうが安定する', '雨が好き', '地面が好き', '雨は続く', 2],
+    ['言葉', '「三人寄れば文殊の知恵」の「文殊」とは?', '知恵をつかさどる菩薩', '大工', '将軍', '商人', 2],
+    ['言葉', '「五十歩百歩」の意味は?', '大きなちがいはない', '百歩ある', '五十人いる', '歩くと健康', 2],
+    ['言葉', '「温故知新」の意味は?', '古いことから新しい知識を得る', '新しいものを買う', '温泉に行く', '昔をわすれる', 2],
+    ['言葉', '「井の中の蛙大海を知らず」の意味は?', '視野がせまい', '海が好き', '蛙が大きい', '井戸は深い', 1],
+    ['社会', '日本の国会は衆議院と何院?', '参議院', '貴族院', '元老院', '枢密院', 1],
+    ['社会', '日本の通貨「円」の紙幣で、1万円札の肖像は?(2024年新札)', '渋沢栄一', '福沢諭吉', '野口英世', '夏目漱石', 2],
+    ['社会', '国連(国際連合)の本部がある都市は?', 'ニューヨーク', 'ジュネーブ', 'ロンドン', 'パリ', 2],
+    ['社会', '日本国憲法が施行された年は?', '1947年', '1945年', '1952年', '1889年', 2],
+    ['社会', '1ダースはいくつ?', '12個', '10個', '20個', '24個', 0],
+    ['社会', '信号機で「進め」を表す色は?', '青(緑)', '赤', '黄', '白', 0],
+    ['社会', 'サッカーのワールドカップは何年に1度?', '4年', '2年', '3年', '5年', 1],
+    ['スポーツ', 'バスケットボールで、1回のシュートで入る最大の点数は(通常)?', '3点', '2点', '4点', '5点', 1],
+    ['スポーツ', 'テニスで0点のことをなんという?', 'ラブ', 'ゼロ', 'ノー', 'ナシ', 2],
+    ['スポーツ', 'マラソンの距離は約何km?', '42.195km', '21km', '50km', '30km', 1],
+    ['スポーツ', '柔道で「一本」は何を意味する?', '勝ちが決まる', '引き分け', '反則', '休憩', 1],
+    ['スポーツ', '野球で、1チームの守備の人数は?', '9人', '7人', '11人', '8人', 0],
+    ['芸術', '「モナ・リザ」を描いたのは?', 'レオナルド・ダ・ヴィンチ', 'ピカソ', 'ゴッホ', 'モネ', 1],
+    ['芸術', '「ひまわり」の連作で有名な画家は?', 'ゴッホ', 'ダリ', 'ルノワール', 'ミレー', 1],
+    ['芸術', 'ベートーヴェンの有名な交響曲「運命」は第何番?', '第5番', '第9番', '第3番', '第1番', 2],
+    ['芸術', '「吾輩は猫である」の作者は?', '夏目漱石', '芥川龍之介', '太宰治', '宮沢賢治', 1],
+    ['芸術', '「走れメロス」の作者は?', '太宰治', '芥川龍之介', '川端康成', '三島由紀夫', 2],
+    ['芸術', '「銀河鉄道の夜」の作者は?', '宮沢賢治', '新美南吉', '夏目漱石', '小川未明', 2],
+    ['芸術', 'ピアノの白鍵と黒鍵、合わせて鍵盤はふつう何個?', '88個', '61個', '76個', '100個', 2],
+    ['乗り物', '日本で最初の新幹線が開業したのは?', '1964年', '1945年', '1985年', '1925年', 2],
+    ['乗り物', '飛行機を発明(初飛行)したのは?', 'ライト兄弟', 'エジソン', 'ベル', 'ノーベル', 1],
+    ['乗り物', '船の速さの単位は?', 'ノット', 'マイル', 'メートル', 'ガロン', 2],
+    ['数学', '円周率は約いくつ?', '3.14', '2.71', '1.41', '1.73', 0],
+    ['数学', '三角形の内角の和は?', '180度', '90度', '360度', '270度', 1],
+    ['数学', '7×8は?', '56', '54', '58', '64', 0],
+    ['数学', '正六角形の頂点の数は?', '6つ', '5つ', '8つ', '4つ', 0],
+    ['数学', '2の10乗は?', '1024', '512', '2048', '1000', 2],
+    ['数学', '1から10までをすべて足すと?', '55', '45', '50', '66', 1],
+    ['IT', 'パソコンの「CPU」の役割は?', '計算や処理の中心', '画面に映す', '電気をためる', '音を出す', 1],
+    ['IT', '1バイトは何ビット?', '8ビット', '4ビット', '16ビット', '10ビット', 2],
+    ['IT', 'ウェブページを書くのに使う言語は?', 'HTML', 'JPEG', 'MP3', 'ZIP', 1]
+  ];
+  function createTrivia(stage, api) {
+    let pool = [], used = 0;
+    const lvOf = (n) => (n < 6 ? 0 : n < 14 ? 1 : 2);
+    function pick(n) {
+      const want = lvOf(n);
+      for (let tries = 0; tries < 3; tries++) {
+        const l = Math.max(0, want - tries), c = pool.filter((q) => q[6] === l);
+        if (c.length) return c[rndInt(0, c.length - 1)];
+        const c2 = pool.filter((q) => q[6] <= want);
+        if (c2.length && tries === 1) return c2[rndInt(0, c2.length - 1)];
+      }
+      return null;
+    }
+    return createQuiz(stage, api, {
+      total: 75, penalty: 4, quick: 4, stats: (s) => [['せいかい', s.correct], ['最大コンボ', s.maxCombo], ['まちがい', s.wrong]],
+      next: (ctx) => {
+        if (!used || pool.length < 4) { pool = TRIVIA.slice(); used = 1; }
+        const q = pick(ctx.n) || pool[rndInt(0, pool.length - 1)];
+        pool.splice(pool.indexOf(q), 1);
+        const opts = shuffle([q[2], q[3], q[4], q[5]]);
+        const lvTag = ['<span class="tag t-read">', '<span class="tag t-ink">', '<span class="tag t-ink">'][q[6]];
+        return { html: lvTag + q[0] + (q[6] === 2 ? '・むずかしい' : q[6] === 1 ? '・ふつう' : '・やさしい') + '</span><div class="big" style="font-size:22px;line-height:1.5">' + q[1] + '</div>', opts: opts, ans: opts.indexOf(q[2]) };
+      }
+    });
+  }
+  const ICON_TRIVIA = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="30" cy="27" r="16" fill="#ffd45e"/><text x="30" y="35" font-size="24" font-weight="700" fill="#171c58" text-anchor="middle">?</text><rect x="14" y="47" width="14" height="6" rx="3" fill="#6fe3cf"/><rect x="32" y="47" width="14" height="6" rx="3" fill="#ff9ab0"/></svg>';
+
   const GAMES = [
     { id: 'star', name: '星ひろい', short: '星ひろい', desc: 'カゴで星をキャッチ。レベルアップで強化を選ぶ。', icon: ICON_STAR, create: createStar,
       intro: 'カゴで夜空の星をひろっていきます。レベルが上がるたびに、好きな強化を1つ選べます。',
@@ -6543,6 +6614,9 @@
     { id: 'rps', name: 'じゃんけん', short: 'じゃんけん', desc: '指定どおりの手を、すばやく出す。', icon: ICON_RPS, create: createRps,
       intro: 'あいての手を見て、「勝つ手」「負ける手」「あいこの手」を出します。頭の切りかえが大事です。',
       how: ['上に出るルールに合う手をタップ(1〜3キーでも選べます)', '1秒いないに答えると +5点', 'まちがえると -2秒。制限時間は40秒'], legend: '' },
+    { id: 'trivia', name: 'ものしりクイズ', short: 'クイズ', desc: '理科・歴史・言葉など、いろいろな4択クイズ。', icon: ICON_TRIVIA, create: createTrivia,
+      intro: '理科・地理・歴史・ことわざ・スポーツなど、ジャンルいろいろの4択クイズ。進むほどむずかしくなります。',
+      how: ['答えをタップ(1〜4キーでも選べます)', '4秒いないに答えると +5点。連続せいかいでコンボ倍率アップ', 'まちがえると -4秒。むずかしい問題は後半に出ます'], legend: '' },
     { id: 'cmp', name: 'どっちがおおきい', short: 'くらべる', desc: '2つの数のどちらが大きい(小さい)かを選ぶ。', icon: ICON_CMP, create: createCmp,
       intro: '2つの数や式のうち、大きいほう(小さいほう)をすばやく選びます。進むほど式は複雑になります。',
       how: ['ルールに合うほうをタップ(1・2キーでも選べます)', '1.8秒いないに答えると +5点', '8問ごとに「大きい」「小さい」が切りかわる。まちがえると -3秒'], legend: '' },
@@ -6600,9 +6674,9 @@
     { id: 'wordwolf', name: 'ワードウルフ', short: 'ワードウルフ', th: 'night', desc: '友だちと話して、少しちがうお題の人をさがす。', icon: ICON_WW, create: createWordWolf,
       intro: '全員にお題が配られますが、1人だけ少しちがうお題(ウルフ)。お題を直接言わずに話し合い、投票でウルフを当てよう(index.html版でオンライン、3〜10人)。',
       how: ['部屋をつくってコードを伝える/コードで入る', '自分のお題をヒントで話しながら、ほかの人とずれている人をさがす', 'ウルフが当てられても、みんなのお題を当てれば逆転勝ち。ホストはお題を自分で決めることもできる'], legend: '' },
-    { id: 'feign', name: 'バカ人狼', short: 'バカ人狼', th: 'night', desc: 'Feign風。キャラと家、全員に役職、バカが混ざる。', icon: ICON_FEIGN, create: createFeign,
-      intro: '「Feign」を参考にした人狼です。動物のキャラクターが家に住み、夜はほかの人の家をおとずれて能力を使います。全員に役職があり、味方か敵かは色で分かります(青=イノセント、赤=インポスター、黄=ニュートラル)。自分を役職持ちだと思い込む「バカ」も混ざります。役職とCPUの人数は、ゲーム前にホストが決められます。',
-      how: ['ホストが役職の種類と数、CPUの人数を決めて開始(おまかせもOK)', '昼は文字チャットで話し合い、過半数の票で追放(役職と陣営が公開)。初日の昼は追放なし', '夜は家をタップして能力を使う。インポスターは襲撃か能力のどちらか。ボマー・シーフ・魔術師・サバイバー・シリアルキラーなど中立もいる', '能力の結果は、バカならデタラメ! 結果を信じすぎないように'], legend: '' },
+    { id: 'feign', name: 'バカ人狼', short: 'バカ人狼', th: 'night', desc: 'Feign風。全員に役職があり、「バカ」が混ざる人狼。', icon: ICON_FEIGN, create: createFeign,
+      intro: '「Feign」を参考にした人狼です。村人側にも全員に役職(ねずみ・インベスティゲーター・ポリス・ドクターなど)があり、自分を役職持ちだと思い込んでいる「バカ」が混ざります。中立のシリアルキラー・ボマー・サバイバー・挑発者・シーフもいます。🟦味方側・🟥敵側・🟨中立で色分けされ、みんなにキャラと家があります。入れる役職とCPUの人数は自分でえらべます。1人(CPU)でも、友だち(index.html版)とでも遊べます。',
+      how: ['昼は文字チャットで話し合い、過半数の票で追放(役職が公開される)。初日の昼は追放なし', '夜は役職の能力で、ほかの人の家をおとずれる。インポスターは専用チャットで相談し、襲撃か能力のどちらか一方を使う', '能力の結果は、バカならデタラメ! 結果を信じすぎないように。勝ち条件はイノセント=人外全滅、インポスター=村人以上に増える、中立=最後まで生存'], legend: '' },
     { id: 'wolfnet', name: '人狼オンライン', short: '人狼ONLINE', th: 'night', desc: '友だちと部屋コードで遊ぶ本物の人狼。', icon: ICON_WOLFNET, create: createWolfNet,
       intro: '友だち4〜12人で遊ぶ人狼です(index.html版でオンライン)。村人陣営・人狼陣営・第三陣営(妖狐)に分かれ、文字チャットで話し合い、投票で処刑します。通話しながらでもOK。ホストの画面が開いている間だけ進行します。',
       how: ['部屋をつくってコードを伝える/コードで入る。4人からスタート', '役:村人・占い師・霊媒師・騎士/人狼・狂人/妖狐(人数で自動配分)', '夜に能力、昼は話し合い、投票で1人処刑。勝つと200点前後'], legend: '' },
@@ -6612,7 +6686,7 @@
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', math: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', dots: 'あたま', arrow: 'あたま', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', cmp: 'あたま', trivia: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
