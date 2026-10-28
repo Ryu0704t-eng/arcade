@@ -451,19 +451,55 @@
   .fg-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; margin-right: 8px; } .fg-badge.t-inn, .fg-rh.t-inn { background: #2a6fdb; color: #fff; } .fg-badge.t-imp, .fg-rh.t-imp { background: #d23b4a; color: #fff; } .fg-badge.t-neu, .fg-rh.t-neu { background: #e0a81c; color: #2a2018; }
   .wn-role.fg-t-inn { border-color: #2a6fdb; border-left-width: 6px; } .wn-role.fg-t-imp { border-color: #d23b4a; border-left-width: 6px; } .wn-role.fg-t-neu { border-color: #e0a81c; border-left-width: 6px; }
   .fg-li.fg-t-inn { border-left: 5px solid #2a6fdb; } .fg-li.fg-t-imp { border-left: 5px solid #d23b4a; } .fg-li.fg-t-neu { border-left: 5px solid #e0a81c; }
-  .fg-side { font-weight: 700; } .fg-tc { opacity: 0.85; }
+  .wn-role .wl.res { font-size: 13px; font-weight: 600; } .fg-side { font-weight: 700; } .fg-tc { opacity: 0.85; }
   .fg-roles { display: grid; gap: 6px; } .fg-rh { padding: 2px 10px; border-radius: 6px; font-size: 13px; font-weight: 700; } .fg-rr { display: flex; flex-wrap: wrap; gap: 4px 12px; }
   .fg-rl { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; } .fg-det { font-size: 12px; } .fg-det summary { cursor: pointer; margin: 4px 0; }
   .wn-role { background: var(--panel); border: 1px solid var(--gold); border-radius: 10px; padding: 8px 12px; display: grid; gap: 3px; }
+  .rc-pick { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: rgba(8, 10, 36, 0.9); overflow-y: auto; }
+  .rc-pick h3 { font-family: var(--display); font-weight: 400; font-size: 26px; color: var(--gold); }
+  .rc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 8px; width: min(100%, 360px); }
+  .rc-c { appearance: none; border: 2px solid var(--line); background: var(--panel); border-radius: 14px; height: 54px; font-size: 28px; cursor: pointer; display: grid; place-items: center; overflow: hidden; padding: 0; } .rc-c.on { border-color: var(--gold); box-shadow: 0 0 12px rgba(255, 212, 94, 0.5); } .rc-c img { width: 100%; height: 100%; object-fit: cover; }
+  .rc-url .bt-in { text-transform: none; letter-spacing: 0; font-size: 14px; }
+  .rc-url { display: flex; gap: 6px; align-items: center; width: min(100%, 360px); } .rc-url .bt-in { flex: 1; min-width: 0; width: auto; } .rc-file { cursor: pointer; } .rc-msg { font-size: 12px; color: var(--mute); }
+  .wn-chat { background: linear-gradient(#17194f, #10123a); border: 1px solid var(--line); border-radius: 16px; padding: 10px; gap: 8px; margin-bottom: 6px; display: grid; }
+  .wn-ch { font-size: 13px; font-weight: 700; color: var(--gold); }
+  .wn-cl { height: 170px; overflow-y: auto; font-size: 13px; display: flex; flex-direction: column; gap: 6px; padding: 2px; }
+  .fb { display: flex; gap: 6px; align-items: flex-end; max-width: 92%; } .fb.me { align-self: flex-end; flex-direction: row-reverse; }
+  .fba { width: 30px; height: 30px; border-radius: 50%; background: #2b2f7a; display: grid; place-items: center; font-size: 18px; flex: none; }
+  .fbx { display: flex; flex-direction: column; gap: 1px; min-width: 0; } .fbn { font-size: 10px; color: var(--mute); } .fb.me .fbn { text-align: right; }
+  .fbt { background: #2a2f7e; padding: 6px 10px; border-radius: 14px 14px 14px 4px; font-size: 14px; line-height: 1.4; word-break: break-word; color: #fff; }
+  .fb.me .fbt { background: #ffd45e; color: #2a2018; border-radius: 14px 14px 4px 14px; }
+  .fb.new { animation: fgPop 0.3s ease-out; }
+  .wn-cr .bt-in { border-radius: 999px; }
+  .wn-ev .wl.sys { text-align: center; color: var(--gold); font-weight: 700; border-top: 1px dashed var(--line); padding-top: 4px; margin-top: 6px; } .wn-ev .wl.dead::before { content: '💀 '; }
+  .ftown { box-sizing: border-box; overflow: hidden; padding: 24px 12px 12px; border-radius: 16px; background: linear-gradient(#8fd0ff, #b8e6ff 55%, #7ccf6e 56%, #5fb85a); transition: background 0.8s, filter 0.8s; position: relative; }
+  .ftown.night { background: linear-gradient(#0b0f3a, #1a2060 55%, #1d4a3a 56%, #133a2e); } .ftown.night::after { content: '🌙'; position: absolute; top: 4px; right: 10px; font-size: 20px; animation: fgBob 3s ease-in-out infinite; }
+  .ftown.day::after { content: '☀️'; position: absolute; top: 4px; right: 10px; font-size: 20px; animation: fgSpin 12s linear infinite; }
+  .ftown.night .fh { filter: brightness(0.78); } .fh { transition: filter 0.6s, transform 0.2s; } .fh.pick:hover, .fh.sel { transform: translateY(-3px); }
+  .fh .av { display: inline-block; animation: fgBob 2.4s ease-in-out infinite; } .fh.dead .av { animation: none; }
+  .fh.pick { animation: fgPulse 1.4s ease-in-out infinite; } .fh.boom { animation: fgBoom 0.9s ease-out; } .fh.boom::after { content: '💥'; position: absolute; font-size: 30px; left: 50%; top: 20%; transform: translateX(-50%); animation: fgBurst 0.9s ease-out forwards; }
+  .fg-ov { position: absolute; inset: 0; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 20px; pointer-events: none; }
+  .fg-ov.show { display: flex; animation: fgOv 2.2s ease-in-out forwards; } .fg-ov.night { background: radial-gradient(circle at 50% 35%, #2a2f8a, #05061f 70%); color: #dfe4ff; }
+  .fg-ov.day { background: radial-gradient(circle at 50% 35%, #fff2b0, #ffb36b 75%); color: #4a2a00; } .fg-ov.vote { background: radial-gradient(circle at 50% 40%, #5a2a6a, #1c0b2a 75%); color: #ffe6ff; }
+  .fg-ov .big { font-size: 72px; animation: fgRise 0.7s ease-out; } .fg-ov .tt { font-family: var(--display); font-size: 30px; animation: fgRise 0.8s 0.1s both; } .fg-ov .st { font-size: 15px; font-weight: 700; max-width: 320px; animation: fgRise 0.8s 0.3s both; }
+  .fg-pop { animation: fgPopBig 0.6s ease-out; } .fg-conf { position: absolute; top: -20px; font-size: 22px; animation: fgFall 2.6s linear forwards; pointer-events: none; }
+  @keyframes fgPop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes fgPopBig { 0% { transform: scale(0.3) rotate(-8deg); opacity: 0; } 60% { transform: scale(1.15) rotate(3deg); } 100% { transform: none; opacity: 1; } }
+  @keyframes fgBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes fgSpin { to { transform: rotate(360deg); } }
+  @keyframes fgPulse { 0%, 100% { outline-color: #ffd45e; } 50% { outline-color: #fff; } }
+  @keyframes fgBoom { 0% { transform: none; } 15% { transform: translateX(-6px) rotate(-4deg); } 30% { transform: translateX(6px) rotate(4deg); } 45% { transform: translateX(-5px); } 60% { transform: translateX(4px); } 100% { transform: none; } }
+  @keyframes fgBurst { 0% { transform: translateX(-50%) scale(0.3); opacity: 1; } 100% { transform: translateX(-50%) scale(2.2); opacity: 0; } }
+  @keyframes fgOv { 0% { opacity: 0; } 15% { opacity: 1; } 78% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes fgRise { from { transform: translateY(40px) scale(0.7); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes fgFall { to { transform: translateY(520px) rotate(360deg); opacity: 0.3; } }
+  @media (prefers-reduced-motion: reduce) { .fh .av, .fh.pick, .fh.boom, .fh.boom::after, .fb.new, .fg-ov .big, .fg-ov .tt, .fg-ov .st, .ftown::after, .fg-pop, .fg-conf { animation: none !important; } }
   .wn-act { align-content: flex-start; min-height: 48px; }
   .wn-body > * { flex-shrink: 0; }
   .wn-act .wn-p { flex-basis: 100%; text-align: center; }
   .btn.mini.on { background: var(--gold); color: var(--gold-ink); box-shadow: 0 4px 0 #b8902a; }
   .btn.mini.call { background: #2a7a5a; color: #fff; box-shadow: 0 4px 0 #17482f; }
   .wn-ev { flex: none; height: 96px; min-height: 0; }
-  .wn-chat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 6px; margin-bottom: 6px; display: grid; gap: 4px; }
-  .wn-ch { font-size: 12px; color: var(--mute); }
-  .wn-cl { height: 96px; overflow-y: auto; font-size: 13px; line-height: 1.45; }
   .wn-cr { display: flex; gap: 6px; } .wn-cr .bt-in { flex: 1; min-width: 0; width: auto; }
   .wn-opt { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.4; padding: 3px 0; } .wn-opt input { margin-top: 3px; flex: none; }
   .wn-qp { gap: 4px; } .wn-qp .btn.mini { font-size: 12px; padding: 4px 8px; }
@@ -2661,6 +2697,13 @@
           <div class="score" style="align-items:flex-end"><span class="lbl">ほし</span><span class="num" style="font-size:24px" data-k="stars">0</span></div>
         </div>
         <div class="hud-row"><span class="chip" data-k="dist">0m</span></div>
+      </div>
+      <div class="rc-pick" data-k="pick" hidden>
+        <h3>キャラをえらぼう</h3>
+        <div class="rc-grid" data-k="grid"></div>
+        <div class="rc-url"><input class="bt-in" data-k="url" type="url" placeholder="画像のリンク(https://…)を貼る" autocomplete="off"><button class="btn mini" type="button" data-k="urlGo">リンクから入れる</button></div>
+        <div class="rc-url"><label class="btn mini rc-file">📁 ファイルから<input data-k="file" type="file" accept="image/*" hidden></label><span class="rc-msg" data-k="cmsg"></span></div>
+        <button class="btn" type="button" data-k="go">スタート</button>
       </div>`);
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
@@ -2674,6 +2717,41 @@
     const meters = () => Math.floor(S.dist / 12);
     const pop = (x, y, text, c, size) => S.pops.push({ x, y, text, c, size: size || 16, life: 0 });
     function resize() { const d = fitCanvas(cv, ctx, stage); W = d.W; H = d.H; }
+    /* ---- キャラえらび ---- */
+    const CHARS = ['⭐', '🐱', '🐶', '🐰', '🦊', '🐼', '🐸', '🐧', '🐤', '🦄', '🐷', '🚀', '👾', '⚽', '🍙', '🍩'];
+    let ch = { k: 'emoji', v: '⭐' }, chImg = null;
+    try { const sv = JSON.parse(localStorage.getItem('runnerChar') || 'null'); if (sv && (sv.k === 'emoji' || sv.k === 'img') && typeof sv.v === 'string' && sv.v.length < 400000) ch = sv; } catch (e) { /* noop */ }
+    function loadImg(src, ok, ng) { const im = new Image(); im.onload = () => ok(im); im.onerror = ng; im.src = src; }
+    if (ch.k === 'img') loadImg(ch.v, (im) => { chImg = im; }, () => { ch = { k: 'emoji', v: '⭐' }; });
+    function saveCh() { try { localStorage.setItem('runnerChar', JSON.stringify(ch)); } catch (e) { /* noop */ } }
+    function buildPicker() {
+      const grid = k('grid'); grid.textContent = '';
+      CHARS.forEach((c) => { const b = el('button', 'rc-c' + (ch.k === 'emoji' && ch.v === c ? ' on' : '')); b.type = 'button'; b.textContent = c; b.addEventListener('click', () => { ch = { k: 'emoji', v: c }; chImg = null; saveCh(); buildPicker(); }); grid.append(b); });
+      if (ch.k === 'img') { const b = el('button', 'rc-c on'); b.type = 'button'; const im = el('img'); im.src = ch.v; im.alt = 'じぶんの画像'; b.append(im); grid.append(b); }
+    }
+    const cmsg = (t) => { k('cmsg').textContent = t || ''; };
+    function setImg(src) { cmsg('よみこみ中…'); loadImg(src, (im) => { ch = { k: 'img', v: src }; chImg = im; saveCh(); buildPicker(); cmsg('画像をセットしました!'); }, () => { cmsg('画像を読み込めませんでした(リンクを確かめてね)'); }); }
+    k('urlGo').addEventListener('click', () => { const u = k('url').value.trim(); if (!/^https?:\/\//i.test(u)) { cmsg('https:// から始まる画像のリンクを入れてね'); return; } setImg(u); });
+    k('file').addEventListener('change', () => {
+      const f = k('file').files && k('file').files[0]; if (!f) return; if (!/^image\//.test(f.type)) { cmsg('画像ファイルをえらんでね'); return; }
+      const fr = new FileReader(); fr.onload = () => { loadImg(String(fr.result), (im) => { const c = document.createElement('canvas'); c.width = c.height = 96; const x = c.getContext('2d'); const sc = Math.max(96 / im.width, 96 / im.height); x.drawImage(im, (96 - im.width * sc) / 2, (96 - im.height * sc) / 2, im.width * sc, im.height * sc); setImg(c.toDataURL('image/png')); }, () => cmsg('画像を読み込めませんでした')); }; fr.readAsDataURL(f);
+    });
+    k('go').addEventListener('click', () => { k('pick').hidden = true; S = makeState('play'); Object.keys(cache).forEach((n) => delete cache[n]); });
+    k('pick').addEventListener('pointerdown', (e) => e.stopPropagation());
+    function drawChar(px, py, ang, dying, time) {
+      if (ch.k === 'img' && chImg) {
+        const r = R + 6; ctx.save(); ctx.translate(px, py); ctx.rotate(ang); ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.283); ctx.clip(); ctx.drawImage(chImg, -r, -r, r * 2, r * 2); ctx.restore();
+        ctx.save(); ctx.strokeStyle = dying ? '#ff6b81' : '#ffd45e'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(px, py, R + 6, 0, 6.283); ctx.stroke(); ctx.restore(); return;
+      }
+      if (ch.k === 'emoji' && ch.v !== '⭐') {
+        ctx.save(); ctx.translate(px, py); ctx.rotate(ang); ctx.font = Math.round((R + 6) * 2) + 'px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; if (dying && Math.floor(time * 14) % 2) ctx.globalAlpha = 0.5; ctx.fillText(ch.v, 0, 2); ctx.restore(); return;
+      }
+      ctx.save(); ctx.shadowColor = dying ? '#ff6b81' : '#ffd45e'; ctx.shadowBlur = 16;
+      starPath(ctx, px, py, R + 4, ang);
+      ctx.fillStyle = dying ? (Math.floor(time * 14) % 2 ? '#ff6b81' : '#ffc2cb') : '#ffd45e'; ctx.fill(); ctx.restore();
+      ctx.fillStyle = '#2b2204';
+      ctx.beginPath(); ctx.arc(px - 3, py - 2, 1.8, 0, 6.283); ctx.arc(px + 4, py - 2, 1.8, 0, 6.283); ctx.fill();
+    }
     function makeState(mode) {
       return { mode, t: 0, dist: 0, stars: 0, jumps: 0, py: gyF() - R, vy: 0, jc: 0, obs: [], coins: [], gap: 520, parts: [], pops: [], shake: 0, flash: 0, dead: 0, scroll: 0 };
     }
@@ -2782,11 +2860,7 @@
         starPath(ctx, c.x, c.y, 8, time * 3); ctx.fillStyle = '#fff0a0'; ctx.fill(); ctx.restore();
       }
       const dying = S.mode === 'dying';
-      ctx.save(); ctx.shadowColor = dying ? '#ff6b81' : '#ffd45e'; ctx.shadowBlur = 16;
-      starPath(ctx, px, S.py, R + 4, S.mode === 'idle' ? time * 2 : S.dist / 16);
-      ctx.fillStyle = dying ? (Math.floor(time * 14) % 2 ? '#ff6b81' : '#ffc2cb') : '#ffd45e'; ctx.fill(); ctx.restore();
-      ctx.fillStyle = '#2b2204';
-      ctx.beginPath(); ctx.arc(px - 3, S.py - 2, 1.8, 0, 6.283); ctx.arc(px + 4, S.py - 2, 1.8, 0, 6.283); ctx.fill();
+      drawChar(px, S.py, S.mode === 'idle' ? time * 2 : S.dist / 16, dying, time);
       drawParts(ctx, S.parts);
       drawPops(ctx, S.pops);
       if (S.mode === 'idle' || (S.mode === 'play' && S.t < 4)) {
@@ -2833,7 +2907,7 @@
     raf = requestAnimationFrame(frame);
 
     return {
-      start() { S = makeState('play'); Object.keys(cache).forEach((n) => delete cache[n]); },
+      start() { S = makeState('idle'); Object.keys(cache).forEach((n) => delete cache[n]); buildPicker(); cmsg(''); k('pick').hidden = false; },
       pause() { if (S.mode === 'play') S.mode = 'paused'; },
       resume() { if (S.mode === 'paused') S.mode = 'play'; },
       destroy() { cancelAnimationFrame(raf); if (ro) ro.disconnect(); stage.removeEventListener('pointerdown', onDown); window.removeEventListener('keydown', onKey); }
@@ -5040,6 +5114,38 @@
   }
 
   /* ===== ゲーム37: 人狼(7人・1人用) ===== */
+  /* ===== CPUのおしゃべり(人狼系で共通) ===== */
+  const CPU_TPL = [
+    { open: ['まだ情報が少ないから、{t}さんの話をよく聞きたいな。', '急いで決めるのはよくないよ。順番に整理しよう。', '{t}さん、昨夜のことで気づいたことはある?', 'まず落ち着いて、みんなの意見を聞かせてほしいな。'],
+      sus: ['{t}さんの言い方、ちょっと引っかかるんだよね。', '{t}さんが静かなのが気になる。', '話の筋は通ってるけど、{t}さんだけ具体性がない気がする。', '{t}さんの発言、前と少しちがわない?'],
+      def: ['私は何も隠してないよ。整理して話してるだけ。', '疑うなら、理由を聞かせてほしいな。', '落ち着いて。私は敵じゃないよ。'],
+      agree: ['{t}さんの意見、一理あると思う。', 'なるほど、{t}さんに賛成かな。', '{t}さんの見方は参考になるね。'] },
+    { open: ['よーし、今日こそ見つけるぞ!', 'みんな遠慮せずにどんどん話そう!', '{t}さん! 昨日どこにいた!?', 'さあ、犯人さがしの時間だ!'],
+      sus: ['{t}さん、怪しすぎる! 絶対なにか隠してる!', 'ぼくの勘だと…{t}さんだ!', '{t}さん、目が泳いでる気がするぞ!', '{t}さんがいちばん怪しい、ぼくは押す!'],
+      def: ['ぼくじゃないって! 信じてよ!', 'どうしてぼくなの!? ひどいよ!', 'ぼくを疑うより、{t}さんを見たほうがいいよ!'],
+      agree: ['それだ! {t}さんの言う通り!', '{t}さんに乗った!', 'ぼくも同じ意見だ、{t}さん!'] },
+    { open: ['ふぁ…おはよう。みんな無事だった?', 'うーん、むずかしいねえ。', 'とりあえず、{t}さんの話から聞こうかな。', 'ゆっくり考えようよ〜。'],
+      sus: ['なんとなく、{t}さんがちがう気がする〜。', '{t}さん、ほんとにイノセントなのかなあ。', 'ううん…{t}さん、ちょっと気になるかも。'],
+      def: ['えー、ぼくは違うよぉ。', 'ねむいだけで、怪しくないよ〜。', 'ぼくを選ぶと、きっと後悔するよ〜。'],
+      agree: ['あ、それいいかも。', '{t}さんの考え、わかるなあ。', 'うんうん、{t}さんに賛成〜。'] },
+    { open: ['人数から考えると、今日の投票は重要だね。', 'まず状況を整理しよう。', '死亡者と生存者の数から推理してみよう。', '情報を出し合おう。曖昧な発言は避けたい。'],
+      sus: ['矛盾を探すと、{t}さんの発言が合わない。', '{t}さんの主張には根拠がない。論理的に怪しい。', '確率で考えると、{t}さんの可能性が高い。'],
+      def: ['私の発言に矛盾はないはず。', '根拠を示してほしい。感情論は困る。', '私が人外なら、こんな動きはしない。'],
+      agree: ['{t}さんの推理は筋が通っている。', 'その点は同意する。{t}さんの指摘は妥当だ。', '{t}さんと結論が一致した。'] },
+    { open: ['はいはーい、探偵の時間だよ〜!', 'みんな顔こわいって! 笑おうよ!', '犯人はこの中にいる!…って言ってみたかった。', 'ミステリー小説みたいになってきたね〜。'],
+      sus: ['{t}さん、にやにやしてない? あやしい〜!', '{t}さんが犯人なら話が早いんだけどな〜。', '{t}さん、まさかの…ね?'],
+      def: ['えっ、ぼく? やだなあ、ただのお調子者だよ!', 'ぬれぎぬだ〜!', '証拠はあるの〜? ないでしょ〜!'],
+      agree: ['{t}さんナイス! その調子!', 'おお、{t}さん冴えてる〜!', '{t}さんに一票…は早いか!'] }
+  ];
+  const cpuUsed = {};
+  function cpuPersona(name) { let h = 7; for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0; return h % CPU_TPL.length; }
+  function cpuLine(name, kind, tName, extra) {
+    const pool = CPU_TPL[cpuPersona(name)][kind] || CPU_TPL[0].open, key = name + '|' + kind, used = cpuUsed[key] || (cpuUsed[key] = []);
+    let c = pool.map((t, i) => i).filter((i) => used.indexOf(i) < 0); if (!c.length) { used.length = 0; c = pool.map((t, i) => i); }
+    const i = c[Math.floor(Math.random() * c.length)]; used.push(i);
+    let t = pool[i].replace(/\{t\}/g, tName || 'あの人'); if (extra && Math.random() < 0.35) t += extra;
+    return t;
+  }
   function createWolf(stage, api) {
     const root = el('div', 'pg wolf', `
       <div class="pg-hud">
@@ -5136,7 +5242,7 @@
           if (!co[i] && day === 1 && Math.random() < (r === 'mad' ? 0.75 : 0.4)) { fakeSeer(i, lines); return; }
           if (r === 'mad' && lastExec && !co[i] && Math.random() < 0.3) { const w = Math.random() < 0.4; mk(i, 'medium', lastExec.t, w); lines.push(nm(i) + ':霊媒師です。処刑された' + nm(lastExec.t) + 'さんは【' + hum(w) + '】でした。'); return; }
         }
-        const t = rnd(pool); lines.push(nm(i) + ':' + (Math.random() < 0.5 ? '決め手がないな…' + nm(t) + 'さんが少し気になる。' : nm(t) + 'さん、どう思う?'));
+        const t = rnd(pool), kk = Math.random(); lines.push(nm(i) + ':' + cpuLine(nm(i), kk < 0.25 ? 'open' : kk < 0.75 ? 'sus' : 'agree', nm(t)));
         if (r !== 'wolf' || Math.random() < 0.5) accused.push({ by: i, t: t });
       });
       return lines;
@@ -6006,11 +6112,12 @@
       <div class="pg-foot"><span data-k="role"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
+    const ovl = el('div', 'fg-ov'); root.append(ovl);
     const body = k('body'), g = (n) => body.querySelector('[data-k="' + n + '"]');
     const onlineOK = () => typeof rtdb === 'function' && typeof FB !== 'undefined' && typeof Rank !== 'undefined' && !!Rank.uid;
     const myId = () => (solo ? 'me' : Rank.uid), myName = () => (typeof Rank !== 'undefined' && typeof Rank.name === 'function' ? Rank.name() : 'あなた');
     const MAXP = 12, MINP = 4;
-    let solo = false, mem = null, db = null, code = '', room = null, isHost = false, poll = 0, clock = 0, busy = false, view = '', finished = false, sigKey = '', sendAt = 0, chatN = { chat: -1, wchat: -1 }, canChat = false, canWolf = false, mode = 'atk', botLast = 0;
+    let solo = false, mem = null, db = null, code = '', room = null, isHost = false, poll = 0, clock = 0, busy = false, view = '', finished = false, sigKey = '', sendAt = 0, chatN = { chat: -1, wchat: -1 }, canChat = false, canWolf = false, mode = 'atk', botLast = 0, botNext = 0, ovKey = '', seenDead = null;
     const path = (s) => '/feign/' + code + (s || '');
     const me = () => myId();
     const nm = (u) => (room && room.players && room.players[u] ? room.players[u].n : 'だれか');
@@ -6180,6 +6287,27 @@
       return t ? { k: key, t: t, m: m } : null;
     }
     const BOT_LINES = ['だれか能力の結果ある?', 'ぼくは怪しくないよ!', 'まだ決め手がないね…', '役職COしたほうがいい?', 'だれかが嘘をついてる気がする', 'バカがいるかもしれないよ?'];
+    const botMem = {};
+    function botSpeak(p, priv, al, bots, now) {
+      const b = rnd(bots), bn = nm(b).replace('(CPU)', ''), pr = priv[b], imp = pr.team === 'imp', mem = botMem[b] || (botMem[b] = { rep: 0, day: 0, said: 0 });
+      const targets = al.filter((x) => x !== b && !(imp && priv[x].team === 'imp')), o = rnd(targets.length ? targets : al.filter((x) => x !== b)); if (!o) return null;
+      const on = nm(o).replace('(CPU)', ''), chat = Object.values(room.chat || {}).filter((m) => m.d === p.day).sort((a, c) => (a.t || 0) - (c.t || 0)), last = chat[chat.length - 1];
+      let text = '';
+      const evs = p.ev || [];
+      if (mem.day !== p.day) {
+        mem.day = p.day; const ds = evs.map((e) => /^(.+?)が殺されました。役職は【(.+?)】/.exec(e)).filter(Boolean).slice(-1)[0];
+        if (ds && Math.random() < 0.85) { const dn = ds[1].replace('(CPU)', ''), role = ds[2]; text = rnd(['{n}さん…{r}だったんだね。', '{r}の{n}さんが殺されるなんて…', '{n}さんの役職は{r}か。ここからどう動く?', '{n}さん、{r}だったのに…悔しいな。']).replace('{n}', dn).replace('{r}', role); }
+      }
+      if (!text && last && last.u !== b && String(last.m).indexOf(bn) >= 0 && Math.random() < 0.85) text = cpuLine(nm(b), 'def', String(last.n || '').replace('(CPU)', ''));
+      if (!text && (pr.info || []).length > mem.rep) {
+        const li = pr.info[pr.info.length - 1]; mem.rep = pr.info.length; const body = String(li).replace(/^\d+日目の夜: /, '');
+        if (/だった|のどちらか|訪れ|罠|行かなかった|いない|だれもいない/.test(body) && !imp) text = rnd(['結果を言うね。', '能力の報告だよ。', '私の調べた結果だけど、', '共有しておくね。']) + body;
+      }
+      if (!text && imp && Math.random() < 0.3) { const fk = rnd(['rat', 'inv', 'lookout', 'tracker']); text = rnd(['私は' + rn(fk) + 'だよ。', '実は' + rn(fk) + 'なんだ。']) + on + 'さんを調べたけど、イノセントだった。'; }
+      if (!text) { const r = Math.random(); if (mem.said === 0 || r < 0.15) text = cpuLine(nm(b), 'open', on); else if (last && last.u !== b && r < 0.4) text = cpuLine(nm(b), 'agree', String(last.n || '').replace('(CPU)', '')); else text = cpuLine(nm(b), 'sus', on, Math.random() < 0.5 ? ' 今夜の動きが気になる。' : ''); }
+      mem.said++;
+      return { u: b, n: nm(b), m: text, t: now, d: p.day };
+    }
     async function hostStep() {
       const p = room.pub, priv = room.priv; if (!p || p.ph === 'end' || !priv) return;
       const now = Date.now(), alive = Object.assign({}, p.alive), al = Object.keys(alive).filter((u) => alive[u]), bots = botsOf(al);
@@ -6198,7 +6326,7 @@
         np = { ph: 'day', day: p.day, dl: now + (Number((room.cfg || {}).talk) || 180) * 1000, ns: p.ns, alive: r.alive, rev: r.rev, ev: ev, seq: (p.seq || 0) + 1 };
         upd.ready = null; upd.act = null; const w = winnerOf(r.alive, priv); if (w) finish(w);
       } else if (p.ph === 'day') {
-        if (now - botLast > 9000 && bots.length && now < p.dl) { botLast = now; const b = rnd(bots), o = rnd(al.filter((x) => x !== b)); const line = Math.random() < 0.4 ? nm(o) + 'さんが気になるな…' : rnd(BOT_LINES); try { await db('POST', path('/chat'), { u: b, n: nm(b), m: line, t: now, d: p.day }); } catch (e) { /* noop */ } }
+        if (now >= botNext && bots.length && now < p.dl) { botNext = now + rndInt(4000, 9000); const msg = botSpeak(p, priv, al, bots, now); if (msg) { try { await db('POST', path('/chat'), msg); } catch (e) { /* noop */ } } }
         bots.forEach((u) => { ready[u] = { d: p.day }; });
         const all = al.every((u) => ready[u] && ready[u].d === p.day);
         if (!(all || now >= p.dl)) return;
@@ -6306,6 +6434,17 @@
       ch.append(qp); if (!solo) { const row = el('div', 'acts'); row.append(callBtn()); ch.append(row); }
     }
     let pickCtx = null;
+    function showPhase(p) {
+      const key = p.day + p.ph; if (key === ovKey) return; ovKey = key;
+      const ev = p.ev || [], cls = p.ph === 'night' ? 'night' : p.ph === 'vote' ? 'vote' : 'day'; let ic = '🌙', tt = p.day + '日目の夜', st = 'みんな家にもどった…。能力のある人は動き出す。';
+      if (p.ph === 'day') {
+        ic = '☀️'; tt = p.day + '日目の朝'; let a = -1; ev.forEach((e, i) => { if (String(e).indexOf('--- ' + p.day + '日目の朝') === 0) a = i; });
+        const ls = a >= 0 ? ev.slice(a + 1).filter((e) => !/^---|^===/.test(e)) : []; st = ls.length ? ls.slice(0, 3).join('\n') : '話し合いを始めよう。';
+      } else if (p.ph === 'vote') { ic = '🗳️'; tt = '投票の時間'; st = 'だれを追放する?'; }
+      else if (p.day > 1) { let a = -1; ev.forEach((e, i) => { if (String(e).indexOf('【投票結果】') === 0) a = i; }); const ls = a >= 0 ? ev.slice(a + 1).filter((e) => /追放|過半数/.test(e)) : []; if (ls.length) st = ls.join('\n'); }
+      ovl.textContent = ''; ovl.className = 'fg-ov show ' + cls; const b = el('div', 'big'), t = el('div', 'tt'), s2 = el('div', 'st'); b.textContent = ic; t.textContent = tt; s2.textContent = st; s2.style.whiteSpace = 'pre-line'; ovl.append(b, t, s2);
+      clearTimeout(showPhase.tm); showPhase.tm = setTimeout(() => { ovl.className = 'fg-ov'; }, 2300);
+    }
     const sideTx = (tm, role) => (tm === 'inn' ? '🟦 味方=イノセント側(正体は分からない) / 🟥 敵=インポスター・シリアルキラー・ボマー' : tm === 'imp' ? '🟥 味方=インポスター側(仲間は下に表示) / 🟦 敵=イノセント側と殺人者' : '🟨 だれの味方でもありません。' + (FG_WIN[role] ? '' : ''));
     function renderGame() {
       const p = room.pub; if (!p) return; if (view !== 'game') buildGame();
@@ -6322,11 +6461,13 @@
       }
       const sig = [p.ph, p.day, al, act && act.t, act && act.m, vt && vt.t, rd && rd.d, p.seq, mode, pv.used, info.length].join('|');
       if (sig !== sigKey) { sigKey = sig; renderActions(p, pv, al, act, vt, rd); }
-      const pls = g('pls'); pls.className = 'ftown'; pls.textContent = '';
+      const firstR = !seenDead; if (firstR) seenDead = {};
+      showPhase(p);
+      const pls = g('pls'); pls.className = 'ftown ' + (p.ph === 'night' ? 'night' : 'day'); pls.textContent = '';
       plist().forEach((u, i) => {
         const dead = !p.alive[u], pc = pickCtx && !dead && pickCtx.cands.indexOf(u) >= 0, mate = pv.team === 'imp' && u !== me() && room.priv[u] && room.priv[u].team === 'imp';
         const h = el('button', 'fh' + (dead ? ' dead' : '') + (u === me() ? ' me' : '') + (mate ? ' mate' : '') + (pc ? ' pick' : '') + (pickCtx && pickCtx.cur === u ? ' sel' : '')); h.type = 'button'; h.style.setProperty('--c', 'hsl(' + ((i * 47) % 360) + ' 62% 46%)');
-        const av = el('span', 'av'), n = el('span', 'nm'), tg = el('span', 'tg'), rl = el('span', 'rl');
+        const av = el('span', 'av'), n = el('span', 'nm'), tg = el('span', 'tg'), rl = el('span', 'rl'); av.style.animationDelay = ((i * 0.37) % 2).toFixed(2) + 's'; if (dead) { if (!seenDead[u] && !firstR) h.classList.add('boom'); seenDead[u] = 1; }
         av.textContent = dead ? '🪦' : FG_AV[i % FG_AV.length]; n.textContent = nm(u).replace('(CPU)', '');
         let mark = ''; if (!dead && p.ph === 'day' && room.ready && room.ready[u] && room.ready[u].d === p.day) mark = '✓'; else if (!dead && p.ph === 'vote' && room.vote && room.vote[u] && room.vote[u].k === 'd' + p.day) mark = '✓';
         tg.textContent = u === me() ? 'あなた' : mate ? '😈仲間' : mark;
@@ -6343,8 +6484,8 @@
     }
     function fillChat(id, data) {
       const log = g(id + 'Log'); if (!log) return; const arr = Object.values(data || {}).sort((a, b) => (a.t || 0) - (b.t || 0)).slice(-60);
-      if (arr.length === chatN[id]) return; chatN[id] = arr.length; const stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 30; log.textContent = '';
-      arr.forEach((m) => { const q = el('p', 'wl' + (m.u === me() ? ' me' : '')); q.textContent = String(m.n || '').slice(0, 14) + ': ' + String(m.m || ''); log.append(q); }); if (stick) log.scrollTop = log.scrollHeight;
+      if (arr.length === chatN[id]) return; const prevN = chatN[id]; chatN[id] = arr.length; const ids0 = plist(); const stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 30; log.textContent = '';
+      arr.forEach((m, i) => { const mine = m.u === me(), bb = el('div', 'fb' + (mine ? ' me' : '') + (prevN >= 0 && i >= prevN ? ' new' : '')), av = el('span', 'fba'), bx = el('div', 'fbx'), nn = el('span', 'fbn'), tx = el('span', 'fbt'); const ix = ids0.indexOf(m.u); av.textContent = ix >= 0 ? FG_AV[ix % FG_AV.length] : '💬'; nn.textContent = String(m.n || '').replace('(CPU)', '').slice(0, 12); tx.textContent = String(m.m || ''); bx.append(nn, tx); bb.append(av, bx); log.append(bb); });
     }
     function timerText() {
       const p = room && room.pub, b = g('ban'); if (!p || !b || p.ph === 'end') return;
@@ -6402,7 +6543,7 @@
       const p = room.pub; if (view === 'end') return; view = 'end'; sigKey = ''; pickCtx = null; body.textContent = ''; k('day').textContent = '結果';
       const roles = p.roles || {}, pv = room.priv[me()], win = didWin(me(), p), alive = p.alive && p.alive[me()];
       const pts = win ? (pv.team === 'neu' ? 200 : 150) + (alive ? 50 : 0) : 30;
-      const h = el('div', 'bt-code'); h.textContent = win ? 'あなたの勝ち!' : 'あなたの負け…'; body.append(h);
+      const h = el('div', 'bt-code fg-pop'); h.textContent = win ? 'あなたの勝ち!' : 'あなたの負け…'; body.append(h); if (win) for (let q = 0; q < 14; q++) { const c = el('span', 'fg-conf'); c.textContent = ['🎉', '✨', '⭐', '🎊'][q % 4]; c.style.left = (q * 7 + 3) + '%'; c.style.animationDelay = (q % 5) * 0.25 + 's'; root.append(c); setTimeout(() => c.remove(), 3500); }
       body.append(para(({ inn: 'イノセント側', imp: 'インポスター側', neu: '殺人者(中立)', prov: '挑発者' })[p.win] + 'の勝利'));
       const ol = el('ol', 'bt-pl'); plist().forEach((u, i) => { const pr = room.priv[u], li = el('li', (u === me() ? 'me ' : '') + 'fg-t-' + pr.team + ' fg-li'); li.textContent = FG_AV[i % FG_AV.length] + ' ' + nm(u) + ':' + rn(roles[u]) + (pr.role === 'fool' ? '(「' + rn(pr.shown) + '」だと思い込んでいた)' : '') + ' / ' + FG_TEAM[pr.team] + (p.alive && p.alive[u] ? '' : ' ✝') + (didWin(u, p) ? ' 🏆' : ''); ol.append(li); });
       body.append(ol, para('スコア +' + pts));
@@ -6529,6 +6670,255 @@
     ['IT', '1バイトは何ビット?', '8ビット', '4ビット', '16ビット', '10ビット', 2],
     ['IT', 'ウェブページを書くのに使う言語は?', 'HTML', 'JPEG', 'MP3', 'ZIP', 1]
   ];
+  const TRIVIA2 = [
+    ['宇宙', '地球の自然の衛星(月)はいくつ?', '1個', '2個', '0個', '3個', 0],
+    ['宇宙', '太陽系の惑星はいくつ?', '8つ', '9つ', '7つ', '10', 0],
+    ['宇宙', '「赤い惑星」とよばれるのは?', '火星', '金星', '木星', '水星', 0],
+    ['宇宙', '美しい環(わ)をもつことで有名な惑星は?', '土星', '火星', '水星', '金星', 0],
+    ['宇宙', '月面に初めて降り立った宇宙飛行士は?', 'ニール・アームストロング', 'ガガーリン', 'バズ・オルドリン', 'スコット・カーペンター', 1],
+    ['宇宙', '人類で初めて宇宙に行った人は?', 'ガガーリン', 'アームストロング', 'ホワイト', 'シェパード', 1],
+    ['宇宙', '太陽の表面に見える黒っぽい部分は?', '黒点', 'コロナ', 'プロミネンス', 'オーロラ', 1],
+    ['宇宙', '彗星(ほうき星)の尾はなぜできる?', '太陽の熱で氷がとけるから', '風でなびくから', '燃えているから', '月の重力のせい', 2],
+    ['宇宙', 'リュウグウの砂を持ち帰った日本の探査機は?', 'はやぶさ2', 'かぐや', 'あかつき', 'きぼう', 1],
+    ['宇宙', '国際宇宙ステーションの略称は?', 'ISS', 'NASA', 'JAXA', 'UFO', 0],
+    ['宇宙', '地球が太陽のまわりを1周する時間は約?', '1年', '1か月', '1日', '10年', 0],
+    ['宇宙', '月が地球のまわりを1周する時間は約?', '27日', '7日', '100日', '1日', 2],
+    ['宇宙', '夜空で北の方向を示す星は?', '北極星', 'シリウス', 'ベガ', 'アンタレス', 0],
+    ['宇宙', '夜空でいちばん明るく見える恒星は?', 'シリウス', '北極星', 'ベテルギウス', 'ベガ', 1],
+    ['宇宙', 'オリオン座の赤い一等星は?', 'ベテルギウス', 'リゲル', 'シリウス', 'プロキオン', 2],
+    ['宇宙', '七夕の織姫星は?', 'ベガ', 'アルタイル', 'デネブ', 'アンタレス', 1],
+    ['宇宙', '七夕の彦星は?', 'アルタイル', 'ベガ', 'デネブ', 'スピカ', 1],
+    ['宇宙', 'ブラックホールから光も出られないのは何が強いから?', '重力', '磁力', '熱', '風', 1],
+    ['宇宙', '太陽系でいちばん高温な惑星は?', '金星', '水星', '火星', '木星', 2],
+    ['宇宙', '「1光年」とは何の単位?', '距離', '時間', '重さ', '速さ', 1],
+    ['宇宙', '月の黒っぽく見える平らな部分を何という?', '海', '山', '川', '森', 2],
+    ['理科', '空が青く見えることに関わる光の性質は?', '散乱', '反射', '吸収', '屈折の逆', 2],
+    ['理科', '氷が水にうかぶのはなぜ?', '水より軽いから', '水より重いから', '冷たいから', '空気が入っているから', 1],
+    ['理科', '磁石に引きつけられる金属は?', '鉄', 'アルミニウム', '銅', '金', 0],
+    ['理科', 'ものが燃えるために必要な気体は?', '酸素', '窒素', '二酸化炭素', 'ヘリウム', 0],
+    ['理科', '石灰水を白くにごらせる気体は?', '二酸化炭素', '酸素', '水素', '窒素', 1],
+    ['理科', '水を熱して100度になるとどうなる?', '沸とうする', 'こおる', 'かたまる', '消える', 0],
+    ['理科', '雷の光と音、先に届くのは?', '光', '音', '同時', '日による', 0],
+    ['理科', '虹ができるのは、太陽の光と何があるとき?', '水のつぶ', '氷だけ', '砂', '風', 0],
+    ['理科', 'pH7は何性?', '中性', '酸性', 'アルカリ性', '強酸性', 1],
+    ['理科', 'レモン汁は何性?', '酸性', '中性', 'アルカリ性', '強アルカリ性', 1],
+    ['理科', '血液を全身に送り出す器官は?', '心臓', '肺', '胃', '腎臓', 0],
+    ['理科', '人間の骨はおよそ何本?', '約200本', '約50本', '約500本', '約100本', 2],
+    ['理科', '食べ物の養分を主に吸収する場所は?', '小腸', '大腸', '食道', '胃', 1],
+    ['理科', '目で光を受け取る膜は?', '網膜', '角膜', '水晶体', 'まぶた', 2],
+    ['理科', '台風が発生する場所は?', '熱帯の海上', '北極', '砂漠', '山の上', 1],
+    ['理科', '各地での地震のゆれの強さを表す日本の階級は?', '震度', 'マグニチュード', 'デシベル', 'ヘクトパスカル', 1],
+    ['理科', '気圧の単位は?', 'ヘクトパスカル', 'メートル', 'ニュートン', 'リットル', 1],
+    ['理科', '音の高さは何で決まる?', '振動数', '大きさ', '色', '重さ', 2],
+    ['理科', '水が水蒸気になることを何という?', '蒸発', '凝固', '融解', '結露', 1],
+    ['理科', '冷たい飲み物のコップの外に水滴ができる現象は?', '結露', '蒸発', '沸とう', '融解', 1],
+    ['理科', '電気をよく通すものは?', '銅', 'ゴム', 'ガラス', '木', 1],
+    ['理科', '種から芽が出ることを何という?', '発芽', '開花', '受粉', '落葉', 0],
+    ['理科', '台風の中心にできる、雲のない部分は?', '台風の目', '台風の耳', '台風の口', '台風の鼻', 1],
+    ['生き物', '日本の国鳥は?', 'キジ', 'ツル', 'スズメ', 'ハト', 1],
+    ['生き物', 'カンガルーの赤ちゃんが育つ場所は?', 'おなかの袋', '巣穴', '木の上', '池', 0],
+    ['生き物', 'イルカは魚?哺乳類?', '哺乳類', '魚類', 'は虫類', '両生類', 0],
+    ['生き物', '日本にいるいちばん大きいクマは?', 'ヒグマ', 'ツキノワグマ', 'ホッキョクグマ', 'パンダ', 1],
+    ['生き物', 'アリの体は、頭・胸とあと何に分かれる?', '腹', '足', '羽', '尾', 1],
+    ['生き物', 'コウモリは何の仲間?', '哺乳類', '鳥類', '昆虫', 'は虫類', 1],
+    ['生き物', 'ダチョウの特徴は?', '飛べない大きな鳥', '水中で暮らす', '毛がない', '冬眠する', 0],
+    ['生き物', 'カメレオンの特徴は?', '体の色を変える', '火を吹く', '空を飛ぶ', '水中で呼吸する', 0],
+    ['生き物', 'ホッキョクグマがすむのは?', '北極', '南極', 'アフリカ', 'アマゾン', 0],
+    ['生き物', 'サケが産卵のために戻ってくる場所は?', '生まれた川', '深い海', '湖の底', '滝の上', 1],
+    ['生き物', 'ヘビが皮をぬぐことを何という?', '脱皮', '冬眠', '変態', '羽化', 1],
+    ['生き物', 'チョウの幼虫(青虫など)が主に食べるのは?', '葉', '肉', '砂', '蜜だけ', 0],
+    ['生き物', 'ウミガメは何で呼吸する?', '肺', 'えら', '皮ふだけ', '口だけ', 1],
+    ['生き物', 'ひなが生まれて最初に見た動くものを親と思うことを何という?', '刷り込み', '冬眠', '脱皮', '擬態', 2],
+    ['食べ物', 'かつお節の原料は?', 'かつお', 'まぐろ', 'さば', 'いわし', 0],
+    ['食べ物', '味噌の主な原料は?', '大豆', '米だけ', '小麦だけ', 'じゃがいも', 0],
+    ['食べ物', 'たらこの原料は?', 'スケトウダラの卵', 'サケの卵', 'ニシンの卵', 'たこの卵', 1],
+    ['食べ物', 'いくらの原料は?', 'サケの卵', 'タラの卵', 'ニシンの卵', 'ウニ', 1],
+    ['食べ物', '数の子の原料は?', 'ニシンの卵', 'サケの卵', 'タラの卵', 'マスの卵', 2],
+    ['食べ物', 'じゃがいもを食べるのは植物のどの部分?', '地下茎', '根', '実', '葉', 2],
+    ['食べ物', 'にんじんを食べる部分は?', '根', '葉', '実', '花', 1],
+    ['食べ物', 'キャベツを食べる部分は?', '葉', '根', '実', '花', 0],
+    ['食べ物', 'そばの原料は?', 'そば粉', '米粉', '小麦粉だけ', '片栗粉', 1],
+    ['食べ物', 'トマトの原産地は?', '南アメリカ', 'ヨーロッパ', '日本', 'アフリカ', 2],
+    ['食べ物', 'バターの原料は?', '牛乳(クリーム)', '大豆', '卵', '小麦', 1],
+    ['食べ物', 'ポップコーンの原料は?', 'とうもろこし', '米', '大豆', '小麦', 0],
+    ['食べ物', 'チョコレートの原料は?', 'カカオ', 'コーヒー豆', '茶葉', 'ナッツ', 0],
+    ['食べ物', '寿司のごはんにまぜる調味料は?', '酢', 'しょうゆ', 'みりん', 'ごま油', 1],
+    ['食べ物', 'ビタミンDが体の中でつくられるのに必要なのは?', '日光', '水', '炭', '雨', 2],
+    ['地理', '日本でいちばん人口が多い都道府県は?', '東京都', '大阪府', '神奈川県', '愛知県', 0],
+    ['地理', '日本の最北の都道府県は?', '北海道', '青森県', '秋田県', '岩手県', 0],
+    ['地理', '「天下の台所」とよばれた都市は?', '大阪', '京都', '名古屋', '広島', 1],
+    ['地理', 'みかんの生産量が多い県は?', '静岡県', '秋田県', '北海道', '栃木県', 2],
+    ['地理', '讃岐うどんで有名な県は?', '香川県', '徳島県', '愛媛県', '高知県', 1],
+    ['地理', 'りんごの生産量が日本一の県は?', '青森県', '長野県', '山形県', '岩手県', 1],
+    ['地理', '日本三景の一つ、宮島(厳島神社)がある県は?', '広島県', '山口県', '岡山県', '島根県', 1],
+    ['地理', '日本三景の「天橋立」がある府県は?', '京都府', '兵庫県', '福井県', '滋賀県', 2],
+    ['地理', '日本三景の「松島」がある県は?', '宮城県', '岩手県', '福島県', '山形県', 2],
+    ['地理', '日本でいちばん大きい島は?', '本州', '北海道', '九州', '四国', 0],
+    ['地理', '富士山は静岡県とどこにまたがる?', '山梨県', '長野県', '神奈川県', '岐阜県', 1],
+    ['地理', '阿蘇山があるのは何県?', '熊本県', '大分県', '宮崎県', '長崎県', 1],
+    ['地理', '桜島がある県は?', '鹿児島県', '宮崎県', '熊本県', '長崎県', 1],
+    ['地理', '北海道でいちばん大きい都市は?', '札幌', '函館', '旭川', '小樽', 0],
+    ['地理', '首都がニューデリーの国は?', 'インド', '中国', 'パキスタン', 'タイ', 1],
+    ['地理', 'ピラミッドがあるアフリカの国は?', 'エジプト', 'ケニア', '南アフリカ', 'モロッコ', 0],
+    ['地理', 'イタリアの首都は?', 'ローマ', 'ミラノ', 'ナポリ', 'ベネチア', 0],
+    ['地理', 'ドイツの首都は?', 'ベルリン', 'ミュンヘン', 'ハンブルク', 'フランクフルト', 1],
+    ['地理', 'イギリスの首都は?', 'ロンドン', 'マンチェスター', 'リバプール', 'エディンバラ', 0],
+    ['地理', 'スペインの首都は?', 'マドリード', 'バルセロナ', 'セビリア', 'バレンシア', 1],
+    ['地理', '韓国の首都は?', 'ソウル', '釜山', '仁川', '平壌', 0],
+    ['地理', '中国の首都は?', '北京', '上海', '広州', '香港', 0],
+    ['地理', 'アメリカの首都は?', 'ワシントンD.C.', 'ニューヨーク', 'ロサンゼルス', 'シカゴ', 1],
+    ['地理', 'ブラジルの首都は?', 'ブラジリア', 'リオデジャネイロ', 'サンパウロ', 'サルバドール', 2],
+    ['地理', 'エベレストがある山脈は?', 'ヒマラヤ山脈', 'アルプス山脈', 'ロッキー山脈', 'アンデス山脈', 1],
+    ['地理', '世界最大の暑い砂漠は?', 'サハラ砂漠', 'ゴビ砂漠', 'タクラマカン砂漠', 'アタカマ砂漠', 1],
+    ['地理', '世界でいちばん大きい海(大洋)は?', '太平洋', '大西洋', 'インド洋', '北極海', 0],
+    ['地理', '赤道が通る国は?', 'インドネシア', '日本', 'フランス', 'カナダ', 2],
+    ['地理', 'アルプス山脈がある大陸は?', 'ヨーロッパ', 'アジア', '南アメリカ', 'アフリカ', 1],
+    ['地理', '日本の標準時の基準「東経135度」が通る都市は?', '明石', '東京', '名古屋', '福岡', 2],
+    ['歴史', '大化の改新を行った中大兄皇子が、のちに即位した天皇は?', '天智天皇', '天武天皇', '聖武天皇', '推古天皇', 2],
+    ['歴史', '奈良の大仏をつくらせた天皇は?', '聖武天皇', '桓武天皇', '天智天皇', '推古天皇', 1],
+    ['歴史', '「源氏物語」の作者は?', '紫式部', '清少納言', '和泉式部', '小野小町', 1],
+    ['歴史', '「枕草子」の作者は?', '清少納言', '紫式部', '与謝野晶子', '樋口一葉', 1],
+    ['歴史', '室町幕府を開いたのは?', '足利尊氏', '足利義満', '源頼朝', '北条時宗', 1],
+    ['歴史', '金閣を建てたのは?', '足利義満', '足利義政', '足利尊氏', '織田信長', 1],
+    ['歴史', '銀閣を建てたのは?', '足利義政', '足利義満', '豊臣秀吉', '徳川家光', 2],
+    ['歴史', '鉄砲が日本に伝わった島は?', '種子島', '佐渡島', '淡路島', '対馬', 1],
+    ['歴史', '「楽市楽座」を行った戦国武将は?', '織田信長', '徳川家康', '武田信玄', '毛利元就', 1],
+    ['歴史', '太閤検地を行ったのは?', '豊臣秀吉', '徳川家康', '織田信長', '石田三成', 1],
+    ['歴史', '江戸時代、外国との貿易が許された長崎の人工島は?', '出島', '種子島', '淡路島', '佐渡島', 1],
+    ['歴史', '参勤交代を制度にした江戸幕府の将軍は?', '徳川家光', '徳川家康', '徳川吉宗', '徳川慶喜', 2],
+    ['歴史', '江戸幕府最後(15代)の将軍は?', '徳川慶喜', '徳川家茂', '徳川吉宗', '徳川家光', 1],
+    ['歴史', '「大政奉還」が行われた年は?', '1867年', '1853年', '1877年', '1894年', 2],
+    ['歴史', '「学問のすゝめ」の著者は?', '福沢諭吉', '夏目漱石', '森鷗外', '芥川龍之介', 1],
+    ['歴史', '日本初の内閣総理大臣は?', '伊藤博文', '大隈重信', '板垣退助', '西郷隆盛', 1],
+    ['歴史', '富岡製糸場があるのは何県?', '群馬県', '長野県', '埼玉県', '山梨県', 2],
+    ['歴史', '太平洋戦争が終わった年は?', '1945年', '1941年', '1950年', '1937年', 1],
+    ['歴史', '最初の東京オリンピックがあった年は?', '1964年', '1945年', '1972年', '1988年', 1],
+    ['歴史', '日本人で初めてノーベル賞を受賞した人は?', '湯川秀樹', '野口英世', '北里柴三郎', '朝永振一郎', 2],
+    ['歴史', 'ルネサンスが始まった国は?', 'イタリア', 'イギリス', 'フランス', 'スペイン', 2],
+    ['歴史', 'コロンブスが到達した大陸は?', 'アメリカ大陸', 'アフリカ大陸', 'オーストラリア大陸', '南極大陸', 1],
+    ['歴史', 'フランス革命が起きた年は?', '1789年', '1689年', '1889年', '1989年', 2],
+    ['歴史', '古代エジプト文明が栄えた川は?', 'ナイル川', 'ガンジス川', '黄河', 'ティグリス川', 1],
+    ['歴史', '縄文土器の特徴は?', '縄目の模様', 'ろくろで作る', 'ガラス製', '色がない', 1],
+    ['歴史', '弥生時代に大陸から伝わって広まったのは?', '稲作', '鉄砲', '電気', '蒸気機関', 1],
+    ['歴史', '卑弥呼が治めたとされる国は?', '邪馬台国', '大和国', '出雲国', '吉備国', 1],
+    ['歴史', '関ヶ原の戦いで勝った側の大将は?', '徳川家康', '石田三成', '豊臣秀頼', '真田幸村', 1],
+    ['言葉', '「朝飯前」の意味は?', 'とても簡単なこと', '朝ごはんを食べる', '忙しい', '遅刻', 0],
+    ['言葉', '「首をかしげる」の意味は?', '疑問に思う', '怒る', '喜ぶ', '走る', 0],
+    ['言葉', '「棚からぼたもち」の意味は?', '思いがけない幸運', 'お菓子が好き', '整理整頓', '料理が上手', 1],
+    ['言葉', '「犬猿の仲」の意味は?', '仲が悪い', '仲が良い', 'ペットが好き', '近所づきあい', 1],
+    ['言葉', '「二兎を追う者は一兎をも得ず」の意味は?', '欲張ると全部失う', 'うさぎは速い', '二人で追うといい', '兎は二匹', 1],
+    ['言葉', '「百聞は一見にしかず」の意味は?', '何度も聞くより一度見るほうがいい', '百回聞く', '見るのは苦手', '聞くのは簡単', 1],
+    ['言葉', '「頭隠して尻隠さず」の意味は?', '一部だけ隠して全体が隠れていない', '髪を整える', '尻が大きい', '頭が良い', 1],
+    ['言葉', '「灯台下暗し」の意味は?', '身近なことほど気づきにくい', '灯台は暗い', '夜に勉強', '海は怖い', 1],
+    ['言葉', '「立つ鳥跡を濁さず」の意味は?', '去るときはきれいにする', '鳥が飛ぶ', '水が汚れる', '立ったままでいる', 1],
+    ['言葉', '「三寒四温」はどの季節の変わり目の言葉?', '冬から春', '夏から秋', '春から夏', '秋から冬', 2],
+    ['言葉', '「春一番」とは?', '春先に吹く強い南風', '春の雨', '春の桜', '春の祭り', 1],
+    ['言葉', '英語で「りんご」は?', 'apple', 'orange', 'banana', 'grape', 0],
+    ['言葉', '英語で「犬」は?', 'dog', 'cat', 'bird', 'fish', 0],
+    ['言葉', '英語で「青」は?', 'blue', 'red', 'green', 'yellow', 0],
+    ['言葉', '英語で「月曜日」は?', 'Monday', 'Tuesday', 'Sunday', 'Friday', 0],
+    ['言葉', '英語で「3月」は?', 'March', 'May', 'June', 'April', 1],
+    ['言葉', '英語で「学校」は?', 'school', 'hospital', 'station', 'library', 0],
+    ['言葉', '英語の「Good morning」の意味は?', 'おはよう', 'こんばんは', 'さようなら', 'おやすみ', 0],
+    ['言葉', '英語の「Good night」の意味は?', 'おやすみなさい', 'こんにちは', 'おはよう', 'ありがとう', 0],
+    ['言葉', '英語で「12」は?', 'twelve', 'eleven', 'ten', 'twenty', 1],
+    ['言葉', 'アルファベットは全部で何文字?', '26文字', '24文字', '28文字', '30文字', 1],
+    ['言葉', '漢字「森」は木がいくつ?', '3つ', '2つ', '4つ', '5つ', 0],
+    ['言葉', '漢字「林」は木がいくつ?', '2つ', '3つ', '1つ', '4つ', 0],
+    ['日本', 'お正月に食べる、もちを入れた汁物は?', 'お雑煮', 'おでん', 'すき焼き', '豚汁', 0],
+    ['日本', '節分に行うことは?', '豆まき', 'こいのぼり', '花火', 'お月見', 0],
+    ['日本', '3月3日の行事は?', 'ひなまつり', '端午の節句', '七夕', 'お盆', 0],
+    ['日本', '5月5日の行事は?', '端午の節句(こどもの日)', '七夕', '成人式', '文化の日', 0],
+    ['日本', '七夕は何月何日?', '7月7日', '7月1日', '8月7日', '6月7日', 0],
+    ['日本', '日本の国技といわれるのは?', '相撲', '柔道', '野球', '剣道', 1],
+    ['日本', '面をつけて演じる、日本の伝統の静かな劇は?', '能', '歌舞伎', '落語', '文楽', 2],
+    ['日本', '抹茶をたてる道具は?', '茶筅', '菜箸', 'おたま', 'すりこぎ', 2],
+    ['日本', '東京〜新大阪を走る新幹線は?', '東海道新幹線', '東北新幹線', '上越新幹線', '北陸新幹線', 1],
+    ['日本', '「文化の日」は何月何日?', '11月3日', '10月10日', '5月3日', '9月23日', 2],
+    ['日本', '「建国記念の日」は何月何日?', '2月11日', '4月29日', '1月1日', '12月23日', 2],
+    ['日本', '「成人の日」は何月?', '1月', '4月', '9月', '12月', 1],
+    ['社会', '日本の国歌は?', '君が代', 'さくらさくら', 'ふるさと', '赤とんぼ', 0],
+    ['社会', '日本の三権分立で、法律をつくるのは?', '国会', '裁判所', '内閣', '警察', 1],
+    ['社会', '三権分立で、裁判を行うのは?', '裁判所', '国会', '内閣', '市役所', 1],
+    ['社会', '日本国憲法の三大原則は国民主権、平和主義と、あと一つは?', '基本的人権の尊重', '三権分立', '地方自治', '納税', 2],
+    ['社会', '選挙で投票できるのは何歳から?(日本)', '18歳', '20歳', '16歳', '25歳', 1],
+    ['社会', '110番は何の電話?', '警察', '消防・救急', '天気', '時報', 0],
+    ['社会', '119番は何の電話?', '消防・救急', '警察', '天気', '道路情報', 0],
+    ['社会', '3Rに入っていないものは?', 'Run', 'Reduce', 'Reuse', 'Recycle', 2],
+    ['スポーツ', '野球で、走者がいないときのホームランは何点?', '1点', '2点', '4点', '0点', 1],
+    ['スポーツ', 'バスケットボールのフリースローは何点?', '1点', '2点', '3点', '5点', 1],
+    ['スポーツ', '競泳の種目に入らないものは?', 'バック宙', 'クロール', '平泳ぎ', 'バタフライ', 2],
+    ['スポーツ', '野球で3ストライクになると?', '三振', '四球', '本塁打', '盗塁', 0],
+    ['スポーツ', 'サッカーでレッドカードが出ると?', '退場', '休憩', '得点', '交代', 0],
+    ['スポーツ', 'ゴルフで規定打数より1打少ないスコアは?', 'バーディー', 'ボギー', 'パー', 'イーグル', 2],
+    ['スポーツ', '相撲で一番上の階級は?', '横綱', '大関', '関脇', '小結', 1],
+    ['スポーツ', '夏季オリンピックは何年に1度?', '4年', '2年', '3年', '5年', 0],
+    ['スポーツ', 'バドミントンで使う羽根のような球は?', 'シャトル', 'ボール', 'パック', 'ピン', 0],
+    ['スポーツ', '剣道で使う竹の刀を何という?', '竹刀', '木刀', '真剣', '太刀', 1],
+    ['スポーツ', '箱根駅伝が行われるのは?', '1月2日・3日', '5月5日', '8月15日', '12月25日', 1],
+    ['スポーツ', '野球のホームベースは何角形?', '五角形', '四角形', '六角形', '三角形', 1],
+    ['芸術', 'ベートーヴェンの「第九」の有名な合唱曲は?', '歓喜の歌', '月光', 'エリーゼのために', '運命', 2],
+    ['芸術', '「エリーゼのために」を作曲したのは?', 'ベートーヴェン', 'モーツァルト', 'バッハ', 'ショパン', 1],
+    ['芸術', '「ピアノの詩人」とよばれる作曲家は?', 'ショパン', 'バッハ', 'ベートーヴェン', 'ヘンデル', 2],
+    ['芸術', '「魔笛」を作曲したのは?', 'モーツァルト', 'シューベルト', 'ブラームス', 'ワーグナー', 2],
+    ['芸術', '「叫び」を描いた画家は?', 'ムンク', 'ゴッホ', 'ゴーギャン', 'ダリ', 2],
+    ['芸術', '「睡蓮」の連作で有名な画家は?', 'モネ', 'マネ', 'ルノワール', 'セザンヌ', 2],
+    ['芸術', '「ゲルニカ」を描いたのは?', 'ピカソ', 'ダリ', 'マティス', 'ミロ', 2],
+    ['芸術', '「最後の晩餐」を描いたのは?', 'レオナルド・ダ・ヴィンチ', 'ミケランジェロ', 'ラファエロ', 'ボッティチェリ', 1],
+    ['芸術', '浮世絵「神奈川沖浪裏」を描いたのは?', '葛飾北斎', '歌川広重', '東洲斎写楽', '喜多川歌麿', 1],
+    ['芸術', '「東海道五十三次」で有名な浮世絵師は?', '歌川広重', '葛飾北斎', '菱川師宣', '鈴木春信', 2],
+    ['芸術', '「坊っちゃん」の作者は?', '夏目漱石', '森鷗外', '芥川龍之介', '太宰治', 1],
+    ['芸術', '「羅生門」の作者は?', '芥川龍之介', '夏目漱石', '川端康成', '三島由紀夫', 2],
+    ['芸術', '「雪国」の作者は?', '川端康成', '谷崎潤一郎', '三島由紀夫', '井伏鱒二', 2],
+    ['芸術', '「注文の多い料理店」の作者は?', '宮沢賢治', '新美南吉', '芥川龍之介', '夏目漱石', 1],
+    ['芸術', '「ごんぎつね」の作者は?', '新美南吉', '宮沢賢治', '小川未明', '坪田譲治', 2],
+    ['芸術', 'リコーダーは何の仲間の楽器?', '木管楽器', '金管楽器', '弦楽器', '打楽器', 1],
+    ['芸術', 'トランペットは何の仲間の楽器?', '金管楽器', '木管楽器', '弦楽器', '打楽器', 1],
+    ['芸術', 'ヴァイオリンは何の仲間の楽器?', '弦楽器', '打楽器', '金管楽器', '鍵盤楽器', 0],
+    ['芸術', '楽譜の記号「f」の意味は?', '強く(フォルテ)', '弱く', 'だんだん速く', '休む', 2],
+    ['芸術', '絵の具の三原色(赤・青とあと1つ)は?', '黄', '緑', '白', '黒', 1],
+    ['芸術', '赤と黄色をまぜるとできる色は?', 'オレンジ', 'むらさき', '緑', '茶色', 0],
+    ['芸術', '青と黄色をまぜるとできる色は?', '緑', 'オレンジ', 'むらさき', 'ピンク', 0],
+    ['芸術', '赤と青をまぜるとできる色は?', 'むらさき', '緑', 'オレンジ', '水色', 0],
+    ['数学', '9×9は?', '81', '72', '90', '79', 0],
+    ['数学', '12×12は?', '144', '122', '124', '132', 1],
+    ['数学', '100÷4は?', '25', '20', '40', '50', 0],
+    ['数学', '1/2 + 1/4 は?', '3/4', '2/6', '1/6', '1', 1],
+    ['数学', '円の面積を求める式は?', '半径×半径×円周率', '直径×円周率', '半径×2', '半径+円周率', 1],
+    ['数学', '正方形の対角線の数は?', '2本', '4本', '1本', '0本', 1],
+    ['数学', 'サイコロの向かい合う面の目の和は?', '7', '6', '8', '9', 1],
+    ['数学', '3つの辺がすべて等しい三角形は?', '正三角形', '二等辺三角形', '直角三角形', '台形', 0],
+    ['数学', '10の3乗は?', '1000', '100', '10000', '30', 0],
+    ['数学', '素数でないものは?', '9', '7', '11', '13', 1],
+    ['数学', '√9 は?', '3', '9', '81', '1', 2],
+    ['数学', '時速60kmで30分走ると進む距離は?', '30km', '60km', '15km', '120km', 1],
+    ['数学', '1時間は何秒?', '3600秒', '360秒', '60秒', '6000秒', 1],
+    ['数学', '1kmは何m?', '1000m', '100m', '10000m', '500m', 0],
+    ['数学', '1Lは何mL?', '1000mL', '100mL', '10mL', '10000mL', 0],
+    ['数学', 'ローマ数字で「V」は?', '5', '4', '6', '10', 1],
+    ['数学', 'ローマ数字で「X」は?', '10', '5', '50', '100', 1],
+    ['IT', 'パソコンのキーで、文字を大文字にするときに使うのは?', 'Shift', 'Enter', 'Esc', 'Tab', 1],
+    ['IT', 'ウェブサイトの住所のことを何という?', 'URL', 'CPU', 'USB', 'LAN', 1],
+    ['IT', '「AI」は何の略?', '人工知能', '自動入力', '高速回線', '電子書籍', 0],
+    ['IT', 'パスワードは他の人に教えてよい?', '教えない', '友達なら教える', 'だれでも教える', '紙に貼る', 0],
+    ['雑学', '1年でいちばん昼が長い日は?', '夏至', '冬至', '春分', '秋分', 1],
+    ['雑学', '1年でいちばん昼が短い日は?', '冬至', '夏至', '春分', '秋分', 1],
+    ['雑学', 'うるう年は何年に1度?', '4年', '2年', '5年', '10年', 0],
+    ['雑学', 'うるう年の2月は何日まで?', '29日', '28日', '30日', '31日', 0],
+    ['雑学', '大晦日は何月何日?', '12月31日', '1月1日', '12月25日', '11月30日', 0],
+    ['雑学', '血液型(ABO式)の種類は?', 'A・B・O・AB', 'A・B・C', 'A・B・AB・Z', '1型・2型', 1],
+    ['雑学', '2024年から発行された新千円札の肖像は?', '北里柴三郎', '野口英世', '樋口一葉', '津田梅子', 2],
+    ['雑学', 'トランプ1組(ジョーカーを除く)は何枚?', '52枚', '54枚', '48枚', '56枚', 1],
+    ['雑学', 'トランプのマークで赤いのは?', 'ハートとダイヤ', 'スペードとクラブ', 'スペードとダイヤ', 'クラブとハート', 1],
+    ['雑学', '将棋でいちばん大切な駒は?', '王将(玉将)', '飛車', '角行', '歩兵', 0],
+    ['雑学', 'サイコロの1〜6の目をすべて足すと?', '21', '18', '24', '36', 1],
+    ['雑学', '東京スカイツリーの高さは?', '634m', '333m', '450m', '1000m', 1],
+    ['雑学', '東京タワーの高さは約?', '333m', '634m', '500m', '150m', 1],
+    ['雑学', 'ドラえもんが生まれる世紀は?', '22世紀', '21世紀', '23世紀', '20世紀', 1],
+    ['雑学', 'ピカチュウのタイプは?', 'でんき', 'ほのお', 'みず', 'くさ', 0],
+    ['雑学', 'マリオの職業は?', '配管工', '大工', '画家', '宇宙飛行士', 1]
+  ];
+  TRIVIA2.forEach((q) => TRIVIA.push(q));
   function createTrivia(stage, api) {
     let pool = [], used = 0;
     const lvOf = (n) => (n < 6 ? 0 : n < 14 ? 1 : 2);
@@ -6729,11 +7119,12 @@
     async init() { this.fetch(tabId); setInterval(() => { if (!viewHome.hidden && !document.hidden) this.fetch(tabId); }, 20000); },
     async fetch(g) {
       try {
-        const res = await window.fetch(FB + '/scores/' + g + '.json?orderBy=%22score%22&limitToLast=50');
+        let res = await window.fetch(FB + '/scores/' + g + '.json?orderBy=%22score%22&limitToLast=50');
+        if (!res.ok) res = await window.fetch(FB + '/scores/' + g + '.json');
         if (!res.ok) throw new Error('http ' + res.status);
         const data = (await res.json()) || {};
         board[g] = Object.keys(data).map((u) => ({ uid: u, score: Number((data[u] || {}).score) || 0, name: String((data[u] || {}).name || '') }))
-          .filter((d) => d.score >= 0).sort((x, y) => y.score - x.score);
+          .filter((d) => d.score >= 0).sort((x, y) => y.score - x.score).slice(0, 50);
         board[g].forEach((d) => { if (d.name) names[d.uid] = d.name; });
         this.offline = false;
       } catch (e) { this.offline = true; }
