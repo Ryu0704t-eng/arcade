@@ -599,6 +599,9 @@
   .rg-cv { width: min(100%, 420px); display: grid; place-items: center; } .rg-cv canvas { border-radius: 10px; touch-action: none; display: block; }
   .rg-log { width: min(100%, 420px); min-height: 54px; font-size: 12px; line-height: 1.5; color: var(--mute); text-align: center; } .rg-log div:first-child { color: #fff; }
   .rg-pad { display: flex; gap: 8px; align-items: center; justify-content: center; } .rg-mid { display: grid; gap: 4px; } .rg-pad .btn { min-width: 54px; min-height: 44px; } .rg-pot { margin-left: 10px; }
+  .sk-ov { position: fixed; inset: 0; z-index: 50; background: rgba(5, 6, 20, 0.78); display: grid; place-items: center; padding: 16px; }
+  .sk-box { width: min(100%, 400px); max-height: 92vh; overflow-y: auto; background: var(--panel, #171c58); border: 1px solid var(--line, rgba(255,255,255,0.25)); border-radius: 18px; padding: 18px; display: grid; gap: 10px; background-color: #151a4d; }
+  .sk-box h3 { margin: 0; font-size: 18px; text-align: center; } .sk-sub { margin: 0; font-size: 12px; color: var(--mute); line-height: 1.6; }
   .wn-act { align-content: flex-start; min-height: 48px; }
   .wn-body > * { flex-shrink: 0; }
   .wn-act .wn-p { flex-basis: 100%; text-align: center; }
@@ -677,6 +680,7 @@
       <p class="sumline today" id="todayLine"></p>
       <p class="acctline" id="acctLine"></p>
       <button class="btn battle-btn" id="battleBtn" type="button">⚔ 対戦モード</button>
+      <button class="btn battle-btn" id="skinBtn" type="button">🖼 マイキャラ(画像・リンクで変える)</button>
     </div>
     <section class="sec">
       <h2>ゲーム一覧</h2>
@@ -753,6 +757,50 @@
     ctx.beginPath(); ctx.moveTo(0, H);
     for (let x = 0; x <= W + 12; x += 12) ctx.lineTo(x, H - 22 - Math.sin(x * 0.02 + 3) * 10);
     ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  }
+  /* ===== マイキャラ(共通スキン: 絵文字・画像リンク・ファイル) ===== */
+  const Skin = (() => {
+    const S = { k: '', v: '', img: null };
+    const load = () => { if (S.k === 'img' && S.v) { const im = new Image(); im.onload = () => { S.img = im; }; im.onerror = () => { S.k = ''; S.v = ''; S.img = null; }; im.src = S.v; } };
+    try { const sv = JSON.parse(localStorage.getItem('skin') || 'null'); if (sv && (sv.k === 'emoji' || sv.k === 'img') && typeof sv.v === 'string' && sv.v.length < 400000) { S.k = sv.k; S.v = sv.v; load(); } } catch (e) { /* noop */ }
+    const save = () => { try { if (S.k) localStorage.setItem('skin', JSON.stringify({ k: S.k, v: S.v })); else localStorage.removeItem('skin'); } catch (e) { /* noop */ } };
+    return {
+      get k() { return S.k; }, get v() { return S.v; },
+      set(k, v, im) { S.k = k; S.v = v; S.img = im || null; save(); if (k === 'img' && !im) load(); },
+      clear() { S.k = ''; S.v = ''; S.img = null; save(); },
+      /* 描けたら true。ctx は中心(x,y)・半径r */
+      draw(ctx, x, y, r, ang) {
+        if (S.k === 'emoji' && S.v) { ctx.save(); ctx.translate(x, y); ctx.rotate(ang || 0); ctx.font = Math.round(r * 2) + 'px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(S.v, 0, r * 0.1); ctx.restore(); return true; }
+        if (S.k === 'img' && S.img) { ctx.save(); ctx.translate(x, y); ctx.rotate(ang || 0); ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.283); ctx.clip(); ctx.drawImage(S.img, -r, -r, r * 2, r * 2); ctx.restore(); ctx.save(); ctx.strokeStyle = '#ffd45e'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.stroke(); ctx.restore(); return true; }
+        return false;
+      }
+    };
+  })();
+  function skinDialog() {
+    const CH = ['⭐', '🐱', '🐶', '🐰', '🦊', '🐼', '🐸', '🐧', '🐤', '🦄', '🐷', '🚀', '👾', '⚽', '🍙', '🍩'];
+    const ov = el('div', 'sk-ov', `<div class="sk-box" role="dialog" aria-label="マイキャラ"><h3>マイキャラをえらぼう</h3><p class="sk-sub">星ひろい・ふわふわ・ほしヘビ・ほしくずし・ほしよけ・ほしランナーのキャラや星が、えらんだ絵や画像にかわります。</p><div class="rc-grid" data-k="grid"></div><div class="rc-url"><input class="bt-in" data-k="url" type="url" placeholder="画像のリンク(https://…)を貼る" autocomplete="off"><button class="btn mini" type="button" data-k="urlGo">リンクから入れる</button></div><div class="rc-url"><label class="btn mini rc-file">📁 ファイルから<input data-k="file" type="file" accept="image/*" hidden></label><button class="btn mini" type="button" data-k="reset">もとにもどす</button></div><div class="rc-msg" data-k="msg"></div><button class="btn" type="button" data-k="close">とじる</button></div>`);
+    const k = (n) => ov.querySelector('[data-k="' + n + '"]');
+    const msg = (t) => { k('msg').textContent = t || ''; };
+    function grid() {
+      const g = k('grid'); g.textContent = '';
+      CH.forEach((c) => { const b = el('button', 'rc-c' + (Skin.k === 'emoji' && Skin.v === c ? ' on' : '')); b.type = 'button'; b.textContent = c; b.addEventListener('click', () => { if (c === '⭐') Skin.clear(); else Skin.set('emoji', c); try { localStorage.setItem('runnerChar', JSON.stringify(c === '⭐' ? { k: 'emoji', v: '⭐' } : { k: 'emoji', v: c })); } catch (e) { /* noop */ } grid(); }); g.append(b); });
+      if (Skin.k === 'img') { const b = el('button', 'rc-c on'); b.type = 'button'; const im = el('img'); im.src = Skin.v; im.alt = 'じぶんの画像'; b.append(im); g.append(b); }
+    }
+    function setImg(src) {
+      msg('よみこみ中…'); const im = new Image();
+      im.onload = () => { Skin.set('img', src, im); try { localStorage.setItem('runnerChar', JSON.stringify({ k: 'img', v: src })); } catch (e) { /* noop */ } grid(); msg('画像をセットしました!'); };
+      im.onerror = () => msg('画像を読み込めませんでした(リンクを確かめてね)');
+      im.src = src;
+    }
+    k('urlGo').addEventListener('click', () => { const u = k('url').value.trim(); if (!/^https?:\/\//i.test(u)) { msg('https:// から始まる画像のリンクを入れてね'); return; } setImg(u); });
+    k('file').addEventListener('change', () => {
+      const f = k('file').files && k('file').files[0]; if (!f) return; if (!/^image\//.test(f.type)) { msg('画像ファイルをえらんでね'); return; }
+      const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => { const c = document.createElement('canvas'); c.width = c.height = 96; const x = c.getContext('2d'); const sc = Math.max(96 / im.width, 96 / im.height); x.drawImage(im, (96 - im.width * sc) / 2, (96 - im.height * sc) / 2, im.width * sc, im.height * sc); setImg(c.toDataURL('image/png')); }; im.onerror = () => msg('読み込めませんでした'); im.src = String(fr.result); }; fr.readAsDataURL(f);
+    });
+    k('reset').addEventListener('click', () => { Skin.clear(); try { localStorage.removeItem('runnerChar'); } catch (e) { /* noop */ } grid(); msg('もとにもどしました'); });
+    k('close').addEventListener('click', () => ov.remove());
+    ov.addEventListener('pointerdown', (e) => { if (e.target === ov) ov.remove(); });
+    grid(); document.body.append(ov);
   }
   function starPath(ctx, x, y, r, rot) {
     ctx.beginPath();
@@ -952,7 +1000,7 @@
       ctx.save();
       if (it.type === 'star') {
         ctx.shadowColor = '#ffd45e'; ctx.shadowBlur = 14;
-        starPath(ctx, x, y, r, it.rot); ctx.fillStyle = '#ffd45e'; ctx.fill();
+        if (!Skin.draw(ctx, x, y, r * 1.25, it.rot)) { starPath(ctx, x, y, r, it.rot); ctx.fillStyle = '#ffd45e'; ctx.fill(); }
       } else if (it.type === 'moon') {
         ctx.shadowColor = '#c9d0ff'; ctx.shadowBlur = 18;
         ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fillStyle = '#eef0ff'; ctx.fill();
@@ -1514,6 +1562,7 @@
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(Math.max(-0.5, Math.min(0.9, S.vy / (H * 1.2))));
+      if (Skin.draw(ctx, 0, 0, r * 1.25, 0)) { ctx.restore(); return; }
       ctx.shadowColor = '#ffd45e'; ctx.shadowBlur = 18;
       const g = ctx.createRadialGradient(-r * 0.3, -r * 0.3, r * 0.1, 0, 0, r);
       g.addColorStop(0, '#fff4bf'); g.addColorStop(1, '#f2b72e');
@@ -1839,7 +1888,8 @@
       }
       const h = S.snake[0], d = S.mode === 'play' && S.queue.length ? S.queue[0] : S.dir;
       const ex = -d.y, ey = d.x, hx = gx(h.x), hy = gy(h.y);
-      for (const sgn of [-1, 1]) {
+      const skinHead = !dying && Skin.draw(ctx, hx, hy, cell * 0.62, 0);
+      if (!skinHead) for (const sgn of [-1, 1]) {
         const px = hx + d.x * cell * 0.16 + ex * sgn * cell * 0.22, py = hy + d.y * cell * 0.16 + ey * sgn * cell * 0.22;
         ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(px, py, cell * 0.15, 0, 6.283); ctx.fill();
         ctx.fillStyle = '#0a0c2c'; ctx.beginPath(); ctx.arc(px + d.x * cell * 0.04, py + d.y * cell * 0.04, cell * 0.07, 0, 6.283); ctx.fill();
@@ -2433,7 +2483,7 @@
       ctx.fillStyle = pg; ctx.fill();
       const b = S.ball;
       ctx.save(); ctx.shadowColor = '#ffffff'; ctx.shadowBlur = S.slowT > 0 ? 6 : 14;
-      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.283); ctx.fillStyle = S.slowT > 0 ? '#c9f5c9' : '#ffffff'; ctx.fill(); ctx.restore();
+      if (!Skin.draw(ctx, b.x, b.y, b.r * 1.5, 0)) { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.283); ctx.fillStyle = S.slowT > 0 ? '#c9f5c9' : '#ffffff'; ctx.fill(); } ctx.restore();
       drawParts(ctx, S.parts);
       drawPops(ctx, S.pops);
       if (S.mode === 'idle' || (S.mode === 'play' && S.sub === 'ready' && S.level === 1 && S.broken === 0)) {
@@ -2826,9 +2876,10 @@
     const CHARS = ['⭐', '🐱', '🐶', '🐰', '🦊', '🐼', '🐸', '🐧', '🐤', '🦄', '🐷', '🚀', '👾', '⚽', '🍙', '🍩'];
     let ch = { k: 'emoji', v: '⭐' }, chImg = null;
     try { const sv = JSON.parse(localStorage.getItem('runnerChar') || 'null'); if (sv && (sv.k === 'emoji' || sv.k === 'img') && typeof sv.v === 'string' && sv.v.length < 400000) ch = sv; } catch (e) { /* noop */ }
+    if (!localStorage.getItem('runnerChar') && Skin.k) ch = { k: Skin.k, v: Skin.v };
     function loadImg(src, ok, ng) { const im = new Image(); im.onload = () => ok(im); im.onerror = ng; im.src = src; }
     if (ch.k === 'img') loadImg(ch.v, (im) => { chImg = im; }, () => { ch = { k: 'emoji', v: '⭐' }; });
-    function saveCh() { try { localStorage.setItem('runnerChar', JSON.stringify(ch)); } catch (e) { /* noop */ } }
+    function saveCh() { try { localStorage.setItem('runnerChar', JSON.stringify(ch)); } catch (e) { /* noop */ } if (ch.k === 'img') Skin.set('img', ch.v, chImg); else if (ch.v === '⭐') Skin.clear(); else Skin.set('emoji', ch.v); }
     function buildPicker() {
       const grid = k('grid'); grid.textContent = '';
       CHARS.forEach((c) => { const b = el('button', 'rc-c' + (ch.k === 'emoji' && ch.v === c ? ' on' : '')); b.type = 'button'; b.textContent = c; b.addEventListener('click', () => { ch = { k: 'emoji', v: c }; chImg = null; saveCh(); buildPicker(); }); grid.append(b); });
@@ -3937,9 +3988,11 @@
       if (S.mode !== 'dying' || S.dead > 0.3) {
         const py = H - 70;
         if (S.inv <= 0 || Math.floor(S.t * 14) % 2 === 0) {
+          if (Skin.draw(ctx, S.x, py, R + 6, 0)) { /* マイキャラ */ } else {
           ctx.save(); ctx.shadowColor = '#6fe3cf'; ctx.shadowBlur = 14;
           ctx.fillStyle = '#6fe3cf'; ctx.beginPath(); ctx.moveTo(S.x, py - R - 4); ctx.lineTo(S.x + R, py + R - 2); ctx.lineTo(S.x, py + R * 0.4); ctx.lineTo(S.x - R, py + R - 2); ctx.closePath(); ctx.fill();
           ctx.restore();
+          }
         }
       }
       drawParts(ctx, S.parts); drawPops(ctx, S.pops);
@@ -9428,6 +9481,7 @@
   }
 
   $('#battleBtn').addEventListener('click', () => { battleMenu(); });
+  $('#skinBtn').addEventListener('click', skinDialog);
   acctLine();
   setView('home');
   renderHome();
