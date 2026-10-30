@@ -540,12 +540,13 @@
   .mj-w { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #f6f1de; color: #1b1b1b; font-size: 12px; } .mj-w.dealer { background: #ffd45e; }
   .mj-pt { margin-left: auto; font-weight: 700; color: var(--gold); } .mj-ri { font-style: normal; background: #d23b4a; color: #fff; border-radius: 6px; padding: 0 5px; font-size: 10px; font-weight: 700; }
   .mj-river { display: flex; flex-wrap: wrap; gap: 1px; align-content: flex-start; }
-  .mj-t { box-sizing: border-box; width: var(--tw, 26px); height: calc(var(--tw, 26px) * 1.4); background: #f6f1de; border-radius: 4px; box-shadow: 0 2px 0 #1f7a4a, 0 3px 4px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; color: #1b1b1b; font-weight: 700; flex: none; user-select: none; }
-  .mj-t .n { font-size: calc(var(--tw, 26px) * 0.52); } .mj-t .s { font-size: calc(var(--tw, 26px) * 0.34); margin-top: 1px; } .mj-t .n.h { font-size: calc(var(--tw, 26px) * 0.66); }
-  .mj-t[data-c="m"] .n { color: #b3202f; } .mj-t[data-c="m"] .s { color: #1b1b1b; } .mj-t[data-c="p"] .n, .mj-t[data-c="p"] .s { color: #1d5fc2; } .mj-t[data-c="s"] .n, .mj-t[data-c="s"] .s { color: #1b7a3a; }
-  .mj-t[data-c="r"] { color: #c0283a; } .mj-t[data-c="g"] { color: #1b7a3a; } .mj-t[data-c="w"] { color: #777; box-shadow: inset 0 0 0 2px #8a8a8a, 0 2px 0 #1f7a4a; }
-  .mj-t.sx { --tw: 16px; border-radius: 2px; box-shadow: 0 1px 0 #1f7a4a; } .mj-t.sx .s { display: none; } .mj-t.sx .n { font-size: 10px; } .mj-t.sx .n.h { font-size: 11px; }
-  .mj-t.sx.rot { transform: rotate(90deg); margin: 0 3px; } .mj-t.sm2 { --tw: 22px; }
+  .mj-t { box-sizing: border-box; position: relative; width: var(--tw, 26px); height: calc(var(--tw, 26px) * 1.34); border-radius: calc(var(--tw, 26px) * 0.14); background: linear-gradient(160deg, #fffef6 0%, #f1e9cf 100%); box-shadow: 0 calc(var(--tw, 26px) * 0.12) 0 #178a52, 0 calc(var(--tw, 26px) * 0.12 + 2px) 5px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(0, 0, 0, 0.12), inset 0 2px 0 rgba(255, 255, 255, 0.9); display: block; flex: none; }
+  .mj-t svg { width: 100%; height: 100%; display: block; } .mj-t.sx { --tw: 19px; } .mj-t.sx.rot { transform: rotate(90deg); margin: 0 4px; } .mj-t.sm2 { --tw: 24px; }
+  .mj-t.drop { animation: mjDrop 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.15) both; } @keyframes mjDrop { 0% { opacity: 0; transform: translateY(-26px) scale(1.5) rotate(-8deg); } 70% { opacity: 1; transform: translateY(1px) scale(1); } 100% { transform: none; } }
+  .mj-t.sx.rot.drop { animation-name: mjDropR; } @keyframes mjDropR { 0% { opacity: 0; transform: translateY(-26px) scale(1.5) rotate(60deg); } 100% { transform: rotate(90deg); opacity: 1; } }
+  .mj-hand .mj-t.fresh { animation: mjDraw 0.35s ease-out both; } @keyframes mjDraw { from { opacity: 0; transform: translateY(-34px); } to { opacity: 1; transform: none; } }
+  .mj-seat.on { animation: mjTurn 1.4s ease-in-out infinite; } @keyframes mjTurn { 50% { box-shadow: 0 0 16px rgba(255, 212, 94, 0.7); } }
+  .mj-river { gap: 3px 1px; padding-bottom: 3px; } .mj-seat { min-height: 92px; }
   .mj-hand { display: flex; justify-content: center; gap: 2px; width: min(100%, 520px); min-height: calc(var(--tw, 26px) * 1.4 + 8px); align-items: flex-end; }
   .mj-hand .mj-t { cursor: pointer; transition: transform 0.12s; } .mj-hand .mj-t.sel { transform: translateY(-8px); box-shadow: 0 2px 0 #1f7a4a, 0 0 10px #ffd45e; } .mj-hand .mj-t.draw { margin-left: 8px; } .mj-hand .mj-t.dim { opacity: 0.35; } .mj-hand .mj-t.wait { cursor: default; }
   .mj-msg { min-height: 34px; text-align: center; font-size: 13px; width: min(100%, 460px); }
@@ -602,6 +603,41 @@
   .sk-ov { position: fixed; inset: 0; z-index: 50; background: rgba(5, 6, 20, 0.78); display: grid; place-items: center; padding: 16px; }
   .sk-box { width: min(100%, 400px); max-height: 92vh; overflow-y: auto; background: var(--panel, #171c58); border: 1px solid var(--line, rgba(255,255,255,0.25)); border-radius: 18px; padding: 18px; display: grid; gap: 10px; background-color: #151a4d; }
   .sk-box h3 { margin: 0; font-size: 18px; text-align: center; } .sk-sub { margin: 0; font-size: 12px; color: var(--mute); line-height: 1.6; }
+  .mis { display: grid; gap: 3px; margin: 8px 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; text-align: left; } .mis h4 { margin: 0 0 2px; font-size: 13px; }
+  .mis-r { font-size: 13px; color: var(--mute); } .mis-r.ok { color: var(--mint); font-weight: 700; } .mis-r.new { color: var(--gold); animation: misnew 0.8s ease-out; } @keyframes misnew { 0% { transform: scale(1.25); } 100% { transform: none; } }
+  /* ===== 演出をなめらかに ===== */
+  .ov { animation: ovIn 0.28s ease-out both; } .ov-in { animation: ovRise 0.38s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+  @keyframes ovIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes ovRise { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: none; } }
+  .verdict { animation: verPop 0.55s cubic-bezier(0.2, 1.3, 0.3, 1) 0.12s both; } @keyframes verPop { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: none; } }
+  .ov .stats div { animation: statIn 0.4s ease-out both; } .ov .stats div:nth-child(1) { animation-delay: 0.25s; } .ov .stats div:nth-child(2) { animation-delay: 0.35s; } .ov .stats div:nth-child(3) { animation-delay: 0.45s; } .ov .stats div:nth-child(n+4) { animation-delay: 0.55s; }
+  @keyframes statIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .ov .mis-r { animation: statIn 0.4s ease-out 0.6s both; }
+  .home .gcard, .btn, .pill, .pchip, .rc-c, .tv-g { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease, background-color 0.2s ease, opacity 0.2s ease; }
+  .gcard:active { transform: scale(0.97); }
+  main.home:not([hidden]) { animation: ovIn 0.3s ease-out both; }
+  /* 対戦のじゃま: ふわっと入って、ふわっと戻る */
+  .stage > .pg, .stage > .gm, .stage > .rx, .stage > .qz { transition: filter 0.45s ease, transform 0.55s cubic-bezier(0.3, 0.7, 0.3, 1), opacity 0.3s ease; }
+  .bt-warn { animation: btWarnIn 0.35s cubic-bezier(0.2, 1.2, 0.3, 1) both; } @keyframes btWarnIn { from { opacity: 0; transform: translate(-50%, -12px) scale(0.92); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+  .bt-toast { animation: btToastIn 1.3s ease both; } @keyframes btToastIn { 0% { opacity: 0; transform: translate(-50%, 10px) scale(0.9); } 15% { opacity: 1; transform: translate(-50%, 0) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -10px); } }
+  .fx-note, .fx-ad, .fx-blot { animation: ovRise 0.4s ease-out both; }
+  .fx-ice { animation: ovIn 0.3s ease-out both; }
+  @media (prefers-reduced-motion: reduce) { .ov, .ov-in, .verdict, .ov .stats div, .ov .mis-r, main.home:not([hidden]), .bt-toast { animation: none; } }
+  .bt-warn.out { animation: btWarnOut 0.3s ease-in both; } @keyframes btWarnOut { to { opacity: 0; transform: translate(-50%, -10px) scale(0.95); } }
+  .uc-card { position: relative; border-radius: calc(var(--uw) * 0.16); border-width: calc(var(--uw) * 0.06); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4); overflow: hidden; }
+  .uc-card s { text-decoration: none; position: absolute; }
+  .uc-card .oval { left: 50%; top: 50%; width: 78%; height: 62%; border-radius: 50%; background: #fffdf5; transform: translate(-50%, -50%) rotate(-24deg); display: grid; place-items: center; }
+  .uc-card .oval b { transform: rotate(24deg); font-size: calc(var(--uw) * 0.5); text-shadow: none; line-height: 1; } .uc-card.long .oval b { font-size: calc(var(--uw) * 0.4); }
+  .uc-card.c0 .oval b { color: #d6303f; } .uc-card.c1 .oval b { color: #c99400; } .uc-card.c2 .oval b { color: #2e9f4e; } .uc-card.c3 .oval b { color: #2b6fd4; } .uc-card.c4 .oval b { color: #222; }
+  .uc-card .co { font-size: calc(var(--uw) * 0.2); font-weight: 700; line-height: 1; font-family: var(--display); text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4); } .uc-card .co.tl { left: 9%; top: 7%; } .uc-card .co.br { right: 9%; bottom: 7%; transform: rotate(180deg); }
+  .uc-card > i { display: none; }
+  .uc-card.down .uc-logo { left: 50%; top: 50%; width: 70%; height: 44%; border-radius: 50%; background: #d6303f; color: #ffd45e; transform: translate(-50%, -50%) rotate(-24deg); display: grid; place-items: center; font: 900 calc(var(--uw) * 0.34)/1 var(--display); font-style: italic; text-shadow: 0 1px 0 #7a1020; }
+  .uc-card.down { background: #14143a; }
+  .uc-fly { position: absolute; z-index: 30; pointer-events: none; margin: 0 !important; box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5); }
+  .uc-card.land { animation: ucLand 0.32s ease-out; } @keyframes ucLand { 0% { transform: scale(1.18); filter: brightness(1.5); } 100% { transform: none; filter: none; } }
+  .uc-hand .uc-card.pick { transition: transform 0.15s ease, box-shadow 0.15s ease; } .uc-hand .uc-card.pick:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 10px 14px rgba(0, 0, 0, 0.45); }
+  .uc-hand .uc-card.dim { filter: brightness(0.55) saturate(0.7); }
+  .dopp.turn { animation: mjTurn 1.2s ease-in-out infinite; }
   .wn-act { align-content: flex-start; min-height: 48px; }
   .wn-body > * { flex-shrink: 0; }
   .wn-act .wn-p { flex-basis: 100%; text-align: center; }
@@ -7408,6 +7444,7 @@
           return { html: lvTag + q[0] + (q[6] === 2 ? '・むずかしい' : q[6] === 1 ? '・ふつう' : '・やさしい') + '</span><div class="big" style="font-size:22px;line-height:1.5">' + q[1] + '</div>', opts: opts, ans: opts.indexOf(q[2]) };
         }
       });
+      stage.querySelectorAll(':scope > .ov').forEach((o) => stage.append(o));
       inner.start();
     }
     function showMenu() {
@@ -7430,12 +7467,51 @@
   const MJ_WIND = ['東', '南', '西', '北'];
   const MJ_NAMES = ['あなた', 'ハル', 'ミナ', 'ソラ'];
   const mjKindName = (k) => (k < 9 ? '一二三四五六七八九'[k] + '萬' : k < 18 ? (k - 8) + '筒' : k < 27 ? (k - 17) + '索' : '東南西北白發中'[k - 27]);
+  const MJ_PIN = [
+    [[15, 20, 9]],
+    [[15, 11, 5.4], [15, 29, 5.4]],
+    [[8, 9, 4.6], [15, 20, 4.6], [22, 31, 4.6]],
+    [[9, 12, 5], [21, 12, 5], [9, 28, 5], [21, 28, 5]],
+    [[9, 12, 4.6], [21, 12, 4.6], [15, 20, 4.6], [9, 28, 4.6], [21, 28, 4.6]],
+    [[9, 9, 4.4], [21, 9, 4.4], [9, 20, 4.4], [21, 20, 4.4], [9, 31, 4.4], [21, 31, 4.4]],
+    [[8, 7, 3.9], [15, 10, 3.9], [22, 13, 3.9], [9, 24, 4.2], [21, 24, 4.2], [9, 33, 4.2], [21, 33, 4.2]],
+    [[9, 8, 4], [21, 8, 4], [9, 16.5, 4], [21, 16.5, 4], [9, 25, 4], [21, 25, 4], [9, 33.5, 4], [21, 33.5, 4]],
+    [[8, 9, 3.9], [15, 9, 3.9], [22, 9, 3.9], [8, 20, 3.9], [15, 20, 3.9], [22, 20, 3.9], [8, 31, 3.9], [15, 31, 3.9], [22, 31, 3.9]]
+  ];
+  const MJ_SOU = [
+    null,
+    [[15, 11, 11], [15, 29, 11]],
+    [[15, 10, 11], [9, 29, 11], [21, 29, 11]],
+    [[9, 11, 11], [21, 11, 11], [9, 29, 11], [21, 29, 11]],
+    [[9, 11, 11], [21, 11, 11], [15, 20, 11, 1], [9, 29, 11], [21, 29, 11]],
+    [[8, 11, 11], [15, 11, 11], [22, 11, 11], [8, 29, 11], [15, 29, 11], [22, 29, 11]],
+    [[15, 8, 9, 1], [8, 22, 9], [15, 22, 9], [22, 22, 9], [8, 33, 9], [15, 33, 9], [22, 33, 9]],
+    [[6, 11, 11], [12, 11, 11], [18, 11, 11], [24, 11, 11], [6, 29, 11], [12, 29, 11], [18, 29, 11], [24, 29, 11]],
+    [[8, 8.5, 9], [15, 8.5, 9], [22, 8.5, 9], [8, 20, 9, 1], [15, 20, 9, 1], [22, 20, 9, 1], [8, 31.5, 9], [15, 31.5, 9], [22, 31.5, 9]]
+  ];
+  function mjFace(k) {
+    const T = (x, y, s, c, t, w) => '<text x="' + x + '" y="' + y + '" font-size="' + s + '" fill="' + c + '" text-anchor="middle" font-weight="' + (w || 700) + '" font-family="\'Hiragino Mincho ProN\',\'Yu Mincho\',\'Noto Serif JP\',serif">' + t + '</text>';
+    let b = '';
+    if (k < 9) b = T(15, 19, 17, k === 4 ? '#b3202f' : '#1b1b1b', '一二三四五六七八九'[k]) + T(15, 35, 14, '#b3202f', '萬');
+    else if (k < 18) {
+      MJ_PIN[k - 9].forEach(([x, y, r], i) => {
+        const red = (k === 9) || (k === 13 && i === 2) || (k >= 15 && k <= 15 && i < 3), col = red ? '#c0283a' : (k === 14 && i % 2 ? '#1b7a3a' : '#1d5fc2');
+        b += '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + col + '"/><circle cx="' + x + '" cy="' + y + '" r="' + (r * 0.68) + '" fill="#fffdf2"/><circle cx="' + x + '" cy="' + y + '" r="' + (r * 0.4) + '" fill="' + col + '"/>';
+        if (k === 9) b += '<circle cx="15" cy="20" r="3" fill="#fffdf2"/><circle cx="15" cy="20" r="1.6" fill="#c0283a"/>';
+      });
+    } else if (k < 27) {
+      if (k === 18) b = '<ellipse cx="14" cy="24" rx="7" ry="9" fill="#1b7a3a"/><circle cx="17" cy="12" r="5" fill="#1b7a3a"/><path d="M21 11 l5 2 l-5 2z" fill="#c0283a"/><circle cx="18" cy="11" r="1.1" fill="#fffdf2"/><path d="M8 30 q6 8 14 2" stroke="#c0283a" stroke-width="2.4" fill="none"/>';
+      else MJ_SOU[k - 18].forEach(([x, y, h, red]) => {
+        const col = red ? '#c0283a' : '#1b7a3a';
+        b += '<rect x="' + (x - 2.2) + '" y="' + (y - h / 2) + '" width="4.4" height="' + h + '" rx="2.2" fill="' + col + '"/><rect x="' + (x - 2.2) + '" y="' + (y - 1) + '" width="4.4" height="2" fill="#fffdf2" opacity="0.85"/>';
+      });
+    } else if (k === 31) b = '<rect x="5" y="6" width="20" height="28" rx="2" fill="none" stroke="#1d5fc2" stroke-width="2.4"/>';
+    else b = T(15, 28, k === 33 ? 25 : 24, k === 32 ? '#1b7a3a' : k === 34 ? '#c0283a' : '#1b1b1b', '東南西北白發中'[k - 27], 800);
+    if (k === 33) b = T(15, 28, 24, '#c0283a', '中', 800);
+    return '<svg viewBox="0 0 30 40" aria-hidden="true" focusable="false">' + b + '</svg>';
+  }
   function mjTile(k, cls) {
-    const d = el('div', 'mj-t' + (cls ? ' ' + cls : '')); d.dataset.k = String(k);
-    if (k < 27) {
-      const su = (k / 9) | 0, n = k % 9, a = el('span', 'n'), b = el('span', 's');
-      a.textContent = su === 0 ? '一二三四五六七八九'[n] : String(n + 1); b.textContent = ['萬', '筒', '索'][su]; d.dataset.c = ['m', 'p', 's'][su]; d.append(a, b);
-    } else { const a = el('span', 'n h'); a.textContent = '東南西北白發中'[k - 27]; d.dataset.c = k === 32 ? 'w' : k === 33 ? 'r' : k === 31 ? 'g' : 'h'; d.append(a); }
+    const d = el('div', 'mj-t' + (cls ? ' ' + cls : '')); d.dataset.k = String(k); d.innerHTML = mjFace(k); d.setAttribute('aria-label', mjKindName(k));
     return d;
   }
   function mjIsChiitoi(c) { let p = 0; for (let i = 0; i < 34; i++) { if (c[i] === 2) p++; else if (c[i] !== 0) return false; } return p === 7; }
@@ -7530,14 +7606,14 @@
         const d = el('div', 'mj-seat' + (S.turn === s && !over ? ' on' : '') + (s === 0 ? ' me' : '')), h = el('div', 'mj-sh'), w = el('b', 'mj-w' + (s === 0 ? ' dealer' : '')), nm = el('span'), pt = el('span', 'mj-pt');
         w.textContent = MJ_WIND[s]; nm.textContent = MJ_NAMES[s]; pt.textContent = String(S.pts[s]); h.append(w, nm, pt);
         if (S.riichi[s]) { const r = el('i', 'mj-ri'); r.textContent = 'リーチ'; h.append(r); }
-        const rv = el('div', 'mj-river'); S.river[s].forEach((x) => rv.append(mjTile(x.k, 'sx' + (x.r ? ' rot' : '')))); d.append(h, rv); box.append(d);
+        const rv = el('div', 'mj-river'); S.river[s].forEach((x, xi) => rv.append(mjTile(x.k, 'sx' + (x.r ? ' rot' : '') + (S.hot === s && xi === S.river[s].length - 1 ? ' drop' : '')))); d.append(h, rv); box.append(d);
       });
     }
     function renderHand() {
       const box = k('hand'); box.textContent = '';
-      const w = Math.min(stage.clientWidth - 28, 520), tw = clampN(Math.floor((w - 14 * 2 - 12) / 14), 20, 38); root.style.setProperty('--tw', tw + 'px');
+      const w = Math.min(stage.clientWidth - 28, 520), tw = clampN(Math.floor((w - 14 * 2 - 12) / 14), 20, 40); root.style.setProperty('--tw', tw + 'px');
       const mk = (kd, idx, cls) => { const t = mjTile(kd, cls); t.dataset.i = String(idx); if (idx === sel) t.classList.add('sel'); if (riMode && S.riKinds.indexOf(kd) < 0) t.classList.add('dim'); if (!myPhase) t.classList.add('wait'); box.append(t); };
-      S.H.forEach((kd, i) => mk(kd, i)); if (S.D != null) mk(S.D, -1, 'draw');
+      S.H.forEach((kd, i) => mk(kd, i)); if (S.D != null) { mk(S.D, -1, 'draw' + (S.fresh ? ' fresh' : '')); S.fresh = false; }
     }
     const onHand = (e) => {
       const t = e.target.closest('.mj-t'); if (!t || !myPhase || S.riichi[0] || over) return;
@@ -7552,7 +7628,7 @@
       if (over || quitting) return;
       if (remain() <= 0) { ryuukyoku(); return; }
       const t = S.wall.pop(); S.c[s][t]++; S.last[s] = t; S.turn = s;
-      if (s === 0) { S.D = t; myTurn(); } else { render(); T.later(() => cpuTurn(s), 650); }
+      if (s === 0) { S.D = t; S.fresh = true; myTurn(); } else { render(); T.later(() => cpuTurn(s), 650); }
     }
     function myTurn() {
       sel = -1; riMode = false; myPhase = true; render();
@@ -7575,7 +7651,7 @@
       const decl = riMode; riMode = false; sel = -1; setActs([]); doDiscard(0, t, decl);
     }
     function doDiscard(s, t, decl) {
-      S.c[s][t]--; const rd = decl && !S.riichi[s]; S.river[s].push({ k: t, r: rd }); S.seen[t]++;
+      S.c[s][t]--; const rd = decl && !S.riichi[s]; S.river[s].push({ k: t, r: rd }); S.seen[t]++; S.hot = s; A.beep(s === 0 ? 300 : 260, 0.05, 'square', 0.05);
       if (rd) { S.riichi[s] = true; S.pts[s] -= 1000; S.sticks++; flash(stage, 'リーチ!', s === 0 ? 'good' : ''); A.beep(660, 0.12, 'triangle', 0.06); } else A.beep(300 + t * 6, 0.04, 'square', 0.025);
       S.turn = s; render(); msg(MJ_NAMES[s] + 'が「' + mjKindName(t) + '」を捨てました。');
       T.later(() => checkRon(s, t, 1), 250);
@@ -7802,8 +7878,25 @@
   const UC_CSS = ['#d6303f', '#e8b923', '#2e9f4e', '#2b6fd4'];
   function ucEl(c, down) {
     const e = el('div', 'uc-card' + (down ? ' down' : ' c' + c.c));
-    if (!down) { const a = el('b'), s = el('i'); a.textContent = typeof c.t === 'number' ? String(c.t) : UC_SYM[c.t]; s.textContent = UC_COL[c.c]; e.append(a, s); }
+    if (down) { e.innerHTML = '<s class="uc-logo">U</s>'; return e; }
+    const t = typeof c.t === 'number' ? String(c.t) : UC_SYM[c.t];
+    e.innerHTML = '<s class="co tl"></s><s class="oval"><b></b></s><s class="co br"></s><i></i>';
+    e.querySelectorAll('.co').forEach((x) => { x.textContent = t; }); e.querySelector('b').textContent = t; e.querySelector('i').textContent = UC_COL[c.c];
+    if (String(t).length > 1) e.classList.add('long');
     return e;
+  }
+  /* カードがとぶ演出 */
+  function ucFly(stage, from, to, card, down, ms, cb) {
+    try {
+      if (!from || !to || !stage.animate && !HTMLElement.prototype.animate || reduce) { cb && cb(); return; }
+      const st = stage.getBoundingClientRect(), e = ucEl(card, down);
+      e.classList.add('uc-fly'); e.style.setProperty('--uw', Math.max(20, from.width) + 'px');
+      e.style.left = (from.left - st.left) + 'px'; e.style.top = (from.top - st.top) + 'px';
+      stage.append(e);
+      const dx = (to.left + to.width / 2) - (from.left + from.width / 2), dy = (to.top + to.height / 2) - (from.top + from.height / 2), sc = to.width / Math.max(20, from.width), rot = (Math.random() * 16 - 8);
+      const an = e.animate([{ transform: 'translate(0,0) scale(1) rotate(0deg)', offset: 0 }, { transform: 'translate(' + (dx * 0.5) + 'px,' + (dy * 0.5 - 24) + 'px) scale(' + (1 + (sc - 1) * 0.5 + 0.12) + ') rotate(' + (rot * 0.6) + 'deg)', offset: 0.55 }, { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ') rotate(' + rot + 'deg)', offset: 1 }], { duration: ms || 420, easing: 'cubic-bezier(0.3, 0.7, 0.3, 1)', fill: 'forwards' });
+      an.onfinish = () => { e.remove(); cb && cb(); }; an.oncancel = () => { e.remove(); cb && cb(); };
+    } catch (err) { cb && cb(); }
   }
   function mkUno() {
     const d = [];
@@ -7874,16 +7967,16 @@
     function doDraw() {
       if (phase !== 'me') return;
       const c = drawCard(); if (!c) { say('山札がありません。パス'); passTurn(0); return; }
-      hands[0].push(c); sortHand(0); A.beep(300, 0.05, 'sine', 0.04);
-      if (canPlay(c)) { phase = 'drawn'; drawn = c; say('ひいたカードが出せます! 出すかパス'); acts([['パス', () => { if (phase === 'drawn') { drawn = null; say('パスしました'); passTurn(0); } }]]); render(); }
-      else { say('出せないカードでした。パス'); phase = 'cpu'; render(); acts([]); T.later(() => passTurn(0), 700); }
+      hands[0].push(c); sortHand(0); A.beep(300, 0.05, 'sine', 0.04); const di = hands[0].indexOf(c);
+      if (canPlay(c)) { phase = 'drawn'; drawn = c; say('ひいたカードが出せます! 出すかパス'); acts([['パス', () => { if (phase === 'drawn') { drawn = null; say('パスしました'); passTurn(0); } }]]); render(); newCardFly(di); }
+      else { say('出せないカードでした。パス'); phase = 'cpu'; render(); newCardFly(di); acts([]); T.later(() => passTurn(0), 700); }
     }
     function cpuTurn(p) {
       if (over) return;
       let pl = hands[p].filter(canPlay);
       if (!pl.length) {
         const c = drawCard(); if (!c) { say(NAMES[p] + 'はパス'); passTurn(p); return; }
-        hands[p].push(c); sortHand(p); say(NAMES[p] + 'は1枚ひいた'); render();
+        hands[p].push(c); sortHand(p); say(NAMES[p] + 'は1枚ひいた'); render(); flyDraw(p, 1);
         if (canPlay(c)) { T.later(() => playCard(p, c, null), 800); } else T.later(() => passTurn(p), 700);
         return;
       }
@@ -7893,10 +7986,26 @@
       playCard(p, c, null);
     }
     function bestColor(p) { const n = [0, 0, 0, 0]; hands[p].forEach((c) => { if (c.c < 4) n[c.c]++; }); const m = Math.max.apply(null, n); return rnd([0, 1, 2, 3].filter((i) => n[i] === m)); }
+    const rectOf = (sel) => { const n = root.querySelector(sel); return n ? n.getBoundingClientRect() : null; };
+    function srcRect(p, i) { if (p === 0) { const n = k('hand').querySelector('[data-i="' + i + '"]') || k('hand').children[i]; return n ? n.getBoundingClientRect() : rectOf('[data-k=hand]'); } const n = k('opps').children[p - 1]; if (!n) return null; const r = n.getBoundingClientRect(); return { left: r.left + r.width / 2 - 16, top: r.top + r.height / 2 - 22, width: 32, height: 44 }; }
+    function flyDraw(p, n, after) {
+      const deckR = rectOf('.uc-pile .uc-card'); let done = 0;
+      for (let j = 0; j < n; j++) T.later(() => {
+        const dst = p === 0 ? (k('hand').lastElementChild ? k('hand').lastElementChild.getBoundingClientRect() : rectOf('[data-k=hand]')) : srcRect(p, 0);
+        ucFly(stage, deckR, dst, null, true, 380, () => { done++; if (done >= n && after) after(); }); A.beep(260 + j * 40, 0.04, 'sine', 0.03);
+      }, j * 140);
+      if (!n && after) after();
+    }
+    function newCardFly(di) {
+      const n = k('hand').children[di], deckR = rectOf('.uc-pile .uc-card'); if (!n) return;
+      n.style.visibility = 'hidden'; ucFly(stage, deckR, n.getBoundingClientRect(), null, true, 380, () => { n.style.visibility = ''; n.classList.add('land'); });
+    }
     function playCard(p, card, chosen) {
-      const i = hands[p].indexOf(card); if (i >= 0) hands[p].splice(i, 1);
+      const i = hands[p].indexOf(card); const fromR = srcRect(p, i); if (i >= 0) hands[p].splice(i, 1);
       pile.push(card); top = card; col = card.c === 4 ? (chosen != null ? chosen : bestColor(p)) : card.c; drawn = null; wildCard = null;
       const nm = typeof card.t === 'number' ? UC_COL[card.c] + String(card.t) : (card.c === 4 ? '' : UC_COL[card.c]) + ({ skip: 'スキップ', rev: 'リバース', d2: 'ドロー2', wild: 'ワイルド', w4: 'ワイルドドロー4' })[card.t] + (card.c === 4 ? '(' + UC_COL[col] + ')' : '');
+      render(); const tn = root.querySelector('.uc-top .uc-card'), toR = tn ? tn.getBoundingClientRect() : null;
+      if (tn && fromR) { tn.style.visibility = 'hidden'; ucFly(stage, fromR, toR, card, false, 440, () => { tn.style.visibility = ''; tn.classList.add('land'); }); }
       say(NAMES[p] + ': ' + nm); A.beep(420 + (typeof card.t === 'number' ? card.t * 25 : 150), 0.06, 'triangle', 0.05);
       if (!hands[p].length) { render(); finishGame(p); return; }
       if (hands[p].length === 1) {
@@ -7912,12 +8021,12 @@
     function advance(p, card) {
       if (over) return;
       if (card.t === 'rev') dir = -dir;
-      let t = nx(p), msg = '';
+      let t = nx(p), msg = '', penal = 0, pt = -1;
       if (card.t === 'skip') { msg = NAMES[t] + 'はスキップ!'; t = nx(t); }
-      else if (card.t === 'd2' || card.t === 'w4') { const n = card.t === 'd2' ? 2 : 4; give(t, n); msg = NAMES[t] + 'は' + n + '枚ひいてスキップ!'; t = nx(t); }
+      else if (card.t === 'd2' || card.t === 'w4') { const n = card.t === 'd2' ? 2 : 4; give(t, n); penal = n; pt = t; msg = NAMES[t] + 'は' + n + '枚ひいてスキップ!'; t = nx(t); }
       else if (card.t === 'rev') msg = '向きが逆になった!';
       if (msg) { say(msg); A.beep(300, 0.12, 'sawtooth', 0.04); }
-      turn = t; phase = 'cpu'; acts([]); render(); T.later(next, msg ? 1100 : 700);
+      turn = t; phase = 'cpu'; acts([]); render(); if (penal) flyDraw(pt, penal); T.later(next, msg ? (penal ? 1500 : 1100) : 700);
     }
     const onHand = (e) => {
       const c = e.target.closest('.uc-card.pick'); if (!c || (phase !== 'me' && phase !== 'drawn')) return;
@@ -8836,6 +8945,69 @@
   try { Object.assign(plays, JSON.parse(localStorage.getItem(LS_PLAYS) || '{}')); } catch (e) {}
   try { const d = JSON.parse(localStorage.getItem(LS_DAYS) || '[]'); if (Array.isArray(d)) days = d.filter((x) => typeof x === 'string').slice(-60); } catch (e) {}
   const dayStr = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  /* ===== ミッション(ゲームごとの目標とバッジ) ===== */
+  const MIS = {
+    star: [['s', 300, 'スコア300'], ['最大コンボ', 15, '15コンボ'], ['s', 1200, 'スコア1200']],
+    merge: [['最大タイル', 128, '128をつくる'], ['最大タイル', 512, '512をつくる'], ['最大タイル', 2048, '2048をつくる']],
+    tap: [['最大コンボ', 12, '12コンボ'], ['命中率', 80, '命中率80%'], ['当てた数', 60, '60こ当てる']],
+    flap: [['通りぬけ', 5, '5本通りぬける'], ['通りぬけ', 15, '15本'], ['通りぬけ', 30, '30本']],
+    simon: [['クリア', 5, '5回クリア'], ['最長', 8, '8つ覚える'], ['最長', 12, '12こ覚える']],
+    snake: [['ながさ', 12, 'ながさ12'], ['ながさ', 25, 'ながさ25'], ['食べた星', 30, '星を30こ']],
+    stop: [['ぴったり', 3, 'ぴったり3回'], ['ぴったり', 8, 'ぴったり8回'], ['ラウンド', 15, '15ラウンド']],
+    pairs: [['クリア盤面', 2, '2盤面'], ['クリア盤面', 5, '5盤面'], ['最大コンボ', 5, '5コンボ']],
+    break: [['ステージ', 3, 'ステージ3'], ['こわした数', 80, '80こ壊す'], ['最大コンボ', 12, '12コンボ']],
+    nums: [['クリア盤面', 3, '3盤面'], ['クリア盤面', 6, '6盤面'], ['最大コンボ', 8, '8コンボ']],
+    color: [['せいかい', 15, '15問せいかい'], ['最大コンボ', 10, '10コンボ'], ['せいかい', 35, '35問せいかい']],
+    runner: [['きょり', 400, '400m'], ['きょり', 1200, '1200m'], ['ほし', 30, '星30こ']],
+    rhythm: [['パーフェクト', 15, 'パーフェクト15'], ['最大コンボ', 20, '20コンボ'], ['パーフェクト', 40, 'パーフェクト40']],
+    lights: [['クリア', 3, '3盤面'], ['クリア', 6, '6盤面'], ['手数', '<20', '20手以内']],
+    odd: [['せいかい', 15, '15問せいかい'], ['最大コンボ', 10, '10コンボ'], ['せいかい', 30, '30問せいかい']],
+    mole: [['たたいた', 30, '30ひき'], ['金', 3, '金を3ひき'], ['最大コンボ', 15, '15コンボ']],
+    reflex: [['いちばん速い(ms)', '<300', '300ms以内'], ['いちばん速い(ms)', '<230', '230ms以内'], ['へいきん(ms)', '<300', 'へいきん300ms']],
+    rps: [['勝ちぬいた回', 3, '3連勝'], ['勝ちぬいた回', 6, '6連勝'], ['勝ちぬいた回', 10, '10連勝']],
+    trivia: [['せいかい', 10, '10問せいかい'], ['せいかい', 20, '20問せいかい'], ['最大コンボ', 12, '12コンボ']],
+    slide: [['クリア', 2, '2盤面'], ['クリア', 5, '5盤面'], ['クリア', 8, '8盤面']],
+    hilo: [['勝った回', 5, '5連勝'], ['勝った回', 10, '10連勝'], ['勝った回', 15, '15連勝']],
+    dodge: [['生きた時間', 30, '30秒生きる'], ['生きた時間', 60, '60秒生きる'], ['ほし', 15, '星15こ']],
+    mash: [['タップ数', 90, '90タップ'], ['タップ数', 130, '130タップ'], ['ボーナス中', 30, 'ボーナス中30']],
+    nmem: [['クリア', 4, '4回クリア'], ['最大けた数', 7, '7けた'], ['最大けた数', 10, '10けた']],
+    stack: [['たかさ', 10, '10だん'], ['たかさ', 20, '20だん'], ['ぴったり', 6, 'ぴったり6回']],
+    bj: [['勝ち', 4, '4勝'], ['最高チップ', 200, 'チップ200'], ['最高チップ', 400, 'チップ400']],
+    poker: [['あたり', 5, 'あたり5回'], ['最高チップ', 200, 'チップ200'], ['最高チップ', 500, 'チップ500']],
+    maketen: [['とけた問題', 5, '5問'], ['とけた問題', 10, '10問'], ['とけた問題', 16, '16問']],
+    rogue: [['とうたつ', 3, '3階'], ['とうたつ', 6, '6階'], ['たおした数', 30, '30たい倒す']],
+    bbp: [['ターン', 12, '12ターン'], ['ターン', 25, '25ターン'], ['ボール', 12, 'ボール12こ']],
+    beatlane: [['最大コンボ', 25, '25コンボ'], ['パーフェクト', 30, 'パーフェクト30'], ['最大コンボ', 60, '60コンボ']]
+  };
+  const MIS_GEN = [['plays', 1, 'はじめて遊ぶ'], ['wins', 3, '3回勝つ'], ['wins', 10, '10回勝つ']];
+  const LS_MIS = 'arcade-missions-v1';
+  let misData = {};
+  try { misData = JSON.parse(localStorage.getItem(LS_MIS) || '{}') || {}; } catch (e) { misData = {}; }
+  const misSave = () => { try { localStorage.setItem(LS_MIS, JSON.stringify(misData)); } catch (e) { /* noop */ } };
+  const misOf = (id) => MIS[id] || MIS_GEN;
+  function misRow(id) { const d = misData[id] || (misData[id] = { done: [0, 0, 0], w: 0, p: 0 }); return d; }
+  function misCheck(id, score, stats, verdict) {
+    const d = misRow(id), list = misOf(id), fresh = [];
+    d.p++; if (verdict === 'win') d.w++;
+    const num = (s) => { const m = String(s).match(/-?\d+(\.\d+)?/); return m ? Number(m[0]) : NaN; };
+    list.forEach((m, i) => {
+      if (d.done[i]) return;
+      let v;
+      if (m[0] === 's') v = score; else if (m[0] === 'plays') v = d.p; else if (m[0] === 'wins') v = d.w;
+      else { const st = (stats || []).find((x) => x[0] === m[0]); v = st ? num(st[1]) : NaN; }
+      if (isNaN(v)) return;
+      const ok = typeof m[1] === 'string' ? v > 0 && v < Number(m[1].slice(1)) : v >= m[1];
+      if (ok) { d.done[i] = 1; fresh.push(i); }
+    });
+    misSave(); return fresh;
+  }
+  function misBox(id, fresh) {
+    const d = misRow(id), box = el('div', 'mis');
+    box.append(el('h4', '', '🏅 ミッション'));
+    misOf(id).forEach((m, i) => { const r = el('div', 'mis-r' + (d.done[i] ? ' ok' : '') + (fresh && fresh.indexOf(i) >= 0 ? ' new' : '')); r.textContent = (d.done[i] ? '✔ ' : '○ ') + m[2] + (fresh && fresh.indexOf(i) >= 0 ? '  NEW!' : ''); box.append(r); });
+    return box;
+  }
+  const misTotal = () => { let n = 0, t = 0; GAMES.forEach((g) => { t += 3; const d = misData[g.id]; if (d) n += d.done.filter(Boolean).length; }); return [n, t]; };
   function streak() {
     let n = 0; const d = new Date();
     if (days.indexOf(dayStr(d)) < 0) d.setDate(d.getDate() - 1);
@@ -8968,7 +9140,7 @@
     });
     const played = GAMES.filter((g) => rec[g.id] > 0).length;
     $('#heroTxt').textContent = '1回1〜3分で遊べるミニゲームが' + GAMES.length + '本。スコアはランキングに残ります。';
-    $('#sumLine').textContent = '遊んだゲーム ' + played + ' / ' + GAMES.length + ' ・ ベストの合計 ' + GAMES.reduce((a, g) => a + (rec[g.id] || 0), 0) + (streak() ? ' ・ れんぞく ' + streak() + '日' : '');
+    $('#sumLine').textContent = '遊んだゲーム ' + played + ' / ' + GAMES.length + ' ・ ベストの合計 ' + GAMES.reduce((a, g) => a + (rec[g.id] || 0), 0) + ' ・ 🏅 ' + misTotal()[0] + ' / ' + misTotal()[1] + (streak() ? ' ・ れんぞく ' + streak() + '日' : '');
     const tg = todayGame(); $('#todayLine').textContent = 'きょうのゲーム: ' + tg.name + '(まずはこれから)';
     $('#filters').querySelectorAll('.pill').forEach((f) => f.setAttribute('aria-pressed', String(f.dataset.f === filterId)));
     $('#tabs').querySelectorAll('.pill').forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.g === tabId)));
@@ -9039,6 +9211,7 @@
       ds.append(b);
     });
     showMul(); ds.append(dn);
+    $('.mybest', ovIntro).before(misBox(g.id));
     $('.mybest', ovIntro).before(ds);
     bgmPrefill(ovIntro);
     $('.mybest b', ovIntro).textContent = String(rec[g.id]);
@@ -9078,6 +9251,7 @@
     $('.best', ovResult).textContent = 'ベスト ' + rec[g.id];
     const st = $('.stats', ovResult);
     (stats || []).forEach((s) => { const d = el('div', '', '<b></b><span></span>'); $('b', d).textContent = String(s[1]); $('span', d).textContent = s[0]; st.append(d); });
+    const fresh = misCheck(g.id, score, stats, verdict); st.after(misBox(g.id, fresh)); if (fresh.length) A.beep(880, 0.15, 'triangle', 0.06);
     $('.again', ovResult).addEventListener('click', () => { startPlay(); });
     $('.home', ovResult).addEventListener('click', goHome);
     ovResult.hidden = false;
@@ -9141,7 +9315,7 @@
   const FX_MS = { flip: 4000, dark: 3500, spin: 4000, freeze: 1800, flies: 5000, notes: 6000, fog: 3500, tiny: 4000, tilt: 4500, gray: 5000, zoom: 3500, jelly: 4000, hue: 4500, blink: 3500, wave: 4000, bars: 4500, ads: 7000, balloons: 6000 };
   function btWarn(text, ms) {
     stage.querySelectorAll('.bt-warn').forEach((x) => x.remove());
-    const w = bt('div', 'bt-warn', text); w.setAttribute('role', 'alert'); stage.append(w); setTimeout(() => w.remove(), ms || 3200);
+    const w = bt('div', 'bt-warn', text); w.setAttribute('role', 'alert'); stage.append(w); setTimeout(() => { w.classList.add('out'); setTimeout(() => w.remove(), 300); }, ms || 3200);
   }
   function applyFx(kind, who) {
     btWarn('⚠ ' + (who || 'あいて') + 'にじゃまされた!\n' + (FX_LABEL[kind] || ''), FX_MS[kind] || 3500);
@@ -9170,7 +9344,7 @@
         d.addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); d.remove(); A.beep(520, 0.05); });
         stage.append(d); ns.push(d);
       }
-      setTimeout(() => ns.forEach((d) => d.remove()), 6000);
+      setTimeout(() => ns.forEach((d) => { d.style.transition = 'opacity 0.3s'; d.style.opacity = '0'; setTimeout(() => d.remove(), 300); }), 6000);
     } else if (kind === 'bars') {
       const bs = [];
       ['top', 'bottom'].forEach((p, i) => { const d = bt('div', 'fx-bar'); d.style[p] = (i ? '6%' : '40px'); if (i) d.style.animationDelay = '-0.8s'; stage.append(d); bs.push(d); });
@@ -9183,7 +9357,7 @@
         d.addEventListener('pointerdown', (e) => { e.stopPropagation(); }); d.querySelector('button').addEventListener('pointerdown', (e) => { e.stopPropagation(); e.preventDefault(); d.remove(); A.beep(520, 0.05); });
         stage.append(d); ds.push(d);
       }
-      setTimeout(() => ds.forEach((d) => d.remove()), 7000);
+      setTimeout(() => ds.forEach((d) => { d.style.transition = 'opacity 0.3s'; d.style.opacity = '0'; setTimeout(() => d.remove(), 300); }), 7000);
     } else if (kind === 'balloons') {
       const r = stage.getBoundingClientRect(), bl = [], E = ['🎈', '🎈', '🎈', '🎃', '🎈'];
       for (let i = 0; i < 7; i++) {
