@@ -291,7 +291,8 @@
   .t-draw { background: rgba(180, 140, 255, 0.18); color: #c9b0ff; border-color: rgba(180, 140, 255, 0.45); }
   @media (prefers-reduced-motion: reduce) { .mc, .mc span, .rx-pad { transition: none; } .mc.boom { animation: none; } }
   .sumline { margin: 6px 0 0; font-size: 13px; color: var(--mint); font-weight: 700; }
-  .omakase { margin-top: 10px; }
+  .omakase { margin-top: 10px; margin-right: 6px; }
+  .gsearch { display: block; margin-top: 10px; width: 100%; max-width: 320px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: inherit; font-size: 15px; }
 
   /* スライドパズル・れんだ */
   .sl { width: var(--cs); height: var(--cs); padding: 0; border-radius: 12px; border: 1px solid var(--line); background: linear-gradient(150deg, #2f37a0, #1d2377); color: var(--ink); font-family: var(--display); font-size: calc(var(--cs) * 0.42); line-height: 1; font-variant-numeric: tabular-nums; transition: background 0.1s; }
@@ -686,6 +687,45 @@
   .wroster { width: min(100%, 420px); display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
   .wp2 { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 4px 2px; text-align: center; display: grid; line-height: 1.25; min-height: 42px; }
   .wp2 b { font-size: 13px; } .wp2 small { font-size: 10.5px; color: var(--gold); min-height: 13px; }
+  .wsus { display: block; height: 3px; border-radius: 2px; background: var(--line); margin: 2px 6px 0; position: relative; overflow: hidden; } .wsus::after { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--v, 0%); background: #ff6b81; transition: width .4s; }
+  .sg { gap: 10px; }
+  .sg-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; width: 100%; min-height: 0; border-radius: 16px; transition: background 0.2s; }
+  .sg-body.ok { animation: sgok 0.3s; } .sg-body.ng { animation: sgng 0.3s; }
+  @keyframes sgok { 0% { background: rgba(111, 227, 207, 0.28); } 100% { background: transparent; } }
+  @keyframes sgng { 0% { background: rgba(255, 107, 129, 0.3); } 100% { background: transparent; } }
+  .sg-hint { color: var(--mute); font-size: 14px; text-align: center; }
+  .sg-q { font-family: var(--display); font-size: 46px; color: #fff; }
+  .sg-ch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(100%, 380px); }
+  .sg-ch .btn { font-size: 28px; padding: 20px 4px; }
+  .sg-dots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(100%, 400px); }
+  .sg-box { position: relative; aspect-ratio: 1; border-radius: 16px; background: var(--panel); border: 2px solid var(--line); padding: 0; }
+  .sg-box:active { border-color: var(--gold); }
+  .sg-dot { position: absolute; width: 9%; height: 9%; border-radius: 50%; background: #ffd45e; pointer-events: none; }
+  .sg-ar { font-size: 120px; line-height: 1; font-weight: 700; }
+  .sg-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: min(100%, 380px); }
+  .sg-pad .btn { font-size: 30px; padding: 16px 0; }
+  .sg-bl { position: relative; width: min(100%, 420px); flex: 1; min-height: 300px; overflow: hidden; border-radius: 16px; background: linear-gradient(#1c2570, #0f1438); touch-action: manipulation; }
+  .sg-b { position: absolute; left: 0; top: 0; border: 0; border-radius: 50% 50% 48% 48%; padding: 0; font-size: 22px; box-shadow: inset -6px -8px 0 rgba(0, 0, 0, 0.15), inset 5px 5px 0 rgba(255, 255, 255, 0.3); touch-action: manipulation; }
+  .sg-b.bomb { background: #333; } .sg-b.gold { background: #ffd45e; color: #7a5a00; } .sg-b.pop { opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+  .sg-ttt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(88vw, 320px); }
+  .sg-c { aspect-ratio: 1; border-radius: 14px; background: var(--panel); border: 2px solid var(--line); font-size: 40px; padding: 0; }
+  .sg-c.hl { border-color: var(--gold); background: rgba(255, 212, 94, 0.2); }
+  .pl-sort { display: flex; gap: 6px; margin: 8px 0; flex-wrap: wrap; }
+  .pl-list, .pl-fb { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .pl-list li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; }
+  .pl-list .n { font-family: var(--display); color: var(--gold); text-align: center; }
+  .pl-mid { display: grid; gap: 2px; min-width: 0; } .pl-mid small { color: var(--mute); font-size: 12px; }
+  .pl-nm { background: none; border: 0; color: var(--ink); font-weight: 700; font-size: 15px; text-align: left; padding: 0; text-decoration: underline dotted; }
+  .pl-bar { display: block; height: 4px; border-radius: 2px; background: var(--line); position: relative; overflow: hidden; } .pl-bar::after { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--w, 0%); background: var(--gold); }
+  .pl-like { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: 14px; min-height: 36px; } .pl-like.on { border-color: #ff6b81; color: #ff8aa0; background: rgba(255, 107, 129, 0.12); }
+  .pl-del { border: 0; background: none; color: var(--mute); font-size: 12px; text-decoration: underline; }
+  .pl-form { display: grid; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+  .pl-form select, .pl-form textarea { box-sizing: border-box; width: 100%; max-width: 100%; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: rgba(0, 0, 0, 0.25); color: inherit; font-size: 15px; font-family: inherit; }
+  .pl-row { display: flex; justify-content: space-between; align-items: center; } .pl-cnt { color: var(--mute); } .pl-msg { margin: 0; min-height: 1em; font-size: 13px; color: var(--gold); }
+  .pl-fb li { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 6px; }
+  .pl-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } .pl-top small { color: var(--mute); }
+  .pl-chip { background: var(--gold); color: var(--gold-ink); border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+  .pl-tx { margin: 0; overflow-wrap: anywhere; line-height: 1.5; } .pl-ft { display: flex; justify-content: space-between; align-items: center; }
   .wp2.me { border-color: var(--gold); } .wp2.dead { opacity: 0.55; } .wp2.dead b { text-decoration: line-through; }
   /* アカウント */
   .acct { position: fixed; inset: 0; z-index: 1000; background: rgba(5, 7, 30, 0.96); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px 16px; overflow-y: auto; }
@@ -748,6 +788,12 @@
       <p class="sub">タップすると、そのゲームの説明が開きます。</p>
       <div class="filters" id="filters" role="group" aria-label="ゲームの種類"></div>
       <div class="games" id="games"></div>
+    </section>
+    <section class="sec" id="plaza">
+      <h2>みんなの広場</h2>
+      <p class="sub">人気のゲームを見たり、「こんなゲームがほしい!」を書いたり。みんなの意見が見られます。</p>
+      <div class="tabs" id="plTabs" role="group" aria-label="広場"></div>
+      <div id="plBody"></div>
     </section>
     <section class="sec">
       <h2>ランキング</h2>
@@ -4160,7 +4206,7 @@
   try { const dv = parseInt(localStorage.getItem(LS_DIFF), 10); if (dv >= 0 && dv <= 2) DIFF = dv; } catch (e) {}
   let playClock = 0, pausedAt = 0;
   const ease01 = (x) => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
-  const RAMPS = { star: 0.3, flap: 0.15, snake: 0.2, break: 0.2, runner: 0.1, rhythm: 0, tap: 0.3, stop: 0.25, simon: 0.1, pairs: 0.15, nums: 0.25, math: 0.25, color: 0.25, lights: 0.2, odd: 0.25, mole: 0.1, reflex: 0, rps: 0.25, cmp: 0.25, hilo: 0.25, dodge: 0.1, mash: 0, slide: 0.2, stack: 0.1, nmem: 0.15, dots: 0.2, arrow: 0.25, merge: 0 };
+  const RAMPS = { star: 0.3, flap: 0.15, snake: 0.2, break: 0.2, runner: 0.1, rhythm: 0, tap: 0.3, stop: 0.25, simon: 0.1, pairs: 0.15, nums: 0.25, math: 0.25, color: 0.25, lights: 0.2, odd: 0.25, mole: 0.1, reflex: 0, rps: 0.25, cmp: 0.25, hilo: 0.25, dodge: 0.1, mash: 0, slide: 0.2, stack: 0.1, nmem: 0.15, dots: 0.2, arrow: 0.25, merge: 0, balloon: 0.1, ttt: 0 };
   const DT = () => { const e = playClock ? (performance.now() - playClock) / 1000 : 0; return DIFFS[DIFF].dt * (1 + (typeof curG !== 'undefined' && curG && curG.ramp != null ? curG.ramp : 0.2) * ease01(e / 80)); };
   /* --- YouTubeのBGM(リズムタップ用・おまけ) --- */
   const LS_YT = 'arcade-yt2-v1';
@@ -5407,11 +5453,13 @@
       <div class="pg-foot"><span data-k="role"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
-    const T = mkTimers(), N = 7, NAMES = ['あなた', 'ハル', 'ミナ', 'ソラ', 'レン', 'ユイ', 'カイ'];
+    const T = mkTimers(), ALLN = ['あなた', 'ハル', 'ミナ', 'ソラ', 'レン', 'ユイ', 'カイ', 'ノア', 'リク'];
+    let N = 7, NAMES = ALLN.slice(0, 7), mode = 7, hist = [], asked = [], wmates = [], nq = 0;
     const RN = { villager: '村人', seer: '占い師', medium: '霊媒師', knight: '騎士', mason: '共有者', wolf: '人狼', mad: '狂人' };
     const RD = { villager: '能力はありません。話し合いと投票で人狼を見つけよう。', seer: '夜に1人占い、人狼か人間かが分かる。', medium: '処刑された人が人狼だったかが、翌朝に分かる。', knight: '夜に1人を護衛して、襲撃から守る(自分は守れない)。', mason: 'もう1人の共有者が誰か分かる。確実な味方!', wolf: '夜に1人を襲う。1日目の夜は襲えない。村人をだまそう。', mad: '人狼の味方(人狼が誰かは知らない)。占い師などのふりをして村をまどわそう。' };
     const wolfSide = (r) => r === 'wolf' || r === 'mad';
     let roles = [], alive = [], day = 1, phase = 'idle', score = 0, round = 1, wins = 0, claims = [], co = [], divined = [], accused = [], over = false, myRes = [], lastExec = null, guard = null, atk = null, mate = -1, talks = 0;
+    const susp = (i) => { let v = 0; accused.forEach((a) => { if (a.t === i && alive[a.by]) v += a.me ? 1.5 : 1; }); claims.forEach((c) => { if (c.t === i && c.wolf && alive[c.who]) v += 3; if (c.t === i && !c.wolf && c.role === 'seer' && alive[c.who]) v -= 1.5; }); return clampN(v / 7, 0, 1); };
     const aliveList = () => [...Array(N).keys()].filter((i) => alive[i]);
     const nm = (i) => NAMES[i], rnd = (a) => a[rndInt(0, a.length - 1)];
     const hum = (b) => (b ? '人狼' : '人間');
@@ -5425,8 +5473,11 @@
         if (i === 0) tag = RN[roles[0]];
         else if (!alive[i]) tag = RN[roles[i]];
         else if (i === mate) tag = '共有者(味方)';
+        else if (wmates.indexOf(i) >= 0) tag = '仲間の人狼';
         else if (co[i]) tag = RN[co[i]] + 'CO';
-        b.textContent = tag; c.append(a, b); box.append(c);
+        b.textContent = tag; c.append(a, b);
+        if (alive[i] && i !== 0 && phase === 'day') { const m = el('i', 'wsus'), v = susp(i); m.style.setProperty('--v', Math.round(v * 100) + '%'); m.title = '疑われ度'; c.append(m); }
+        box.append(c);
       }
       k('score').textContent = String(score); k('day').textContent = day + '日目 / ' + round + '戦目';
       k('role').textContent = 'あなた: ' + RN[roles[0]];
@@ -5434,14 +5485,19 @@
     function acts(list) { const box = k('acts'); box.textContent = ''; list.forEach(([l, fn]) => { const x = el('button', 'btn mini'); x.type = 'button'; x.textContent = l; x.addEventListener('click', fn); box.append(x); }); }
     function pick(prompt, cands, cb, extra) { say(prompt, 'sys'); acts(cands.map((i) => [nm(i), () => { acts([]); cb(i); }]).concat(extra || [])); }
     function setup() {
-      const base = Math.random() < 0.5 ? ['villager', 'villager'] : ['mason', 'mason'];
-      roles = shuffle(['wolf', 'mad', 'seer', 'medium', 'knight'].concat(base)); alive = Array(N).fill(true); day = 1; claims = []; co = Array(N).fill(null); divined = []; accused = []; over = false; myRes = []; lastExec = null; guard = null; atk = null; talks = 0;
+      N = mode; NAMES = ALLN.slice(0, N); hist = []; asked = []; wmates = []; nq = 0;
+      let pool;
+      if (N === 5) pool = ['wolf', 'seer', 'knight', 'villager', 'villager'];
+      else if (N === 9) pool = ['wolf', 'wolf', 'mad', 'seer', 'medium', 'knight'].concat(Math.random() < 0.5 ? ['villager', 'villager', 'villager'] : ['mason', 'mason', 'villager']);
+      else pool = ['wolf', 'mad', 'seer', 'medium', 'knight'].concat(Math.random() < 0.5 ? ['villager', 'villager'] : ['mason', 'mason']);
+      roles = shuffle(pool); alive = Array(N).fill(true); day = 1; claims = []; co = Array(N).fill(null); divined = []; accused = []; over = false; myRes = []; lastExec = null; guard = null; atk = null; talks = 0;
       mate = roles[0] === 'mason' ? roles.findIndex((r, i) => i !== 0 && r === 'mason') : -1;
+      if (roles[0] === 'wolf') wmates = roles.map((r, i) => (i && r === 'wolf' ? i : -1)).filter((x) => x > 0);
       k('log').textContent = ''; roster();
-      say('--- ' + round + '戦目 --- 7人の村。役: 村人系(村人2 または 共有者2)・占い師・霊媒師・騎士、人狼1、狂人1', 'sys');
+      say('--- ' + round + '戦目 --- ' + N + '人の村。' + (N === 5 ? '役: 人狼1・占い師・騎士・村人2' : N === 9 ? '役: 人狼2・狂人1・占い師・霊媒師・騎士・村人系3' : '役: 人狼1・狂人1・占い師・霊媒師・騎士・村人系2') + '', 'sys');
       say('あなたは【' + RN[roles[0]] + '】。' + RD[roles[0]], 'res');
       if (mate >= 0) say('もう1人の共有者は ' + nm(mate) + ' です。', 'res');
-      if (roles[0] === 'wolf') say('人狼はあなた1人です。', 'res');
+      if (roles[0] === 'wolf') say(wmates.length ? '仲間の人狼は ' + wmates.map(nm).join('、') + ' です。' : '人狼はあなた1人です。', 'res');
       T.later(night, 1100);
     }
     function winner() {
@@ -5465,7 +5521,7 @@
     }
     function morning() {
       if (over) return; say('--- ' + day + '日目の朝 ---', 'sys');
-      if (atk != null && alive[atk] && day > 1) { if (atk === guard) say('昨夜は誰も襲われませんでした。(護衛成功?)', 'sys'); else { alive[atk] = false; say(nm(atk) + 'が襲撃されました…(役職は【' + RN[roles[atk]] + '】)', 'dead'); } }
+      if (atk != null && alive[atk] && day > 1) { if (atk === guard) { hist.push(day + '日目夜: 護衛成功(襲撃なし)'); say('昨夜は誰も襲われませんでした。(護衛成功?)', 'sys'); } else { alive[atk] = false; hist.push(day + '日目夜: ' + nm(atk) + '(' + RN[roles[atk]] + ')が襲撃された'); say(nm(atk) + 'が襲撃されました…(役職は【' + RN[roles[atk]] + '】)', 'dead'); } }
       else say('昨夜は誰も襲われませんでした。', 'sys');
       if (roles[0] === 'medium' && alive[0] && lastExec) { myRes.push({ t: lastExec.t, wolf: lastExec.wolf, day: day, med: true }); say('霊媒結果: 昨日処刑された' + nm(lastExec.t) + 'は【' + hum(lastExec.wolf) + '】でした。', 'res'); }
       roster();
@@ -5502,13 +5558,48 @@
       const step = () => { if (i < lines.length) { say(lines[i++]); A.beep(500, 0.03, 'sine', 0.03); roster(); T.later(step, 850); } else myTurn(); };
       T.later(step, 500);
     }
+    function react(t) {
+      acts([]); T.later(() => {
+        say(nm(t) + ':' + cpuLine(nm(t), 'def', nm(rnd(aliveList().filter((x) => x !== t)))));
+        const o = aliveList().filter((x) => x !== 0 && x !== t && !wmates.includes(x));
+        if (o.length && Math.random() < 0.6) { const j = rnd(o); T.later(() => { say(nm(j) + ':' + cpuLine(nm(j), 'agree', nm(0))); if (roles[j] !== 'wolf' || Math.random() < 0.6) accused.push({ by: j, t: t }); roster(); myTurn(); }, 700); } else myTurn();
+      }, 650);
+    }
+    function ask(t) {
+      const r = roles[t], c = nm(t);
+      const give = (txt) => { say(c + ':' + txt); talks++; nq++; roster(); myTurn(); };
+      acts([
+        ['役職は?', () => {
+          acts([]); const lines = [];
+          if (r === 'seer') { const l = divined.filter((x) => x.by === t).slice(-1)[0]; if (l) { mk(t, 'seer', l.t, l.wolf); give('占い師です。' + nm(l.t) + 'さんを占って【' + hum(l.wolf) + '】でした。'); } else give('占い師です。'); }
+          else if (r === 'medium') { if (lastExec) { mk(t, 'medium', lastExec.t, lastExec.wolf); give('霊媒師です。' + nm(lastExec.t) + 'さんは【' + hum(lastExec.wolf) + '】でした。'); } else { co[t] = 'medium'; give('霊媒師です。まだ結果はないよ。'); } }
+          else if (r === 'mason') { co[t] = 'mason'; const m = roles.findIndex((x, j) => j !== t && x === 'mason'); give('共有者です。' + nm(m) + 'さんも共有者。'); }
+          else if (r === 'knight') { if (Math.random() < 0.4) { co[t] = 'knight'; give('…騎士です。ないしょにしてね。'); } else give('ただの村人だよ。'); }
+          else if (wolfSide(r) && Math.random() < (r === 'mad' ? 0.6 : 0.35)) { fakeSeer(t, lines); say(lines[0]); talks++; nq++; roster(); myTurn(); }
+          else give(Math.random() < 0.8 ? '村人だよ。信じて。' : 'それは今は言いたくないな。');
+        }],
+        ['だれが怪しい?', () => {
+          acts([]); const pool = aliveList().filter((x) => x !== t); let best = null, bv = -1;
+          pool.forEach((x) => { let v = Math.random(); if (wolfSide(r)) { if (roles[x] === 'wolf') v -= 5; if (co[x] === 'seer' || co[x] === 'medium') v += 1.5; } else v += susp(x) * 2; if (v > bv) { bv = v; best = x; } });
+          accused.push({ by: t, t: best }); give(cpuLine(c, 'sus', nm(best)));
+        }],
+        ['わたしをどう思う?', () => {
+          acts([]); const sv = susp(0); const mine = wolfSide(r) && co[0] === 'seer' && roles[0] !== 'seer';
+          if (sv > 0.35 || (mine && Math.random() < 0.6)) { accused.push({ by: t, t: 0 }); give('正直…あなたのこと、ちょっと疑ってる。説明がほしいな。'); }
+          else give(Math.random() < 0.5 ? 'いまのところ信じてるよ。' : cpuLine(c, 'agree', nm(0)));
+        }],
+        ['もどる', myTurn]
+      ]);
+    }
     function myTurn() {
       if (over) return;
+      if (talks >= 6) { say('そろそろ投票の時間だ。', 'sys'); acts([]); T.later(vote, 700); return; }
       const others = aliveList().filter((x) => x !== 0), opts = [];
-      opts.push(['だれかを疑う', () => pick('だれが怪しいと言いますか?', others, (t) => { say('あなた:' + nm(t) + 'さんが怪しいと思う。', 'me'); accused.push({ by: 0, t: t, me: true }); talks++; myTurn(); }, [['もどる', myTurn]])]);
+      opts.push(['だれかを疑う', () => pick('だれが怪しいと言いますか?', others, (t) => { say('あなた:' + nm(t) + 'さんが怪しいと思う。', 'me'); accused.push({ by: 0, t: t, me: true }); talks++; roster(); react(t); }, [['もどる', myTurn]])]);
+      opts.push(['しつもんする', () => pick('だれに聞きますか?', others, (t) => ask(t), [['もどる', myTurn]])]);
       opts.push(['COする', coMenu]);
       opts.push(['投票へすすむ', () => { acts([]); vote(); }]);
-      say('あなたの行動をえらんでください。', 'sys'); acts(opts);
+      say('あなたの行動をえらんでください。(残り' + (6 - talks) + '回)', 'sys'); acts(opts);
     }
     function coMenu() {
       const me = roles[0], others = aliveList().filter((x) => x !== 0);
@@ -5528,7 +5619,7 @@
         ['もどる', myTurn]
       ]);
     }
-    function cpuVote(i) {
+    function cpuVote(i, cands) {
       const al = aliveList(), s = Array(N).fill(0), r = roles[i];
       al.forEach((j) => { s[j] = Math.random() * 2; });
       const seerC = Array.from(new Set(claims.filter((c) => c.role === 'seer' && alive[c.who] && c.who !== i).map((c) => c.who)));
@@ -5543,44 +5634,232 @@
         claims.forEach((c) => { if (c.wolf && c.t != null) s[c.t] += 1.2; });
       }
       accused.forEach((a) => { if (a.by !== i) s[a.t] += a.me ? 2.2 : 0.6; });
+      if (cands) al.forEach((j) => { if (cands.indexOf(j) < 0) s[j] = -1e8; });
       s[i] = -99; let best = -1, bv = -1e9; al.forEach((j) => { if (s[j] > bv) { bv = s[j]; best = j; } }); return best;
     }
-    function vote() {
-      if (over) return; phase = 'vote'; say('--- 投票 ---', 'sys');
-      pick('処刑する人をえらんでください', aliveList().filter((x) => x !== 0), (t) => {
+    function vote() { if (over) return; phase = 'vote'; say('--- 投票 ---', 'sys'); roster(); ballot(aliveList(), false); }
+    function ballot(cands, re) {
+      pick(re ? '決選投票! 処刑する人をえらんでください' : '処刑する人をえらんでください', cands.filter((x) => x !== 0), (t) => {
         const votes = {}; votes[t] = 1; say('あなた → ' + nm(t));
-        aliveList().filter((x) => x !== 0).forEach((i) => { const v = cpuVote(i); votes[v] = (votes[v] || 0) + 1; say(nm(i) + ' → ' + nm(v)); });
-        const mx = Math.max.apply(null, Object.values(votes)), tops = Object.keys(votes).filter((x) => votes[x] === mx).map(Number), ex = rnd(tops);
+        aliveList().filter((x) => x !== 0).forEach((i) => { const v = cpuVote(i, cands); votes[v] = (votes[v] || 0) + 1; say(nm(i) + ' → ' + nm(v)); });
+        say('得票: ' + Object.keys(votes).sort((x, y) => votes[y] - votes[x]).map((x) => nm(+x) + votes[x]).join(' / '), 'sys');
+        const mx = Math.max.apply(null, Object.values(votes)), tops = Object.keys(votes).filter((x) => votes[x] === mx).map(Number);
+        if (tops.length > 1 && !re) { say('同票です! 決選投票を行います。', 'sys'); T.later(() => ballot(tops, true), 900); return; }
+        const ex = rnd(tops);
         T.later(() => {
-          alive[ex] = false; lastExec = { t: ex, wolf: roles[ex] === 'wolf' }; roster();
+          alive[ex] = false; lastExec = { t: ex, wolf: roles[ex] === 'wolf' }; roster(); hist.push(day + '日目昼: ' + nm(ex) + '(' + RN[roles[ex]] + ')が処刑された');
           say(nm(ex) + 'が処刑されました。(役職は【' + RN[roles[ex]] + '】)', 'dead');
           const w = winner(); if (!alive[0]) { endRound(w === 'village'); return; }
           if (w) { endRound(w === 'village'); return; }
           day++; accused = []; T.later(night, 1200);
         }, 900);
-      });
+      }, re ? [] : []);
     }
     function endRound(villageWin) {
       over = true; phase = 'roundEnd'; roster();
       const myWin = wolfSide(roles[0]) ? !villageWin : villageWin;
       say('--- けっか ---', 'sys'); say(NAMES.map((n, i) => n + ':' + RN[roles[i]]).join(' / '), 'res');
+      if (hist.length) { say('【ふりかえり】', 'sys'); hist.forEach((h) => say(h, 'sys')); }
       flash(stage, myWin ? '勝ち!' : '負け…', myWin ? 'win' : 'lose');
       if (myWin) {
-        const pts = Math.max(100, 200 + (alive[0] ? 50 : 0) + (roles[0] === 'wolf' ? 50 : roles[0] === 'mad' ? 30 : 0) - (day - 1) * 10);
+        const mult = N === 9 ? 1.4 : N === 5 ? 0.8 : 1, pts = Math.round(Math.max(100, 200 + (alive[0] ? 50 : 0) + (roles[0] === 'wolf' ? 50 : roles[0] === 'mad' ? 30 : 0) + Math.min(nq, 6) * 5 - (day - 1) * 10) * mult);
         score += pts; wins++; say((villageWin ? '村人' : '人狼') + 'チームの勝ち! あなたの勝ちです! +' + pts, 'res'); winJingle(); roster();
         acts([['つぎの1戦', () => { round++; setup(); }]]);
       } else {
-        const pts = (day - 1) * 20; score += pts; say((villageWin ? '村人' : '人狼') + 'チームの勝ち…あなたの負けです。+' + pts, 'res'); A.beep(170, 0.3, 'sawtooth', 0.06, -90); roster();
+        const pts = (day - 1) * 20 * (N === 9 ? 1.4 : 1) | 0; score += pts; say((villageWin ? '村人' : '人狼') + 'チームの勝ち…あなたの負けです。+' + pts, 'res'); A.beep(170, 0.3, 'sawtooth', 0.06, -90); roster();
         T.later(finish, 2600);
       }
     }
     function finish() { if (phase === 'over') return; phase = 'over'; over = true; T.clear(); endJingle(); api.end(score, [['勝った回', wins], ['戦', round]]); }
     const resetQuit = quitBtn(root, finish);
     return {
-      start() { T.clear(); score = 0; round = 1; wins = 0; resetQuit(); setup(); },
+      start() {
+        T.clear(); score = 0; round = 1; wins = 0; resetQuit(); k('log').textContent = '';
+        say('村の人数をえらんでください。人数が多いほど得点が高い!', 'sys');
+        acts([['5人 かんたん', () => { mode = 5; acts([]); setup(); }], ['7人 ふつう', () => { mode = 7; acts([]); setup(); }], ['9人 むずかしい', () => { mode = 9; acts([]); setup(); }]]);
+      },
       pause() { T.pause(); }, resume() { T.resume(); },
       destroy() { T.clear(); }
     };
+  }
+  const ICON_MATHD = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="27" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">7+5</text><text x="30" y="49" font-size="20" font-weight="700" fill="#ffd45e" text-anchor="middle">=12</text></svg>';
+  const ICON_DOTSM = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="16" cy="20" r="3" fill="#ffd45e"/><circle cx="24" cy="30" r="3" fill="#ffd45e"/><circle cx="14" cy="38" r="3" fill="#ffd45e"/><circle cx="22" cy="14" r="3" fill="#ffd45e"/><circle cx="40" cy="26" r="3" fill="#6fe3cf"/><circle cx="46" cy="38" r="3" fill="#6fe3cf"/><path d="M30 8v44" stroke="#fff" stroke-opacity=".3"/></svg>';
+  const ICON_ARROWT = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><path d="M10 30h34M32 16l16 14-16 14" stroke="#6fe3cf" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ICON_BALLOON = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><ellipse cx="22" cy="24" rx="10" ry="12" fill="#ff6b81"/><ellipse cx="40" cy="28" rx="9" ry="11" fill="#6fe3cf"/><path d="M22 36c-1 8 3 10 2 16M40 39c1 6-2 8-1 13" stroke="#fff" stroke-opacity=".6" fill="none"/></svg>';
+  const ICON_TICTAC = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><path d="M22 10v40M38 10v40M10 22h40M10 38h40" stroke="#fff" stroke-opacity=".5" stroke-width="2.5"/><circle cx="16" cy="16" r="5" fill="none" stroke="#ff6b81" stroke-width="3"/><path d="M29 29l12 12M41 29L29 41" stroke="#6fe3cf" stroke-width="3"/></svg>';
+  /* ===== かんたんゲーム5本 (共通部品) ===== */
+  function sgBuild(stage, secs) {
+    const root = el('div', 'pg sg', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
+        <div class="pg-time"><span class="chip" data-k="tm">${secs}秒</span><div class="lv-track wide"><i data-k="tFill" style="width:100%"></i></div></div>
+      </div>
+      <div class="sg-body" data-k="body"></div>
+      <div class="pg-foot"><span data-k="msg"></span></div>`);
+    stage.append(root);
+    return { root, k: (n) => root.querySelector('[data-k="' + n + '"]') };
+  }
+  function sgClock(k, secs, onEnd) {
+    let t = secs, id = 0, paused = false, done = false;
+    const draw = () => { k('tm').textContent = Math.max(0, Math.ceil(t)) + '秒'; k('tFill').style.width = clampN(t / secs * 100, 0, 100) + '%'; };
+    return {
+      start() { t = secs; done = false; paused = false; draw(); clearInterval(id); id = setInterval(() => { if (paused || done) return; t -= 0.1; draw(); if (t <= 0) { done = true; clearInterval(id); onEnd(); } }, 100); },
+      add(s) { t = Math.min(secs + 5, t + s); draw(); },
+      pause() { paused = true; }, resume() { paused = false; },
+      stop() { done = true; clearInterval(id); },
+      get over() { return done; }
+    };
+  }
+  function sgFb(body, ok) { body.classList.remove('ok', 'ng'); void body.offsetWidth; body.classList.add(ok ? 'ok' : 'ng'); A.beep(ok ? 660 : 200, 0.07, ok ? 'triangle' : 'sawtooth', 0.05); }
+  function sgEndJingle() { [523, 440, 349, 262].forEach((f, i) => A.beep(f, 0.22, 'triangle', 0.06, 0, i * 0.12)); }
+
+  /* --- けいさんダッシュ --- */
+  function createMathDash(stage, api) {
+    const { root, k } = sgBuild(stage, 40), body = k('body');
+    let score = 0, ok = 0, combo = 0, maxC = 0, q = 0, ans = 0, locked = false;
+    const clock = sgClock(k, 40, () => { sgEndJingle(); api.end(score, [['せいかい', ok], ['最大コンボ', maxC]]); });
+    body.innerHTML = '<div class="sg-q" data-k="q"></div><div class="sg-ch" data-k="ch"></div>';
+    function next() {
+      locked = false; const lv = Math.min(4, Math.floor(ok / 6)), mx = [9, 20, 50, 99, 99][lv];
+      let a = rndInt(1, mx), b = rndInt(1, mx), op = '+';
+      if (lv >= 1 && Math.random() < 0.45) { op = '−'; if (b > a) { const t = a; a = b; b = t; } }
+      if (lv >= 3 && Math.random() < 0.3) { op = '×'; a = rndInt(2, 9); b = rndInt(2, 9); }
+      ans = op === '+' ? a + b : op === '−' ? a - b : a * b;
+      k('q').textContent = a + ' ' + op + ' ' + b + ' = ?';
+      const set = new Set([ans]); while (set.size < 3) { const d = rndInt(1, 5) * (Math.random() < 0.5 ? -1 : 1); if (ans + d >= 0) set.add(ans + d); }
+      const ch = k('ch'); ch.textContent = '';
+      shuffle(Array.from(set)).forEach((v) => { const bt = el('button', 'btn'); bt.type = 'button'; bt.textContent = String(v); bt.addEventListener('click', () => pickA(v)); ch.append(bt); });
+    }
+    function pickA(v) {
+      if (locked || clock.over) return; locked = true;
+      if (v === ans) { ok++; combo++; maxC = Math.max(maxC, combo); score += 10 + Math.min(combo, 10) * 2; clock.add(0.5); sgFb(body, true); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : ''; }
+      else { combo = 0; score = Math.max(0, score - 5); clock.add(-2); sgFb(body, false); k('msg').textContent = 'ざんねん! こたえは ' + ans; }
+      k('score').textContent = String(score); setTimeout(() => { if (!clock.over) next(); }, 250);
+    }
+    return { start() { score = ok = combo = maxC = 0; k('score').textContent = '0'; k('msg').textContent = ''; next(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); } };
+  }
+
+  /* --- どっちが多い --- */
+  function createDotsMore(stage, api) {
+    const { root, k } = sgBuild(stage, 30), body = k('body');
+    let score = 0, ok = 0, combo = 0, maxC = 0, big = 0, locked = false;
+    const clock = sgClock(k, 30, () => { sgEndJingle(); api.end(score, [['せいかい', ok], ['最大コンボ', maxC]]); });
+    body.innerHTML = '<div class="sg-hint">ドットが多いほうをタップ!</div><div class="sg-dots" data-k="d"></div>';
+    function fill(box, n) {
+      box.textContent = ''; const pts = [];
+      for (let i = 0; i < n; i++) { let x, y, tries = 0; do { x = rndInt(6, 88); y = rndInt(6, 88); tries++; } while (tries < 40 && pts.some((p) => Math.abs(p[0] - x) < 9 && Math.abs(p[1] - y) < 9)); pts.push([x, y]); const d = el('i', 'sg-dot'); d.style.left = x + '%'; d.style.top = y + '%'; box.append(d); }
+    }
+    function next() {
+      locked = false; const lv = Math.min(8, Math.floor(ok / 4)), base = rndInt(8, 16), diff = Math.max(1, 6 - Math.floor(lv * 0.65));
+      const n1 = base, n2 = base + diff; big = Math.random() < 0.5 ? 0 : 1;
+      const d = k('d'); d.textContent = '';
+      [0, 1].forEach((i) => { const b = el('button', 'sg-box'); b.type = 'button'; fill(b, i === big ? n2 : n1); b.addEventListener('click', () => pickB(i)); d.append(b); });
+    }
+    function pickB(i) {
+      if (locked || clock.over) return; locked = true;
+      if (i === big) { ok++; combo++; maxC = Math.max(maxC, combo); score += 10 + Math.min(combo, 10) * 2; clock.add(0.4); sgFb(body, true); }
+      else { combo = 0; score = Math.max(0, score - 5); clock.add(-1.5); sgFb(body, false); }
+      k('score').textContent = String(score); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : '';
+      setTimeout(() => { if (!clock.over) next(); }, 220);
+    }
+    return { start() { score = ok = combo = maxC = 0; k('score').textContent = '0'; k('msg').textContent = ''; next(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); } };
+  }
+
+  /* --- やじるしタッチ --- */
+  function createArrowTap(stage, api) {
+    const { root, k } = sgBuild(stage, 30), body = k('body');
+    const DIRS = [['←', 'left'], ['↑', 'up'], ['↓', 'down'], ['→', 'right']], OPP = { left: 'right', right: 'left', up: 'down', down: 'up' };
+    let score = 0, ok = 0, combo = 0, maxC = 0, want = '', locked = false;
+    const clock = sgClock(k, 30, () => { sgEndJingle(); api.end(score, [['せいかい', ok], ['最大コンボ', maxC]]); });
+    body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="sg-ar" data-k="ar"></div><div class="sg-pad" data-k="pad"></div>';
+    const pad = k('pad');
+    DIRS.forEach(([ch, d]) => { const b = el('button', 'btn sg-d sg-' + d); b.type = 'button'; b.textContent = ch; b.addEventListener('click', () => pickD(d)); pad.append(b); });
+    function next() {
+      locked = false; const d = rnd2(DIRS)[1], rev = ok >= 5 && Math.random() < 0.4;
+      want = rev ? OPP[d] : d; const ar = k('ar'); ar.textContent = DIRS.find((x) => x[1] === d)[0]; ar.style.color = rev ? '#ff6b81' : '#6fe3cf';
+      k('h').textContent = rev ? '赤い矢印は ぎゃく向きをタップ!' : '同じ向きをタップ!';
+    }
+    const rnd2 = (a) => a[rndInt(0, a.length - 1)];
+    function pickD(d) {
+      if (locked || clock.over) return; locked = true;
+      if (d === want) { ok++; combo++; maxC = Math.max(maxC, combo); score += 8 + Math.min(combo, 10) * 2; sgFb(body, true); }
+      else { combo = 0; score = Math.max(0, score - 5); clock.add(-1.5); sgFb(body, false); }
+      k('score').textContent = String(score); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : '';
+      setTimeout(() => { if (!clock.over) next(); }, 150);
+    }
+    const onKey = (e) => { const m = { ArrowLeft: 'left', ArrowUp: 'up', ArrowDown: 'down', ArrowRight: 'right' }[e.key]; if (m) { e.preventDefault(); pickD(m); } };
+    window.addEventListener('keydown', onKey);
+    return { start() { score = ok = combo = maxC = 0; k('score').textContent = '0'; k('msg').textContent = ''; next(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); window.removeEventListener('keydown', onKey); } };
+  }
+
+  /* --- ふうせんわり --- */
+  function createBalloonPop(stage, api) {
+    const { root, k } = sgBuild(stage, 40), body = k('body');
+    let score = 0, popped = 0, combo = 0, maxC = 0, raf = 0, last = 0, paused = false, over = false, spawnT = 0, list = [];
+    const clock = sgClock(k, 40, () => { over = true; sgEndJingle(); api.end(score, [['わった', popped], ['最大コンボ', maxC]]); });
+    body.innerHTML = '<div class="sg-bl" data-k="f"></div>'; const f = k('f');
+    const COL = ['#ff6b81', '#6fe3cf', '#ffd45e', '#8f8cff', '#ff9f5e'];
+    function spawn() {
+      const r = Math.random(), kind = r < 0.08 ? 'gold' : r < 0.2 ? 'bomb' : 'n', sz = kind === 'gold' ? 40 : rndInt(46, 66), W = f.clientWidth || 300;
+      const b = el('button', 'sg-b ' + kind); b.type = 'button'; b.style.width = b.style.height = sz + 'px'; b.textContent = kind === 'bomb' ? '💣' : kind === 'gold' ? '★' : '';
+      if (kind === 'n') b.style.background = COL[rndInt(0, COL.length - 1)];
+      const o = { b, x: rndInt(0, Math.max(1, W - sz)), y: (f.clientHeight || 360) + 10, v: rndInt(70, 130) + Math.min(80, popped * 1.5), kind, w: sz };
+      b.style.left = o.x + 'px';
+      b.addEventListener('pointerdown', (e) => { e.preventDefault(); hit(o); });
+      f.append(b); list.push(o);
+    }
+    function hit(o) {
+      if (over || paused || !o.b.isConnected) return;
+      if (o.kind === 'bomb') { combo = 0; score = Math.max(0, score - 15); clock.add(-2); sgFb(body, false); k('msg').textContent = 'ばくだん! -2秒'; }
+      else { popped++; combo++; maxC = Math.max(maxC, combo); score += (o.kind === 'gold' ? 30 : 5) + Math.min(combo, 10); A.beep(500 + Math.min(combo, 12) * 40, 0.05, 'triangle', 0.05); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : ''; if (o.kind === 'gold') clock.add(1); }
+      o.b.classList.add('pop'); list = list.filter((x) => x !== o); setTimeout(() => o.b.remove(), 160); k('score').textContent = String(score);
+    }
+    function frame(ts) {
+      const dt = Math.min(0.05, (ts - last) / 1000 || 0); last = ts;
+      if (!paused && !over) {
+        spawnT -= dt; if (spawnT <= 0) { spawn(); spawnT = Math.max(0.28, 0.7 - popped * 0.008) * (0.7 + Math.random() * 0.6); }
+        list.forEach((o) => { o.y -= o.v * dt; o.b.style.transform = 'translateY(' + o.y + 'px)'; if (o.y < -o.w - 10) { if (o.kind === 'n') combo = 0; o.b.remove(); o.dead = true; } });
+        list = list.filter((o) => !o.dead);
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    return {
+      start() { score = popped = combo = maxC = 0; over = false; list.forEach((o) => o.b.remove()); list = []; spawnT = 0.2; k('score').textContent = '0'; k('msg').textContent = 'ふうせんをタップ! 💣はさける'; clock.start(); cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame); },
+      pause() { paused = true; clock.pause(); }, resume() { paused = false; clock.resume(); last = performance.now(); },
+      destroy() { clock.stop(); cancelAnimationFrame(raf); }
+    };
+  }
+
+  /* --- まるばつ --- */
+  function createTicTac(stage, api) {
+    const { root, k } = sgBuild(stage, 0); k('tm').parentNode.remove();
+    const body = k('body'); body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="sg-ttt" data-k="g"></div>';
+    const LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    let bd = [], score = 0, wins = 0, draws = 0, turn = 'me', over = false, timer = 0;
+    const cells = [], g = k('g');
+    for (let i = 0; i < 9; i++) { const c = el('button', 'sg-c'); c.type = 'button'; c.addEventListener('click', () => mine(i)); g.append(c); cells.push(c); }
+    const win = (b) => { for (const l of LINES) if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[1]] === b[l[2]]) return l; return null; };
+    function show() { cells.forEach((c, i) => { c.textContent = bd[i] === 'o' ? '⭕' : bd[i] === 'x' ? '❌' : ''; c.classList.remove('hl'); }); const w = win(bd); if (w) w.forEach((i) => cells[i].classList.add('hl')); }
+    function newRound() { bd = Array(9).fill(''); turn = 'me'; show(); k('h').textContent = 'あなたは ⭕ 。先にタテ・ヨコ・ナナメに3つそろえよう'; k('msg').textContent = '勝ち ' + wins + ' ・ ひきわけ ' + draws; if (Math.random() < 0.5) { turn = 'cpu'; timer = setTimeout(cpu, 400); } }
+    function end(res) {
+      turn = ''; show();
+      if (res === 'me') { wins++; score += 100 + wins * 10; k('h').textContent = '勝ち! +' + (100 + wins * 10); A.beep(784, 0.15, 'triangle', 0.06); }
+      else if (res === 'draw') { draws++; score += 30; k('h').textContent = 'ひきわけ +30'; }
+      else { k('h').textContent = 'まけ…'; A.beep(180, 0.3, 'sawtooth', 0.06); over = true; timer = setTimeout(() => api.end(score, [['勝ち', wins], ['ひきわけ', draws]]), 1100); k('score').textContent = String(score); return; }
+      k('score').textContent = String(score); timer = setTimeout(newRound, 1000);
+    }
+    function after() { const w = win(bd); if (w) { end(bd[w[0]] === 'o' ? 'me' : 'cpu'); return true; } if (bd.every((x) => x)) { end('draw'); return true; } return false; }
+    function mine(i) { if (over || turn !== 'me' || bd[i]) return; bd[i] = 'o'; A.beep(520, 0.04, 'square', 0.04); show(); if (after()) return; turn = 'cpu'; timer = setTimeout(cpu, 450); }
+    function cpu() {
+      if (over) return; const empty = bd.map((v, i) => (v ? -1 : i)).filter((i) => i >= 0);
+      const find = (p) => { for (const l of LINES) { const v = l.map((i) => bd[i]); if (v.filter((x) => x === p).length === 2 && v.includes('')) return l[v.indexOf('')]; } return -1; };
+      const sloppy = Math.random() < Math.max(0.05, 0.4 - wins * 0.07);
+      let m = find('x'); if (m < 0 && !sloppy) m = find('o');
+      if (m < 0 && !sloppy && !bd[4]) m = 4;
+      if (m < 0) m = empty[rndInt(0, empty.length - 1)];
+      bd[m] = 'x'; A.beep(360, 0.04, 'square', 0.04); show(); if (after()) return; turn = 'me';
+    }
+    return { start() { score = wins = draws = 0; over = false; k('score').textContent = '0'; newRound(); }, pause() {}, resume() {}, destroy() { clearTimeout(timer); } };
   }
   const ICON_SEVENS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><rect x="8" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="8" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="25" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="8" y="44" width="9" height="10" rx="2" fill="#fffdf5" opacity="0.5"/><rect x="30" y="43" width="11" height="12" rx="2" fill="#ffd45e"/></svg>';
   const ICON_DAIFUGO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><g transform="rotate(-14 20 34)"><rect x="8" y="14" width="24" height="34" rx="4" fill="#fffdf5"/><text x="20" y="38" font-size="18" font-weight="700" fill="#222" text-anchor="middle">8</text></g><g transform="rotate(4 32 34)"><rect x="22" y="12" width="24" height="34" rx="4" fill="#fffdf5"/><text x="34" y="36" font-size="18" font-weight="700" fill="#c8283c" text-anchor="middle">2</text></g><text x="46" y="20" font-size="14" text-anchor="middle">👑</text></svg>';
@@ -9177,6 +9456,21 @@
     { id: 'merge', name: 'ほし合体', short: 'ほし合体', desc: '同じ数字を合体させて、大きな星をつくる。', icon: ICON_MERGE, create: createMerge,
       intro: '数字のタイルを動かして、同じ数字どうしをぶつけます。合体すると2倍になります。',
       how: ['スワイプか ← → ↑ ↓ キー(WASDも可)で全部のタイルが動く', '同じ数字がぶつかると合体して、その数字が得点になる', '動かせなくなったら終わり。「おわる」でも終了できる'], legend: '' },
+    { id: 'math', name: 'けいさんダッシュ', short: 'けいさん', desc: 'たし算・ひき算を40秒でどんどん解く。', icon: ICON_MATHD, create: createMathDash,
+      intro: '出てくる計算の答えを、3つの中からえらびます。正解がつづくほど高得点。',
+      how: ['答えのボタンをタップ', '正解で時間が少しふえ、まちがえると2秒へる', '進むほど数がおおきく、かけ算も出てくる'], legend: '' },
+    { id: 'dots', name: 'どっちが多い', short: 'どっち', desc: 'ドットが多いほうを30秒でタップ。', icon: ICON_DOTSM, create: createDotsMore,
+      intro: '左右の箱のドットを見くらべて、多いほうをタップ。だんだん差がちいさくなります。',
+      how: ['多いと思うほうの箱をタップ', 'かぞえすぎず、ぱっと見でOK', 'まちがえると1.5秒へる'], legend: '' },
+    { id: 'arrow', name: 'やじるしタッチ', short: 'やじるし', desc: '出た矢印と同じ向きをタップ。赤はぎゃく!', icon: ICON_ARROWT, create: createArrowTap,
+      intro: '矢印と同じ向きのボタンをタップ。赤い矢印のときは反対向きです。',
+      how: ['ボタン(キーボードの矢印キーでもOK)', '緑の矢印は同じ向き、赤い矢印はぎゃく向き', 'まちがえると1.5秒へる'], legend: '' },
+    { id: 'balloon', name: 'ふうせんわり', short: 'ふうせん', desc: 'のぼるふうせんをタップでわる。💣はさける。', icon: ICON_BALLOON, create: createBalloonPop,
+      intro: 'ふわふわのぼってくるふうせんをタップしてわります。40秒でどれだけわれるかな。',
+      how: ['ふうせんをタップ(わるほどコンボ)', '★は30点でお得、💣をわると−2秒', 'のがすとコンボが切れる'], legend: '' },
+    { id: 'ttt', name: 'まるばつ', short: 'まるばつ', desc: 'CPUと三目ならべ。つづけて勝とう。', icon: ICON_TICTAC, create: createTicTac,
+      intro: 'タテ・ヨコ・ナナメに自分の⭕を3つそろえたら勝ち。まけるまで何回でも続きます。',
+      how: ['あいたマスをタップ', '勝つと100点以上、ひきわけは30点', 'まけたらおしまい。勝つほどCPUが強くなる'], legend: '' },
     { id: 'tap', name: 'ぷちタップ', short: 'ぷちタップ', desc: '光る玉を45秒でどれだけ割れるか。', icon: ICON_TAP, create: createTap,
       intro: '次々に現れる玉をタップして割ります。まわりの輪が縮むほど高得点ですが、消えてしまうとコンボが切れます。',
       how: ['玉をタップ。輪が小さくなってからだと高得点', '金色の玉は3倍で時間が+2秒', '黒いとげ玉は触らない。割ると時間が-3秒'], legend: LEGEND_TAP },
@@ -9309,13 +9603,13 @@
     { id: 'wolfnet', name: '人狼オンライン', short: '人狼ONLINE', th: 'night', desc: '友だちと部屋コードで遊ぶ本物の人狼。', icon: ICON_WOLFNET, create: createWolfNet,
       intro: '友だち4〜12人で遊ぶ人狼です(index.html版でオンライン)。村人陣営・人狼陣営・第三陣営(妖狐)に分かれ、文字チャットで話し合い、投票で処刑します。通話しながらでもOK。ホストの画面が開いている間だけ進行します。',
       how: ['部屋をつくってコードを伝える/コードで入る。4人からスタート', '役:村人・占い師・霊媒師・騎士/人狼・狂人/妖狐(人数で自動配分)', '夜に能力、昼は話し合い、投票で1人処刑。勝つと200点前後'], legend: '' },
-    { id: 'wolf', name: '人狼(1人用)', short: '人狼1人用', th: 'night', desc: '5人で人狼さがし。うそを見ぬいて生きのこる。', icon: ICON_WOLF, create: createWolf,
+    { id: 'wolf', name: '人狼(1人用)', short: '人狼1人用', th: 'night', desc: '5・7・9人から選んで人狼さがし。しつもんでうそを見ぬこう。', icon: ICON_WOLF, create: createWolf,
       intro: '7人の村に、人狼がまぎれています。村人側にも占い師・霊媒師・騎士・共有者などの役があり、全員の役職と状況が画面の名簿で分かります。話し合いと投票で人狼を処刑すれば村人の勝ち。',
       how: ['役: 占い師・霊媒師・騎士・人狼・狂人と、村人2人(または共有者2人)', '名簿に、COした役職・死んだ人の役職・あなたの役が表示される。昼は疑う/COする/投票。夜は能力を使う', '勝つと200点以上。勝ち負けは大きく表示。負けるまで連戦'], legend: '' }
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
@@ -9360,6 +9654,11 @@
     rogue: [['とうたつ', 3, '3階'], ['とうたつ', 6, '6階'], ['たおした数', 30, '30たい倒す']],
     bbp: [['ターン', 12, '12ターン'], ['ターン', 25, '25ターン'], ['ボール', 12, 'ボール12こ']],
     beatlane: [['最大コンボ', 25, '25コンボ'], ['パーフェクト', 30, 'パーフェクト30'], ['最大コンボ', 60, '60コンボ']],
+    math: [['せいかい', 15, '15問せいかい'], ['せいかい', 30, '30問せいかい'], ['最大コンボ', 15, '15コンボ']],
+    dots: [['せいかい', 20, '20問せいかい'], ['せいかい', 35, '35問せいかい'], ['最大コンボ', 15, '15コンボ']],
+    arrow: [['せいかい', 30, '30問せいかい'], ['せいかい', 50, '50問せいかい'], ['最大コンボ', 20, '20コンボ']],
+    balloon: [['わった', 40, '40こ わる'], ['わった', 70, '70こ わる'], ['最大コンボ', 20, '20コンボ']],
+    ttt: [['勝ち', 3, '3連勝'], ['勝ち', 6, '6連勝'], ['勝ち', 10, '10連勝']],
     sudoku: [['クリア', 1, 'クリアする'], ['ノーミス', 1, 'ノーミスでクリア'], ['6分いない', 1, '6分いないにクリア']],
     tower: [['ウェーブ', 4, '4ウェーブ'], ['ウェーブ', 8, '8ウェーブ'], ['ウェーブ', 12, '全12ウェーブ']]
   };
@@ -9444,6 +9743,129 @@
       } catch (e) { return 'failed'; }
     }
   };
+  /* ===== みんなの広場(人気ランキング・ごいけん) ===== */
+  const Plaza = {
+    tab: 'pop', pop: 'plays', fbSort: 'new', fbMore: 30, offline: false,
+    plays: {}, likes: {}, fb: {}, last: 0,
+    ok() { return !!lsGet('arcade-acct'); },
+    async get(p) { const r = await window.fetch(FB + '/' + p + '.json'); if (!r.ok) throw new Error('http ' + r.status); return (await r.json()) || {}; },
+    async refresh(force) {
+      if (!force && Date.now() - this.last < 8000) return; this.last = Date.now();
+      try {
+        const [p, l, f] = await Promise.all([this.get('plays'), this.get('likes'), this.get('feedback')]);
+        this.plays = p; this.likes = l; this.fb = f; this.offline = false;
+      } catch (e) { this.offline = true; }
+      this.render();
+    },
+    played(gid) {
+      let m = {}; try { m = JSON.parse(lsGet('arcade-plays-v1') || '{}') || {}; } catch (e) {}
+      m[gid] = (m[gid] || 0) + 1; try { localStorage.setItem('arcade-plays-v1', JSON.stringify(m)); } catch (e) {}
+      if (!this.ok()) return;
+      (this.plays[gid] = this.plays[gid] || {})[Rank.uid] = m[gid];
+      window.fetch(FB + '/plays/' + gid + '/' + Rank.uid + '.json', { method: 'PUT', body: String(m[gid]) }).catch(() => {});
+    },
+    stat(gid) {
+      const p = this.plays[gid] || {}, l = this.likes[gid] || {};
+      return { n: Object.values(p).reduce((a, b) => a + (Number(b) || 0), 0), who: Object.keys(p).length, like: Object.keys(l).length, mine: !!l[Rank.uid] };
+    },
+    async toggleLike(gid) {
+      if (typeof requireAcct === 'function' && !requireAcct()) return;
+      const l = (this.likes[gid] = this.likes[gid] || {}), on = !l[Rank.uid];
+      if (on) l[Rank.uid] = true; else delete l[Rank.uid]; this.render();
+      try { await window.fetch(FB + '/likes/' + gid + '/' + Rank.uid + '.json', on ? { method: 'PUT', body: 'true' } : { method: 'DELETE' }); } catch (e) {}
+    },
+    async vote(id) {
+      if (typeof requireAcct === 'function' && !requireAcct()) return;
+      const f = this.fb[id]; if (!f) return; const v = (f.v = f.v || {}), on = !v[Rank.uid];
+      if (on) v[Rank.uid] = true; else delete v[Rank.uid]; this.render();
+      try { await window.fetch(FB + '/feedback/' + id + '/v/' + Rank.uid + '.json', on ? { method: 'PUT', body: 'true' } : { method: 'DELETE' }); } catch (e) {}
+    },
+    async del(id) {
+      if (!confirm('この投稿を消しますか?')) return; delete this.fb[id]; this.render();
+      try { await window.fetch(FB + '/feedback/' + id + '.json', { method: 'DELETE' }); } catch (e) {}
+    },
+    async post(cat, gid, text, msg) {
+      if (typeof requireAcct === 'function' && !requireAcct()) return false;
+      text = text.trim().replace(/\s+/g, ' ');
+      if (text.length < 3) { msg.textContent = '3文字以上で書いてね。'; return false; }
+      if (/https?:\/\//i.test(text)) { msg.textContent = 'リンクは書けません。'; return false; }
+      const lastAt = Number(lsGet('arcade-fb-last') || 0);
+      if (Date.now() - lastAt < 30000) { msg.textContent = '少し待ってから、もう一度送ってね。'; return false; }
+      const body = { uid: Rank.uid, name: Rank.name(), cat: cat, g: gid || '', text: text.slice(0, 140), at: Date.now() };
+      try {
+        const r = await window.fetch(FB + '/feedback.json', { method: 'POST', body: JSON.stringify(body) });
+        if (!r.ok) throw new Error('http');
+        const j = await r.json(); this.fb[j.name] = body; try { localStorage.setItem('arcade-fb-last', String(Date.now())); } catch (e) {}
+        msg.textContent = 'ありがとう! 送りました。'; this.render(); return true;
+      } catch (e) { msg.textContent = '送れませんでした。通信かFirebaseのルールを確認してください。'; return false; }
+    },
+    render() {
+      const box = document.getElementById('plBody'); if (!box) return;
+      const keep = box.querySelector('textarea'), draft = keep ? keep.value : null, selC = box.querySelector('.pl-cat'), selG = box.querySelector('.pl-g');
+      const cv = selC ? selC.value : '', gv = selG ? selG.value : '';
+      box.textContent = '';
+      document.querySelectorAll('#plTabs .pill').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.t === this.tab)));
+      if (this.offline && !Object.keys(this.fb).length && !Object.keys(this.plays).length) box.append(el('p', 'empty', 'つながりません。通信を確認してください。'));
+      if (this.tab === 'pop') this.renderPop(box); else this.renderFb(box, draft, cv, gv);
+    },
+    renderPop(box) {
+      const bar = el('div', 'pl-sort'); [['plays', '遊ばれた順'], ['like', '♥ 人気順']].forEach(([k, t]) => { const b = el('button', 'pill'); b.type = 'button'; b.textContent = t; b.setAttribute('aria-pressed', String(this.pop === k)); b.addEventListener('click', () => { this.pop = k; this.render(); }); bar.append(b); });
+      box.append(bar);
+      const rows = GAMES.map((g) => ({ g, s: this.stat(g.id) })).sort((a, b) => (this.pop === 'like' ? b.s.like - a.s.like || b.s.n - a.s.n : b.s.n - a.s.n || b.s.like - a.s.like));
+      const mx = Math.max(1, ...rows.map((r) => (this.pop === 'like' ? r.s.like : r.s.n)));
+      const ol = el('ol', 'pl-list');
+      rows.slice(0, 20).forEach((r, i) => {
+        const li = el('li'), v = this.pop === 'like' ? r.s.like : r.s.n;
+        const n = el('span', 'n'); n.textContent = String(i + 1);
+        const nm = el('button', 'pl-nm'); nm.type = 'button'; nm.textContent = r.g.name; nm.addEventListener('click', () => openGame(r.g));
+        const sub = el('small'); sub.textContent = '▶ ' + r.s.n + '回 ・ 👤 ' + r.s.who + '人';
+        const bb = el('i', 'pl-bar'); bb.style.setProperty('--w', Math.round(v / mx * 100) + '%');
+        const mid = el('div', 'pl-mid'); mid.append(nm, sub, bb);
+        const lk = el('button', 'pl-like' + (r.s.mine ? ' on' : '')); lk.type = 'button'; lk.textContent = '♥ ' + r.s.like; lk.setAttribute('aria-label', r.g.name + ' にハートを送る'); lk.addEventListener('click', () => this.toggleLike(r.g.id));
+        li.append(n, mid, lk); ol.append(li);
+      });
+      box.append(ol);
+      box.append(el('p', 'sub', '遊ぶとカウントが増えます。♥ は好きなゲームにタップ(もう一度で取り消し)。'));
+    },
+    renderFb(box, draft, cv, gv) {
+      const form = el('div', 'pl-form');
+      const cat = el('select', 'pl-cat'); ['入れてほしい!', 'ここが不具合', 'ここを直して', 'ほめる', 'その他'].forEach((t) => { const o = el('option'); o.value = t; o.textContent = t; cat.append(o); });
+      const gs = el('select', 'pl-g'); const o0 = el('option'); o0.value = ''; o0.textContent = '(ゲーム全体・どれでも)'; gs.append(o0); GAMES.forEach((g) => { const o = el('option'); o.value = g.id; o.textContent = g.name; gs.append(o); });
+      cat.value = cv || '入れてほしい!'; gs.value = gv || '';
+      const ta = el('textarea'); ta.maxLength = 140; ta.rows = 3; ta.placeholder = '入れてほしいゲームや機能、困ったことを書いてね(140字まで)'; if (draft) ta.value = draft;
+      const msg = el('p', 'pl-msg'), cnt = el('small', 'pl-cnt'), sb = el('button', 'btn mini'); sb.type = 'button'; sb.textContent = 'おくる';
+      const upd = () => { cnt.textContent = ta.value.length + '/140'; }; ta.addEventListener('input', upd); upd();
+      sb.addEventListener('click', async () => { sb.disabled = true; const ok = await this.post(cat.value, gs.value, ta.value, msg); sb.disabled = false; if (ok) { const t = box.querySelector('textarea'); if (t) t.value = ''; } });
+      const row = el('div', 'pl-row'); row.append(cnt, sb);
+      form.append(cat, gs, ta, row, msg); box.append(form);
+      const bar = el('div', 'pl-sort'); [['new', '新しい順'], ['vote', '👍 多い順']].forEach(([k, t]) => { const b = el('button', 'pill'); b.type = 'button'; b.textContent = t; b.setAttribute('aria-pressed', String(this.fbSort === k)); b.addEventListener('click', () => { this.fbSort = k; this.render(); }); bar.append(b); });
+      box.append(bar);
+      const items = Object.keys(this.fb).map((id) => ({ id, f: this.fb[id] || {} })).filter((x) => x.f.text);
+      const vc = (x) => Object.keys(x.f.v || {}).length;
+      items.sort((a, b) => (this.fbSort === 'vote' ? vc(b) - vc(a) || (b.f.at || 0) - (a.f.at || 0) : (b.f.at || 0) - (a.f.at || 0)));
+      if (!items.length) box.append(el('p', 'empty', 'まだ投稿がありません。最初の1人になろう!'));
+      const ul = el('ul', 'pl-fb');
+      items.slice(0, this.fbMore).forEach(({ id, f }) => {
+        const li = el('li'), top = el('div', 'pl-top'), c = el('span', 'pl-chip'); c.textContent = String(f.cat || 'その他').slice(0, 10);
+        const gm = f.g && byId(f.g); const who = el('small'); const d = new Date(f.at || 0);
+        who.textContent = String(f.name || 'ななし').slice(0, 12) + ' ・ ' + (d.getMonth() + 1) + '/' + d.getDate() + (gm ? ' ・ ' + gm.name : '');
+        top.append(c, who);
+        const tx = el('p', 'pl-tx'); tx.textContent = String(f.text).slice(0, 140);
+        const ft = el('div', 'pl-ft'), my = f.v && f.v[Rank.uid];
+        const vb = el('button', 'pl-like' + (my ? ' on' : '')); vb.type = 'button'; vb.textContent = '👍 ' + vc({ f }); vb.addEventListener('click', () => this.vote(id)); ft.append(vb);
+        if (f.uid === Rank.uid) { const db = el('button', 'pl-del'); db.type = 'button'; db.textContent = '消す'; db.addEventListener('click', () => this.del(id)); ft.append(db); }
+        li.append(top, tx, ft); ul.append(li);
+      });
+      box.append(ul);
+      if (items.length > this.fbMore) { const mb = el('button', 'pill'); mb.type = 'button'; mb.textContent = 'もっと見る'; mb.addEventListener('click', () => { this.fbMore += 30; this.render(); }); box.append(mb); }
+    },
+    init() {
+      const t = document.getElementById('plTabs'); if (!t) return;
+      [['pop', '🔥 人気ランキング'], ['fb', '💬 ごいけん']].forEach(([k, n]) => { const b = el('button', 'pill'); b.type = 'button'; b.dataset.t = k; b.textContent = n; b.addEventListener('click', () => { this.tab = k; this.render(); this.refresh(true); }); t.append(b); });
+      this.render(); this.refresh(true);
+      setInterval(() => { if (!viewHome.hidden && !document.hidden) this.refresh(); }, 30000);
+    }
+  };
   const nameFor = (uid) => names[uid] || (uid === Rank.uid ? 'あなた' : 'プレイヤー');
 
   function renderBoard(box, gid, limit) {
@@ -9484,6 +9906,7 @@
   try { const sf = localStorage.getItem(LS_FILTER); if (sf && CAT_LIST.indexOf(sf) >= 0) filterId = sf; } catch (e) {}
   let ovIntro = null, ovResult = null, ovPause = null;
 
+  let searchQ = '';
   function renderHome() {
     const wrap = $('#games');
     if (!wrap.children.length) {
@@ -9507,7 +9930,11 @@
         const pool = fresh.length ? fresh : GAMES;
         openGame(pool[rndInt(0, pool.length - 1)]);
       });
-      fl.after(om);
+      const lastB = el('button', 'pill omakase lastb'); lastB.type = 'button'; lastB.id = 'lastBtn';
+      lastB.addEventListener('click', () => { let id = ''; try { id = localStorage.getItem('arcade-last-v1') || ''; } catch (e) {} const g = byId(id); if (g) openGame(g); });
+      const sb = el('input', 'gsearch'); sb.type = 'search'; sb.id = 'gSearch'; sb.placeholder = '🔍 ゲームをさがす'; sb.setAttribute('aria-label', 'ゲームをさがす');
+      sb.addEventListener('input', () => { searchQ = sb.value.trim(); renderHome(); });
+      fl.after(om); om.after(lastB); lastB.after(sb);
       ['すべて'].concat(CAT_LIST).forEach((name) => {
         const f = el('button', 'pill'); f.type = 'button'; f.textContent = name; f.dataset.f = name;
         f.addEventListener('click', () => { filterId = name; try { localStorage.setItem(LS_FILTER, name); } catch (e) {} renderHome(); });
@@ -9516,12 +9943,13 @@
     }
     GAMES.forEach((g) => {
       const tile = $('.gcard[data-g="' + g.id + '"]');
-      tile.hidden = !(filterId === 'すべて' || g.cat === filterId);
+      tile.hidden = !((filterId === 'すべて' || g.cat === filterId) && (!searchQ || (g.name + g.short + g.desc).indexOf(searchQ) >= 0));
       tile.classList.toggle('today', g === todayGame());
       const gs = $('.gs', tile);
       gs.className = 'gs' + (rec[g.id] ? '' : ' new');
       gs.innerHTML = rec[g.id] ? 'ベスト <b>' + rec[g.id] + '</b>' : '未プレイ';
     });
+    { const lb = $('#lastBtn'); let id = ''; try { id = localStorage.getItem('arcade-last-v1') || ''; } catch (e) {} const lg = id && byId(id); if (lb) { lb.hidden = !lg; if (lg) lb.textContent = '▶ つづき: ' + lg.name; } }
     const played = GAMES.filter((g) => rec[g.id] > 0).length;
     $('#heroTxt').textContent = '1回1〜3分で遊べるミニゲームが' + GAMES.length + '本。スコアはランキングに残ります。';
     $('#sumLine').textContent = '遊んだゲーム ' + played + ' / ' + GAMES.length + ' ・ ベストの合計 ' + GAMES.reduce((a, g) => a + (rec[g.id] || 0), 0) + ' ・ 🏅 ' + misTotal()[0] + ' / ' + misTotal()[1] + (streak() ? ' ・ れんぞく ' + streak() + '日' : '');
@@ -9571,7 +9999,7 @@
   function openGame(g) {
     if (typeof requireAcct === 'function' && !requireAcct()) return;
     closeGame();
-    curG = g;
+    curG = g; try { localStorage.setItem('arcade-last-v1', g.id); } catch (e) {}
     setView('game');
     stage.dataset.th = g.th || '';
     inst = g.create(stage, gameApi(g));
@@ -9620,7 +10048,7 @@
   async function finish(g, score, stats, verdict) {
     score = Math.round(score * DIFFS[DIFF].mul);
     if (!playing || ended) return;
-    ended = true; playing = false;
+    ended = true; playing = false; try { Plaza.played(g.id); } catch (e) {}
     $('#pz').hidden = true;
     if (battle && battle.inGame) { if (score > rec[g.id]) { rec[g.id] = score; saveRec(); } Rank.submit(g.id, score); battleFinish(g, score, stats); return; }
     const isRec = score > rec[g.id];
@@ -10044,7 +10472,7 @@
   acctLine();
   setView('home');
   renderHome();
-  Rank.init();
+  Rank.init(); Plaza.init();
   acctSync();
   if (!lsGet(LS_ACCT)) acctModal();
 })();
