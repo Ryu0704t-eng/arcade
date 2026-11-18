@@ -694,6 +694,10 @@
   @keyframes sgok { 0% { background: rgba(111, 227, 207, 0.28); } 100% { background: transparent; } }
   @keyframes sgng { 0% { background: rgba(255, 107, 129, 0.3); } 100% { background: transparent; } }
   .sg-hint { color: var(--mute); font-size: 14px; text-align: center; }
+  .dc-grid { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: 6px; width: min(100%, 380px); }
+  .dc-c { aspect-ratio: 1; border-radius: 10px; background: var(--panel); border: 2px solid var(--line); color: #fff; padding: 0; font-family: serif; line-height: 1; }
+  .fc-box { position: relative; width: min(100%, 360px); aspect-ratio: 1; border-radius: 16px; background: var(--panel); border: 2px solid var(--line); }
+  .fc-s { position: absolute; font-style: normal; color: var(--gold); font-size: 28px; transform: translate(-50%, -50%); }
   .sg-q { font-family: var(--display); font-size: 46px; color: #fff; }
   .sg-ch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(100%, 380px); }
   .sg-ch .btn { font-size: 28px; padding: 20px 4px; }
@@ -880,16 +884,16 @@
       <p class="sumline" id="sumLine"></p>
       <p class="sumline today" id="todayLine"></p>
       <p class="acctline" id="acctLine"></p>
-      <button class="btn battle-btn" id="battleBtn" type="button">⚔ 対戦モード</button>
+      <button class="btn battle-btn" id="battleBtn" type="button" hidden>⚔ 対戦モード</button>
       <button class="btn battle-btn" id="skinBtn" type="button">🖼 マイキャラ(画像・リンクで変える)</button>
     </div>
     <section class="sec" data-tab="home" id="vsHub">
       <h2>オンライン対戦</h2>
       <p class="sub">友だちや、いま待っている人と、同じゲームで同時にスコア勝負!(じゃまが入ります)</p>
-      <div class="vs-actions"><button class="btn" id="vsDuel" type="button">👥 対人戦(ほんもののあいてと)</button><button class="btn ghost" id="vsMake" type="button">⚔ スコア対戦(部屋・コード)</button></div>
-      <h3>ひらいている部屋</h3>
-      <div id="vsRooms" class="vs-rooms"></div>
-      <button class="pill" id="vsRefresh" type="button">↻ こうしん</button>
+      <div class="vs-actions"><button class="btn" id="vsDuel" type="button">👥 対人戦(ほんもののあいてと)</button><button class="btn ghost" id="vsMake" type="button" hidden>⚔ スコア対戦(部屋・コード)</button></div>
+      <h3 hidden>ひらいている部屋</h3>
+      <div id="vsRooms" class="vs-rooms" hidden></div>
+      <button class="pill" id="vsRefresh" type="button" hidden>↻ こうしん</button>
       <p class="bt-msg" id="vsMsg"></p>
       <h3>みんなでオンライン</h3>
       <p class="sub">部屋をつくって、人数で遊ぶゲーム。</p>
@@ -3728,6 +3732,8 @@
   const ICON_RUN = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="0" y="44" width="60" height="16" fill="#0a0c2e"/><rect x="0" y="43" width="60" height="2.5" fill="#2b3080"/><polygon points="20,12 22.6,18.6 29.5,19 24.2,23.4 26,30 20,26.4 14,30 15.8,23.4 10.5,19 17.4,18.6" fill="#ffd45e" transform="translate(0 6)"/><polygon points="38,44 44,30 50,44" fill="#ff6b81"/><rect x="6" y="39" width="10" height="2" rx="1" fill="#ffd45e" opacity="0.5"/></svg>';
   const ICON_RHYTHM = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><line x1="15" y1="8" x2="15" y2="52" stroke="#2b3080" stroke-width="1.5"/><line x1="30" y1="8" x2="30" y2="52" stroke="#2b3080" stroke-width="1.5"/><line x1="45" y1="8" x2="45" y2="52" stroke="#2b3080" stroke-width="1.5"/><rect x="8" y="12" width="14" height="7" rx="3" fill="#ff6b81"/><rect x="23" y="24" width="14" height="7" rx="3" fill="#ffd45e"/><rect x="38" y="8" width="14" height="7" rx="3" fill="#6fe3cf"/><circle cx="15" cy="45" r="6" fill="none" stroke="#ff6b81" stroke-width="2.5"/><circle cx="30" cy="45" r="6" fill="none" stroke="#ffd45e" stroke-width="2.5"/><circle cx="45" cy="45" r="6" fill="#6fe3cf" fill-opacity="0.5" stroke="#6fe3cf" stroke-width="2.5"/></svg>';
   const ICON_LIGHTS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="9" y="9" width="12" height="12" rx="4" fill="#2b3080"/><rect x="24" y="9" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="39" y="9" width="12" height="12" rx="4" fill="#2b3080"/><rect x="9" y="24" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="24" y="24" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="39" y="24" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="9" y="39" width="12" height="12" rx="4" fill="#2b3080"/><rect x="24" y="39" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="39" y="39" width="12" height="12" rx="4" fill="#2b3080"/></svg>';
+  const ICON_DC = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="40" font-size="28" text-anchor="middle" fill="#ffd666">土士</text></svg>';
+  const ICON_FC = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="40" font-size="28" text-anchor="middle" fill="#ffd666">★</text></svg>';
   const ICON_ODD = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="9" y="9" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="24" y="9" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="39" y="9" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="9" y="24" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="24" y="24" width="12" height="12" rx="4" fill="#4fc4b4"/><rect x="39" y="24" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="9" y="39" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="24" y="39" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="39" y="39" width="12" height="12" rx="4" fill="#3aa89a"/></svg>';
 
   /* ===== ゲーム一覧 ===== */
@@ -4341,7 +4347,7 @@
   try { const dv = parseInt(localStorage.getItem(LS_DIFF), 10); if (dv >= 0 && dv <= 2) DIFF = dv; } catch (e) {}
   let playClock = 0, pausedAt = 0;
   const ease01 = (x) => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
-  const RAMPS = { star: 0.3, flap: 0.15, snake: 0.2, break: 0.2, runner: 0.1, rhythm: 0, tap: 0.3, stop: 0.25, simon: 0.1, pairs: 0.15, nums: 0.25, math: 0.25, color: 0.25, lights: 0.2, odd: 0.25, mole: 0.1, reflex: 0, rps: 0.25, cmp: 0.25, hilo: 0.25, dodge: 0.1, mash: 0, slide: 0.2, stack: 0.1, nmem: 0.15, dots: 0.2, arrow: 0.25, merge: 0, balloon: 0.1, ttt: 0, cups: 0, numt: 0 };
+  const RAMPS = { star: 0.3, flap: 0.15, snake: 0.2, break: 0.2, runner: 0.1, rhythm: 0, tap: 0.3, stop: 0.25, simon: 0.1, pairs: 0.15, nums: 0.25, math: 0.25, color: 0.25, lights: 0.2, odd: 0.25, dchar: 0.25, fcount: 0.25, mole: 0.1, reflex: 0, rps: 0.25, cmp: 0.25, hilo: 0.25, dodge: 0.1, mash: 0, slide: 0.2, stack: 0.1, nmem: 0.15, dots: 0.2, arrow: 0.25, merge: 0, balloon: 0.1, ttt: 0, cups: 0, numt: 0 };
   const DT = () => { const e = playClock ? (performance.now() - playClock) / 1000 : 0; return DIFFS[DIFF].dt * (1 + (typeof curG !== 'undefined' && curG && curG.ramp != null ? curG.ramp : 0.2) * ease01(e / 80)); };
   /* --- YouTubeのBGM(リズムタップ用・おまけ) --- */
   const LS_YT = 'arcade-yt2-v1';
@@ -5926,6 +5932,56 @@
       setTimeout(() => { if (!clock.over) next(); }, 220);
     }
     return { start() { score = ok = combo = maxC = 0; k('score').textContent = '0'; k('msg').textContent = ''; next(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); } };
+  }
+
+
+  /* --- ちがうもじ --- */
+  const CH_PAIRS = [['土','士'],['未','末'],['日','曰'],['己','巳'],['大','太'],['干','千'],['人','入'],['力','カ'],['ロ','口'],['ソ','ン'],['シ','ツ'],['め','ぬ'],['わ','れ'],['り','リ'],['0','O'],['6','8'],['b','d'],['p','q'],['体','休'],['困','因'],['待','侍'],['雪','雲']];
+  function createDiffChar(stage, api) {
+    const { root, k } = sgBuild(stage, 40), body = k('body');
+    let score = 0, ok = 0, combo = 0, maxC = 0, odd = -1, locked = false;
+    const clock = sgClock(k, 40, () => { sgEndJingle(); api.end(score, [['せいかい', ok], ['最大コンボ', maxC]]); });
+    body.innerHTML = '<div class="sg-hint">1つだけちがう文字をタップ!</div><div class="dc-grid" data-k="g"></div>';
+    function next() {
+      locked = false; const lv = Math.min(5, Math.floor(ok / 4)), n = [3, 4, 4, 5, 5, 6][lv], p = CH_PAIRS[rndInt(0, CH_PAIRS.length - 1)], sw = Math.random() < 0.5 ? 1 : 0;
+      const g = k('g'); g.textContent = ''; g.style.setProperty('--n', n); odd = rndInt(0, n * n - 1);
+      for (let i = 0; i < n * n; i++) { const b = el('button', 'dc-c', i === odd ? p[1 - sw] : p[sw]); b.type = 'button'; b.style.fontSize = Math.round(200 / n) + 'px'; b.addEventListener('click', () => pick(i)); g.append(b); }
+    }
+    function pick(i) {
+      if (locked || clock.over) return; locked = true;
+      if (i === odd) { ok++; combo++; maxC = Math.max(maxC, combo); score += 10 + Math.min(combo, 10) * 2; clock.add(0.5); sgFb(body, true); }
+      else { combo = 0; score = Math.max(0, score - 5); clock.add(-2); sgFb(body, false); }
+      k('score').textContent = String(score); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : '';
+      setTimeout(() => { if (!clock.over) next(); }, 220);
+    }
+    return { start() { score = ok = combo = maxC = 0; k('score').textContent = '0'; k('msg').textContent = ''; next(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); } };
+  }
+
+  /* --- ぱっとかぞえ --- */
+  function createFlashCount(stage, api) {
+    const { root, k } = sgBuild(stage, 40), body = k('body');
+    let score = 0, ok = 0, combo = 0, maxC = 0, ans = 0, locked = true, tm = 0;
+    const clock = sgClock(k, 40, () => { clearTimeout(tm); sgEndJingle(); api.end(score, [['せいかい', ok], ['最大コンボ', maxC]]); });
+    body.innerHTML = '<div class="sg-hint" data-k="h">ぱっと光る星の数をかぞえて!</div><div class="fc-box" data-k="b"></div><div class="sg-ch" data-k="ch"></div>';
+    function next() {
+      locked = true; const lv = Math.min(6, Math.floor(ok / 3)); ans = rndInt(3, 5 + lv);
+      const box = k('b'); box.textContent = ''; k('ch').textContent = ''; k('h').textContent = 'よく見て…';
+      const pts = [];
+      for (let i = 0; i < ans; i++) { let x, y, t = 0; do { x = rndInt(6, 86); y = rndInt(6, 86); t++; } while (t < 40 && pts.some((p) => Math.abs(p[0] - x) < 14 && Math.abs(p[1] - y) < 14)); pts.push([x, y]); const d = el('i', 'fc-s', '★'); d.style.left = x + '%'; d.style.top = y + '%'; box.append(d); }
+      tm = setTimeout(() => {
+        if (clock.over) return; box.textContent = ''; k('h').textContent = 'いくつあった?';
+        const set = new Set([ans]); while (set.size < 3) { const d = rndInt(1, 2) * (Math.random() < 0.5 ? -1 : 1); if (ans + d > 0) set.add(ans + d); }
+        const ch = k('ch'); shuffle(Array.from(set)).forEach((v) => { const b = el('button', 'btn', String(v)); b.type = 'button'; b.addEventListener('click', () => pick(v)); ch.append(b); }); locked = false;
+      }, Math.max(500, 900 - lv * 60));
+    }
+    function pick(v) {
+      if (locked || clock.over) return; locked = true;
+      if (v === ans) { ok++; combo++; maxC = Math.max(maxC, combo); score += 10 + Math.min(combo, 10) * 2; clock.add(0.5); sgFb(body, true); }
+      else { combo = 0; score = Math.max(0, score - 5); clock.add(-2); sgFb(body, false); k('msg').textContent = 'こたえは ' + ans; }
+      k('score').textContent = String(score); if (v === ans) k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : '';
+      setTimeout(() => { if (!clock.over) next(); }, 300);
+    }
+    return { start() { score = ok = combo = maxC = 0; k('score').textContent = '0'; k('msg').textContent = ''; next(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); clearTimeout(tm); } };
   }
 
   /* --- やじるしタッチ --- */
@@ -9747,6 +9803,10 @@
     { id: 'odd', name: 'ちがうのどれ', short: 'ちがう', desc: '1つだけ色がちがうマスを探す。', icon: ICON_ODD, create: createOdd,
       intro: 'たくさんのマスの中から、1つだけ色がちがうマスを探します。進むほど、マスは増えて色の差は小さくなります。',
       how: ['色がちがうマスをタップ', '1.5秒いないに見つけると +5点', 'まちがえると -3秒(答えが一瞬光ります)。制限時間は45秒'], legend: '' },
+    { id: 'dchar', name: 'ちがうもじ', short: 'ちがうもじ', desc: 'そっくりな文字の中から、1つだけちがう文字を探す。', icon: ICON_DC, create: createDiffChar,
+      intro: 'ならんだ文字のなかに、1つだけちがう文字がまざっています。見つけてタップ!', how: ['ちがう文字をタップ', 'せいかいで +時間', 'まちがえると -2秒。制限時間は40秒'], legend: '' },
+    { id: 'fcount', name: 'ぱっとかぞえ', short: 'ぱっとかぞえ', desc: 'ぱっと光る星の数を一瞬でかぞえる。', icon: ICON_FC, create: createFlashCount,
+      intro: '星がいっしゅんだけ出ます。いくつあったか、えらんでね。', how: ['星の数をよく見る', '消えたら数をえらぶ', 'まちがえると -2秒。制限時間は40秒'], legend: '' },
     { id: 'mole', name: 'もぐらたたき', short: 'もぐら', desc: '出てきたもぐらをたたく。爆弾はさわらない。', icon: ICON_MOLE, create: createMole,
       intro: '9つのあなから、もぐらが顔を出します。すばやくタップ。爆弾と金のもぐらにも注意です。',
       how: ['もぐら🐹は +10点、金のもぐら⭐は +30点', 'つづけてたたくとコンボで倍率アップ(最大×5)', '爆弾💣をたたくと -20点・-2秒。制限時間は40秒'], legend: '' },
@@ -9846,7 +9906,7 @@
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード', cups: 'あたま', numt: 'あたま' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', dchar: 'あたま', fcount: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード', cups: 'あたま', numt: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
@@ -10113,7 +10173,7 @@
       if (mi >= 10) { box.append(el('p', 'rk-gap', '⋮')); box.append(this.listRows(rows, mi, mi + 1)); const o = box.lastChild; o.start = mi + 1; }
     },
     async loadRooms() {
-      const box = document.getElementById('vsRooms'); if (!box) return;
+      const box = document.getElementById('vsRooms'); if (!box || box.hidden) return;
       try { const r = await window.fetch(FB + '/rooms.json'); if (!r.ok) throw new Error('x'); const d = (await r.json()) || {}; this.rooms = Object.entries(d).filter(([, v]) => v && v.state === 'wait' && !v.guestUid && v.hostUid !== Rank.uid && Date.now() - (v.at || 0) < 20 * 60000).map(([c, v]) => ({ c, v })).sort((a, b) => b.v.at - a.v.at); this.roomsErr = false; } catch (e) { this.roomsErr = true; }
       box.textContent = '';
       if (this.roomsErr) { box.append(el('p', 'empty', 'へやの一覧を取得できませんでした。コードで入るか、自分で部屋をつくってね。')); return; }
@@ -10649,18 +10709,20 @@
     } catch (e) {}
   }
 
+  const CPU_G = ['sevens', 'uno', 'daifugo', 'doubt', 'poker', 'bj', 'mahjong', 'maid', 'bbp', 'rogue', 'rps', 'tower'];
   function battleMenu(msg) {
+    if (!battle) { duelMenu(msg); return; }
     if (typeof requireAcct === 'function' && !requireAcct()) return;
     closeGame(); setView('battle'); bbox.textContent = '';
     bbox.append(bt('h1', '', '対戦モード'));
     bbox.append(bt('p', 'sub', '友だちと同じゲームを同時に遊んで、スコアで勝負します。スコアがある程度まで上がるたびに、あいての画面に「じゃま」が入ります(ぼやける・逆さま・黒いしみ・ゆれる)。部屋をつくって、コードを友だちに伝えてください。'));
     bbox.append(bt('p', 'bt-me', 'あなたの名前: ' + Rank.name() + '(ホームで変えられます)'));
-    const c0 = bt('section', 'bt-card'); c0.append(bt('h2', '', '👥 ほんものの対人戦'), bt('p', 'sub', 'まるばつ・よつめ・リバーシ・じゃんけんを、ほんものの人どうしで対戦します。'));
+    const c0 = bt('section', 'bt-card'); c0.append(bt('h2', '', '👥 ほんものの対人戦'), bt('p', 'sub', 'まるばつ・よつめ・リバーシ・じゃんけんは交代で打つ直接対戦。ほかの全ゲームは、同じゲームを同時に遊んでスコアで勝負します(あいての点数もリアルタイムで見えます)。'));
     const c0b = bt('button', 'btn', '対人戦へ(ランダムマッチ・部屋)'); c0b.type = 'button'; c0b.addEventListener('click', () => duelMenu()); c0.append(c0b); bbox.append(c0);
     const c1 = bt('section', 'bt-card');
     c1.append(bt('h2', '', '部屋をつくる'));
     const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲームを選ぶ');
-    GAMES.filter((g) => ['wolf', 'wolfnet', 'wordwolf', 'feign', 'ttt', 'c4', 'reversi', 'sevens', 'uno', 'daifugo', 'doubt', 'poker', 'bj', 'mahjong', 'maid', 'bbp', 'rogue'].indexOf(g.id) < 0).forEach((g) => { const o = bt('option', '', g.name); o.value = g.id; sel.append(o); });
+    GAMES.filter((g) => ['wolf', 'wolfnet', 'wordwolf', 'feign', 'ttt', 'c4', 'reversi'].indexOf(g.id) < 0).forEach((g) => { const o = bt('option', '', g.name + (CPU_G.indexOf(g.id) >= 0 ? '(CPU戦のスコアで勝負)' : '')); o.value = g.id; sel.append(o); });
     const dsel = bt('select', 'bt-sel'); dsel.setAttribute('aria-label', 'むずかしさ');
     DIFFS.forEach((d, i) => { const o = bt('option', '', 'むずかしさ: ' + d.n); o.value = String(i); if (i === DIFF) o.selected = true; dsel.append(o); });
     const mk = bt('button', 'btn', '部屋をつくる'); mk.type = 'button';
@@ -10675,7 +10737,7 @@
     const m = bt('p', 'bt-msg', msg || ''); m.id = 'btMsg';
     bbox.append(c1, c2, m);
   }
-  const btMsg = (t) => { const m = $('#btMsg') || $('#vsMsg'); if (m) m.textContent = t || ''; };
+  const btMsg = (t) => { const m = $('#btMsg') || $('#dlMsg') || $('#vsMsg'); if (m) m.textContent = t || ''; };
 
   async function battleCreate(gid, diff, btn) {
     btn.disabled = true; btMsg('部屋をつくっています…');
@@ -10831,23 +10893,35 @@
     if (typeof requireAcct === 'function' && !requireAcct()) return;
     duelLeave(); closeGame(); setView('battle'); bbox.textContent = '';
     bbox.append(bt('h1', '', '👥 対人戦'));
-    bbox.append(bt('p', 'sub', 'コンピュータではなく、ほんもののあいてと交代で打つ対戦です。「ランダムマッチ」でいま待っている人と、「部屋」で友だちと遊べます。'));
+    bbox.append(bt('p', 'sub', 'ほんもののあいてと対戦します。ゲームをえらんで、「ランダムマッチ」で待っている人と、「部屋」で友だちと遊べます。'));
     const c = bt('section', 'bt-card');
     const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲーム');
-    Object.keys(DLG).forEach((k) => { const o = bt('option', '', DLG[k].n); o.value = k; sel.append(o); });
+    const og1 = bt('optgroup'); og1.label = '👥 ターン制(交代で打つ)'; Object.keys(DLG).forEach((k) => { const o = bt('option', '', DLG[k].n); o.value = k; og1.append(o); }); sel.append(og1);
+    const og2 = bt('optgroup'); og2.label = '⚡ 同時対戦(同じゲームを同時に遊んでスコアで勝負)';
+    GAMES.filter((g) => ['wolf', 'wolfnet', 'wordwolf', 'feign', 'ttt', 'c4', 'reversi'].indexOf(g.id) < 0).forEach((g) => { const o = bt('option', '', g.name + (CPU_G.indexOf(g.id) >= 0 ? '(おなじ条件でスコア勝負)' : '')); o.value = 's:' + g.id; og2.append(o); }); sel.append(og2);
     const rn = bt('button', 'btn', '⚡ ランダムマッチ(だれかと対戦)'); rn.type = 'button';
-    rn.addEventListener('click', () => duelRandom(sel.value, rn));
+    rn.addEventListener('click', () => sel.value.indexOf('s:') === 0 ? scoreRandom(sel.value.slice(2), rn) : duelRandom(sel.value, rn));
     const mk = bt('button', 'btn ghost', '部屋をつくる(友だちとあそぶ)'); mk.type = 'button';
-    mk.addEventListener('click', () => duelCreate(sel.value, false, mk));
+    mk.addEventListener('click', () => sel.value.indexOf('s:') === 0 ? battleCreate(sel.value.slice(2), DIFF, mk) : duelCreate(sel.value, false, mk));
     c.append(sel, rn, mk); bbox.append(c);
     const c2 = bt('section', 'bt-card'); c2.append(bt('h2', '', 'コードで入る'));
     const inp = bt('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off'; inp.setAttribute('aria-label', '部屋のコード');
-    const jn = bt('button', 'btn', '入る'); jn.type = 'button'; jn.addEventListener('click', () => duelJoin(inp.value, jn));
+    const jn = bt('button', 'btn', '入る'); jn.type = 'button'; jn.addEventListener('click', async () => { const code = String(inp.value || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); try { if (code.length === 4 && (await rtdb('GET', '/rooms/' + code))) { battleJoin(code, jn); return; } } catch (e) {} duelJoin(inp.value, jn); });
     c2.append(inp, jn); bbox.append(c2);
     const m = bt('p', 'bt-msg', msg || ''); m.id = 'dlMsg'; bbox.append(m);
     const bk = bt('button', 'btn ghost', 'もどる'); bk.type = 'button'; bk.addEventListener('click', goHome); bbox.append(bk);
   }
   const dlMsg = (t) => { const m = $('#dlMsg'); if (m) m.textContent = t || ''; };
+  async function scoreRandom(gid, btn) {
+    btn.disabled = true; dlMsg('あいてをさがしています…');
+    try {
+      const all = (await rtdb('GET', '/rooms')) || {};
+      const list = Object.entries(all).filter(([, v]) => v && v.game === gid && v.state === 'wait' && !v.guestUid && v.hostUid !== Rank.uid && Date.now() - (v.at || 0) < 10 * 60000).sort((a, b) => (b[1].at || 0) - (a[1].at || 0));
+      if (list.length) { await battleJoin(list[0][0], btn); return; }
+      await battleCreate(gid, DIFF, btn);
+      dlMsg('');
+    } catch (e) { btn.disabled = false; dlMsg('つながりませんでした。通信とFirebaseのルールを確認してください。'); }
+  }
   async function dlNewCode() {
     for (let i = 0; i < 6; i++) {
       const c = Array.from({ length: 4 }, () => CODE_CH[Math.floor(Math.random() * CODE_CH.length)]).join('');
