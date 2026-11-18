@@ -726,6 +726,80 @@
   .pl-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } .pl-top small { color: var(--mute); }
   .pl-chip { background: var(--gold); color: var(--gold-ink); border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
   .pl-tx { margin: 0; overflow-wrap: anywhere; line-height: 1.5; } .pl-ft { display: flex; justify-content: space-between; align-items: center; }
+  .sg-cups { position: relative; width: min(92%, 330px); height: 130px; }
+  .sg-cp { position: absolute; top: 0; width: 30%; height: 100%; transition: left 0.4s ease-in-out; }
+  .sg-ball { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font-style: normal; font-size: 34px; transition: opacity 0.1s; }
+  .sg-cup { position: absolute; inset: 0; border: 0; padding: 0; background: linear-gradient(#ff8a5e, #d4472b); clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); transition: transform 0.3s; }
+  .sg-cup.up { transform: translateY(-46px); } .sg-cup.wrong { background: linear-gradient(#777, #444); }
+  .sg-nums { display: grid; gap: 8px; width: min(94%, 360px); }
+  .sg-n { aspect-ratio: 1; border-radius: 14px; background: var(--panel); border: 2px solid var(--line); color: var(--ink); font-family: var(--display); padding: 0; touch-action: manipulation; transition: background 0.15s, opacity 0.15s; }
+  .sg-n.done { opacity: 0.25; background: rgba(111, 227, 207, 0.25); } .sg-n.ng { border-color: #ff6b81; }
+  .sg-card { width: 130px; height: 180px; border-radius: 16px; background: #fff; color: #222; display: grid; place-items: center; font-family: var(--display); font-size: 72px; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3); transition: transform 0.3s; }
+  .sg-card.flip { transform: rotateY(90deg); }
+  .sg-card[data-v='1'], .sg-card[data-v='13'], .sg-card[data-v='12'], .sg-card[data-v='11'] { color: #d4472b; }
+  .sg-hist { color: var(--mute); font-size: 14px; min-height: 1.2em; }
+  .sg-pad2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(92%, 340px); } .sg-pad2 .btn { font-size: 20px; padding: 16px 0; }
+  .bdg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+  .bdg { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 6px; text-align: center; opacity: 0.55; display: grid; gap: 2px; }
+  .bdg.on { opacity: 1; border-color: var(--gold); } .bdg i { font-style: normal; font-size: 28px; } .bdg b { font-size: 13px; } .bdg small { font-size: 11px; color: var(--mute); }
+  .bdg-toast { position: fixed; left: 50%; top: 14px; transform: translateX(-50%); z-index: 999; background: #2a2f7a; border: 2px solid var(--gold); border-radius: 14px; padding: 10px 16px; display: flex; gap: 10px; align-items: center; max-width: 92vw; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); animation: bdgin 0.35s ease-out; font-size: 14px; }
+  .bdg-toast .i { font-size: 30px; } .bdg-toast.out { opacity: 0; transition: opacity 0.5s; }
+  @keyframes bdgin { from { transform: translate(-50%, -30px); opacity: 0; } }
+  .hnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; background: rgba(12, 15, 52, 0.96); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+  .hnav[hidden] { display: none; }
+  .hnav button { flex: 1; background: none; border: 0; color: var(--mute); padding: 8px 2px 10px; display: grid; gap: 2px; justify-items: center; font-size: 11px; min-height: 52px; }
+  .hnav button i { font-style: normal; font-size: 20px; line-height: 1; } .hnav button[aria-pressed='true'] { color: var(--gold); font-weight: 700; }
+  #viewHome .wrap { padding-bottom: 84px; }
+  .rk-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .rk-list li { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; } .rk-list li.me { border-color: var(--mint); }
+  .rk-list .n { font-family: var(--display); color: var(--gold); text-align: center; } .rk-list .pt { color: var(--mute); font-size: 12px; }
+  .rk-me { color: var(--gold); font-weight: 700; margin: 8px 0 14px; }
+  .rk-champ { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; }
+  .rk-champ button { width: 100%; display: grid; grid-template-columns: 1.1fr 1.4fr auto; gap: 8px; text-align: left; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; color: var(--ink); font-size: 14px; }
+  .rk-champ .g { font-weight: 700; } .rk-champ .w { color: var(--mute); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .rk-champ .m { color: var(--mint); font-size: 12px; }
+  #rkBody h3, #vsHub h3 { margin: 16px 0 6px; font-size: 16px; }
+  .vs-room .btn { white-space: nowrap; flex-shrink: 0; }
+  .vs-actions { margin: 10px 0; } .vs-rooms { display: grid; gap: 8px; margin-bottom: 8px; }
+  .vs-room { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; } .vs-room b { display: block; } .vs-room small { color: var(--mute); }
+  .wf { background: transparent; transition: background 0.6s; }
+  .wf[data-ph='night'] { background: linear-gradient(#0a0d2e, #181347); } .wf[data-ph='day'] { background: linear-gradient(#2a3a7a, #6a5a7a 120%); } .wf[data-ph='vote'] { background: linear-gradient(#3a1f4a, #6a2f4a); }
+  .wf-ban { width: min(100%, 420px); text-align: center; font-weight: 700; font-size: 15px; letter-spacing: 0.08em; padding: 4px 0; color: #ffe9a8; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); }
+  .wf .wroster { grid-template-columns: repeat(auto-fit, minmax(66px, 1fr)); gap: 6px; }
+  .wf .wp2 { position: relative; justify-items: center; gap: 1px; padding: 6px 2px 5px; border-radius: 14px; background: rgba(15, 18, 60, 0.7); transition: transform 0.2s, border-color 0.2s; }
+  .wf .wp2 .wav { font-size: 26px; line-height: 1.1; } .wf .wp2.talk { border-color: #ffd45e; transform: translateY(-3px); box-shadow: 0 4px 14px rgba(255, 212, 94, 0.35); }
+  .wf .wp2.dead { filter: grayscale(1); opacity: 0.5; } .wf .wp2.dead b { text-decoration: none; }
+  .wf .wsus { width: 80%; margin: 3px 0 0; }
+  .wf .wlog { background: rgba(8, 10, 40, 0.55); border: 0; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; }
+  .wb { display: flex; gap: 8px; align-items: flex-end; animation: wbin 0.28s ease-out; } .wb.me { flex-direction: row-reverse; }
+  .wb .av { font-size: 26px; flex: none; } .wb .bb { max-width: 78%; background: #2d3590; border-radius: 16px 16px 16px 4px; padding: 6px 12px; } .wb.me .bb { background: #1f7a6a; border-radius: 16px 16px 4px 16px; }
+  .wb small { display: block; font-size: 11px; color: #b7bff0; } .wb p { margin: 0; font-size: 14.5px; line-height: 1.5; overflow-wrap: anywhere; }
+  .ws { align-self: center; text-align: center; font-size: 12.5px; color: #c9cff5; background: rgba(255, 255, 255, 0.08); border-radius: 999px; padding: 4px 14px; max-width: 94%; animation: wbin 0.28s ease-out; }
+  .ws.res { background: rgba(255, 212, 94, 0.18); color: #ffe9a8; border-radius: 14px; } .ws.dead { background: rgba(255, 90, 110, 0.25); color: #ffd0d6; font-weight: 700; font-size: 14px; border-radius: 14px; }
+  .wv { align-self: center; font-size: 12px; color: #dcd0ff; background: rgba(255, 255, 255, 0.07); border-radius: 8px; padding: 2px 10px; animation: wbin 0.2s ease-out; }
+  @keyframes wbin { from { opacity: 0; transform: translateY(8px); } }
+  .wf .wacts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .wbtn { background: linear-gradient(#ffd45e, #f0b43a); color: #3a2a00; border: 0; border-radius: 14px; padding: 10px 16px; font-size: 15px; font-weight: 700; box-shadow: 0 3px 0 #a87a14; min-height: 44px; } .wbtn:active { transform: translateY(2px); box-shadow: 0 1px 0 #a87a14; }
+  .wf-ov { position: absolute; inset: 0; z-index: 25; display: grid; place-items: center; background: rgba(5, 6, 28, 0.82); animation: wbin 0.3s; }
+  .wf-card { width: min(86%, 320px); text-align: center; background: linear-gradient(#2d3590, #1c2060); border: 2px solid #ffd45e; border-radius: 20px; padding: 22px 18px; display: grid; gap: 10px; animation: wflip 0.6s; }
+  .wf-card .big { font-size: 72px; line-height: 1; } .wf-card h3 { margin: 0; font-size: 20px; color: #ffe9a8; } .wf-card p { margin: 0; font-size: 14px; line-height: 1.6; color: #dfe3ff; }
+  @keyframes wflip { from { transform: rotateY(90deg) scale(0.8); opacity: 0; } }
+  /* ---- 演出: タイトル・カウントダウン・紙ふぶき ---- */
+  .splash { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 40%, #2a2f8a, #0a0c2c 70%); overflow: hidden; transition: opacity 0.5s, transform 0.5s; cursor: pointer; }
+  .splash.out { opacity: 0; transform: scale(1.08); pointer-events: none; }
+  .splash h1 { font-family: var(--display); font-size: clamp(34px, 10vw, 56px); margin: 0; color: var(--gold); letter-spacing: 0.04em; text-shadow: 0 4px 0 #a87a14, 0 0 32px rgba(255, 212, 94, 0.5); animation: spl 0.9s cubic-bezier(0.2, 1.3, 0.3, 1) both; }
+  .splash p { margin: 14px 0 0; color: var(--mute); animation: splp 1.2s 0.5s ease-out both; }
+  .splash .go { display: inline-block; margin-top: 28px; padding: 12px 30px; border-radius: 999px; background: var(--gold); color: var(--gold-ink); font-weight: 700; animation: splb 1.2s ease-in-out 1s infinite alternate; }
+  .splash i { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: #fff; opacity: 0.7; left: var(--x); top: var(--y); animation: tw 2.4s ease-in-out var(--d) infinite alternate; }
+  @keyframes spl { from { opacity: 0; transform: translateY(-40px) scale(0.6); } } @keyframes splp { from { opacity: 0; transform: translateY(12px); } } @keyframes splb { to { transform: scale(1.07); box-shadow: 0 0 24px rgba(255, 212, 94, 0.6); } } @keyframes tw { from { opacity: 0.1; transform: scale(0.6); } to { opacity: 0.9; transform: scale(1.3); } }
+  .cd { position: absolute; inset: 0; z-index: 40; display: grid; place-items: center; background: rgba(6, 8, 30, 0.55); pointer-events: none; }
+  .cd b { font-family: var(--display); font-size: 120px; color: var(--gold); text-shadow: 0 6px 0 #a87a14, 0 0 40px rgba(255, 212, 94, 0.6); animation: cdp 0.65s cubic-bezier(0.2, 1.4, 0.3, 1) both; } .cd b.go { color: var(--mint); text-shadow: 0 6px 0 #1b8a78, 0 0 40px rgba(111, 227, 207, 0.6); }
+  @keyframes cdp { from { transform: scale(2.2); opacity: 0; } 30% { opacity: 1; } to { transform: scale(0.9); opacity: 0.2; } }
+  .cf { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 30; } .cf s { position: absolute; top: -12px; left: var(--x); width: var(--w); height: calc(var(--w) * 1.6); background: var(--c); border-radius: 2px; animation: cff var(--t) cubic-bezier(0.3, 0.1, 0.6, 1) var(--d) both; }
+  @keyframes cff { to { transform: translate(var(--dx), 110vh) rotate(var(--r)); opacity: 0.9; } }
+  .games .gcard { animation: gnIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) both; animation-delay: calc(var(--i, 0) * 28ms); } @keyframes gnIn { from { opacity: 0; transform: translateY(14px) scale(0.96); } }
+  #viewHome [data-tab]:not([hidden]) { animation: tabIn 0.35s ease-out both; } @keyframes tabIn { from { opacity: 0; transform: translateY(10px); } }
+  .games .gcard:active { transform: scale(0.96); }
+  @media (prefers-reduced-motion: reduce) { .splash h1, .splash p, .splash .go, .splash i, .cd b, .games .gn, #viewHome [data-tab] { animation: none !important; } .cf { display: none; } }
   .wp2.me { border-color: var(--gold); } .wp2.dead { opacity: 0.55; } .wp2.dead b { text-decoration: line-through; }
   /* アカウント */
   .acct { position: fixed; inset: 0; z-index: 1000; background: rgba(5, 7, 30, 0.96); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px 16px; overflow-y: auto; }
@@ -774,7 +848,7 @@
 
 <main class="home" id="viewHome">
   <div class="wrap">
-    <div class="hero">
+    <div class="hero" data-tab="home">
       <h1>ひまつぶしアーケード</h1>
       <p id="heroTxt">1回1〜3分で遊べるミニゲームが並んでいます。スコアはランキングに残ります。</p>
       <p class="sumline" id="sumLine"></p>
@@ -783,26 +857,51 @@
       <button class="btn battle-btn" id="battleBtn" type="button">⚔ 対戦モード</button>
       <button class="btn battle-btn" id="skinBtn" type="button">🖼 マイキャラ(画像・リンクで変える)</button>
     </div>
-    <section class="sec">
+    <section class="sec" data-tab="home" id="vsHub">
+      <h2>オンライン対戦</h2>
+      <p class="sub">友だちや、いま待っている人と、同じゲームで同時にスコア勝負!(じゃまが入ります)</p>
+      <div class="vs-actions"><button class="btn" id="vsMake" type="button">⚔ 部屋をつくる / コードで入る</button></div>
+      <h3>ひらいている部屋</h3>
+      <div id="vsRooms" class="vs-rooms"></div>
+      <button class="pill" id="vsRefresh" type="button">↻ こうしん</button>
+      <p class="bt-msg" id="vsMsg"></p>
+      <h3>みんなでオンライン</h3>
+      <p class="sub">部屋をつくって、人数で遊ぶゲーム。</p>
+      <div class="tabs" id="vsOnline"></div>
+    </section>
+    <section class="sec" id="badges" data-tab="home">
+      <h2>バッジ</h2>
+      <p class="sub" id="bdgCount"></p>
+      <div class="bdg-grid" id="bdgBody"></div>
+    </section>
+    <section class="sec" data-tab="games">
       <h2>ゲーム一覧</h2>
       <p class="sub">タップすると、そのゲームの説明が開きます。</p>
       <div class="filters" id="filters" role="group" aria-label="ゲームの種類"></div>
       <div class="games" id="games"></div>
     </section>
-    <section class="sec" id="plaza">
+    <section class="sec" data-tab="rank" id="rkHub">
+      <h2>ランキング</h2>
+      <div id="rkBody"></div>
+    </section>
+    <section class="sec" data-tab="rank" id="rkGame">
+      <h2>ゲームごとのトップ10</h2>
+      <p class="sub" id="rankSub">ゲームごとの上位10人です。</p>
+      <div class="tabs" id="tabs" role="group" aria-label="ゲームを選ぶ"></div>
+      <div class="rbox" id="homeBoard"></div>
+    </section>
+    <section class="sec" id="plaza" data-tab="rank">
       <h2>みんなの広場</h2>
       <p class="sub">人気のゲームを見たり、「こんなゲームがほしい!」を書いたり。みんなの意見が見られます。</p>
       <div class="tabs" id="plTabs" role="group" aria-label="広場"></div>
       <div id="plBody"></div>
     </section>
-    <section class="sec">
-      <h2>ランキング</h2>
-      <p class="sub" id="rankSub">ゲームごとの上位10人です。</p>
-      <div class="tabs" id="tabs" role="group" aria-label="ゲームを選ぶ"></div>
-      <div class="rbox" id="homeBoard"></div>
-    </section>
   </div>
 </main>
+
+<div class="splash" id="splash" hidden role="button" aria-label="タップしてスタート"></div>
+
+<nav class="hnav" id="hnav" aria-label="ホームのメニュー"></nav>
 
 <main class="home" id="viewBattle" hidden><div class="wrap" id="battleBox"></div></main>
 
@@ -1923,6 +2022,7 @@
       A.beep(180, 0.35, 'sawtooth', 0.07, -110);
     }
     function step() {
+      S.prev = S.snake.map((p) => ({ x: p.x, y: p.y }));
       if (S.queue.length) S.dir = S.queue.shift();
       const h = S.snake[0];
       const nx = (h.x + S.dir.x + N) % N, ny = (h.y + S.dir.y + N) % N;
@@ -1987,14 +2087,16 @@
         ctx.lineWidth = 2; ctx.strokeStyle = '#ffd45e'; ctx.stroke(); ctx.restore();
       }
       const len = S.snake.length, dying = S.mode === 'dying';
+      const al = S.mode === 'play' && S.prev && !reduce ? clampN(S.acc / interval(), 0, 1) : 1;
+      const vis = (i) => { const p = S.snake[i], q = S.prev && S.prev[i]; if (!q || al >= 1 || Math.abs(p.x - q.x) > 1 || Math.abs(p.y - q.y) > 1) return { x: p.x, y: p.y }; return { x: q.x + (p.x - q.x) * al, y: q.y + (p.y - q.y) * al }; };
       for (let i = len - 1; i >= 0; i--) {
-        const p = S.snake[i], t = 1 - i / len;
+        const p = vis(i), t = 1 - i / len;
         ctx.fillStyle = dying ? (Math.floor(time * 14) % 2 ? '#ff6b81' : '#ffc2cb') : 'hsl(170,55%,' + (38 + 28 * t) + '%)';
         rrect(ctx, ox + p.x * cell + 1.5, oy + p.y * cell + 1.5, cell - 3, cell - 3, cell * 0.36);
         ctx.fill();
       }
       const h = S.snake[0], d = S.mode === 'play' && S.queue.length ? S.queue[0] : S.dir;
-      const ex = -d.y, ey = d.x, hx = gx(h.x), hy = gy(h.y);
+      const hv = vis(0), ex = -d.y, ey = d.x, hx = ox + hv.x * cell + cell / 2, hy = oy + hv.y * cell + cell / 2;
       const skinHead = !dying && Skin.draw(ctx, hx, hy, cell * 0.62, 0);
       if (!skinHead) for (const sgn of [-1, 1]) {
         const px = hx + d.x * cell * 0.16 + ex * sgn * cell * 0.22, py = hy + d.y * cell * 0.16 + ey * sgn * cell * 0.22;
@@ -4200,13 +4302,19 @@
   const ICON_HILO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="14" y="12" width="32" height="38" rx="6" fill="#eef0ff"/><text x="30" y="38" font-size="22" font-weight="700" fill="#171c58" text-anchor="middle">7</text><path d="M48 14l5 7h-10z" fill="#6fe3cf"/><path d="M48 46l5-7h-10z" fill="#ff6b81"/></svg>';
   const ICON_DODGE = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="16" cy="14" r="6" fill="#6a66e0"/><circle cx="42" cy="22" r="8" fill="#6a66e0"/><path d="M30 30l2.4 5 5.4.6-4 3.8 1 5.4L30 42l-4.8 2.8 1-5.4-4-3.8 5.4-.6z" fill="#ffd45e"/><path d="M30 44l8 10-8-3-8 3z" fill="#6fe3cf"/></svg>';
   const ICON_MASH = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><circle cx="30" cy="32" r="16" fill="#ff6b81"/><circle cx="30" cy="29" r="13" fill="#ff8aa0"/><path d="M13 12l5 6M30 7v8M47 12l-5 6" stroke="#ffd45e" stroke-width="3" stroke-linecap="round"/></svg>';
+  let CHAL = false, chalT = 0; try { CHAL = localStorage.getItem('arcade-chal-v1') === '1'; } catch (e) {}
+  const CHAL_FX = ['blur', 'shake', 'dark', 'tiny', 'tilt', 'gray', 'zoom', 'jelly', 'hue', 'blink', 'wave', 'fog', 'flies', 'mirror'];
+  function chalLoop() {
+    clearTimeout(chalT); if (!CHAL || (battle && battle.inGame)) return;
+    chalT = setTimeout(() => { if (playing && !ended && ovPause && ovPause.hidden) { try { applyFx(CHAL_FX[rndInt(0, CHAL_FX.length - 1)], 'ハプニング'); } catch (e) {} } chalLoop(); }, rndInt(10000, 18000));
+  }
   const DIFFS = [{ n: 'かんたん', dt: 0.85, mul: 0.8 }, { n: 'ふつう', dt: 1.1, mul: 1 }, { n: 'むずかしい', dt: 1.4, mul: 1.25 }];
   const LS_DIFF = 'arcade-diff-v1';
   let DIFF = 1;
   try { const dv = parseInt(localStorage.getItem(LS_DIFF), 10); if (dv >= 0 && dv <= 2) DIFF = dv; } catch (e) {}
   let playClock = 0, pausedAt = 0;
   const ease01 = (x) => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
-  const RAMPS = { star: 0.3, flap: 0.15, snake: 0.2, break: 0.2, runner: 0.1, rhythm: 0, tap: 0.3, stop: 0.25, simon: 0.1, pairs: 0.15, nums: 0.25, math: 0.25, color: 0.25, lights: 0.2, odd: 0.25, mole: 0.1, reflex: 0, rps: 0.25, cmp: 0.25, hilo: 0.25, dodge: 0.1, mash: 0, slide: 0.2, stack: 0.1, nmem: 0.15, dots: 0.2, arrow: 0.25, merge: 0, balloon: 0.1, ttt: 0 };
+  const RAMPS = { star: 0.3, flap: 0.15, snake: 0.2, break: 0.2, runner: 0.1, rhythm: 0, tap: 0.3, stop: 0.25, simon: 0.1, pairs: 0.15, nums: 0.25, math: 0.25, color: 0.25, lights: 0.2, odd: 0.25, mole: 0.1, reflex: 0, rps: 0.25, cmp: 0.25, hilo: 0.25, dodge: 0.1, mash: 0, slide: 0.2, stack: 0.1, nmem: 0.15, dots: 0.2, arrow: 0.25, merge: 0, balloon: 0.1, ttt: 0, cups: 0, numt: 0 };
   const DT = () => { const e = playClock ? (performance.now() - playClock) / 1000 : 0; return DIFFS[DIFF].dt * (1 + (typeof curG !== 'undefined' && curG && curG.ramp != null ? curG.ramp : 0.2) * ease01(e / 80)); };
   /* --- YouTubeのBGM(リズムタップ用・おまけ) --- */
   const LS_YT = 'arcade-yt2-v1';
@@ -5442,11 +5550,12 @@
     return t;
   }
   function createWolf(stage, api) {
-    const root = el('div', 'pg wolf', `
+    const root = el('div', 'pg wolf wf', `
       <div class="pg-hud">
         <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
         <span class="chip" data-k="day">1日目</span>
       </div>
+      <div class="wf-ban" data-k="ban"></div>
       <div class="wroster" data-k="ros"></div>
       <div class="wlog" data-k="log" aria-live="polite"></div>
       <div class="acts wacts" data-k="acts"></div>
@@ -5463,27 +5572,54 @@
     const aliveList = () => [...Array(N).keys()].filter((i) => alive[i]);
     const nm = (i) => NAMES[i], rnd = (a) => a[rndInt(0, a.length - 1)];
     const hum = (b) => (b ? '人狼' : '人間');
-    function say(t, c) { const p = el('p', 'wl ' + (c || '')); p.textContent = t; const l = k('log'); l.append(p); l.scrollTop = l.scrollHeight; }
-    function roster() {
+    const AV = ['😎', '🐱', '🐰', '🦊', '🐼', '🐸', '🦁', '🐧', '🐻'], RI = { villager: '🧑‍🌾', seer: '🔮', medium: '👻', knight: '🛡️', mason: '🤝', wolf: '🐺', mad: '🃏' };
+    let speaker = -1;
+    function say(t, c) {
+      const l = k('log'); let n;
+      const mm = /^(.{1,4}?)[:：](.*)$/.exec(t), who = mm ? NAMES.indexOf(mm[1]) : -1, vv = / → /.exec(t);
+      if (who >= 0 && !c) {
+        n = el('div', 'wb' + (who === 0 ? ' me' : '')); n.innerHTML = '<span class="av"></span><div class="bb"><small></small><p></p></div>';
+        n.querySelector('.av').textContent = AV[who]; n.querySelector('small').textContent = NAMES[who]; n.querySelector('p').textContent = mm[2].trim();
+        speaker = who; roster(true);
+      } else if (who >= 0 && c === 'me') {
+        n = el('div', 'wb me'); n.innerHTML = '<span class="av"></span><div class="bb"><small></small><p></p></div>'; n.querySelector('.av').textContent = AV[0]; n.querySelector('small').textContent = 'あなた'; n.querySelector('p').textContent = mm[2].trim();
+      } else if (vv && !c) {
+        const p = t.split(' → '), x = NAMES.indexOf(p[0]), y = NAMES.indexOf(p[1]);
+        n = el('div', 'wv'); n.textContent = (AV[x] || '') + ' ' + p[0] + ' ➜ ' + (AV[y] || '') + ' ' + p[1];
+      } else {
+        n = el('div', 'ws ' + (c || '')); n.textContent = (c === 'dead' ? '💀 ' : '') + t;
+      }
+      l.append(n); l.scrollTop = l.scrollHeight;
+    }
+    function roster(soft) {
       const box = k('ros'); box.textContent = '';
       for (let i = 0; i < N; i++) {
-        const c = el('div', 'wp2' + (alive[i] ? '' : ' dead') + (i === 0 ? ' me' : '')), a = el('b'), b = el('small');
-        a.textContent = (alive[i] ? '' : '✝ ') + nm(i);
+        const c = el('div', 'wp2' + (alive[i] ? '' : ' dead') + (i === 0 ? ' me' : '') + (i === speaker && alive[i] && phase === 'day' ? ' talk' : '')), av = el('span', 'wav'), b = el('b'), sm = el('small');
+        av.textContent = alive[i] ? AV[i] : '💀'; b.textContent = nm(i);
         let tag = '';
         if (i === 0) tag = RN[roles[0]];
         else if (!alive[i]) tag = RN[roles[i]];
         else if (i === mate) tag = '共有者(味方)';
         else if (wmates.indexOf(i) >= 0) tag = '仲間の人狼';
         else if (co[i]) tag = RN[co[i]] + 'CO';
-        b.textContent = tag; c.append(a, b);
+        sm.textContent = tag; c.append(av, b, sm);
         if (alive[i] && i !== 0 && phase === 'day') { const m = el('i', 'wsus'), v = susp(i); m.style.setProperty('--v', Math.round(v * 100) + '%'); m.title = '疑われ度'; c.append(m); }
         box.append(c);
       }
-      k('score').textContent = String(score); k('day').textContent = day + '日目 / ' + round + '戦目';
-      k('role').textContent = 'あなた: ' + RN[roles[0]];
+      k('score').textContent = String(score); k('day').textContent = round + '戦目 / ' + N + '人';
+      k('role').textContent = 'あなた: ' + (RI[roles[0]] || '') + ' ' + (RN[roles[0]] || '');
+      const ph = phase === 'night' ? 'night' : phase === 'vote' ? 'vote' : phase === 'day' ? 'day' : 'idle';
+      root.dataset.ph = ph;
+      k('ban').textContent = ph === 'night' ? '🌙 ' + day + '日目の夜' : ph === 'vote' ? '🗳️ ' + day + '日目 投票' : ph === 'day' ? '☀️ ' + day + '日目 話し合い' : '🐺 人狼ゲーム';
     }
-    function acts(list) { const box = k('acts'); box.textContent = ''; list.forEach(([l, fn]) => { const x = el('button', 'btn mini'); x.type = 'button'; x.textContent = l; x.addEventListener('click', fn); box.append(x); }); }
-    function pick(prompt, cands, cb, extra) { say(prompt, 'sys'); acts(cands.map((i) => [nm(i), () => { acts([]); cb(i); }]).concat(extra || [])); }
+    function showRole(cb) {
+      const r = roles[0], ov = el('div', 'wf-ov', '<div class="wf-card"><div class="big"></div><h3></h3><p></p><button class="btn" type="button">はじめる</button></div>');
+      ov.querySelector('.big').textContent = RI[r]; ov.querySelector('h3').textContent = 'あなたは【' + RN[r] + '】'; ov.querySelector('p').textContent = RD[r] + (mate >= 0 ? ' 仲間の共有者は ' + nm(mate) + ' 。' : '') + (r === 'wolf' && wmates.length ? ' 仲間の人狼は ' + wmates.map(nm).join('、') + ' 。' : '');
+      ov.querySelector('button').addEventListener('click', () => { ov.remove(); cb(); });
+      root.append(ov);
+    }
+    function acts(list) { const box = k('acts'); box.textContent = ''; list.forEach(([l, fn]) => { const x = el('button', 'wbtn'); x.type = 'button'; x.textContent = l; x.addEventListener('click', fn); box.append(x); }); }
+    function pick(prompt, cands, cb, extra) { say(prompt, 'sys'); acts(cands.map((i) => [AV[i] + ' ' + nm(i), () => { acts([]); cb(i); }]).concat(extra || [])); }
     function setup() {
       N = mode; NAMES = ALLN.slice(0, N); hist = []; asked = []; wmates = []; nq = 0;
       let pool;
@@ -5498,7 +5634,7 @@
       say('あなたは【' + RN[roles[0]] + '】。' + RD[roles[0]], 'res');
       if (mate >= 0) say('もう1人の共有者は ' + nm(mate) + ' です。', 'res');
       if (roles[0] === 'wolf') say(wmates.length ? '仲間の人狼は ' + wmates.map(nm).join('、') + ' です。' : '人狼はあなた1人です。', 'res');
-      T.later(night, 1100);
+      showRole(night);
     }
     function winner() {
       const al = aliveList(), w = al.filter((i) => roles[i] === 'wolf').length, h = al.length - w;
@@ -5861,6 +5997,61 @@
     }
     return { start() { score = wins = draws = 0; over = false; k('score').textContent = '0'; newRound(); }, pause() {}, resume() {}, destroy() { clearTimeout(timer); } };
   }
+  const ICON_CUPS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><path d="M10 18h16l3 26H7zM34 18h16l3 26H31z" fill="#ff8a5e"/><path d="M30 50l3 4 3-4z" fill="#ffd45e"/></svg>';
+
+  /* --- コップあて --- */
+  function createCups(stage, api) {
+    const { root, k } = sgBuild(stage, 0); k('tm').parentNode.remove();
+    const body = k('body'); body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="sg-cups" data-k="c"></div><div class="sg-hint" data-k="lv"></div>';
+    const T = mkTimers(), box = k('c'), slots = [0, 1, 2], pieces = [];
+    let score = 0, level = 1, lives = 2, ball = 0, phase = 'idle', ok = 0;
+    for (let i = 0; i < 3; i++) {
+      const w = el('div', 'sg-cp'), bl = el('i', 'sg-ball'), cup = el('button', 'sg-cup'); cup.type = 'button'; cup.setAttribute('aria-label', 'コップ' + (i + 1));
+      bl.textContent = '⭐'; w.append(bl, cup); box.append(w); pieces.push({ w, bl, cup });
+      cup.addEventListener('click', () => choose(i));
+    }
+    const place = (dur) => pieces.forEach((p, i) => { p.w.style.transitionDuration = dur + 's'; p.w.style.left = slots[i] * 33.3 + '%'; });
+    function swapOnce(dur) { const a = rndInt(0, 2); let b = rndInt(0, 2); while (b === a) b = rndInt(0, 2); const t = slots[a]; slots[a] = slots[b]; slots[b] = t; place(dur); A.beep(300 + rndInt(0, 5) * 40, 0.04, 'sine', 0.03); }
+    function round() {
+      phase = 'show'; ball = rndInt(0, 2); k('h').textContent = 'ほしの場所をおぼえて…'; k('lv').textContent = 'ラウンド ' + level + ' ・ ライフ ' + '♥'.repeat(lives);
+      pieces.forEach((p) => { p.cup.classList.remove('up', 'right', 'wrong'); p.bl.style.opacity = '0'; }); slots[0] = 0; slots[1] = 1; slots[2] = 2; place(0.2);
+      pieces[ball].bl.style.opacity = '1'; T.later(() => pieces[ball].cup.classList.add('up'), 350);
+      T.later(() => { pieces[ball].cup.classList.remove('up'); }, 1400);
+      T.later(() => { pieces[ball].bl.style.opacity = '0'; k('h').textContent = 'シャッフル!'; phase = 'shuffle'; let n = 4 + level * 2, dur = Math.max(0.16, 0.5 - level * 0.04), i = 0; const go = () => { if (i++ >= n) { phase = 'pick'; k('h').textContent = 'ほしはどれ? タップしてね'; return; } swapOnce(dur); T.later(go, dur * 1000 + 60); }; go(); }, 1900);
+    }
+    function choose(i) {
+      if (phase !== 'pick') return; phase = 'result'; const hit = i === ball; pieces[ball].bl.style.opacity = '1'; pieces[ball].cup.classList.add('up'); if (!hit) pieces[i].cup.classList.add('wrong');
+      if (hit) { ok++; score += 20 + level * 10; level++; k('score').textContent = String(score); k('h').textContent = 'あたり! +' + (20 + (level - 1) * 10); A.beep(784, 0.12, 'triangle', 0.06); T.later(round, 1100); }
+      else { lives--; k('h').textContent = 'はずれ…'; A.beep(180, 0.25, 'sawtooth', 0.06); if (lives <= 0) T.later(() => { sgEndJingle(); api.end(score, [['あたり', ok], ['ラウンド', level]]); }, 1200); else T.later(round, 1300); }
+    }
+    return { start() { T.clear(); score = 0; level = 1; lives = 2; ok = 0; k('score').textContent = '0'; k('msg').textContent = ''; round(); }, pause() { T.pause(); }, resume() { T.resume(); }, destroy() { T.clear(); } };
+  }
+  const ICON_NUMT = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><g font-size="15" font-weight="700" text-anchor="middle"><rect x="8" y="8" width="20" height="20" rx="5" fill="#2d3590"/><rect x="32" y="8" width="20" height="20" rx="5" fill="#6fe3cf"/><rect x="8" y="32" width="20" height="20" rx="5" fill="#2d3590"/><rect x="32" y="32" width="20" height="20" rx="5" fill="#2d3590"/><text x="18" y="24" fill="#fff">3</text><text x="42" y="24" fill="#123">1</text><text x="18" y="48" fill="#fff">2</text><text x="42" y="48" fill="#fff">4</text></g></svg>';
+
+  /* --- すうじタッチ --- */
+  function createNumTouch(stage, api) {
+    const { root, k } = sgBuild(stage, 45), body = k('body');
+    body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="sg-nums" data-k="g"></div>';
+    let score = 0, clears = 0, need = 1, size = 3, bestSize = 3;
+    const clock = sgClock(k, 45, () => { sgEndJingle(); api.end(score, [['クリア', clears], ['さいだい', bestSize + '×' + bestSize]]); });
+    function board() {
+      need = 1; const g = k('g'); g.textContent = ''; g.style.gridTemplateColumns = 'repeat(' + size + ',1fr)';
+      k('h').textContent = '1から ' + size * size + ' まで じゅんばんにタップ!';
+      shuffle(Array.from({ length: size * size }, (_, i) => i + 1)).forEach((n) => {
+        const b = el('button', 'sg-n'); b.type = 'button'; b.textContent = String(n); b.style.fontSize = (size > 4 ? 22 : 28) + 'px';
+        b.addEventListener('pointerdown', (e) => { e.preventDefault(); tap(b, n); }); g.append(b);
+      });
+    }
+    function tap(b, n) {
+      if (clock.over || b.classList.contains('done')) return;
+      if (n === need) {
+        b.classList.add('done'); need++; score += 3; A.beep(400 + n * 25, 0.04, 'triangle', 0.05); k('score').textContent = String(score);
+        if (need > size * size) { clears++; score += size * size * 3; bestSize = Math.max(bestSize, size); clock.add(size); k('msg').textContent = 'クリア! +' + size + '秒'; sgFb(body, true); size = Math.min(5, size + (clears % 2 === 0 ? 1 : 0)); k('score').textContent = String(score); setTimeout(() => { if (!clock.over) board(); }, 350); }
+      } else { clock.add(-1); sgFb(body, false); b.classList.add('ng'); setTimeout(() => b.classList.remove('ng'), 250); }
+    }
+    return { start() { score = clears = 0; size = 3; bestSize = 3; k('score').textContent = '0'; k('msg').textContent = ''; board(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); } };
+  }
+
   const ICON_SEVENS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><rect x="8" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="8" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="10" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="19" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="30" y="25" width="11" height="15" rx="2" fill="#ffd45e"/><rect x="43" y="27" width="9" height="12" rx="2" fill="#fffdf5"/><rect x="8" y="44" width="9" height="10" rx="2" fill="#fffdf5" opacity="0.5"/><rect x="30" y="43" width="11" height="12" rx="2" fill="#ffd45e"/></svg>';
   const ICON_DAIFUGO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1b5e3b"/><g transform="rotate(-14 20 34)"><rect x="8" y="14" width="24" height="34" rx="4" fill="#fffdf5"/><text x="20" y="38" font-size="18" font-weight="700" fill="#222" text-anchor="middle">8</text></g><g transform="rotate(4 32 34)"><rect x="22" y="12" width="24" height="34" rx="4" fill="#fffdf5"/><text x="34" y="36" font-size="18" font-weight="700" fill="#c8283c" text-anchor="middle">2</text></g><text x="46" y="20" font-size="14" text-anchor="middle">👑</text></svg>';
   const ICON_WOLF = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#1a0c2e"/><circle cx="42" cy="16" r="8" fill="#ffe9a8"/><circle cx="46" cy="14" r="7" fill="#1a0c2e"/><path d="M12 48l4-18 7 8 7-14 7 14 7-8 4 18z" fill="#6a3fa8"/><circle cx="24" cy="38" r="2" fill="#ff6b81"/><circle cx="36" cy="38" r="2" fill="#ff6b81"/></svg>';
@@ -7726,8 +7917,10 @@
     ['なぞなぞ', 'ふとんが吹っ飛んだ、これは?', 'ダジャレ', '台風', '地震', 'おばけ', 1]
   ];
 
+  const TRIVIA4 = [["アニメ","ドラえもんの好物は?","どら焼き","大福","まんじゅう","せんべい",0],["アニメ","ドラえもんが道具を出すポケットは?","四次元ポケット","魔法のポケット","宇宙ポケット","未来ポケット",0],["アニメ","ジャイアン(ドラえもん)の本名は?","剛田武","剛田剛","武田剛","河合武",1],["アニメ","『サザエさん』の磯野家で飼われている猫の名前は?","タマ","ミケ","クロ","シロ",0],["アニメ","サザエさんの夫の名前は?","フグ田マスオ","磯野波平","磯野ノリスケ","伊佐坂難物",1],["アニメ","アンパンマンの顔は何でできている?","あんパン","カレーパン","食パン","メロンパン",0],["アニメ","アンパンマンのライバルは?","ばいきんまん","どきんちゃん","しょくぱんまん","カバオくん",0],["アニメ","『ちびまる子ちゃん』の舞台は何県?","静岡県","愛知県","神奈川県","千葉県",1],["アニメ","『ちびまる子ちゃん』で、いつもお金持ちのクラスメートは?","花輪くん","永沢くん","藤木くん","山田くん",0],["アニメ","『クレヨンしんちゃん』のしんのすけが住むのは何県?","埼玉県","東京都","神奈川県","千葉県",1],["アニメ","『ONE PIECE』の主人公は?","モンキー・D・ルフィ","ロロノア・ゾロ","ナミ","サンジ",0],["アニメ","ルフィが食べた悪魔の実は?","ゴムゴムの実","メラメラの実","ヒエヒエの実","スナスナの実",1],["アニメ","ルフィが船長をつとめる海賊団は?","麦わらの一味","ハートの海賊団","赤髪海賊団","白ひげ海賊団",0],["アニメ","『ドラゴンボール』の主人公は?","孫悟空","ベジータ","ピッコロ","クリリン",0],["アニメ","孫悟空の種族は?","サイヤ人","ナメック星人","地球人","フリーザ族",1],["アニメ","『ドラゴンボール』を7つ集めると?","願いがかなう","空を飛べる","宝箱が開く","タイムマシンが出る",0],["アニメ","『ナルト』の主人公・うずまきナルトの里は?","木ノ葉隠れの里","砂隠れの里","霧隠れの里","雲隠れの里",1],["アニメ","『鬼滅の刃』の主人公は?","竈門炭治郎","我妻善逸","嘴平伊之助","冨岡義勇",0],["アニメ","炭治郎の妹の名前は?","禰豆子","胡蝶しのぶ","甘露寺蜜璃","栗花落カナヲ",0],["アニメ","『名探偵コナン』の主人公の本当の名前は?","工藤新一","服部平次","黒羽快斗","毛利小五郎",0],["アニメ","コナンは薬を飲まされて、どうなった?","体が小さくなった","透明になった","空を飛べるようになった","動物に変身した",0],["アニメ","『ポケットモンスター』アニメの主人公は?","サトシ","シゲル","タケシ","カスミ",0],["アニメ","ピカチュウが進化すると?","ライチュウ","ピチュー","カビゴン","ライコウ",1],["アニメ","『スラムダンク』主人公の桜木花道が通う高校は?","湘北高校","陵南高校","海南大附属","山王工業",1],["アニメ","『ハイキュー!!』で行う競技は?","バレーボール","バスケットボール","バドミントン","卓球",0],["アニメ","『進撃の巨人』の主人公は?","エレン・イェーガー","リヴァイ","ミカサ","アルミン",0],["アニメ","『呪術廻戦』の主人公は?","虎杖悠仁","五条悟","伏黒恵","釘崎野薔薇",1],["アニメ","『僕のヒーローアカデミア』の主人公は?","緑谷出久","爆豪勝己","轟焦凍","飯田天哉",1],["アニメ","『新世紀エヴァンゲリオン』で、人類の敵として現れるのは?","使徒","怪獣","魔王","宇宙人",1],["アニメ","『新世紀エヴァンゲリオン』の主人公は?","碇シンジ","綾波レイ","渚カヲル","加持リョウジ",1],["アニメ","『機動戦士ガンダム』の主人公は?","アムロ・レイ","シャア・アズナブル","カミーユ・ビダン","ジュドー・アーシタ",1],["アニメ","『美少女戦士セーラームーン』の主人公は?","月野うさぎ","水野亜美","火野レイ","愛野美奈子",1],["アニメ","『千と千尋の神隠し』で、千尋が働く場所は?","油屋(湯屋)","魔女の店","天空の城","森の工房",1],["アニメ","『となりのトトロ』の姉妹の名前は?","サツキとメイ","キキとジジ","ナウシカとシータ","ハウルとソフィー",0],["アニメ","『魔女の宅急便』の主人公キキの相棒の黒猫は?","ジジ","ルナ","タマ","ミケ",1],["アニメ","『もののけ姫』『千と千尋の神隠し』などの監督は?","宮崎駿","高畑勲","細田守","新海誠",1],["アニメ","『君の名は。』の監督は?","新海誠","宮崎駿","細田守","庵野秀明",1],["アニメ","『ルパン三世』でルパンが乗る愛車として有名なのは?","フィアット500","ミニクーパー","フォルクスワーゲン・ビートル","ジープ",2],["アニメ","『SPY×FAMILY』のアーニャの特技は?","人の心が読める","空を飛べる","怪力","変身できる",0],["アニメ","『SPY×FAMILY』ロイドのスパイとしてのコードネームは?","黄昏","夜明け","夕焼け","月夜",1],["アニメ","『葬送のフリーレン』の主人公フリーレンの種族は?","エルフ","人間","ドワーフ","魔族",1],["アニメ","『HUNTER×HUNTER』の主人公は?","ゴン=フリークス","キルア=ゾルディック","クラピカ","レオリオ",1],["アニメ","『DEATH NOTE』の主人公は?","夜神月","L","ニア","弥海砂",1],["アニメ","『ジョジョの奇妙な冒険』に登場する「スタンド」とは?","本人のそばに現れる超能力のビジョン","空飛ぶ乗り物","魔法の剣","食べ物の名前",2],["アニメ","『ワンパンマン』主人公・サイタマの特徴は?","どんな敵も1発のパンチで倒す","空を飛ぶ","時間を止める","分身する",0],["アニメ","『アルプスの少女ハイジ』の舞台となる山は?","アルプス","ヒマラヤ","ロッキー","アンデス",0],["ゲーム","マリオの弟の名前は?","ルイージ","ワリオ","ヨッシー","キノピオ",0],["ゲーム","マリオがいつも助けに行くお姫様は?","ピーチ姫","ゼルダ姫","デイジー姫","ロゼッタ",0],["ゲーム","マリオの宿敵の大魔王は?","クッパ","ガノンドロフ","ワリオ","ドンキーコング",0],["ゲーム","マリオが大きくなるアイテムは?","スーパーキノコ","ファイアフラワー","スター","コイン",0],["ゲーム","初登場の『ドンキーコング』(1981年)でのマリオの職業は?","大工","配管工","医者","消防士",2],["ゲーム","マリオを生み出したゲームデザイナーは?","宮本茂","堀井雄二","桜井政博","小島秀夫",1],["ゲーム","『ゼルダの伝説』の主人公は?","リンク","ゼルダ","ガノン","ミドナ",1],["ゲーム","『ゼルダの伝説』で、魔王を倒す力を持つ剣は?","マスターソード","エクスカリバー","草薙剣","ロトの剣",1],["ゲーム","『星のカービィ』の主な能力は?","敵を吸い込んでコピーする","炎をはく","分身する","時間を止める",0],["ゲーム","カービィの生みの親は?","桜井政博","宮本茂","堀井雄二","坂口博信",2],["ゲーム","『どうぶつの森』で、借金の相手は?","たぬきち","しずえ","ブーケ","ジングル",0],["ゲーム","『スプラトゥーン』のナワバリバトルは何をきそう?","インクでぬった面積","倒した人数","集めたコイン","走った距離",0],["ゲーム","『ドラゴンクエスト』シリーズの代表的なモンスター「スライム」の色は?","青","緑","赤","黄",0],["ゲーム","『ドラゴンクエスト』の音楽を作曲したのは?","すぎやまこういち","植松伸夫","久石譲","近藤浩治",2],["ゲーム","『ファイナルファンタジー』シリーズに登場する大きな鳥は?","チョコボ","ホーホー","ピジョン","クックル",0],["ゲーム","RPGは何の略?","ロールプレイングゲーム","ランニングプレイゲーム","ロボットパズルゲーム","リアルポイントゲーム",0],["ゲーム","『ストリートファイター』で「波動拳」を使う代表キャラは?","リュウ","ガイル","ブランカ","ザンギエフ",1],["ゲーム","『パックマン』を追いかけてくる敵は?","ゴースト(おばけ)","ロボット","ネコ","ドラゴン",0],["ゲーム","『テトリス』が最初に作られた国は?","ソビエト連邦(ロシア)","日本","アメリカ","ドイツ",2],["ゲーム","『ぷよぷよ』で、同じ色のぷよが何個つながると消える?","4個","3個","5個","6個",0],["ゲーム","『Minecraft』で、近づくと爆発するモンスターは?","クリーパー","ゾンビ","スケルトン","エンダーマン",0],["ゲーム","『Among Us』で、乗組員のふりをして仲間をおそうのは?","インポスター","クルーメイト","ゴースト","ハンター",1],["ゲーム","『ソニック・ザ・ヘッジホッグ』のソニックは何の動物?","ハリネズミ","キツネ","ウサギ","ネズミ",1],["ゲーム","『ソニック』シリーズを作った会社は?","セガ","任天堂","カプコン","コナミ",1],["ゲーム","『モンスターハンター』を作った会社は?","カプコン","セガ","コナミ","バンダイナムコ",1],["ゲーム","『バイオハザード』のジャンルは?","ホラー(サバイバルホラー)","野球","料理","音楽",0],["ゲーム","『大乱闘スマッシュブラザーズ』の勝ち方の特徴は?","相手を場外にふっとばす","ゴールまで先に走る","パズルを先に解く","お金を多く集める",0],["ゲーム","『ポケモンGO』の特徴は?","現実の街を歩いてポケモンをつかまえる","ポケモン同士を合体させる","ポケモンを育てて売る","ポケモンの絵をかく",0],["ゲーム","『マリオカート』の青いこうら(トゲゾーこうら)がねらうのは?","1位のプレイヤー","最下位のプレイヤー","自分","ランダム",2],["ゲーム","ファミリーコンピュータ(ファミコン)が発売されたのは?","1983年","1975年","1990年","2000年",2],["ゲーム","プレイステーションを作った会社は?","ソニー","任天堂","セガ","マイクロソフト",0],["ゲーム","Xboxを作った会社は?","マイクロソフト","ソニー","任天堂","アップル",0],["ゲーム","任天堂のゲーム機ではないのは?","プレイステーション","スーパーファミコン","ニンテンドーDS","Wii",0],["ゲーム","みずタイプのポケモンに「こうかばつぐん」なのは?","でんきタイプ","ほのおタイプ","ノーマルタイプ","ひこうタイプ",1],["ゲーム","ほのおタイプのポケモンに「こうかばつぐん」なのは?","みずタイプ","くさタイプ","こうりタイプ","むしタイプ",1],["ゲーム","ポケモンの初代の主人公のライバルのほか、旅立ちを手伝う博士は?","オーキド博士","ウツギ博士","オダマキ博士","ナナカマド博士",1],["ゲーム","ポケモンの初代御三家に含まれないのは?","ピカチュウ","ヒトカゲ","ゼニガメ","フシギダネ",1],["ゲーム","「eスポーツ」とは?","ゲームで競い合う競技","電子書籍の読書会","電気をつかう運動","英語の体育",0],["ゲーム","『フォートナイト』のゲームジャンルは?","バトルロイヤル","パズル","育成シミュレーション","リズムゲーム",1],["ゲーム","『太鼓の達人』を作っている会社は?","バンダイナムコ","コナミ","カプコン","セガ",2],["ゲーム","『妖怪ウォッチ』の主人公ケータの相棒の妖怪は?","ウィスパー","ジバニャン","コマさん","ブシニャン",1],["歴史","本能寺の変で織田信長をたおしたのは?","明智光秀","豊臣秀吉","徳川家康","石田三成",0],["歴史","桶狭間の戦いで織田信長が破った大名は?","今川義元","武田信玄","上杉謙信","浅井長政",1],["歴史","「風林火山」の旗で知られる戦国大名は?","武田信玄","上杉謙信","織田信長","伊達政宗",1],["歴史","「独眼竜」とよばれた戦国大名は?","伊達政宗","真田幸村","前田利家","毛利元就",1],["歴史","関ヶ原の戦いがあった年は?","1600年","1582年","1615年","1868年",2],["歴史","農民から刀を取り上げた豊臣秀吉の政策は?","刀狩","検地","鎖国","楽市楽座",1],["歴史","日本に鉄砲が伝わった島は?","種子島","屋久島","淡路島","佐渡島",1],["歴史","日本にキリスト教を伝えた宣教師は?","フランシスコ・ザビエル","ペリー","マルコ・ポーロ","コロンブス",0],["歴史","江戸時代の鎖国中に、長崎で貿易を許されたのは?","オランダと中国(清)","イギリスとスペイン","アメリカとロシア","フランスとドイツ",1],["歴史","黒船で日本にやってきたペリーはどこの国の人?","アメリカ","イギリス","ロシア","オランダ",0],["歴史","ペリーが浦賀に来航した年は?","1853年","1868年","1789年","1900年",2],["歴史","将軍が政権を朝廷に返した出来事は?","大政奉還","廃藩置県","版籍奉還","刀狩",2],["歴史","日本の初代内閣総理大臣は?","伊藤博文","大隈重信","板垣退助","山県有朋",2],["歴史","大日本帝国憲法が発布された年は?","1889年","1868年","1912年","1945年",2],["歴史","日露戦争で日本が戦った相手は?","ロシア","中国","アメリカ","イギリス",1],["歴史","最初の東京オリンピックが開かれた年は?","1964年","1945年","1972年","1988年",1],["歴史","元号が「平成」に変わった年は?","1989年","1975年","2000年","1964年",1],["歴史","元号が「令和」になった年は?","2019年","2010年","2020年","2015年",0],["歴史","平安京に都をうつした天皇は?","桓武天皇","聖武天皇","天武天皇","推古天皇",2],["歴史","遣隋使として隋に送られたのは?","小野妹子","鑑真","最澄","空海",1],["歴史","大化の改新を中大兄皇子とともに進めたのは?","中臣鎌足","蘇我入鹿","小野妹子","空海",2],["歴史","壇ノ浦の戦いで滅んだのは?","平氏","源氏","藤原氏","蘇我氏",1],["歴史","元寇(蒙古襲来)のとき、鎌倉幕府の執権だったのは?","北条時宗","北条政子","足利尊氏","源義経",2],["歴史","土佐藩出身で、薩長同盟に力をつくしたのは?","坂本龍馬","西郷隆盛","木戸孝允","勝海舟",1],["歴史","幕末に京都で活躍した新選組の局長は?","近藤勇","土方歳三","沖田総司","芹沢鴨",2],["歴史","ピラミッドは何のためにつくられた?","王の墓","倉庫","灯台","市場",0],["歴史","万里の長城をつないだとされる中国の皇帝は?","始皇帝","康熙帝","劉邦","毛沢東",2],["歴史","1492年、コロンブスがたどりついたのは?","アメリカ大陸(カリブ海の島)","インド","中国","オーストラリア",1],["歴史","ナポレオンはどこの国の皇帝?","フランス","イギリス","ドイツ","スペイン",0],["歴史","第二次世界大戦中のドイツの指導者は?","ヒトラー","ムッソリーニ","スターリン","チャーチル",1],["政治","国会がもつ、法律をつくる権限を何という?","立法権","行政権","司法権","警察権",1],["政治","三権分立で、法律にもとづいて政治を行うのは?","内閣","国会","裁判所","都道府県",1],["政治","日本の内閣のトップは?","内閣総理大臣","天皇","衆議院議長","最高裁判所長官",0],["政治","内閣総理大臣を指名するのは?","国会","国民投票","最高裁判所","都道府県知事",1],["政治","内閣総理大臣を任命するのは?","天皇","国会議長","最高裁判所長官","国民",2],["政治","日本で選挙権が得られるのは何歳から?","18歳","20歳","16歳","25歳",0],["政治","衆議院議員の任期は?","4年","6年","3年","5年",1],["政治","参議院議員の任期は?","6年","4年","8年","3年",1],["政治","国会は衆議院と何で成り立っている?","参議院","貴族院","元老院","枢密院",1],["政治","日本国憲法の三大原則にないのは?","軍国主義","国民主権","平和主義","基本的人権の尊重",1],["政治","戦争の放棄を定めた日本国憲法の条文は?","第9条","第1条","第25条","第99条",1],["政治","憲法記念日は何月何日?","5月3日","11月3日","2月11日","1月1日",1],["政治","憲法を改正するとき、最後に必要な手続きは?","国民投票","内閣の決定のみ","天皇の署名のみ","裁判所の許可",2],["政治","国民の三大義務に入らないのは?","投票","納税","勤労","子どもに教育を受けさせる",2],["政治","日本国と国民統合の「象徴」とされるのは?","天皇","内閣総理大臣","国会","最高裁判所",1],["政治","国の予算案をつくるのは?","内閣","国会","裁判所","日本銀行",2],["政治","政権を担当している政党を何という?","与党","野党","少数党","第三党",1],["政治","選挙のとき、政党や候補者が有権者に約束する政策をまとめたものは?","マニフェスト(公約)","パンフレット","ポスター","アンケート",2],["政治","都道府県のトップは?","知事","市長","町長","大臣",0],["政治","市のトップは?","市長","知事","村長","議長",0],["政治","日本の国会議事堂があるのは?","東京都","大阪府","京都府","愛知県",0],["政治","最高裁判所の裁判官を国民が審査する制度は?","国民審査","国民投票","住民投票","世論調査",2],["政治","学校の教育などを担当する省は?","文部科学省","厚生労働省","国土交通省","外務省",1],["政治","外国との交渉を担当する省は?","外務省","総務省","財務省","法務省",1],["政治","国連(国際連合)の本部があるのは?","ニューヨーク","ジュネーブ","パリ","ロンドン",1],["政治","国連の安全保障理事会の常任理事国は何か国?","5か国","3か国","10か国","7か国",2],["政治","EUは主にどの地域の国々の連合?","ヨーロッパ","アジア","アフリカ","南アメリカ",1],["政治","アメリカ大統領の任期は1期何年?","4年","6年","5年","3年",1],["政治","買い物をするとかかる、物やサービスにかかる税金は?","消費税","所得税","相続税","固定資産税",1],["ドラマ・芸能","ドラマ『半沢直樹』の決めゼリフは?","倍返しだ","百倍返しだ","恩返しだ","半分返しだ",0],["ドラマ・芸能","ドラマ『ドクターX』の大門未知子の決めゼリフは?","私、失敗しないので","倍返しだ","事件は現場で起きている","じっちゃんの名にかけて",1],["ドラマ・芸能","『踊る大捜査線』の主人公・青島俊作の職業は?","刑事","医者","教師","弁護士",1],["ドラマ・芸能","『相棒』の主人公(特命係)は?","杉下右京","古畑任三郎","青島俊作","半沢直樹",1],["ドラマ・芸能","『古畑任三郎』のように、犯人が最初から分かっているミステリーの形式は?","倒叙(とうじょ)","回想","逆転","番外",2],["ドラマ・芸能","『水戸黄門』の印籠に描かれているのは?","葵の御紋","菊の御紋","桜の花","桐の花",1],["ドラマ・芸能","NHKの朝の連続ドラマの愛称は?","朝ドラ","昼ドラ","大河","夜ドラ",0],["ドラマ・芸能","NHKの1年かけて放送する歴史ドラマシリーズは?","大河ドラマ","朝ドラ","時代劇劇場","歴史ミステリー",0],["ドラマ・芸能","大みそかの夜に放送されるNHKの歌番組は?","紅白歌合戦","Mステ","歌のトップテン","のど自慢",0],["ドラマ・芸能","毎週日曜夕方の長寿番組『笑点』は、何をする番組?","大喜利","マラソン","料理対決","クイズ",0],["ドラマ・芸能","漫才で、ボケに対してつっこむ役は?","ツッコミ","オチ","サゲ","前フリ",0],["ドラマ・芸能","『M-1グランプリ』は何の大会?","漫才","コント","ピン芸","落語",1],["ドラマ・芸能","落語の最後にくるしめくくりを何という?","オチ(サゲ)","前座","枕","出囃子",1],["ドラマ・芸能","映画『男はつらいよ』の主人公の名前は?","車寅次郎","山田太郎","島耕作","浜崎伝助",1],["ドラマ・芸能","『ウルトラマン』が地球で活動できる時間は?","3分","5分","10分","1分",1],["ドラマ・芸能","『ウルトラマン』の必殺技は?","スペシウム光線","かめはめ波","ライダーキック","ロケットパンチ",1],["ドラマ・芸能","初代『ゴジラ』映画が公開された年は?","1954年","1945年","1964年","1975年",2],["ドラマ・芸能","アカデミー賞のトロフィーの愛称は?","オスカー","グラミー","トニー","エミー",1],["ドラマ・芸能","グラミー賞はどの分野の賞?","音楽","映画","演劇","テレビ",1],["ドラマ・芸能","『千と千尋の神隠し』が受賞したアメリカの賞は?","アカデミー長編アニメーション賞","アカデミー作品賞","アカデミー主演女優賞","アカデミー監督賞",2],["ドラマ・芸能","『ゴジラ-1.0』が2024年に受賞したアカデミー賞の部門は?","視覚効果賞","作品賞","脚本賞","作曲賞",2],["ドラマ・芸能","『ハリー・ポッター』の主人公が通う魔法学校は?","ホグワーツ魔法魔術学校","ボーバトン","ダームストラング","アズカバン",1],["ドラマ・芸能","ディズニーのミッキーマウスの恋人は?","ミニーマウス","デイジー","クララベル","ミッキーの妹",0],["音楽","ふつうのギターの弦は何本?","6本","4本","8本","12本",0],["音楽","ふつうのバイオリンの弦は何本?","4本","3本","6本","8本",1],["音楽","オーケストラで指揮者がふるものは?","指揮棒","マレット","バチ","スティック",0],["音楽","交響曲第5番「運命」を作った作曲家は?","ベートーヴェン","モーツァルト","バッハ","ショパン",1],["音楽","「トルコ行進曲」で知られる作曲家は?","モーツァルト","ベートーヴェン","ブラームス","ワーグナー",2],["音楽","「音楽の父」と呼ばれる作曲家は?","バッハ","ヘンデル","ハイドン","ヴィヴァルディ",1],["音楽","「ピアノの詩人」と呼ばれる作曲家は?","ショパン","リスト","ドビュッシー","シューマン",2],["音楽","楽譜の「f(フォルテ)」の意味は?","強く","弱く","だんだん速く","なめらかに",1],["音楽","楽譜の「p(ピアノ)」の意味は?","弱く","強く","速く","遅く",1],["音楽","映画『サウンド・オブ・ミュージック』に出てくる、ドレミを使った曲は?","ドレミの歌","エーデルワイス","さんぽ","ハッピーバースデー",1],["音楽","『アナと雪の女王』の大ヒット曲は?","Let It Go(ありのままで)","A Whole New World","Under the Sea","Hakuna Matata",0],["音楽","ビートルズはどこの国のバンド?","イギリス","アメリカ","オーストラリア","ドイツ",1],["音楽","「キング・オブ・ポップ」と呼ばれた歌手は?","マイケル・ジャクソン","エルヴィス・プレスリー","プリンス","ボブ・ディラン",1],["音楽","「ボヘミアン・ラプソディ」を歌ったバンドは?","クイーン","ビートルズ","ローリング・ストーンズ","エアロスミス",1],["音楽","「Dynamite」などで世界的人気の韓国のグループは?","BTS","少女時代","TWICE","BIGBANG",1],["音楽","「Shape of You」を歌ったイギリスの歌手は?","エド・シーラン","ジャスティン・ビーバー","ブルーノ・マーズ","テイラー・スウィフト",2],["音楽","『ゴジラ』のテーマ曲を作曲したのは?","伊福部昭","久石譲","坂本龍一","すぎやまこういち",2],["音楽","日本の「ドレミ」は何語から来た?","イタリア語","英語","ドイツ語","中国語",2],["J-POP","「Lemon」を歌った歌手は?","米津玄師","星野源","あいみょん","back number",1],["J-POP","「夜に駆ける」で知られる音楽ユニットは?","YOASOBI","King Gnu","Official髭男dism","Ado",1],["J-POP","「うっせぇわ」で注目された歌手は?","Ado","あいみょん","Vaundy","LiSA",1],["J-POP","「Pretender」を歌ったバンドは?","Official髭男dism","King Gnu","Mrs. GREEN APPLE","SEKAI NO OWARI",1],["J-POP","「白日」を歌ったバンドは?","King Gnu","Official髭男dism","indigo la End","OneRepublic",1],["J-POP","「パプリカ」の作詞・作曲をしたのは?","米津玄師","宇多田ヒカル","星野源","槇原敬之",2],["J-POP","「世界に一つだけの花」を歌ったグループは?","SMAP","嵐","Mr.Children","EXILE",1],["J-POP","「上を向いて歩こう」(海外では「スキヤキ」)を歌った歌手は?","坂本九","美空ひばり","石原裕次郎","北島三郎",2],["J-POP","「津軽海峡・冬景色」を歌った歌手は?","石川さゆり","都はるみ","天童よしみ","小林幸子",2],["J-POP","ボカロ曲「千本桜」でよく歌い手として使われるバーチャル歌手は?","初音ミク","鏡音リン","GUMI","巡音ルカ",1],["J-POP","「First Love」などで知られる歌手は?","宇多田ヒカル","浜崎あゆみ","安室奈美恵","倖田來未",1],["J-POP","「おどるポンポコリン」はどのアニメの主題歌?","ちびまる子ちゃん","サザエさん","クレヨンしんちゃん","ドラえもん",1],["アニソン","『鬼滅の刃』の主題歌「紅蓮華」を歌ったのは?","LiSA","Aimer","YOASOBI","あいみょん",1],["アニソン","『鬼滅の刃』劇場版 無限列車編の主題歌は?","炎(LiSA)","紅蓮華(LiSA)","残響散歌(Aimer)","怪物(YOASOBI)",2],["アニソン","「残酷な天使のテーゼ」はどのアニメの主題歌?","新世紀エヴァンゲリオン","機動戦士ガンダム","魔法少女まどか☆マギカ","攻殻機動隊",1],["アニソン","『進撃の巨人』の最初のオープニング曲「紅蓮の弓矢」を歌ったのは?","Linked Horizon","LiSA","UVERworld","SiM",2],["アニソン","『呪術廻戦』第1期オープニング「廻廻奇譚」を歌ったのは?","Eve","YOASOBI","King Gnu","Ado",2],["アニソン","『SPY×FAMILY』オープニング「ミックスナッツ」を歌ったのは?","Official髭男dism","YOASOBI","星野源","Vaundy",2],["アニソン","『葬送のフリーレン』オープニング「勇者」を歌ったのは?","YOASOBI","Eve","Ado","back number",2],["アニソン","『【推しの子】』オープニング「アイドル」を歌ったのは?","YOASOBI","Ado","あいみょん","LiSA",1],["アニソン","『ONE PIECE』初代オープニング「ウィーアー!」を歌ったのは?","きただにひろし","影山ヒロノブ","遠藤正明","JAM Project",2],["アニソン","『ドラゴンボールZ』のオープニング「CHA-LA HEAD-CHA-LA」を歌ったのは?","影山ヒロノブ","きただにひろし","遠藤正明","松本梨香",2],["アニソン","「さんぽ」(あるこう〜あるこう〜)が使われたスタジオジブリ作品は?","となりのトトロ","魔女の宅急便","千と千尋の神隠し","もののけ姫",0],["アニソン","「アンパンマンのマーチ」の作詞をしたのは?","やなせたかし","手塚治虫","藤子・F・不二雄","鳥山明",1],["アニソン","『千と千尋の神隠し』の主題歌「いつも何度でも」を歌ったのは?","木村弓","久石譲","宇多田ヒカル","中島みゆき",2],["アニソン","『君の名は。』の音楽を担当したバンドは?","RADWIMPS","BUMP OF CHICKEN","ONE OK ROCK","amazarashi",1],["アニソン","『もののけ姫』の主題歌を歌ったのは?","米良美一","加藤登紀子","井上あずみ","久石譲",2]];
   TRIVIA2.forEach((q) => TRIVIA.push(q));
   TRIVIA3.forEach((q) => TRIVIA.push(q));
+  TRIVIA4.forEach((q) => TRIVIA.push(q));
   function createTrivia(stage, api) {
     let inner = null, menu = null, genre = null;
     const gcount = {};
@@ -8672,7 +8865,7 @@
     const ncol = () => (S.level >= 2 ? 5 : 4);
     function makeState() {
       const grid = []; for (let r = 0; r < B6_R; r++) grid.push(new Array(b6w(r)).fill(-1));
-      return { mode: 'aim', t: 0, grid, score: 0, level: 0, pieces: 0, clears: 0, shapes: 0, pj: 2, piece: null, next: null, dropIn: 8, dropMax: 8, pending: 0, atkSent: 0, parts: [], pops: [], shake: 0, cpu: { balls: 14, next: 5, last: '' }, ballsFall: [], chain: 0, over: 0 };
+      return { mode: 'aim', t: 0, grid, score: 0, level: 0, pieces: 0, clears: 0, shapes: 0, pj: 2, piece: null, next: null, dropIn: 8, dropMax: 8, pending: 0, atkSent: 0, parts: [], pops: [], fall: {}, rotA: null, pjv: 2, shake: 0, cpu: { balls: 14, next: 5, last: '' }, ballsFall: [], chain: 0, over: 0 };
     }
     const rc = () => Math.floor(Math.random() * ncol());
     function newTrio() { return [rc(), rc(), rc()]; }
@@ -8683,7 +8876,7 @@
     const msg = (t) => { k('msg').textContent = t || ''; };
     const pop = (x, y, text, c, size) => S.pops.push({ x, y, text, c, size: size || 16, life: 0 });
     function move(d) { if (S.mode !== 'aim') return; S.pj = clampN(S.pj + d, 0, B6_COLS - 2); A.beep(440, 0.03, 'sine', 0.03); }
-    function rot() { if (S.mode !== 'aim' || !S.piece) return; S.piece = [S.piece[2], S.piece[0], S.piece[1]]; A.beep(660, 0.04, 'triangle', 0.04); }
+    function rot() { if (S.mode !== 'aim' || !S.piece) return; S.rotA = { old: S.piece.slice(), t: 0 }; S.piece = [S.piece[1], S.piece[2], S.piece[0]]; A.beep(660, 0.04, 'triangle', 0.04); }
     function drop() {
       if (S.mode !== 'aim' || !S.piece) return;
       const g = S.grid, rb = B6_R - 3, j = S.pj, p = S.piece;
@@ -8701,7 +8894,7 @@
         const fr = bl.filter((p) => g[p[0]][p[1]] < 0); if (!fr.length) continue;
         const key = r + ',' + j, tx = S.tx && S.tx[key] != null ? S.tx[key] : xOf(r, j);
         fr.sort((a, b) => Math.abs(xOf(a[0], a[1]) - tx) - Math.abs(xOf(b[0], b[1]) - tx) || (r % 2 ? 1 : -1) * (xOf(b[0], b[1]) - xOf(a[0], a[1])));
-        const t = fr[0]; g[t[0]][t[1]] = g[r][j]; g[r][j] = -1; if (S.tx) { S.tx[t[0] + ',' + t[1]] = tx; delete S.tx[key]; } moved = true;
+        const t = fr[0]; g[t[0]][t[1]] = g[r][j]; g[r][j] = -1; S.fall[t[0] + ',' + t[1]] = { fx: xOf(r, j), fr: r, age: 0 }; if (S.tx) { S.tx[t[0] + ',' + t[1]] = tx; delete S.tx[key]; } moved = true;
       }
       return moved;
     }
@@ -8781,6 +8974,8 @@
     function update(dt) {
       S.t += dt; S.level = Math.min(4, Math.floor(S.t / 40));
       if (S.mode !== 'over') cpuTick(dt);
+      S.pjv += (S.pj - S.pjv) * Math.min(1, dt * 22); if (S.rotA) { S.rotA.t += dt; if (S.rotA.t >= 0.13) S.rotA = null; }
+      for (const kk in S.fall) { S.fall[kk].age += dt; if (S.fall[kk].age >= 0.075) delete S.fall[kk]; }
       if (S.mode === 'aim') { S.dropIn -= dt; if (S.dropIn <= 0) drop(); }
       else if (S.mode === 'settle') { S.stepT += dt; if (S.stepT >= 0.075) { S.stepT = 0; if (!settleStep()) { S.tx = null; resolve(); } } }
       else if (S.mode === 'after') {
@@ -8801,10 +8996,14 @@
       ctx.fillStyle = 'rgba(8,10,40,0.55)'; const bx = g.x0 - g.d * 0.65, bw = g.d * (B6_COLS - 1) + g.d * 1.3, by = g.y0 - g.d * 0.7, bh = (B6_R - 1) * g.d * 0.866 + g.d * 1.4; rrect(ctx, bx, by, bw, bh, 12); ctx.fill();
       const dly = site(B6_DL, 0, g).y - g.d * 0.45; ctx.save(); ctx.setLineDash([8, 6]); ctx.strokeStyle = '#ff6b81'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(bx + 4, dly); ctx.lineTo(bx + bw - 4, dly); ctx.stroke(); ctx.restore();
       ctx.fillStyle = '#ff9aa8'; ctx.font = '700 10px ' + FONT; ctx.textAlign = 'left'; ctx.fillText('デッドライン', bx + 6, dly - 4);
-      for (let r = 0; r < B6_R; r++) for (let j = 0; j < b6w(r); j++) { const c = S.grid[r][j]; if (c < 0) continue; const s = site(r, j, g); ball(s.x, s.y, rad, c); }
+      for (let r = 0; r < B6_R; r++) for (let j = 0; j < b6w(r); j++) { const c = S.grid[r][j]; if (c < 0) continue; let s = site(r, j, g); const fl = S.fall[r + ',' + j]; if (fl && !reduce) { const q = clampN(fl.age / 0.075, 0, 1), fx = fl.fx + (xOf(r, j) - fl.fx) * q, fr = fl.fr + (r - fl.fr) * q; s = { x: g.x0 + fx * g.d, y: g.y0 + (B6_R - 1 - fr) * g.d * 0.866 }; } ball(s.x, s.y, rad, c); }
       if (S.piece && S.mode === 'aim') {
         const rb = B6_R - 3, j = S.pj, p = S.piece, pulse = 0.75 + 0.25 * Math.sin(time * 8);
-        [[rb, j, p[0]], [rb, j + 1, p[1]], [rb + 1, j, p[2]]].forEach(([r, jj, c]) => { const s = site(r, jj, g); ball(s.x, s.y, rad, c, 1); });
+        const jv = S.pjv, P = [site(rb, jv, g), site(rb, jv + 1, g), site(rb + 1, jv, g)], cen = { x: (P[0].x + P[1].x + P[2].x) / 3, y: (P[0].y + P[1].y + P[2].y) / 3 };
+        if (S.rotA && !reduce) {
+          const q = clampN(S.rotA.t / 0.13, 0, 1), e = 1 - (1 - q) * (1 - q), to = [2, 0, 1];
+          S.rotA.old.forEach((c, i) => { const from = P[i], dst = P[to[i]], a0 = Math.atan2(from.y - cen.y, from.x - cen.x); let a1 = Math.atan2(dst.y - cen.y, dst.x - cen.x); while (a1 < a0 - 0.01) a1 += 6.2832; while (a1 - a0 > 3.2) a1 -= 6.2832; const rr = Math.hypot(from.x - cen.x, from.y - cen.y), an = a0 + (a1 - a0) * e; ball(cen.x + Math.cos(an) * rr, cen.y + Math.sin(an) * rr, rad, c, 1); });
+        } else [[0, p[0]], [1, p[1]], [2, p[2]]].forEach(([i, c]) => ball(P[i].x, P[i].y, rad, c, 1));
         const a = site(rb, j, g), b = site(rb, j + 1, g); ctx.strokeStyle = 'rgba(255,255,255,' + (0.35 * pulse) + ')'; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.moveTo(a.x, a.y + rad); ctx.lineTo(a.x, g.y0 + (B6_R - 1) * g.d * 0.866); ctx.moveTo(b.x, b.y + rad); ctx.lineTo(b.x, g.y0 + (B6_R - 1) * g.d * 0.866); ctx.stroke(); ctx.setLineDash([]);
         const w = clampN(S.dropIn / S.dropMax, 0, 1); ctx.fillStyle = 'rgba(255,255,255,0.18)'; ctx.fillRect(bx, by - 8, bw, 4); ctx.fillStyle = w < 0.3 ? '#ff6b81' : '#ffd45e'; ctx.fillRect(bx, by - 8, bw * w, 4);
       }
@@ -9471,6 +9670,12 @@
     { id: 'ttt', name: 'まるばつ', short: 'まるばつ', desc: 'CPUと三目ならべ。つづけて勝とう。', icon: ICON_TICTAC, create: createTicTac,
       intro: 'タテ・ヨコ・ナナメに自分の⭕を3つそろえたら勝ち。まけるまで何回でも続きます。',
       how: ['あいたマスをタップ', '勝つと100点以上、ひきわけは30点', 'まけたらおしまい。勝つほどCPUが強くなる'], legend: '' },
+    { id: 'cups', name: 'コップあて', short: 'コップあて', desc: 'ほしが入ったコップを目でおいかける。', icon: ICON_CUPS, create: createCups,
+      intro: '3つのコップのどれかにほしが入っています。シャッフルのあと、ほしのコップをえらびます。',
+      how: ['最初にほしの場所を見る', 'コップが入れかわるのを目でおう', 'ライフは2つ。進むほど速く・多くなる'], legend: '' },
+    { id: 'numt', name: 'すうじタッチ', short: 'すうじ', desc: '1から順番にタッチ。ぜんぶ押したら次のばん!', icon: ICON_NUMT, create: createNumTouch,
+      intro: 'バラバラの数字を、1から小さい順にタップしていきます。クリアするとマスがふえて、時間もふえます。',
+      how: ['1から順番にタップ', 'まちがえると1秒へる', 'クリアで時間ボーナス。3×3から5×5まで'], legend: '' },
     { id: 'tap', name: 'ぷちタップ', short: 'ぷちタップ', desc: '光る玉を45秒でどれだけ割れるか。', icon: ICON_TAP, create: createTap,
       intro: '次々に現れる玉をタップして割ります。まわりの輪が縮むほど高得点ですが、消えてしまうとコンボが切れます。',
       how: ['玉をタップ。輪が小さくなってからだと高得点', '金色の玉は3倍で時間が+2秒', '黒いとげ玉は触らない。割ると時間が-3秒'], legend: LEGEND_TAP },
@@ -9609,7 +9814,7 @@
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード', cups: 'あたま', numt: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
@@ -9659,6 +9864,8 @@
     arrow: [['せいかい', 30, '30問せいかい'], ['せいかい', 50, '50問せいかい'], ['最大コンボ', 20, '20コンボ']],
     balloon: [['わった', 40, '40こ わる'], ['わった', 70, '70こ わる'], ['最大コンボ', 20, '20コンボ']],
     ttt: [['勝ち', 3, '3連勝'], ['勝ち', 6, '6連勝'], ['勝ち', 10, '10連勝']],
+    cups: [['あたり', 4, '4回あてる'], ['あたり', 8, '8回あてる'], ['ラウンド', 12, 'ラウンド12']],
+    numt: [['クリア', 3, '3まいクリア'], ['クリア', 6, '6まいクリア'], ['クリア', 10, '10まいクリア']],
     sudoku: [['クリア', 1, 'クリアする'], ['ノーミス', 1, 'ノーミスでクリア'], ['6分いない', 1, '6分いないにクリア']],
     tower: [['ウェーブ', 4, '4ウェーブ'], ['ウェーブ', 8, '8ウェーブ'], ['ウェーブ', 12, '全12ウェーブ']]
   };
@@ -9741,6 +9948,130 @@
         if (res.status === 401 || res.status === 403) return 'kept';
         return 'failed';
       } catch (e) { return 'failed'; }
+    }
+  };
+  /* ===== バッジ(ぜんぶのゲーム共通のやりこみ) ===== */
+  const Badges = {
+    key: 'arcade-badges-v1', skey: 'arcade-stat-v1',
+    load(k, d) { try { return JSON.parse(lsGet(k) || 'null') || d; } catch (e) { return d; } },
+    save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+    ymd(d) { return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); },
+    list: [
+      ['first', '🌱', 'はじめの一歩', 'ゲームを1回あそぶ', (t) => t.plays >= 1],
+      ['p10', '🎮', '10回あそんだ', '合計10回あそぶ', (t) => t.plays >= 10],
+      ['p50', '🔥', '50回あそんだ', '合計50回あそぶ', (t) => t.plays >= 50],
+      ['p200', '🏆', '200回あそんだ', '合計200回あそぶ', (t) => t.plays >= 200],
+      ['g5', '🧭', 'たんけん家', '5しゅるいのゲームをあそぶ', (t) => t.kinds >= 5],
+      ['g15', '🗺️', 'ゲームはかせ', '15しゅるいのゲームをあそぶ', (t) => t.kinds >= 15],
+      ['g30', '🌏', 'アーケードマスター', '30しゅるいのゲームをあそぶ', (t) => t.kinds >= 30],
+      ['cat', '🎨', 'ぜんジャンル', 'すべてのジャンルをあそぶ', (t) => t.cats >= t.catAll],
+      ['same', '💪', 'やりこみ', 'おなじゲームを10回あそぶ', (t) => t.maxSame >= 10],
+      ['rec10', '📈', 'のびしろ', 'ベストこうしんを10回', (t) => t.recs >= 10],
+      ['win10', '🥇', '勝ちグセ', '勝ちを10回', (t) => t.wins >= 10],
+      ['st3', '📅', '3日れんぞく', '3日つづけてあそぶ', (t) => t.streak >= 3],
+      ['st7', '🌟', '7日れんぞく', '7日つづけてあそぶ', (t) => t.streak >= 7],
+      ['chal', '🎭', 'チャレンジャー', 'じゃま入りモードであそぶ', (t) => t.chal],
+      ['night', '🦉', 'よふかし', '0〜4時にあそぶ', (t) => t.night],
+      ['morn', '🐦', 'あさかつ', '5〜8時にあそぶ', (t) => t.morn]
+    ],
+    stat() { return this.load(this.skey, { plays: 0, by: {}, days: [], recs: 0, wins: 0, night: false, morn: false }); },
+    totals(st) {
+      const ids = Object.keys(st.by), cats = new Set(ids.map((i) => (byId(i) || {}).cat).filter(Boolean)), all = new Set(GAMES.map((g) => g.cat).filter(Boolean));
+      const ds = new Set(st.days); let streak = 0; const d = new Date(); if (!ds.has(this.ymd(d))) d.setDate(d.getDate() - 1);
+      while (ds.has(this.ymd(d))) { streak++; d.setDate(d.getDate() - 1); }
+      return { plays: st.plays, kinds: ids.length, cats: cats.size, catAll: all.size, maxSame: Math.max(0, ...Object.values(st.by)), recs: st.recs, wins: st.wins, streak, night: st.night, morn: st.morn, chal: !!st.chal };
+    },
+    record(gid, isRec, verdict) {
+      const st = this.stat(), now = new Date(), h = now.getHours();
+      st.plays++; st.by[gid] = (st.by[gid] || 0) + 1; if (isRec) st.recs++; if (verdict === 'win') st.wins++; if (CHAL && !(battle && battle.inGame)) st.chal = true;
+      if (h < 5) st.night = true; else if (h < 9) st.morn = true;
+      const y = this.ymd(now); if (st.days.indexOf(y) < 0) { st.days.push(y); st.days = st.days.slice(-60); }
+      this.save(this.skey, st);
+      const got = this.load(this.key, {}), t = this.totals(st), fresh = [];
+      this.list.forEach((b) => { if (!got[b[0]] && b[4](t)) { got[b[0]] = Date.now(); fresh.push(b); } });
+      if (fresh.length) { this.save(this.key, got); fresh.forEach((b, i) => setTimeout(() => this.toast(b), 700 + i * 1800)); }
+      this.render();
+    },
+    toast(b) {
+      const d = el('div', 'bdg-toast', '<span class="i"></span><span><b>バッジをゲット!</b><br><span class="t"></span></span>');
+      d.querySelector('.i').textContent = b[1]; d.querySelector('.t').textContent = b[2] + ' — ' + b[3];
+      document.body.append(d); A.beep(988, 0.12, 'triangle', 0.06); setTimeout(() => A.beep(1319, 0.2, 'triangle', 0.06), 120);
+      setTimeout(() => d.classList.add('out'), 2800); setTimeout(() => d.remove(), 3400);
+    },
+    render() {
+      const box = document.getElementById('bdgBody'); if (!box) return;
+      const got = this.load(this.key, {}), t = this.totals(this.stat()); box.textContent = '';
+      const n = this.list.filter((b) => got[b[0]]).length;
+      const h = document.getElementById('bdgCount'); if (h) h.textContent = n + ' / ' + this.list.length + ' こ ・ れんぞく ' + t.streak + '日';
+      this.list.forEach((b) => { const d = el('div', 'bdg' + (got[b[0]] ? ' on' : '')); d.title = b[3]; d.innerHTML = '<i></i><b></b><small></small>'; d.querySelector('i').textContent = got[b[0]] ? b[1] : '🔒'; d.querySelector('b').textContent = b[2]; d.querySelector('small').textContent = b[3]; box.append(d); });
+    }
+  };
+  /* ===== ホームのタブ(あそぶ/ランキング/対戦/広場)・ランキング総合・対戦ロビー ===== */
+  const Hub = {
+    tab: 'home', all: null, allAt: 0, rooms: [], roomsErr: false,
+    go(t, noScroll) {
+      this.tab = t; try { localStorage.setItem('arcade-tab-v1', t); } catch (e) {}
+      document.querySelectorAll('#viewHome [data-tab]').forEach((n) => { n.hidden = n.dataset.tab !== t; });
+      document.querySelectorAll('#hnav button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.t === t)));
+      if (!noScroll) window.scrollTo(0, 0);
+      if (t === 'rank') { this.loadRank(); try { Plaza.refresh(true); } catch (e) {} } if (t === 'home') this.loadRooms();
+    },
+    async loadRank() {
+      if (Date.now() - this.allAt < 30000 && this.all) { this.renderRank(); return; }
+      const box = document.getElementById('rkBody'); if (box && !this.all) box.textContent = 'よみこみ中…';
+      try { const r = await window.fetch(FB + '/scores.json'); if (!r.ok) throw new Error('x'); this.all = (await r.json()) || {}; this.allAt = Date.now(); } catch (e) { if (!this.all) this.all = {}; this.err = true; }
+      this.renderRank();
+    },
+    renderRank() {
+      const box = document.getElementById('rkBody'); if (!box) return; box.textContent = '';
+      const data = this.all || {}, pts = {}, champs = [], me = Rank.uid; let myN = {};
+      GAMES.forEach((g) => {
+        const rows = Object.entries(data[g.id] || {}).map(([u, v]) => ({ u, name: v && v.name, score: Number(v && v.score) || 0 })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score);
+        rows.slice(0, 10).forEach((r, i) => { const p = pts[r.u] = pts[r.u] || { name: r.name, pt: 0, first: 0 }; p.pt += 10 - i; if (i === 0) p.first++; p.name = r.name || p.name; });
+        const mi = rows.findIndex((r) => r.u === me);
+        champs.push({ g, top: rows[0], n: rows.length, my: mi >= 0 ? mi + 1 : 0 });
+      });
+      const tot = Object.entries(pts).map(([u, p]) => ({ u, ...p })).sort((a, b) => b.pt - a.pt || b.first - a.first);
+      const h1 = el('h3', '', '🏆 そうごうランキング'); box.append(h1);
+      box.append(el('p', 'sub', '各ゲームの上位10位に入るとポイント(1位10点〜10位1点)。ポイントの合計で順位が決まります。'));
+      if (!tot.length) box.append(el('p', 'empty', this.err ? 'よみこめませんでした。通信を確認してね。' : 'まだ記録がありません。'));
+      const ol = el('ol', 'rk-list');
+      tot.slice(0, 10).forEach((t, i) => { const li = el('li', t.u === me ? 'me' : ''); li.innerHTML = '<span class="n"></span><b></b><span class="pt"></span>'; li.children[0].textContent = i === 0 ? '👑' : String(i + 1); li.children[1].textContent = String(t.name || 'ななし').slice(0, 12); li.children[2].textContent = t.pt + '点 ・ 1位×' + t.first; ol.append(li); });
+      box.append(ol);
+      const mi = tot.findIndex((t) => t.u === me); box.append(el('p', 'rk-me', mi >= 0 ? 'あなたは そうごう ' + (mi + 1) + '位 (' + tot[mi].pt + '点)' : 'あなたは まだ圏外。いろいろなゲームで10位以内をねらおう!'));
+      box.append(el('h3', '', '🥇 ゲームごとの1位'));
+      box.append(el('p', 'sub', 'タップすると、そのゲームのトップ10が下に出ます。'));
+      const ul = el('ul', 'rk-champ');
+      champs.forEach((c) => {
+        const li = el('li'), b = el('button'); b.type = 'button'; b.innerHTML = '<span class="g"></span><span class="w"></span><span class="m"></span>';
+        b.children[0].textContent = c.g.name; b.children[1].textContent = c.top ? c.top.name + ' ' + c.top.score : '—'; b.children[2].textContent = c.my ? 'あなた ' + c.my + '位' : '';
+        b.addEventListener('click', () => { const t = document.querySelector('#tabs [data-g="' + c.g.id + '"]'); if (t) t.click(); const bd = document.getElementById('rkGame'); if (bd) bd.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+        li.append(b); ul.append(li);
+      });
+      box.append(ul);
+    },
+    async loadRooms() {
+      const box = document.getElementById('vsRooms'); if (!box) return;
+      try { const r = await window.fetch(FB + '/rooms.json'); if (!r.ok) throw new Error('x'); const d = (await r.json()) || {}; this.rooms = Object.entries(d).filter(([, v]) => v && v.state === 'wait' && !v.guestUid && v.hostUid !== Rank.uid && Date.now() - (v.at || 0) < 20 * 60000).map(([c, v]) => ({ c, v })).sort((a, b) => b.v.at - a.v.at); this.roomsErr = false; } catch (e) { this.roomsErr = true; }
+      box.textContent = '';
+      if (this.roomsErr) { box.append(el('p', 'empty', 'へやの一覧を取得できませんでした。コードで入るか、自分で部屋をつくってね。')); return; }
+      if (!this.rooms.length) { box.append(el('p', 'empty', 'いま ひらいている部屋はありません。つくって友だちをよぼう!')); return; }
+      this.rooms.slice(0, 12).forEach(({ c, v }) => {
+        const g = byId(v.game), row = el('div', 'vs-room'); row.innerHTML = '<div><b></b><small></small></div>';
+        row.querySelector('b').textContent = (g ? g.name : v.game); row.querySelector('small').textContent = String(v.hostName || 'ななし').slice(0, 12) + ' さんが まっています ・ むずかしさ ' + ((DIFFS[v.diff] || {}).n || '');
+        const bt = el('button', 'btn mini'); bt.type = 'button'; bt.textContent = 'さんかする'; bt.addEventListener('click', () => { if (typeof requireAcct === 'function' && !requireAcct()) return; battleJoin(c, bt); }); row.append(bt); box.append(row);
+      });
+    },
+    init() {
+      const nav = document.getElementById('hnav'); if (!nav) return;
+      [['home', '🏠', 'ホーム'], ['games', '🎮', 'ゲーム一覧'], ['rank', '🏆', 'ランキング']].forEach(([k, i, n]) => { const b = el('button', '', '<i></i><span></span>'); b.type = 'button'; b.dataset.t = k; b.children[0].textContent = i; b.children[1].textContent = n; b.addEventListener('click', () => this.go(k)); nav.append(b); });
+      let t = 'home'; try { t = localStorage.getItem('arcade-tab-v1') || 'home'; } catch (e) {} if (['home', 'games', 'rank'].indexOf(t) < 0) t = 'home';
+      document.getElementById('vsMake').addEventListener('click', () => battleMenu());
+      document.getElementById('vsRefresh').addEventListener('click', () => this.loadRooms());
+      const on = document.getElementById('vsOnline');
+      ['wolfnet', 'wordwolf', 'feign'].forEach((id) => { const g = byId(id); if (!g) return; const b = el('button', 'pill'); b.type = 'button'; b.textContent = g.name; b.addEventListener('click', () => openGame(g)); on.append(b); });
+      this.go(t, true);
+      setInterval(() => { if (!viewHome.hidden && !document.hidden) { if (this.tab === 'home') this.loadRooms(); if (this.tab === 'rank') this.loadRank(); } }, 15000);
     }
   };
   /* ===== みんなの広場(人気ランキング・ごいけん) ===== */
@@ -9910,9 +10241,9 @@
   function renderHome() {
     const wrap = $('#games');
     if (!wrap.children.length) {
-      GAMES.forEach((g) => {
+      GAMES.forEach((g, gi) => {
         const b = el('button', 'gcard', g.icon + '<span class="gn"></span><span class="gs"></span>');
-        b.type = 'button'; b.title = g.desc;
+        b.type = 'button'; b.title = g.desc; b.style.setProperty('--i', String(Math.min(gi, 14)));
         $('.gn', b).textContent = g.name;
         b.addEventListener('click', () => openGame(g));
         b.dataset.g = g.id; wrap.append(b);
@@ -9973,7 +10304,7 @@
   }
 
   function setView(name) {
-    viewHome.hidden = name !== 'home';
+    viewHome.hidden = name !== 'home'; { const hn = document.getElementById('hnav'); if (hn) hn.hidden = name !== 'home'; }
     viewGame.hidden = name !== 'game';
     viewBattle.hidden = name !== 'battle';
     $('#bk').hidden = name === 'home';
@@ -9981,7 +10312,7 @@
     $('#ttl').style.fontSize = $('#ttl').textContent.length > 7 && name !== 'home' ? '14px' : '';
   }
   function closeGame() {
-    if (inst) { try { inst.destroy(); } catch (e) {} }
+    clearTimeout(chalT); clearTimeout(cdT); stage.querySelectorAll('.cd').forEach((x) => x.remove()); if (inst) { try { inst.destroy(); } catch (e) {} }
     inst = null; playing = false; ended = false;
     $('#pz').hidden = true;
     stage.textContent = '';
@@ -10024,8 +10355,13 @@
       ds.append(b);
     });
     showMul(); ds.append(dn);
+    const cs = el('div', 'diffsel'), cb = el('button', 'pill'); cb.type = 'button';
+    const showC = () => { cb.setAttribute('aria-pressed', String(CHAL)); cb.textContent = CHAL ? '🎭 じゃま入り: ON' : '🎭 じゃま入り: OFF'; cn.textContent = CHAL ? 'スコア ×1.5 (ときどき画面にじゃま!)' : 'ONにするとスコア×1.5'; };
+    const cn = el('span'); cb.addEventListener('click', () => { CHAL = !CHAL; try { localStorage.setItem('arcade-chal-v1', CHAL ? '1' : '0'); } catch (e) {} showC(); });
+    cs.append(cb, cn); showC();
     $('.mybest', ovIntro).before(misBox(g.id));
     $('.mybest', ovIntro).before(ds);
+    $('.mybest', ovIntro).before(cs);
     bgmPrefill(ovIntro);
     $('.mybest b', ovIntro).textContent = String(rec[g.id]);
     $('.mybest', ovIntro).append(document.createTextNode(' ・ あそんだ回数 ' + (plays[g.id] || 0) + '回'));
@@ -10034,32 +10370,57 @@
     try { $('.btn', ovIntro).focus({ preventScroll: true }); } catch (e) {}
   }
 
+  function confetti(host) {
+    if (reduce || !host) return; const box = el('div', 'cf'), cols = ['#ffd45e', '#ff6b81', '#6fe3cf', '#8f8cff', '#ff9f5e', '#fff'];
+    for (let i = 0; i < 46; i++) { const p = el('s'); p.style.cssText = '--x:' + rndInt(2, 98) + '%;--w:' + rndInt(6, 11) + 'px;--c:' + cols[i % cols.length] + ';--t:' + (1.6 + Math.random() * 1.4).toFixed(2) + 's;--d:' + (Math.random() * 0.5).toFixed(2) + 's;--dx:' + rndInt(-80, 80) + 'px;--r:' + rndInt(360, 900) + 'deg'; box.append(p); }
+    host.append(box); setTimeout(() => box.remove(), 3600);
+  }
+  function countUp(node, to, ms) {
+    if (reduce || to <= 0) { node.textContent = String(to); return; } const t0 = performance.now();
+    const step = (t) => { const q = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - q, 3); node.textContent = String(Math.round(to * e)); if (q < 1 && node.isConnected) requestAnimationFrame(step); else node.textContent = String(to); }; requestAnimationFrame(step);
+  }
+  function countdown(done) {
+    const cd = el('div', 'cd'); stage.append(cd); let n = 3;
+    const tick = () => {
+      cd.textContent = ''; const b = el('b', n === 0 ? 'go' : ''); b.textContent = n === 0 ? 'GO!' : String(n); cd.append(b);
+      A.beep(n === 0 ? 880 : 440, n === 0 ? 0.25 : 0.12, 'triangle', 0.07);
+      if (n === 0) { setTimeout(() => cd.remove(), 450); done(); return; } n--; cdT = setTimeout(tick, 650);
+    }; tick();
+  }
+  let cdT = 0;
   function startPlay() {
     if (!inst) return;
     ovIntro.hidden = true; ovResult.hidden = true;
+    if (!reduce && !(battle && battle.inGame) && !navigator.webdriver) { A.unlock(); const g0 = inst; countdown(() => { if (inst === g0) startPlay2(); }); return; }
+    startPlay2();
+  }
+  function startPlay2() {
     if (curG) bumpPlay(curG.id);
     playClock = performance.now();
     A.unlock();
     playing = true; ended = false;
     $('#pz').hidden = false;
-    inst.start();
+    inst.start(); chalLoop();
   }
 
   async function finish(g, score, stats, verdict) {
-    score = Math.round(score * DIFFS[DIFF].mul);
+    const chalOn = CHAL && !(battle && battle.inGame); clearTimeout(chalT); try { if (chalOn) fxClear(); } catch (e) {}
+    score = Math.round(score * DIFFS[DIFF].mul * (chalOn ? 1.5 : 1));
     if (!playing || ended) return;
     ended = true; playing = false; try { Plaza.played(g.id); } catch (e) {}
     $('#pz').hidden = true;
-    if (battle && battle.inGame) { if (score > rec[g.id]) { rec[g.id] = score; saveRec(); } Rank.submit(g.id, score); battleFinish(g, score, stats); return; }
+    if (battle && battle.inGame) { try { Badges.record(g.id, false, ''); } catch (e) {} if (score > rec[g.id]) { rec[g.id] = score; saveRec(); } Rank.submit(g.id, score); battleFinish(g, score, stats); return; }
     const isRec = score > rec[g.id];
     if (isRec) { rec[g.id] = score; saveRec(); }
+    try { Badges.record(g.id, isRec, verdict); } catch (e) {}
     const vd = verdict || (isRec ? 'win' : 'lose'), vtxt = verdict ? { win: '勝ち!', lose: '負け…', draw: '引き分け' }[verdict] : (isRec ? 'ベストに勝った!' : 'ベストには届かず…');
     ovResult.innerHTML = '<div class="ov-in"><h3>おつかれさま</h3><div class="verdict ' + vd + '"></div>' +
       '<div class="res"><span class="lbl">スコア</span><span class="big"></span><span class="rec" hidden>じぶんのベスト更新です</span><span class="lbl best"></span></div>' +
       '<div class="stats"></div><p class="status">ランキングに登録しています…</p><p class="rankhint"></p>' +
       '<div><h4>みんなのランキング</h4><div class="rbox" style="margin-top:6px"></div></div>' +
       '<div class="btns"><button class="btn again" type="button">もういちど</button><button class="btn ghost home" type="button">ホームへ</button></div></div>';
-    $('.big', ovResult).textContent = String(score); $('.verdict', ovResult).textContent = vtxt;
+    countUp($('.big', ovResult), score, 900); $('.verdict', ovResult).textContent = vtxt;
+    if (isRec || verdict === 'win') setTimeout(() => confetti(ovResult), 250);
     $('.rec', ovResult).hidden = !isRec;
     $('.best', ovResult).textContent = 'ベスト ' + rec[g.id];
     const st = $('.stats', ovResult);
@@ -10247,7 +10608,7 @@
     const m = bt('p', 'bt-msg', msg || ''); m.id = 'btMsg';
     bbox.append(c1, c2, m);
   }
-  const btMsg = (t) => { const m = $('#btMsg'); if (m) m.textContent = t || ''; };
+  const btMsg = (t) => { const m = $('#btMsg') || $('#vsMsg'); if (m) m.textContent = t || ''; };
 
   async function battleCreate(gid, diff, btn) {
     btn.disabled = true; btMsg('部屋をつくっています…');
@@ -10472,7 +10833,16 @@
   acctLine();
   setView('home');
   renderHome();
-  Rank.init(); Plaza.init();
+  Rank.init(); Plaza.init(); Badges.render(); Hub.init();
+  (function splash() {
+    const sp = $('#splash'); let seen = false; try { seen = sessionStorage.getItem('arcade-splash') === '1'; } catch (e) {}
+    if (!sp || seen || navigator.webdriver) return;
+    for (let i = 0; i < 26; i++) { const d = el('i'); d.style.cssText = '--x:' + rndInt(2, 96) + '%;--y:' + rndInt(2, 96) + '%;--s:' + rndInt(2, 5) + 'px;--d:' + (Math.random() * 2).toFixed(2) + 's'; sp.append(d); }
+    const box = el('div', '', '<h1>ひまつぶし<br>アーケード</h1><p>1回1〜3分の ミニゲームが いっぱい</p><span class="go">タップでスタート</span>');
+    sp.append(box); sp.hidden = false;
+    const close = () => { try { sessionStorage.setItem('arcade-splash', '1'); } catch (e) {} A.unlock(); [523, 659, 784, 1047].forEach((f, i) => A.beep(f, 0.12, 'triangle', 0.05, 0, i * 0.07)); sp.classList.add('out'); setTimeout(() => { sp.hidden = true; }, 520); };
+    sp.addEventListener('click', close); sp.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') close(); }); sp.tabIndex = 0;
+  })();
   acctSync();
   if (!lsGet(LS_ACCT)) acctModal();
 })();
