@@ -535,6 +535,8 @@
   @media (prefers-reduced-motion: reduce) { .fh .av, .fh.pick, .fh.boom, .fh.boom::after, .fb.new, .fg-ov .big, .fg-ov .tt, .fg-ov .st, .ftown::after, .fg-pop, .fg-conf { animation: none !important; } }
   .mj { gap: 8px; }
   .mj-seats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: min(100%, 460px); }
+  .mj-melds { display: flex; gap: 6px; margin: 2px 0; } .mj-meld { display: inline-flex; gap: 1px; padding: 1px; border: 1px solid rgba(255,255,255,.35); border-radius: 4px; }
+.pk-opps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .pk-o { border: 1px solid var(--line); border-radius: 10px; padding: 4px; text-align: center; font-size: 12px; overflow: hidden; } .pk-o.out { opacity: .4; } .pk-o b { display: block; }
   .mj-seat { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--line); border-radius: 10px; padding: 4px 6px; min-height: 74px; min-width: 0; }
   .mj-seat.on { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 212, 94, 0.45); } .mj-seat.me { background: rgba(0, 0, 0, 0.4); }
   .mj-sh { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-bottom: 3px; }
@@ -824,6 +826,17 @@
   .acctline { margin: 10px 0 0; font-size: 13px; color: var(--mute); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   /* 対戦モード */
   .battle-btn { margin-top: 14px; }
+.cg-hand { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .cg-card { min-width: 38px; height: 54px; padding: 0 6px; border-radius: 8px; border: 2px solid #fff; color: #fff; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; background: #444; }
+  .cg-card.bb { background: #fff; color: #111; } .cg-card.back { background: repeating-linear-gradient(45deg,#1e3a8a,#1e3a8a 6px,#3b82f6 6px,#3b82f6 12px); } .cg-card.pick { cursor: pointer; }
+  .cg-card.mine.ok { transform: translateY(-6px); box-shadow: 0 0 0 3px var(--gold); cursor: pointer; } .cg-card.dim { opacity: .45; } .cg-card.sel { outline: 3px solid #fff; }
+  .cg-mid { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 6px 0; } .cg-mid .cg-card { height: 84px; min-width: 60px; font-size: 26px; }
+.sv-board { display: grid; gap: 3px; margin: 6px 0; } .sv-row { display: grid; grid-template-columns: 22px repeat(13, 1fr); gap: 2px; align-items: center; }
+  .sv-s { font-size: 16px; } .sv-c { height: 24px; border-radius: 4px; background: rgba(255,255,255,.08); font-size: 11px; display: flex; align-items: center; justify-content: center; } .sv-c.on { background: #fff; color: #111; font-weight: 700; } .sv-c.red, .sv-s.red { color: #dc2626; }
+  .dc-die { font-size: 56px; line-height: 1; } .dl-rules { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; }
+.yt-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: min(100%, 420px); }
+  .yt-c { padding: 10px 6px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; font-size: 14px; } .yt-c.done { opacity: .5; } .yt-c:not(:disabled):active { background: var(--gold); color: #111; }
+  .yt-d { font-size: 44px; background: none; border: 2px solid transparent; border-radius: 10px; color: #fff; padding: 0 2px; } .yt-d.held { border-color: var(--gold); background: rgba(255,214,102,.2); }
   .dl-hud { display: flex; gap: 10px; margin: 8px 0; }
   .dl-p { flex: 1; display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: rgba(18,22,74,.6); min-width: 0; }
   .dl-p.on { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255,214,102,.35); }
@@ -3734,6 +3747,9 @@
   const ICON_LIGHTS = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="9" y="9" width="12" height="12" rx="4" fill="#2b3080"/><rect x="24" y="9" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="39" y="9" width="12" height="12" rx="4" fill="#2b3080"/><rect x="9" y="24" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="24" y="24" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="39" y="24" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="9" y="39" width="12" height="12" rx="4" fill="#2b3080"/><rect x="24" y="39" width="12" height="12" rx="4" fill="#ffd45e"/><rect x="39" y="39" width="12" height="12" rx="4" fill="#2b3080"/></svg>';
   const ICON_DC = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="40" font-size="28" text-anchor="middle" fill="#ffd666">土士</text></svg>';
   const ICON_FC = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="40" font-size="28" text-anchor="middle" fill="#ffd666">★</text></svg>';
+  const ICON_CHI = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="42" font-size="32" text-anchor="middle" fill="#ffd666">⚀⚅</text></svg>';
+  const ICON_CHO = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="42" font-size="32" text-anchor="middle" fill="#ffd666">⚂⚃</text></svg>';
+  const ICON_YT = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><text x="30" y="42" font-size="32" text-anchor="middle" fill="#ffd666">⚄</text></svg>';
   const ICON_ODD = '<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" rx="14" fill="#171c58"/><rect x="9" y="9" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="24" y="9" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="39" y="9" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="9" y="24" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="24" y="24" width="12" height="12" rx="4" fill="#4fc4b4"/><rect x="39" y="24" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="9" y="39" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="24" y="39" width="12" height="12" rx="4" fill="#3aa89a"/><rect x="39" y="39" width="12" height="12" rx="4" fill="#3aa89a"/></svg>';
 
   /* ===== ゲーム一覧 ===== */
@@ -4724,7 +4740,7 @@
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
     const T = mkTimers();
     const HANDS = 10;
-    let phase = 'idle', chips = 100, hands = 0, wins = 0, peak = 100, bet = 0, deck = [], ph = [], dh = [], doubled = false;
+    let phase = 'idle', chips = 100, hands = 0, wins = 0, peak = 100, bet = 0, deck = [], ph = [], dh = [], doubled = false, streak = 0;
     const val = (h) => { let t = 0, a = 0; h.forEach((c) => { const v = c.r === 1 ? 11 : Math.min(10, c.r); t += v; if (c.r === 1) a++; }); while (t > 21 && a > 0) { t -= 10; a--; } return t; };
     const draw = () => deck.pop();
     function render(hideHole) {
@@ -4752,7 +4768,7 @@
       render(true);
       if (val(ph) === 21) { reveal(); return; }
       k('msg').textContent = 'ヒットかスタンドをえらんでね';
-      acts([['ヒット', hit], ['スタンド', stand], ['ダブル', dbl, chips < bet]]);
+      acts([['ヒット', hit], ['スタンド', stand], ['ダブル', dbl, chips < bet], ['サレンダー(半分返る)', () => { if (phase !== 'play') return; phase = 'result'; chips += Math.floor(bet / 2); streak = 0; render(false); k('msg').textContent = 'サレンダー(チップ ' + chips + ')'; acts([['つぎのハンド', betPhase]]); T.later(() => { if (phase === 'result') betPhase(); }, 1800); }]]);
     }
     function hit() { if (phase !== 'play') return; ph.push(draw()); A.beep(500, 0.04, 'triangle', 0.05); render(true); if (val(ph) > 21) reveal(); else if (val(ph) === 21) stand(); else acts([['ヒット', hit], ['スタンド', stand]]); }
     function dbl() { if (phase !== 'play' || chips < bet) return; chips -= bet; bet *= 2; doubled = true; ph.push(draw()); render(true); if (val(ph) > 21) reveal(); else stand(); }
@@ -4775,6 +4791,7 @@
       else if (dv > 21 || pv > dv) { gain = bet * 2; msg = 'かち! +' + bet; wins++; }
       else if (pv === dv) { gain = bet; msg = 'ひきわけ'; }
       else msg = 'まけ…';
+      if (gain > bet) { streak++; if (streak >= 2) { const bn = Math.round(bet * 0.1 * Math.min(streak, 6)); gain += bn; msg += ' 🔥' + streak + '連勝ボーナス +' + bn; } } else if (gain < bet) streak = 0;
       chips += gain; peak = Math.max(peak, chips); phase = 'result'; render(false);
       k('msg').textContent = msg + '(チップ ' + chips + ')';
       if (gain > bet) winJingle(); else if (gain < bet) A.beep(170, 0.2, 'sawtooth', 0.05, -80);
@@ -4790,7 +4807,7 @@
     }
     const resetQuit = quitBtn(root, finish);
     return {
-      start() { T.clear(); chips = 100; hands = 0; wins = 0; peak = 100; resetQuit(); betPhase(); },
+      start() { T.clear(); chips = 100; hands = 0; wins = 0; peak = 100; streak = 0; resetQuit(); betPhase(); },
       pause() { T.pause(); }, resume() { T.resume(); },
       destroy() { T.clear(); }
     };
@@ -8128,28 +8145,30 @@
   function mjWaits(c) { const r = []; for (let i = 0; i < 34; i++) { if (c[i] >= 4) continue; c[i]++; if (mjIsChiitoi(c) || mjDecomps(c).length) r.push(i); c[i]--; } return r; }
   function mjScore(c, ctx) {
     const chi = mjIsChiitoi(c), ds = chi ? [] : mjDecomps(c); if (!chi && !ds.length) return null;
+    const ML = ctx.melds || [], open = ML.length > 0, all = c.slice(); ML.forEach((m) => m.tiles.forEach((t) => { all[t]++; }));
     let tan = true, honors = false; const suits = {};
-    for (let i = 0; i < 34; i++) { if (!c[i]) continue; if (i >= 27) { honors = true; tan = false; } else { suits[(i / 9) | 0] = 1; const r = i % 9; if (r === 0 || r === 8) tan = false; } }
+    for (let i = 0; i < 34; i++) { if (!all[i]) continue; if (i >= 27) { honors = true; tan = false; } else { suits[(i / 9) | 0] = 1; const r = i % 9; if (r === 0 || r === 8) tan = false; } }
     const ns = Object.keys(suits).length; if (ns === 0) return { han: 13, yaku: [['字一色(役満)', 13]] };
-    const base = []; if (ctx.riichi) base.push(['リーチ', 1]); if (ctx.tsumo) base.push(['門前ツモ', 1]); if (tan) base.push(['タンヤオ', 1]);
-    if (ns === 1) base.push(honors ? ['混一色', 3] : ['清一色', 6]);
+    const base = []; if (ctx.riichi) base.push(['リーチ', 1]); if (ctx.tsumo && !open) base.push(['門前ツモ', 1]); if (tan) base.push(['タンヤオ', 1]);
+    if (ns === 1) base.push(honors ? ['混一色', open ? 2 : 3] : ['清一色', open ? 5 : 6]);
     let best = null; const cons = (ex) => { const y = base.concat(ex), h = y.reduce((a, b) => a + b[1], 0); if (!best || h > best.han) best = { han: h, yaku: y }; };
     if (chi) cons([['七対子', 2]]);
     ds.forEach((d) => {
       const ex = [], seqs = {}; let allK = true;
+      ML.forEach((m) => { if (m.t === 'p') { const q = m.k; if (q >= 31) ex.push([['白', '發', '中'][q - 31] + '(役牌)', 1]); if (q === 27) ex.push(['場風 東', 1]); if (q === 27 + ctx.seat) ex.push(['自風 ' + MJ_WIND[ctx.seat], 1]); } else allK = false; });
       d.melds.forEach((m) => {
         if (m.t === 'k') { if (m.k >= 31) ex.push([['白', '發', '中'][m.k - 31] + '(役牌)', 1]); if (m.k === 27) ex.push(['場風 東', 1]); if (m.k === 27 + ctx.seat) ex.push(['自風 ' + MJ_WIND[ctx.seat], 1]); }
         else { allK = false; seqs[m.k] = (seqs[m.k] || 0) + 1; }
       });
-      if (allK) ex.push(['対々和', 2]); if (Object.keys(seqs).some((q) => seqs[q] >= 2)) ex.push(['一盃口', 1]);
+      if (allK) ex.push(['対々和', 2]); if (!open && Object.keys(seqs).some((q) => seqs[q] >= 2)) ex.push(['一盃口', 1]);
       cons(ex);
     });
     return best && best.han > 0 ? best : null;
   }
-  function mjShanten(c0) {
+  function mjShanten(c0, m0) {
     const c = c0.slice(); let best = 8, pairs = 0, kinds = 0;
     for (let i = 0; i < 34; i++) { if (c[i] >= 1) kinds++; if (c[i] >= 2) pairs++; }
-    let chi = 6 - pairs; if (kinds < 7) chi += 7 - kinds;
+    let chi = 6 - pairs; if (kinds < 7) chi += 7 - kinds; if (m0) chi = 99;
     const rec = (i, m, t, p) => {
       while (i < 34 && c[i] === 0) i++;
       if (i >= 34) { const tt = m + t > 4 ? 4 - m : t, s = 8 - 2 * m - tt - p; if (s < best) best = s; return; }
@@ -8164,7 +8183,7 @@
       }
       c[i]--; rec(i, m, t, p); c[i]++;
     };
-    rec(0, 0, 0, 0); return Math.min(best, chi);
+    rec(0, m0 || 0, 0, 0); return Math.min(best, chi);
   }
   const mjPoints = (han) => (han >= 11 ? 32000 : han >= 8 ? 16000 : han >= 6 ? 12000 : han >= 5 ? 8000 : han * 1000);
   function createMahjong(stage, api) {
@@ -8189,7 +8208,7 @@
     function newRound() {
       const arr = []; for (let i = 0; i < 34; i++) for (let j = 0; j < 4; j++) arr.push(i);
       const wall = shuffle(arr);
-      S = { wall: wall, c: [0, 1, 2, 3].map(() => new Array(34).fill(0)), river: [[], [], [], []], riichi: [false, false, false, false], pts: [25000, 25000, 25000, 25000], sticks: 0, turn: 0, seen: new Array(34).fill(0), last: [null, null, null, null], H: [], D: null, riKinds: [] };
+      S = { wall: wall, c: [0, 1, 2, 3].map(() => new Array(34).fill(0)), river: [[], [], [], []], melds: [[], [], [], []], riichi: [false, false, false, false], pts: [25000, 25000, 25000, 25000], sticks: 0, turn: 0, seen: new Array(34).fill(0), last: [null, null, null, null], H: [], D: null, riKinds: [] };
       for (let s = 0; s < 4; s++) for (let i = 0; i < 13; i++) S.c[s][wall.pop()]++;
       S.H = []; for (let i = 0; i < 34; i++) for (let j = 0; j < S.c[0][i]; j++) S.H.push(i);
       over = false; sel = -1; riMode = false; myPhase = false; k('res').hidden = true;
@@ -8202,7 +8221,8 @@
         const d = el('div', 'mj-seat' + (S.turn === s && !over ? ' on' : '') + (s === 0 ? ' me' : '')), h = el('div', 'mj-sh'), w = el('b', 'mj-w' + (s === 0 ? ' dealer' : '')), nm = el('span'), pt = el('span', 'mj-pt');
         w.textContent = MJ_WIND[s]; nm.textContent = MJ_NAMES[s]; pt.textContent = String(S.pts[s]); h.append(w, nm, pt);
         if (S.riichi[s]) { const r = el('i', 'mj-ri'); r.textContent = 'リーチ'; h.append(r); }
-        const rv = el('div', 'mj-river'); S.river[s].forEach((x, xi) => rv.append(mjTile(x.k, 'sx' + (x.r ? ' rot' : '') + (S.hot === s && xi === S.river[s].length - 1 ? ' drop' : '')))); d.append(h, rv); box.append(d);
+        const mrow = el('div', 'mj-melds'); S.melds[s].forEach((m) => { const g = el('span', 'mj-meld'); m.tiles.forEach((q) => g.append(mjTile(q, 'sx'))); mrow.append(g); });
+        const rv = el('div', 'mj-river'); S.river[s].forEach((x, xi) => rv.append(mjTile(x.k, 'sx' + (x.r ? ' rot' : '') + (S.hot === s && xi === S.river[s].length - 1 ? ' drop' : '')))); d.append(h); if (S.melds[s].length) d.append(mrow); d.append(rv); box.append(d);
       });
     }
     function renderHand() {
@@ -8228,19 +8248,19 @@
     }
     function myTurn() {
       sel = -1; riMode = false; myPhase = true; render();
-      const c = S.c[0], win = mjScore(c, { tsumo: true, riichi: S.riichi[0], seat: 0 });
+      const c = S.c[0], win = mjScore(c, { tsumo: true, riichi: S.riichi[0], seat: 0, melds: S.melds[0] });
       if (S.riichi[0]) {
         myPhase = false; renderHand();
         if (win) { msg('ツモ和了できます!'); setActs([['ツモ!', () => declareWin(0, null, win), 'on'], ['ツモ切り', () => { setActs([]); discardMine(-1); }]]); }
         else { msg('リーチ中です。ツモ切りします。'); setActs([]); T.later(() => discardMine(-1), 700); }
         return;
       }
-      S.riKinds = []; if (remain() >= 4 && S.pts[0] >= 1000) { for (let i = 0; i < 34; i++) { if (!c[i]) continue; c[i]--; if (mjWaits(c).length) S.riKinds.push(i); c[i]++; } }
+      S.riKinds = []; if (remain() >= 4 && S.pts[0] >= 1000 && !S.melds[0].length) { for (let i = 0; i < 34; i++) { if (!c[i]) continue; c[i]--; if (mjWaits(c).length) S.riKinds.push(i); c[i]++; } }
       const acts = []; if (win) acts.push(['ツモ!', () => declareWin(0, null, win), 'on']);
       if (S.riKinds.length) acts.push(['リーチ', () => { riMode = true; sel = -1; renderHand(); msg('切る牌をえらんでください(リーチ)'); setActs([['やめる', () => { riMode = false; renderHand(); myTurn2(); }]]); }]);
       setActs(acts); msg(win ? 'ツモ和了できます! または牌を2回タップで捨てる' : '捨てる牌を2回タップ(1回目で待ちを表示)');
     }
-    function myTurn2() { msg('捨てる牌を2回タップ'); const acts = []; const win = mjScore(S.c[0], { tsumo: true, riichi: false, seat: 0 }); if (win) acts.push(['ツモ!', () => declareWin(0, null, win), 'on']); if (S.riKinds.length) acts.push(['リーチ', () => { riMode = true; sel = -1; renderHand(); msg('切る牌をえらんでください(リーチ)'); }]); setActs(acts); }
+    function myTurn2() { msg('捨てる牌を2回タップ'); const acts = []; const win = mjScore(S.c[0], { tsumo: true, riichi: false, seat: 0, melds: S.melds[0] }); if (win) acts.push(['ツモ!', () => declareWin(0, null, win), 'on']); if (S.riKinds.length) acts.push(['リーチ', () => { riMode = true; sel = -1; renderHand(); msg('切る牌をえらんでください(リーチ)'); }]); setActs(acts); }
     function discardMine(idx) {
       let t; myPhase = false;
       if (idx < 0) { t = S.D; S.D = null; } else { t = S.H[idx]; S.H.splice(idx, 1); if (S.D != null) S.H.push(S.D); S.D = null; S.H.sort((a, b) => a - b); }
@@ -8256,8 +8276,8 @@
     function isFuriten(s) { const w = waitsOf(s); return w.some((x) => S.river[s].some((r) => r.k === x)); }
     function checkRon(from, t, step) {
       if (over || quitting) return;
-      if (step > 3) { T.later(() => drawFor((from + 1) % 4), 350); return; }
-      const s = (from + step) % 4, c = S.c[s]; c[t]++; const r = mjScore(c, { tsumo: false, riichi: S.riichi[s], seat: s }); c[t]--;
+      if (step > 3) { callPhase(from, t); return; }
+      const s = (from + step) % 4, c = S.c[s]; c[t]++; const r = mjScore(c, { tsumo: false, riichi: S.riichi[s], seat: s, melds: S.melds[s] }); c[t]--;
       if (r) {
         if (isFuriten(s)) { if (s === 0) msg('フリテンのため、ロンできません。'); }
         else if (s === 0) {
@@ -8266,6 +8286,36 @@
         } else { declareWin(s, from, r, t); return; }
       }
       checkRon(from, t, step + 1);
+    }
+
+    /* ---- ポン・チー ---- */
+    const chiOptions = (c, t) => { const o = [], r = t % 9; if (t >= 27) return o; if (r >= 2 && c[t - 2] && c[t - 1]) o.push([t - 2, t - 1]); if (r >= 1 && r <= 7 && c[t - 1] && c[t + 1]) o.push([t - 1, t + 1]); if (r <= 6 && c[t + 1] && c[t + 2]) o.push([t + 1, t + 2]); return o; };
+    const tanOnly = (s) => { for (let i = 0; i < 34; i++) { if (!S.c[s][i]) continue; if (i >= 27 || i % 9 === 0 || i % 9 === 8) return false; } return S.melds[s].every((m) => m.tiles.every((q) => q < 27 && q % 9 !== 0 && q % 9 !== 8)); };
+    function callPhase(from, t) {
+      if (over || quitting) return;
+      const cands = [];
+      for (let st = 1; st <= 3; st++) { const s = (from + st) % 4; if (S.riichi[s]) continue; const c = S.c[s];
+        if (c[t] >= 2) cands.push({ s: s, kind: 'p' });
+        if (st === 1) chiOptions(c, t).forEach((pr) => cands.push({ s: s, kind: 'c', pair: pr })); }
+      const next = () => T.later(() => drawFor((from + 1) % 4), 300);
+      if (!cands.length || remain() <= 0) { next(); return; }
+      const mine = cands.filter((x) => x.s === 0);
+      const cpuTake = cands.find((x) => x.s !== 0 && (() => { const s = x.s; const yk = t >= 31 || t === 27 || t === 27 + s; if (x.kind === 'p' && yk) return true; if (!(t < 27 && t % 9 !== 0 && t % 9 !== 8) || !tanOnly(s)) return false; return Math.random() < 0.3; })());
+      if (mine.length) {
+        const acts = []; mine.forEach((x) => acts.push([x.kind === 'p' ? 'ポン' : 'チー ' + x.pair.map(mjKindName).join(''), () => { setActs([]); doCall(0, x, t, from); }, 'on']));
+        acts.push(['パス', () => { setActs([]); if (cpuTake) doCall(cpuTake.s, cpuTake, t, from); else next(); }]);
+        msg(MJ_NAMES[from] + 'の「' + mjKindName(t) + '」を ポン/チー できます'); setActs(acts); return;
+      }
+      if (cpuTake) { doCall(cpuTake.s, cpuTake, t, from); return; }
+      next();
+    }
+    function doCall(s, x, t, from) {
+      if (over) return; const c = S.c[s]; let tiles;
+      if (x.kind === 'p') { c[t] -= 2; tiles = [t, t, t]; } else { x.pair.forEach((q) => { c[q]--; }); tiles = [x.pair[0], x.pair[1], t].sort((a, b) => a - b); }
+      S.melds[s].push({ t: x.kind, k: tiles[0], tiles: tiles }); S.river[from].pop(); S.turn = s; S.hot = null;
+      flash(stage, x.kind === 'p' ? 'ポン!' : 'チー!', s === 0 ? 'good' : ''); A.beep(700, 0.1, 'triangle', 0.06);
+      if (s === 0) { S.H = []; for (let i = 0; i < 34; i++) for (let j = 0; j < S.c[0][i]; j++) S.H.push(i); S.D = null; sel = -1; myPhase = true; render(); msg((x.kind === 'p' ? 'ポン' : 'チー') + 'しました。捨てる牌を2回タップ'); setActs([]); }
+      else { render(); msg(MJ_NAMES[s] + 'が' + (x.kind === 'p' ? 'ポン' : 'チー') + '!'); T.later(() => { const ch = cpuChoose(s); doDiscard(s, ch.k, false); }, 800); }
     }
     /* ---- CPU ---- */
     const nearTile = (c, j) => c[j] > 0 || (j < 27 && ((j % 9 >= 1 && c[j - 1] > 0) || (j % 9 >= 2 && c[j - 2] > 0) || (j % 9 <= 7 && c[j + 1] > 0) || (j % 9 <= 6 && c[j + 2] > 0)));
@@ -8277,8 +8327,8 @@
     function cpuChoose(s) {
       const c = S.c[s], opp = [0, 1, 2, 3].filter((o) => o !== s && S.riichi[o]), list = [];
       for (let kd = 0; kd < 34; kd++) {
-        if (!c[kd]) continue; c[kd]--; const sh = mjShanten(c); let uke = 0;
-        if (sh <= 2) for (let j = 0; j < 34; j++) { if (!nearTile(c, j)) continue; const rem = 4 - c[j] - S.seen[j]; if (rem <= 0) continue; c[j]++; if (mjShanten(c) < sh) uke += rem; c[j]--; }
+        if (!c[kd]) continue; c[kd]--; const MC = S.melds[s].length, sh = mjShanten(c, MC); let uke = 0;
+        if (sh <= 2) for (let j = 0; j < 34; j++) { if (!nearTile(c, j)) continue; const rem = 4 - c[j] - S.seen[j]; if (rem <= 0) continue; c[j]++; if (mjShanten(c, MC) < sh) uke += rem; c[j]--; }
         c[kd]++;
         const val = kd >= 27 ? 0 : (kd % 9 === 0 || kd % 9 === 8) ? 1 : 2 + (4 - Math.abs((kd % 9) - 4));
         list.push({ k: kd, sh: sh, uke: uke, val: val, dg: opp.length ? danger(kd, opp) : 0 });
@@ -8290,13 +8340,13 @@
     }
     function cpuTurn(s) {
       if (over || quitting) return;
-      const c = S.c[s], win = mjScore(c, { tsumo: true, riichi: S.riichi[s], seat: s });
+      const c = S.c[s], win = mjScore(c, { tsumo: true, riichi: S.riichi[s], seat: s, melds: S.melds[s] });
       if (win) { declareWin(s, null, win); return; }
       if (S.riichi[s]) { doDiscard(s, S.last[s], false); return; }
-      const ch = cpuChoose(s); doDiscard(s, ch.k, ch.sh === 0 && remain() >= 4 && S.pts[s] >= 1000 && Math.random() < 0.85);
+      const ch = cpuChoose(s); doDiscard(s, ch.k, ch.sh === 0 && remain() >= 4 && S.pts[s] >= 1000 && !S.melds[s].length && Math.random() < 0.85);
     }
     /* ---- 決着 ---- */
-    function handTiles(s, extra) { const out = []; for (let i = 0; i < 34; i++) for (let j = 0; j < S.c[s][i]; j++) out.push(i); return out; }
+    function handTiles(s, extra) { const out = []; for (let i = 0; i < 34; i++) for (let j = 0; j < S.c[s][i]; j++) out.push(i); S.melds[s].forEach((m) => m.tiles.forEach((q) => out.push(q))); return out; }
     function declareWin(w, from, res, t) {
       if (over) return; over = true; T.clear(); myPhase = false; setActs([]);
       if (from != null) S.c[w][t]++;
@@ -9807,6 +9857,12 @@
       intro: 'ならんだ文字のなかに、1つだけちがう文字がまざっています。見つけてタップ!', how: ['ちがう文字をタップ', 'せいかいで +時間', 'まちがえると -2秒。制限時間は40秒'], legend: '' },
     { id: 'fcount', name: 'ぱっとかぞえ', short: 'ぱっとかぞえ', desc: 'ぱっと光る星の数を一瞬でかぞえる。', icon: ICON_FC, create: createFlashCount,
       intro: '星がいっしゅんだけ出ます。いくつあったか、えらんでね。', how: ['星の数をよく見る', '消えたら数をえらぶ', 'まちがえると -2秒。制限時間は40秒'], legend: '' },
+    { id: 'chinchiro', name: 'チンチロ', short: 'チンチロ', desc: 'サイコロ3つで親と勝負。ピンゾロは5倍!', icon: ICON_CHI, create: createChinchiro,
+      intro: '3つのサイコロをふって、役の強さで親(CPU)と勝負します。目なしは3回までふりなおせます。8回戦で所持金を増やそう。', how: ['かけ金をえらんでサイコロをふる', 'ピンゾロ5倍・ゾロ目3倍・シゴロ2倍・ヒフミは2倍払い', '所持金がいくらになるかがスコア'], legend: '' },
+    { id: 'chohan', name: '丁半', short: '丁半', desc: '出目の合計が偶数(丁)か奇数(半)かを当てる。', icon: ICON_CHO, create: createChoHan,
+      intro: 'サイコロ2つの合計が、偶数(丁)か奇数(半)かを当てます。ゾロ目で当たれば高配当、3連勝からはボーナス。', how: ['かけ金と丁・半をえらぶ', '当たれば約1.9倍(ゾロ目は2.5倍)', '10回戦で所持金を増やそう'], legend: '' },
+    { id: 'yacht', name: 'ヨット', short: 'ヨット', desc: '5つのサイコロで役をつくる、遊び大全の定番。', icon: ICON_YT, create: createYacht,
+      intro: 'サイコロ5つを最大3回ふって、12個の役を1ターンに1つずつうめていきます。上の段が63点以上で+35ボーナス!', how: ['サイコロをふる → キープしたいサイコロをタップ → ふりなおす', '3回までふったら役を1つえらぶ', '12ターンの合計点がスコア。ヨット(5つ同じ)は50点'], legend: '' },
     { id: 'mole', name: 'もぐらたたき', short: 'もぐら', desc: '出てきたもぐらをたたく。爆弾はさわらない。', icon: ICON_MOLE, create: createMole,
       intro: '9つのあなから、もぐらが顔を出します。すばやくタップ。爆弾と金のもぐらにも注意です。',
       how: ['もぐら🐹は +10点、金のもぐら⭐は +30点', 'つづけてたたくとコンボで倍率アップ(最大×5)', '爆弾💣をたたくと -20点・-2秒。制限時間は40秒'], legend: '' },
@@ -9822,7 +9878,7 @@
     { id: 'slide', name: 'スライド', short: 'スライド', desc: '数字を1から順にならべるパズル。', icon: ICON_SLIDE, create: createSlide,
       intro: 'マスをスライドさせて、数字を1から順にならべます。空いているマスに向かって、同じ列のマスをまとめて動かせます。',
       how: ['動かしたいマスをタップ(空きと同じ行か列なら、まとめて動く)', '速くそろえるほど高得点。クリアで +10秒', '3×3から始まり、3問目からは4×4。制限時間は90秒'], legend: '' },
-    { id: 'hilo', name: 'ハイ&ロー', short: 'ハイロー', th: 'felt', desc: 'トランプで、次のカードが高いか低いかを当てる。', icon: ICON_HILO, create: createHilo,
+    { id: 'hilo', name: 'ハイ&ロー', short: 'ハイロー', th: 'felt', desc: '高いか低いかを当てて、ポットを育てる。いつ持ち帰る?', icon: ICON_HILO, create: createHiLo2,
       intro: '今のカード(1〜13)より、次のカードが高いか低いかを当てます。連続で当てるほど倍率アップです。',
       how: ['「高い」か「低い」をタップ(1・2キーでも選べます)', '1.2秒いないに答えると +5点', 'はずれると -3秒。制限時間は40秒'], legend: '' },
     { id: 'dodge', name: 'ほしよけ', short: 'ほしよけ', desc: '降ってくる岩をよけて、星を集める。', icon: ICON_DODGE, create: createDodge,
@@ -9837,10 +9893,12 @@
     { id: 'stack', name: 'つみあげ', short: 'つみあげ', desc: '動くブロックを重ねて、できるだけ高く積む。', icon: ICON_STACK, create: createStack,
       intro: '左右に動くブロックを、タップで落として積み上げます。ずれた部分は切り落とされて、だんだん細くなります。',
       how: ['タイミングよくタップ(スペースキーでもOK)', 'ほぼぴったりなら、切り落とされずボーナス', '完全に外すと終わり。高く積むほどスピードアップ'], legend: '' },
-    { id: 'bj', name: 'ブラックジャック', short: 'BJ', th: 'felt', desc: 'ディーラーと勝負。21に近づけよう。', icon: ICON_BJ, create: createBlackjack,
+    { id: 'bj', name: 'ブラックジャック', short: 'BJ', th: 'felt', desc: 'ディーラーと勝負。ダブル・サレンダー・連勝ボーナスあり。', icon: ICON_BJ, create: createBlackjack,
       intro: 'カードの合計を21に近づける、トランプの定番ゲーム。10ハンドのあいだに、チップをどれだけ増やせるかを競います。',
       how: ['最初に100チップ。ハンドごとに 10・20・50 からかける', 'ヒットで1枚引く、スタンドでやめる。21をこえるとバスト(負け)', 'ブラックジャック(最初の2枚で21)は 1.5倍。最後のチップ数がスコア'], legend: '' },
-    { id: 'poker', name: 'ビデオポーカー', short: 'ポーカー', th: 'felt', desc: '5枚のカードで役をそろえる、1人用ポーカー。', icon: ICON_POKER, create: createPoker,
+    { id: 'poker', name: 'ポーカー(CPU対戦)', short: 'ポーカー', th: 'felt', desc: 'CPU3人と5枚ドロー。ベット・ブラフ・おりるの駆け引き。', icon: ICON_POKER, create: createPokerTable,
+      intro: 'CPU3人と5枚ドローポーカー。アンティを出して、ベット→カード交換→ベットの順で進みます。強い手なら攻める、弱ければ降りる、時にはブラフも。', how: ['最初に200チップ。1ハンドごとにアンティ5', 'ベット(+10)・コール・おりる のどれかをえらぶ', 'いらないカードをタップして交換。最後に一番強い役が勝ち', '8ハンド後のチップがスコア'], legend: '' },
+    { id: 'vpoker', name: 'ビデオポーカー', short: 'ポーカー', th: 'felt', desc: '5枚のカードで役をそろえる、1人用ポーカー。', icon: ICON_POKER, create: createPoker,
       intro: '配られた5枚から、のこすカードを選んで、1回だけ引き直せます。できた役に応じて、チップがもらえます。',
       how: ['最初に100チップ。1ハンド 10チップ。全部で12ハンド', 'のこしたいカードをタップ(キープ)してから、ドロー', 'ジャックス以上のペアから配当あり。ロイヤルフラッシュは ×250'], legend: '' },
     { id: 'maid', name: 'ババ抜き', short: 'ババ抜き', th: 'felt', desc: 'ハルとミナとババ抜き。負けるまで続く。', icon: ICON_MAID, create: createMaid,
@@ -9906,7 +9964,7 @@
   ];
   const byId = (id) => GAMES.find((g) => g.id === id);
   const CAT_LIST = ['アクション', 'タイミング', 'パズル', 'あたま', 'カード', 'ボード'];
-  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', odd: 'あたま', dchar: 'あたま', fcount: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード', cups: 'あたま', numt: 'あたま' };
+  const CATS = { star: 'アクション', flap: 'アクション', snake: 'アクション', break: 'アクション', runner: 'アクション', tap: 'タイミング', stop: 'タイミング', rhythm: 'タイミング', merge: 'パズル', lights: 'パズル', pairs: 'パズル', simon: 'あたま', nums: 'あたま', color: 'あたま', vpoker: 'カード', odd: 'あたま', chinchiro: 'ギャンブル', chohan: 'ギャンブル', yacht: 'あたま', dchar: 'あたま', fcount: 'あたま', mole: 'アクション', slide: 'パズル', bj: 'カード', sevens: 'カード', bbp: 'パズル', daifugo: 'カード', wolf: 'ボード', wolfnet: 'ボード', feign: 'ボード', wordwolf: 'あたま', poker: 'カード', maid: 'カード', reversi: 'ボード', c4: 'ボード', mines: 'ボード', nmem: 'あたま', stack: 'タイミング', hilo: 'あたま', dodge: 'アクション', mash: 'タイミング', reflex: 'タイミング', rps: 'あたま', trivia: 'あたま', mahjong: 'ボード', doubt: 'カード', uno: 'カード', beatlane: 'タイミング', ball6: 'パズル', maketen: 'あたま', rogue: 'ボード', tower: 'アクション', sudoku: 'パズル', math: 'あたま', dots: 'あたま', arrow: 'タイミング', balloon: 'アクション', ttt: 'ボード', cups: 'あたま', numt: 'あたま' };
   GAMES.forEach((g) => { g.cat = CATS[g.id] || 'アクション'; g.ramp = RAMPS[g.id] != null ? RAMPS[g.id] : 0; });
 
   /* ===== 記録とランキング ===== */
@@ -9947,6 +10005,7 @@
     stack: [['たかさ', 10, '10だん'], ['たかさ', 20, '20だん'], ['ぴったり', 6, 'ぴったり6回']],
     bj: [['勝ち', 4, '4勝'], ['最高チップ', 200, 'チップ200'], ['最高チップ', 400, 'チップ400']],
     poker: [['あたり', 5, 'あたり5回'], ['最高チップ', 200, 'チップ200'], ['最高チップ', 500, 'チップ500']],
+    vpoker: [['あたり', 5, 'あたり5回'], ['最高チップ', 200, 'チップ200'], ['最高チップ', 500, 'チップ500']],
     maketen: [['とけた問題', 5, '5問'], ['とけた問題', 10, '10問'], ['とけた問題', 16, '16問']],
     rogue: [['とうたつ', 3, '3階'], ['とうたつ', 6, '6階'], ['たおした数', 30, '30たい倒す']],
     bbp: [['ターン', 12, '12ターン'], ['ターン', 25, '25ターン'], ['ボール', 12, 'ボール12こ']],
@@ -10717,7 +10776,7 @@
     bbox.append(bt('h1', '', '対戦モード'));
     bbox.append(bt('p', 'sub', '友だちと同じゲームを同時に遊んで、スコアで勝負します。スコアがある程度まで上がるたびに、あいての画面に「じゃま」が入ります(ぼやける・逆さま・黒いしみ・ゆれる)。部屋をつくって、コードを友だちに伝えてください。'));
     bbox.append(bt('p', 'bt-me', 'あなたの名前: ' + Rank.name() + '(ホームで変えられます)'));
-    const c0 = bt('section', 'bt-card'); c0.append(bt('h2', '', '👥 ほんものの対人戦'), bt('p', 'sub', 'まるばつ・よつめ・リバーシ・じゃんけんは交代で打つ直接対戦。ほかの全ゲームは、同じゲームを同時に遊んでスコアで勝負します(あいての点数もリアルタイムで見えます)。'));
+    const c0 = bt('section', 'bt-card'); c0.append(bt('h2', '', '👥 ほんものの対人戦'), bt('p', 'sub', 'まるばつ・よつめ・リバーシ・じゃんけん・UNO・ババ抜きは本物の直接対戦。ほかの全ゲームは、同じゲームを同時に遊んでスコアで勝負します(あいての点数もリアルタイムで見えます)。'));
     const c0b = bt('button', 'btn', '対人戦へ(ランダムマッチ・部屋)'); c0b.type = 'button'; c0b.addEventListener('click', () => duelMenu()); c0.append(c0b); bbox.append(c0);
     const c1 = bt('section', 'bt-card');
     c1.append(bt('h2', '', '部屋をつくる'));
@@ -10875,7 +10934,7 @@
   }
 
   /* ===== 本物の対人戦(リアルタイム・ターン制): まるばつ / よつめ / リバーシ ===== */
-  const DLG = { ttt: { n: 'まるばつ', w: 3, h: 3 }, c4: { n: 'よつめならべ', w: 7, h: 6 }, reversi: { n: 'リバーシ', w: 8, h: 8 }, rps: { n: 'じゃんけん(3本先取)', w: 0, h: 0 } };
+  const DLG = { ttt: { n: 'まるばつ', w: 3, h: 3 }, c4: { n: 'よつめならべ', w: 7, h: 6 }, reversi: { n: 'リバーシ', w: 8, h: 8 }, rps: { n: 'じゃんけん(3本先取)', w: 0, h: 0 }, uno: { n: 'UNO', w: 0, h: 0 }, bbp: { n: 'ババ抜き', w: 0, h: 0 }, dai: { n: '大富豪', w: 0, h: 0 }, sev: { n: '七並べ', w: 0, h: 0 }, dbt: { n: 'ダウト', w: 0, h: 0 }, bj: { n: 'ブラックジャック', w: 0, h: 0 }, pok: { n: 'ポーカー(チップ戦)', w: 0, h: 0 }, chi: { n: 'チンチロ', w: 0, h: 0 }, choh: { n: '丁半', w: 0, h: 0 }, mj: { n: '麻雀(2人)', w: 0, h: 0 } };
   const TTT_L = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
   let dl = null;
   const dlMark = (g, p) => g === 'ttt' ? (p === 1 ? '○' : '×') : (p === 1 ? (g === 'c4' ? '赤' : '黒') : (g === 'c4' ? '黄' : '白'));
@@ -10896,14 +10955,18 @@
     bbox.append(bt('p', 'sub', 'ほんもののあいてと対戦します。ゲームをえらんで、「ランダムマッチ」で待っている人と、「部屋」で友だちと遊べます。'));
     const c = bt('section', 'bt-card');
     const sel = bt('select', 'bt-sel'); sel.setAttribute('aria-label', 'ゲーム');
-    const og1 = bt('optgroup'); og1.label = '👥 ターン制(交代で打つ)'; Object.keys(DLG).forEach((k) => { const o = bt('option', '', DLG[k].n); o.value = k; og1.append(o); }); sel.append(og1);
+    const og1 = bt('optgroup'); og1.label = '👥 ターン制(交代で打つ・カード)'; Object.keys(DLG).forEach((k) => { const o = bt('option', '', DLG[k].n); o.value = k; og1.append(o); }); sel.append(og1);
     const og2 = bt('optgroup'); og2.label = '⚡ 同時対戦(同じゲームを同時に遊んでスコアで勝負)';
-    GAMES.filter((g) => ['wolf', 'wolfnet', 'wordwolf', 'feign', 'ttt', 'c4', 'reversi'].indexOf(g.id) < 0).forEach((g) => { const o = bt('option', '', g.name + (CPU_G.indexOf(g.id) >= 0 ? '(おなじ条件でスコア勝負)' : '')); o.value = 's:' + g.id; og2.append(o); }); sel.append(og2);
+    GAMES.filter((g) => ['wolf', 'wolfnet', 'wordwolf', 'feign', 'ttt', 'c4', 'reversi', 'uno', 'bbp', 'rps', 'daifugo', 'sevens', 'doubt', 'bj', 'poker'].indexOf(g.id) < 0).forEach((g) => { const o = bt('option', '', g.name + (CPU_G.indexOf(g.id) >= 0 ? '(おなじ条件でスコア勝負)' : '')); o.value = 's:' + g.id; og2.append(o); }); sel.append(og2);
+    const rl = bt('div', 'dl-rules'); rl.hidden = true;
+    [['stairs', '階段'], ['rev', '革命'], ['eight', '8切り'], ['lock', '縛り'], ['back11', '11バック'], ['s3', 'ジョーカー+スペ3返し']].forEach(([k2, n2]) => { const lb = bt('label', ''); const cb = bt('input'); cb.type = 'checkbox'; cb.checked = !!DL_RULES[k2]; cb.addEventListener('change', () => { DL_RULES[k2] = cb.checked ? 1 : 0; }); lb.append(cb, document.createTextNode(' ' + n2)); rl.append(lb); });
+    sel.addEventListener('change', () => { rl.hidden = sel.value !== 'dai'; });
+    c.append(sel, rl);
     const rn = bt('button', 'btn', '⚡ ランダムマッチ(だれかと対戦)'); rn.type = 'button';
     rn.addEventListener('click', () => sel.value.indexOf('s:') === 0 ? scoreRandom(sel.value.slice(2), rn) : duelRandom(sel.value, rn));
     const mk = bt('button', 'btn ghost', '部屋をつくる(友だちとあそぶ)'); mk.type = 'button';
     mk.addEventListener('click', () => sel.value.indexOf('s:') === 0 ? battleCreate(sel.value.slice(2), DIFF, mk) : duelCreate(sel.value, false, mk));
-    c.append(sel, rn, mk); bbox.append(c);
+    c.append(rn, mk); bbox.append(c);
     const c2 = bt('section', 'bt-card'); c2.append(bt('h2', '', 'コードで入る'));
     const inp = bt('input', 'bt-in'); inp.type = 'text'; inp.maxLength = 4; inp.placeholder = 'コード4文字'; inp.autocomplete = 'off'; inp.setAttribute('aria-label', '部屋のコード');
     const jn = bt('button', 'btn', '入る'); jn.type = 'button'; jn.addEventListener('click', async () => { const code = String(inp.value || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); try { if (code.length === 4 && (await rtdb('GET', '/rooms/' + code))) { battleJoin(code, jn); return; } } catch (e) {} duelJoin(inp.value, jn); });
@@ -10933,7 +10996,7 @@
     if (btn) btn.disabled = true; dlMsg('部屋をつくっています…');
     try {
       const code = await dlNewCode();
-      await rtdb('PUT', '/duel/' + code, { game: g, pub: !!pub, host: { uid: Rank.uid, name: Rank.name() }, state: 'wait', board: dlInit(g), turn: 1, seq: 0, at: Date.now(), hb: Date.now() });
+      await rtdb('PUT', '/duel/' + code, Object.assign({ game: g, pub: !!pub, host: { uid: Rank.uid, name: Rank.name() }, state: 'wait', board: dlInit(g), turn: 1, seq: 0, at: Date.now(), hb: Date.now() }, (g === 'uno' || g === 'bbp') ? cardInit(g) : (CG2.indexOf(g) >= 0 ? cardInit2(g) : {})));
       duelEnter(code, 'host', g);
     } catch (e) { if (btn) btn.disabled = false; dlMsg('部屋をつくれませんでした。通信とFirebaseのルールを確認してください。'); }
   }
@@ -11005,6 +11068,8 @@
       return;
     }
     const names = d.role === 'host' ? [Rank.name() + '(あなた)', (opp && opp.name) || 'あいて'] : [(opp && opp.name) || 'あいて', Rank.name() + '(あなた)'];
+    if (g === 'uno' || g === 'bbp') { cardRender(r, d, names, opp); return; }
+    if (CG2.indexOf(g) >= 0) { cardRender2(r, d, names, opp); return; }
     const hud = bt('div', 'dl-hud');
     [1, 2].forEach((p) => { const s = bt('div', 'dl-p' + (Number(r.turn) === p && !r.winner ? ' on' : '') + (p === d.me ? ' me' : '')); s.append(bt('b', '', dlMark(g, p)), bt('span', '', names[p - 1])); if (g === 'reversi') s.append(bt('em', '', String(board.filter((x) => x === p).length))); hud.append(s); });
     bbox.append(hud);
@@ -11062,6 +11127,713 @@
       let n1 = s1 + (w === 1 ? 1 : 0), n2 = s2 + (w === 2 ? 1 : 0);
       rtdb('PATCH', '/duel/' + d.code, { s1: n1, s2: n2, p1: null, p2: null, res: [a, c, w], winner: n1 >= 3 ? 1 : n2 >= 3 ? 2 : null, seq: (Number(r.seq) || 0) + 1 }).catch(() => {}).then(() => { d.judging = false; });
     }
+  }
+  /* --- 対人戦: UNO / ババ抜き(2人) --- */
+  const UNO_COL = { R: ['#ef4444', 'あか'], Y: ['#eab308', 'きいろ'], G: ['#22c55e', 'みどり'], B: ['#3b82f6', 'あお'] };
+  function unoDeck() {
+    const d = [];
+    Object.keys(UNO_COL).forEach((c) => { d.push(c + '0'); for (let n = 1; n <= 9; n++) d.push(c + n, c + n); ['S', 'R', '+'].forEach((x) => d.push(c + x, c + x)); });
+    for (let i = 0; i < 4; i++) d.push('W', 'W4');
+    return shuffle(d);
+  }
+  const unoLabel = (c) => c[0] === 'W' ? (c === 'W4' ? '+4' : 'W') : c[1] === 'S' ? '⊘' : c[1] === 'R' ? '⇄' : c[1] === '+' ? '+2' : c.slice(1);
+  function cardInit(g) {
+    if (g === 'uno') {
+      const d = unoDeck(), h1 = d.splice(0, 7), h2 = d.splice(0, 7); let top;
+      do { top = d.shift(); if (top[0] === 'W') d.push(top); } while (top[0] === 'W');
+      return { deck: d, disc: [top], h1: h1, h2: h2, color: top[0], turn: 1, seq: 0, winner: null, msg: '' };
+    }
+    const sets = []; ['S', 'H', 'D', 'C'].forEach((s) => { for (let n = 1; n <= 13; n++) sets.push(s + n); }); sets.push('JK');
+    const d = shuffle(sets), h1 = [], h2 = []; d.forEach((c, i) => (i % 2 ? h2 : h1).push(c));
+    return { h1: bbPairs(h1), h2: bbPairs(h2), turn: 1, seq: 0, winner: null, msg: '' };
+  }
+  const bbRank = (c) => c === 'JK' ? 0 : Number(c.slice(1));
+  function bbPairs(h) {
+    const by = {}; h.forEach((c) => { (by[bbRank(c)] = by[bbRank(c)] || []).push(c); });
+    const out = []; Object.keys(by).forEach((r) => { const a = by[r]; if (r === '0') out.push(...a); else if (a.length % 2) out.push(a[0]); });
+    return shuffle(out);
+  }
+  const bbLabel = (c) => c === 'JK' ? '🃏' : ({ S: '♠', H: '♥', D: '♦', C: '♣' })[c[0]] + (({ 1: 'A', 11: 'J', 12: 'Q', 13: 'K' })[c.slice(1)] || c.slice(1));
+  function cardFace(g, c) {
+    const b = bt('div', 'cg-card');
+    if (g === 'uno') { b.style.background = c[0] === 'W' ? 'linear-gradient(135deg,#ef4444 25%,#eab308 25% 50%,#22c55e 50% 75%,#3b82f6 75%)' : UNO_COL[c[0]][0]; b.textContent = unoLabel(c); }
+    else { b.textContent = bbLabel(c); b.classList.add('bb'); if (c[0] === 'H' || c[0] === 'D') b.style.color = '#dc2626'; }
+    return b;
+  }
+  function unoCan(c, top, color) { return c[0] === 'W' || c[0] === color || (c.slice(1) === top.slice(1) && top[0] !== 'W'); }
+  function unoDraw(st, who, n) {
+    const h = (st['h' + who] || []).slice();
+    for (let i = 0; i < n; i++) {
+      if (!st.deck.length) { const top = st.disc.pop(); st.deck = shuffle(st.disc); st.disc = [top]; if (!st.deck.length) break; }
+      h.push(st.deck.shift());
+    }
+    st['h' + who] = h;
+  }
+  function cardRender(r, d, names, opp) {
+    const g = d.game, me = d.me, ot = 3 - me, win = r.winner ? Number(r.winner) : 0, mine = Number(r.turn) === me && !win && !d.gone;
+    const hm = (r['h' + me] || []).slice(), ho = (r['h' + ot] || []);
+    const box = bt('section', 'bt-card');
+    box.append(bt('h2', '', names[0] + ' vs ' + names[1]));
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + ' のカード: ' + ho.length + '枚'));
+    const oh = bt('div', 'cg-hand');
+    if (g === 'uno') ho.forEach(() => oh.append(bt('div', 'cg-card back', '')));
+    else ho.forEach((c, i) => { const b = bt('button', 'cg-card back' + (mine ? ' pick' : '')); b.type = 'button'; b.setAttribute('aria-label', 'ひく'); if (mine) b.addEventListener('click', () => bbTake(i)); oh.append(b); });
+    box.append(oh);
+    if (g === 'uno') {
+      const top = (r.disc || [])[(r.disc || []).length - 1] || 'R0', mid = bt('div', 'cg-mid');
+      const tc = cardFace('uno', top); if (top[0] === 'W') tc.style.background = UNO_COL[r.color][0]; mid.append(tc);
+      mid.append(bt('span', 'cg-col', 'いまの色: ' + UNO_COL[r.color][1])); box.append(mid);
+    }
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const msg = win ? (win === me ? '🎉 あなたの勝ち!' : 'あなたの負け…') : d.gone ? 'あいてがいなくなりました。' : mine ? (g === 'uno' ? (d.sel >= 0 ? '色をえらんでね' : 'あなたの番(出せるカードをタップ / なければ「ひく」)') : 'あなたの番(あいてのカードを1枚ひこう)') : 'あいての番です…';
+    box.append(bt('p', 'bt-msg dl-msg' + (win === me ? ' won' : ''), msg));
+    if (g === 'uno' && d.sel >= 0 && mine) { const row = bt('div', 'dl-row'); Object.keys(UNO_COL).forEach((c) => { const b = bt('button', 'btn', UNO_COL[c][1]); b.type = 'button'; b.style.background = UNO_COL[c][0]; b.style.color = '#fff'; b.addEventListener('click', () => unoPlay(d.sel, c)); row.append(b); }); box.append(row); }
+    const mh = bt('div', 'cg-hand');
+    const top2 = g === 'uno' ? (r.disc || [])[(r.disc || []).length - 1] : null;
+    hm.forEach((c, i) => {
+      const f = cardFace(g, c); f.classList.add('mine');
+      if (g === 'uno') { const ok = mine && unoCan(c, top2, r.color); f.classList.toggle('ok', ok); f.classList.toggle('dim', mine && !ok); if (d.sel === i) f.classList.add('sel'); f.addEventListener('click', () => { if (!ok) return; if (c[0] === 'W') { d.sel = i; d.sig = ''; duelRender(); } else unoPlay(i, null); }); }
+      mh.append(f);
+    });
+    box.append(mh); bbox.append(box);
+    const row = bt('div', 'dl-row');
+    if (g === 'uno' && mine && d.sel < 0) { const dr = bt('button', 'btn', 'ひく(1枚)'); dr.type = 'button'; dr.addEventListener('click', unoDrawMove); row.append(dr); }
+    if (win && !d.fin) { d.fin = true; if (win === me) { try { winJingle(); } catch (e) {} } else A.beep(220, 0.25, 'sawtooth', 0.05, -60); }
+    if (win && d.role === 'host') { const rm = bt('button', 'btn', 'もう一戦'); rm.type = 'button'; rm.addEventListener('click', async () => { rm.disabled = true; d.fin = false; try { const n = cardInit(g); n.seq = (Number(d.room.seq) || 0) + 1; n.turn = win === 1 ? 2 : 1; await rtdb('PATCH', '/duel/' + d.code, n); } catch (e) {} }); row.append(rm); }
+    const lv = bt('button', 'btn ghost', win || d.gone ? 'おわる' : 'ぬける'); lv.type = 'button'; lv.addEventListener('click', async () => { await duelLeave(); duelMenu(); }); row.append(lv);
+    bbox.append(row);
+  }
+  async function dlPush(patch) {
+    const d = dl; if (!d) return; patch.seq = (Number(d.room.seq) || 0) + 1;
+    d.room = Object.assign({}, d.room, patch); d.sel = -1; d.msel = []; d.sig = ''; d.moving = true; duelRender();
+    try { await rtdb('PATCH', '/duel/' + d.code, patch); A.beep(520, 0.06, 'triangle', 0.05); } catch (e) {}
+    d.moving = false;
+  }
+  function unoPlay(i, col) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me;
+    if (Number(r.turn) !== me || r.winner) return;
+    const st = { deck: (r.deck || []).slice(), disc: (r.disc || []).slice(), h1: (r.h1 || []).slice(), h2: (r.h2 || []).slice(), color: r.color };
+    const h = st['h' + me], c = h[i]; if (!c) return;
+    const top = st.disc[st.disc.length - 1]; if (!unoCan(c, top, st.color)) return;
+    h.splice(i, 1); st.disc.push(c); st.color = c[0] === 'W' ? (col || 'R') : c[0];
+    let next = ot, msg = '';
+    if (c[1] === 'S' || c[1] === 'R') { next = me; msg = (Rank.name()) + ' がスキップ/リバース!もう1回'; }
+    if (c[1] === '+') { unoDraw(st, ot, 2); next = me; msg = 'あいてが2枚ひきました'; }
+    if (c === 'W4') { unoDraw(st, ot, 4); next = me; msg = 'あいてが4枚ひきました'; }
+    const win = h.length === 0 ? me : null;
+    if (h.length === 1 && !win) msg += ' UNO!';
+    dlPush({ deck: st.deck, disc: st.disc, h1: st.h1, h2: st.h2, color: st.color, turn: win ? me : next, winner: win, msg: msg });
+  }
+  function unoDrawMove() {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me;
+    if (Number(r.turn) !== me || r.winner) return;
+    const st = { deck: (r.deck || []).slice(), disc: (r.disc || []).slice(), h1: (r.h1 || []).slice(), h2: (r.h2 || []).slice() };
+    unoDraw(st, me, 1);
+    dlPush({ deck: st.deck, disc: st.disc, h1: st.h1, h2: st.h2, turn: 3 - me, msg: Rank.name() + ' が1枚ひきました' });
+  }
+  function bbTake(i) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me;
+    if (Number(r.turn) !== me || r.winner) return;
+    const ho = (r['h' + ot] || []).slice(), hm = (r['h' + me] || []).slice(); const c = ho[i]; if (!c) return;
+    ho.splice(i, 1); hm.push(c); const nm = bbPairs(hm), no = shuffle(ho);
+    const patch = { turn: ot, msg: Rank.name() + ' が1枚ひきました' }; patch['h' + me] = nm; patch['h' + ot] = no;
+    if (!nm.length) patch.winner = me; else if (!no.length) patch.winner = ot;
+    if (!nm.length || !no.length) patch.turn = me;
+    dlPush(patch);
+  }
+  /* ===== 対人戦: 大富豪 / 七並べ / ダウト / ブラックジャック / ポーカー / チンチロ / 丁半 ===== */
+  let DL_RULES = { stairs: 1, rev: 1, eight: 1, lock: 1, back11: 1, s3: 1 };
+  const DL_SUITS = 'SHDC', DL_SYM = { S: '♠', H: '♥', D: '♦', C: '♣' };
+  const stdDeck = (jk) => { const d = []; DL_SUITS.split('').forEach((s) => { for (let n = 1; n <= 13; n++) d.push(s + n); }); for (let i = 0; i < jk; i++) d.push('JK'); return shuffle(d); };
+  const crS = (c) => c === 'JK' ? 'J' : c[0];
+  const crR = (c) => c === 'JK' ? 0 : Number(c.slice(1));
+  const rkLab = (r) => ({ 1: 'A', 11: 'J', 12: 'Q', 13: 'K' })[r] || String(r);
+  const stdLab = (c) => c === 'JK' ? '🃏' : DL_SYM[c[0]] + rkLab(crR(c));
+  function stdCard(c, cls) {
+    const b = bt('div', 'cg-card bb ' + (cls || ''), stdLab(c));
+    if (c[0] === 'H' || c[0] === 'D') b.style.color = '#dc2626';
+    return b;
+  }
+  const backCard = () => bt('div', 'cg-card back', '');
+  const rawD = (c) => { const r = crR(c); return c === 'JK' ? 16 : r === 1 ? 14 : r === 2 ? 15 : r; };
+  const dlSortDai = (h) => h.slice().sort((a, b) => rawD(a) - rawD(b) || (a < b ? -1 : 1));
+  /* --- 大富豪(ルール選択式) --- */
+  function daiParse(cards, R) {
+    const n = cards.length; if (!n) return null;
+    const jk = cards.filter((c) => c === 'JK').length, nj = cards.filter((c) => c !== 'JK');
+    if (!nj.length) return n <= 2 ? { t: 's', n: n, low: 16, suits: '' } : null;
+    const r0 = rawD(nj[0]);
+    if (nj.every((c) => rawD(c) === r0)) return { t: 's', n: n, low: r0, suits: nj.map(crS).sort().join('') };
+    if (!R.stairs || n < 3) return null;
+    const su = crS(nj[0]); if (!nj.every((c) => crS(c) === su)) return null;
+    const rs = nj.map(rawD).sort((a, b) => a - b);
+    for (let i = 1; i < rs.length; i++) if (rs[i] === rs[i - 1]) return null;
+    const gaps = (rs[rs.length - 1] - rs[0] + 1) - nj.length; if (gaps > jk) return null;
+    const extra = jk - gaps; let lo = rs[0], hi = rs[rs.length - 1] + extra;
+    if (hi > 15) { lo -= hi - 15; hi = 15; } if (lo < 3) return null;
+    return { t: 't', n: n, low: lo, suits: su };
+  }
+  const daiEff = (raw, st) => raw === 16 ? 16 : ((!!st.rev !== !!st.back) ? 18 - raw : raw);
+  function daiBeats(p, cards, st) {
+    const f = st.fld; if (!f) return true;
+    const R = st.rules || DL_RULES;
+    if (R.s3 && f.t === 's' && f.n === 1 && f.low === 16 && p.t === 's' && p.n === 1 && cards[0] === 'S3') return true;
+    if (p.t !== f.t || p.n !== f.n) return false;
+    if (st.lk) { const pool = st.lk.split(''); for (const ch of p.suits.split('')) { const i = pool.indexOf(ch); if (i < 0) return false; pool.splice(i, 1); } }
+    return daiEff(p.low, st) > daiEff(f.low, st);
+  }
+  function daiRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, R = r.rules || DL_RULES, hm = dlSortDai(r['h' + me] || []), ho = r['h' + ot] || [];
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + ' のカード: ' + ho.length + '枚'));
+    const oh = bt('div', 'cg-hand'); ho.slice(0, 14).forEach(() => oh.append(backCard())); box.append(oh);
+    const chips = bt('div', 'dl-row'); [r.rev ? '革命中' : '', r.back ? '11バック中' : '', r.lk ? '縛り:' + r.lk.split('').map((s) => DL_SYM[s]).join('') : ''].filter(Boolean).forEach((t) => chips.append(bt('span', 'chip', t))); if (chips.children.length) box.append(chips);
+    const mid = bt('div', 'cg-mid'); if (r.fld) (r.fld.cards || []).forEach((c) => mid.append(stdCard(c))); else mid.append(bt('span', 'sv-empty', '場は空です')); box.append(mid);
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const sel = (d.msel || []).filter((i) => i < hm.length), selCards = sel.map((i) => hm[i]);
+    const pl = selCards.length ? daiParse(selCards, R) : null, okPlay = !!(mine && pl && daiBeats(pl, selCards, r));
+    const mh = bt('div', 'cg-hand');
+    hm.forEach((c, i) => { const f = stdCard(c, 'mine'); if (sel.indexOf(i) >= 0) f.classList.add('sel', 'ok'); f.addEventListener('click', () => { if (!mine) return; const a = (d.msel || []).slice(), j = a.indexOf(i); if (j >= 0) a.splice(j, 1); else a.push(i); d.msel = a; d.sig = ''; duelRender(); }); mh.append(f); });
+    box.append(mh);
+    const row = bt('div', 'dl-row');
+    if (mine) {
+      const pb = bt('button', 'btn', 'だす'); pb.type = 'button'; pb.disabled = !okPlay; pb.addEventListener('click', () => daiPlay(selCards, pl)); row.append(pb);
+      const ps = bt('button', 'btn ghost', 'パス'); ps.type = 'button'; ps.disabled = !r.fld; ps.addEventListener('click', daiPass); row.append(ps);
+    }
+    return row;
+  }
+  function daiPlay(cards, p) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me, R = r.rules || DL_RULES;
+    if (Number(r.turn) !== me || r.winner) return; if (!daiBeats(p, cards, r)) return;
+    const h = (r['h' + me] || []).slice(); cards.forEach((c) => { const i = h.indexOf(c); if (i >= 0) h.splice(i, 1); });
+    const f = r.fld; let st = { rev: !!r.rev, back: !!r.back, lk: r.lk || '' }, msg = '';
+    if (R.lock && f && !st.lk && f.suits && p.suits && f.t === p.t && f.suits === p.suits && !cards.includes('JK')) { st.lk = p.suits; msg += ' 縛り!'; }
+    let clear = false;
+    if (R.rev && ((p.t === 's' && p.n >= 4) || (p.t === 't' && p.n >= 5))) { st.rev = !st.rev; msg += ' 革命!!'; }
+    if (R.back11 && p.t === 's' && cards.some((c) => crR(c) === 11)) { st.back = !st.back; msg += ' 11バック!'; }
+    if (R.eight && p.t === 's' && cards.some((c) => crR(c) === 8)) { clear = true; msg += ' 8切り!'; }
+    if (R.s3 && f && f.low === 16 && f.n === 1 && cards[0] === 'S3') { clear = true; msg += ' スペ3返し!'; }
+    if (p.t === 't') msg += ' 階段!';
+    const win = h.length === 0 ? me : null, patch = { fld: clear ? null : { cards: cards, t: p.t, n: p.n, low: p.low, suits: p.suits, by: me }, rev: st.rev, back: clear ? false : st.back, lk: clear ? '' : st.lk, turn: win ? me : (clear ? me : ot), winner: win, msg: Rank.name() + ':' + cards.map(stdLab).join(' ') + msg };
+    patch['h' + me] = h; d.msel = []; dlPush(patch);
+  }
+  function daiPass() {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me;
+    if (Number(r.turn) !== me || r.winner || !r.fld) return;
+    d.msel = []; dlPush({ fld: null, lk: '', back: false, turn: ot, msg: Rank.name() + ' はパス。場が流れました' });
+  }
+  /* --- 七並べ --- */
+  const sevOk = (c, bd) => { const i = DL_SUITS.indexOf(c[0]), r = crR(c); return r === bd[2 * i] - 1 || r === bd[2 * i + 1] + 1; };
+  function sevRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, hm = (r['h' + me] || []).slice().sort(), ho = r['h' + ot] || [], bd = r.bd || [7, 7, 7, 7, 7, 7, 7, 7];
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + ' のカード: ' + ho.length + '枚 / パス ' + (Number(r['ps' + ot]) || 0) + '/3'));
+    const bdBox = bt('div', 'sv-board');
+    DL_SUITS.split('').forEach((s, i) => { const row = bt('div', 'sv-row'); row.append(bt('b', 'sv-s' + (s === 'H' || s === 'D' ? ' red' : ''), DL_SYM[s])); for (let n = 1; n <= 13; n++) { const on = n >= bd[2 * i] && n <= bd[2 * i + 1]; row.append(bt('span', 'sv-c' + (on ? ' on' : '') + (s === 'H' || s === 'D' ? ' red' : ''), on ? rkLab(n) : '')); } bdBox.append(row); });
+    box.append(bdBox); if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const mh = bt('div', 'cg-hand'); let any = false;
+    hm.forEach((c) => { const ok = mine && sevOk(c, bd); if (ok) any = true; const f = stdCard(c, 'mine' + (ok ? ' ok' : (mine ? ' dim' : ''))); f.addEventListener('click', () => { if (ok) sevPlay(c); }); mh.append(f); });
+    box.append(mh);
+    const row = bt('div', 'dl-row');
+    if (mine) { const ps = bt('button', 'btn ghost', 'パス(のこり ' + (3 - (Number(r['ps' + me]) || 0)) + '回)'); ps.type = 'button'; ps.disabled = any; ps.addEventListener('click', sevPass); row.append(ps); }
+    return row;
+  }
+  function sevPlay(c) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, bd = (r.bd || [7, 7, 7, 7, 7, 7, 7, 7]).slice();
+    if (Number(r.turn) !== me || r.winner || !sevOk(c, bd)) return;
+    const i = DL_SUITS.indexOf(c[0]), n = crR(c); if (n < bd[2 * i]) bd[2 * i] = n; else bd[2 * i + 1] = n;
+    const h = (r['h' + me] || []).slice(); h.splice(h.indexOf(c), 1);
+    const patch = { bd: bd, turn: h.length ? 3 - me : me, winner: h.length ? null : me, msg: Rank.name() + ':' + stdLab(c) }; patch['h' + me] = h; dlPush(patch);
+  }
+  function sevPass() {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me; if (Number(r.turn) !== me || r.winner) return;
+    const ps = (Number(r['ps' + me]) || 0) + 1, patch = { turn: 3 - me, msg: Rank.name() + ' はパス(' + ps + '回目)' }; patch['ps' + me] = ps; if (ps > 3) { patch.winner = 3 - me; patch.msg = Rank.name() + ' はパスが多すぎて負け'; } dlPush(patch);
+  }
+  /* --- ダウト --- */
+  function dbtRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, hm = (r['h' + me] || []).slice().sort((a, b) => crR(a) - crR(b) || (a < b ? -1 : 1)), ho = r['h' + ot] || [], req = Number(r.req) || 1, pile = r.pile || [];
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + ' のカード: ' + ho.length + '枚'));
+    const oh = bt('div', 'cg-hand'); ho.slice(0, 14).forEach(() => oh.append(backCard())); box.append(oh);
+    const mid = bt('div', 'cg-mid'); mid.append(backCard(), bt('span', 'cg-col', '場のカード ' + pile.length + '枚 / いまのお題: ' + rkLab(req))); box.append(mid);
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const resp = r.ph === 'r', row = bt('div', 'dl-row');
+    if (resp && !win) { const l = r.last || {}; box.append(bt('p', 'dl-msg', (l.by === me ? 'あなた' : (opp && opp.name || 'あいて')) + 'は ' + rkLab(req) + ' を ' + l.n + '枚 出したと言っています')); if (mine) { const a = bt('button', 'btn', 'ダウト!'); a.type = 'button'; a.addEventListener('click', () => dbtResp(true)); const b = bt('button', 'btn ghost', 'しんじる'); b.type = 'button'; b.addEventListener('click', () => dbtResp(false)); row.append(a, b); } }
+    const mh = bt('div', 'cg-hand'), sel = (d.msel || []).filter((i) => i < hm.length);
+    hm.forEach((c, i) => { const f = stdCard(c, 'mine'); if (sel.indexOf(i) >= 0) f.classList.add('sel', 'ok'); f.addEventListener('click', () => { if (!mine || resp) return; const a = (d.msel || []).slice(), j = a.indexOf(i); if (j >= 0) a.splice(j, 1); else if (a.length < 4) a.push(i); d.msel = a; d.sig = ''; duelRender(); }); mh.append(f); });
+    box.append(mh);
+    if (mine && !resp) { const pb = bt('button', 'btn', rkLab(req) + ' として ' + sel.length + '枚 出す'); pb.type = 'button'; pb.disabled = !sel.length; pb.addEventListener('click', () => dbtPlay(sel.map((i) => hm[i]))); row.append(pb); }
+    return row;
+  }
+  function dbtPlay(cards) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me; if (Number(r.turn) !== me || r.winner || r.ph === 'r' || !cards.length) return;
+    const h = (r['h' + me] || []).slice(); cards.forEach((c) => h.splice(h.indexOf(c), 1));
+    const patch = { pile: (r.pile || []).concat(cards), ph: 'r', turn: 3 - me, last: { by: me, n: cards.length, cs: cards }, msg: Rank.name() + ' が ' + cards.length + '枚 出しました' }; patch['h' + me] = h; d.msel = []; dlPush(patch);
+  }
+  function dbtResp(call) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, l = r.last || {}, req = Number(r.req) || 1; if (Number(r.turn) !== me || r.ph !== 'r' || r.winner) return;
+    const byH = r['h' + l.by] || [], patch = { ph: 'p', turn: me, req: req % 13 + 1 };
+    if (!call) { patch.msg = Rank.name() + ' はしんじた'; if (!byH.length) patch.winner = l.by; }
+    else {
+      const truth = (l.cs || []).every((c) => crR(c) === req), loser = truth ? me : l.by, lh = (r['h' + loser] || []).concat(r.pile || []);
+      patch['h' + loser] = lh; patch.pile = null;
+      patch.msg = 'ダウト! 出したカード: ' + (l.cs || []).map(stdLab).join(' ') + ' → ' + (truth ? 'ほんとうでした。' + Rank.name() : 'うそでした。' + (l.by === me ? Rank.name() : 'あいて')) + ' が場をぜんぶ引く';
+      if (truth && !byH.length) patch.winner = l.by;
+    }
+    dlPush(patch);
+  }
+  /* --- ブラックジャック --- */
+  const bjVal = (h) => { let t = 0, a = 0; h.forEach((c) => { const r = crR(c); if (r === 1) { a++; t += 11; } else t += Math.min(10, r); }); while (t > 21 && a > 0) { t -= 10; a--; } return t; };
+  function bjRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, hm = r['h' + me] || [], ho = r['h' + ot] || [], over = !!r.winner;
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + (over ? ' の合計: ' + bjVal(ho) : (r['dn' + ot] ? ' はスタンド済み' : ' が考え中'))));
+    const oh = bt('div', 'cg-hand'); ho.forEach((c, i) => oh.append(over || i > 0 ? (over ? stdCard(c) : stdCard(c)) : backCard())); box.append(oh);
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const mh = bt('div', 'cg-hand'); hm.forEach((c) => mh.append(stdCard(c, 'mine'))); box.append(mh);
+    box.append(bt('p', 'dl-msg', 'あなたの合計: ' + bjVal(hm) + (bjVal(hm) > 21 ? ' (バースト!)' : '')));
+    const row = bt('div', 'dl-row');
+    if (mine && !r['dn' + me]) { const a = bt('button', 'btn', 'ヒット'); a.type = 'button'; a.addEventListener('click', () => bjMove(true)); const b = bt('button', 'btn ghost', 'スタンド'); b.type = 'button'; b.addEventListener('click', () => bjMove(false)); row.append(a, b); }
+    return row;
+  }
+  function bjMove(hit) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me; if (Number(r.turn) !== me || r.winner || r['dn' + me]) return;
+    const h = (r['h' + me] || []).slice(), dk = (r.deck || []).slice(), patch = {};
+    if (hit) h.push(dk.shift());
+    const v = bjVal(h), done = !hit || v >= 21; patch['h' + me] = h; patch.deck = dk; patch['dn' + me] = done ? 1 : 0;
+    const otDone = !!r['dn' + ot]; patch.turn = !done ? me : (!otDone ? ot : me);
+    if (done && otDone) { const a = me === 1 ? v : bjVal(r.h1 || []), b = me === 2 ? v : bjVal(r.h2 || []); const A1 = a > 21 ? -1 : a, B1 = b > 21 ? -1 : b; patch.winner = A1 === B1 ? 3 : A1 > B1 ? 1 : 2; patch.msg = '勝負! ' + names0() + ' ' + a + ' 対 ' + b; }
+    dlPush(patch);
+  }
+  const names0 = () => { const r = dl.room; return ((r.host && r.host.name) || '1P') + ' 対 ' + ((r.guest && r.guest.name) || '2P'); };
+  /* --- ポーカー(2人・5枚ドロー・チップ戦) --- */
+  const PK_N = ['ハイカード', 'ワンペア', 'ツーペア', 'スリーカード', 'ストレート', 'フラッシュ', 'フルハウス', 'フォーカード', 'ストレートフラッシュ'];
+  function pkEval(h) {
+    const rs = h.map((c) => { const r = crR(c); return r === 1 ? 14 : r; }).sort((a, b) => b - a), fl = h.every((c) => c[0] === h[0][0]);
+    const cnt = {}; rs.forEach((r) => { cnt[r] = (cnt[r] || 0) + 1; });
+    const gs = Object.keys(cnt).map(Number).sort((a, b) => cnt[b] - cnt[a] || b - a), cs = gs.map((g) => cnt[g]);
+    let st = new Set(rs).size === 5 && rs[0] - rs[4] === 4, hi = rs[0]; if (!st && rs.join() === '14,5,4,3,2') { st = true; hi = 5; }
+    let k; if (st && fl) k = 8; else if (cs[0] === 4) k = 7; else if (cs[0] === 3 && cs[1] === 2) k = 6; else if (fl) k = 5; else if (st) k = 4; else if (cs[0] === 3) k = 3; else if (cs[0] === 2 && cs[1] === 2) k = 2; else if (cs[0] === 2) k = 1; else k = 0;
+    return [k].concat(st ? [hi] : gs);
+  }
+  const pkCmp = (a, b) => { for (let i = 0; i < Math.max(a.length, b.length); i++) { const x = (a[i] || 0) - (b[i] || 0); if (x) return x > 0 ? 1 : -1; } return 0; };
+  const PK_BET = 10;
+  function pkInit(prev) {
+    const dk = stdDeck(0), h1 = dk.splice(0, 5), h2 = dk.splice(0, 5); let c1 = prev ? Number(prev.c1) : 100, c2 = prev ? Number(prev.c2) : 100; if (c1 < 10 || c2 < 10) { c1 = 100; c2 = 100; }
+    const first = prev ? 3 - (Number(prev.first) || 1) : 1;
+    return { deck: dk, h1: h1, h2: h2, c1: c1 - 5, c2: c2 - 5, pot: 10, b1: 0, b2: 0, ph: 'b1', turn: first, first: first, n: 0, rs: 0, seq: 0, winner: null, show: 0, msg: 'アンティ5を出しました' };
+  }
+  function pokRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, hm = r['h' + me] || [], ho = r['h' + ot] || [], show = !!r.show, ph = r.ph, myC = Number(r['c' + me]) || 0, oC = Number(r['c' + ot]) || 0, bm = Number(r['b' + me]) || 0, bo = Number(r['b' + ot]) || 0;
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + ' チップ ' + oC + (bo ? ' (かけ ' + bo + ')' : '') + (show ? ' / ' + PK_N[pkEval(ho)[0]] : '')));
+    const oh = bt('div', 'cg-hand'); ho.forEach((c) => oh.append(show ? stdCard(c) : backCard())); box.append(oh);
+    box.append(bt('p', 'dl-msg', '🪙 ポット ' + (Number(r.pot) || 0)));
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const sel = (d.msel || []), mh = bt('div', 'cg-hand');
+    hm.forEach((c, i) => { const f = stdCard(c, 'mine'); if (sel.indexOf(i) >= 0) f.classList.add('sel', 'ok'); f.addEventListener('click', () => { if (!mine || ph !== 'd') return; const a = sel.slice(), j = a.indexOf(i); if (j >= 0) a.splice(j, 1); else a.push(i); d.msel = a; d.sig = ''; duelRender(); }); mh.append(f); });
+    box.append(mh); box.append(bt('p', 'dl-msg', 'あなた チップ ' + myC + (bm ? ' (かけ ' + bm + ')' : '') + ' / ' + PK_N[pkEval(hm)[0]]));
+    const row = bt('div', 'dl-row');
+    if (mine && !win) {
+      if (ph === 'd') { const b = bt('button', 'btn', sel.length ? sel.length + '枚 こうかんする' : 'このままいく'); b.type = 'button'; b.addEventListener('click', () => pokAct('draw')); row.append(b); }
+      else {
+        const diff = bo - bm;
+        if (diff > 0) { const c = bt('button', 'btn', 'コール(' + Math.min(diff, myC) + ')'); c.type = 'button'; c.addEventListener('click', () => pokAct('call')); row.append(c); } else { const c = bt('button', 'btn', 'チェック'); c.type = 'button'; c.addEventListener('click', () => pokAct('check')); row.append(c); }
+        if ((Number(r.rs) || 0) < 2 && myC > diff) { const b = bt('button', 'btn', (diff > 0 ? 'レイズ(+' : 'ベット(') + PK_BET + ')'); b.type = 'button'; b.addEventListener('click', () => pokAct('raise')); row.append(b); }
+        const f = bt('button', 'btn ghost', 'おりる'); f.type = 'button'; f.addEventListener('click', () => pokAct('fold')); row.append(f);
+      }
+    }
+    return row;
+  }
+  function pokAct(a) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me; if (Number(r.turn) !== me || r.winner) return;
+    const P = { pot: Number(r.pot) || 0, c1: Number(r.c1) || 0, c2: Number(r.c2) || 0, b1: Number(r.b1) || 0, b2: Number(r.b2) || 0, n: Number(r.n) || 0, rs: Number(r.rs) || 0 }, nm = Rank.name(), patch = {};
+    const pay = (who, x) => { x = Math.min(x, P['c' + who]); P['c' + who] -= x; P['b' + who] += x; P.pot += x; };
+    const finishRound = () => { P.b1 = 0; P.b2 = 0; P.n = 0; P.rs = 0; if (r.ph === 'b1') { patch.ph = 'd'; patch.turn = 1; patch.msg = 'カードをこうかん(0〜5枚)'; } else { showdown(); } };
+    const showdown = () => {
+      const e1 = pkEval(r.h1 || []), e2 = pkEval(r.h2 || []), c = pkCmp(e1, e2);
+      patch.show = 1; patch.ph = 'end'; patch.winner = c === 0 ? 3 : c > 0 ? 1 : 2;
+      if (c === 0) { P.c1 += Math.floor(P.pot / 2); P.c2 += Math.ceil(P.pot / 2); } else P['c' + (c > 0 ? 1 : 2)] += P.pot; P.pot = 0;
+      patch.msg = '勝負! ' + PK_N[e1[0]] + ' 対 ' + PK_N[e2[0]];
+    };
+    if (a === 'fold') { P['c' + ot] += P.pot; P.pot = 0; patch.winner = ot; patch.ph = 'end'; patch.msg = nm + ' がおりました'; }
+    else if (a === 'check') { P.n++; patch.turn = ot; patch.msg = nm + ':チェック'; if (P.n >= 2) finishRound(); }
+    else if (a === 'call') { pay(me, P['b' + ot] - P['b' + me]); patch.msg = nm + ':コール'; finishRound(); }
+    else if (a === 'raise') { pay(me, (P['b' + ot] - P['b' + me]) + PK_BET); P.rs++; P.n = 1; patch.turn = ot; patch.msg = nm + ':' + (P['b' + ot] > 0 && P['b' + me] > P['b' + ot] ? 'レイズ' : 'ベット') + ' → かけ ' + P['b' + me]; }
+    else if (a === 'draw') {
+      const h = (r['h' + me] || []).slice(), dk = (r.deck || []).slice(), sel = (d.msel || []).slice().sort((x, y) => y - x);
+      sel.forEach((i) => { if (i < h.length) h[i] = dk.shift(); }); patch['h' + me] = h; patch.deck = dk; d.msel = [];
+      patch.msg = nm + ' は ' + sel.length + '枚こうかん';
+      if (me === 1) patch.turn = 2; else { patch.ph = 'b2'; patch.turn = 1; patch.n = 0; }
+    }
+    ['pot', 'c1', 'c2', 'b1', 'b2', 'n', 'rs'].forEach((k) => { if (a !== 'draw') patch[k] = P[k]; });
+    dlPush(patch);
+  }
+  /* --- チンチロ(対人・3本先取) --- */
+  const CH_NAME = (v) => v >= 100 ? 'ピンゾロ' : v >= 90 ? 'ゾロ目' : v >= 80 ? 'シゴロ' : v >= 10 ? (v - 10) + 'の目' : v === 0 ? '目なし' : 'ヒフミ';
+  function chRole(d3) {
+    const s = d3.slice().sort((a, b) => a - b);
+    if (s[0] === 1 && s[2] === 1) return 100; if (s[0] === s[2]) return 90 + s[0];
+    if (s.join() === '4,5,6') return 80; if (s.join() === '1,2,3') return -1;
+    if (s[0] === s[1]) return 10 + s[2]; if (s[1] === s[2]) return 10 + s[0]; return 0;
+  }
+  function chiRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, dc = r.dice || [], tries = Number(r.tries) || 0;
+    box.append(bt('p', 'dl-msg', names[0] + ' ' + (Number(r.s1) || 0) + ' - ' + (Number(r.s2) || 0) + ' ' + names[1] + '(3本先取)'));
+    const dv = bt('div', 'cg-mid'); dc.forEach((n) => dv.append(bt('div', 'dc-die', ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][n]))); if (!dc.length) dv.append(bt('span', 'sv-empty', 'サイコロはまだです')); box.append(dv);
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const row = bt('div', 'dl-row');
+    if (mine && !win) { const b = bt('button', 'btn', 'サイコロをふる' + (tries ? '(' + tries + '/3回め済み)' : '')); b.type = 'button'; b.addEventListener('click', chiRoll); row.append(b); }
+    return row;
+  }
+  function chiRoll() {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me; if (Number(r.turn) !== me || r.winner) return;
+    const dc = [rndInt(1, 6), rndInt(1, 6), rndInt(1, 6)], v = chRole(dc), tries = (Number(r.tries) || 0) + 1, patch = { dice: dc }, nm = Rank.name();
+    if (v === 0 && tries < 3) { patch.tries = tries; patch.msg = nm + ':目なし。ふりなおし(' + tries + '/3)'; patch.turn = me; }
+    else {
+      patch.tries = 0; patch['v' + me] = v; patch.msg = nm + ':' + CH_NAME(v);
+      if (r['v' + ot] != null) {
+        const a = me === 1 ? v : Number(r.v1), b = me === 2 ? v : Number(r.v2), w = a === b ? 0 : a > b ? 1 : 2; let s1 = Number(r.s1) || 0, s2 = Number(r.s2) || 0; if (w === 1) s1++; if (w === 2) s2++;
+        patch.s1 = s1; patch.s2 = s2; patch.v1 = null; patch.v2 = null; patch.msg += ' → ' + CH_NAME(a) + ' 対 ' + CH_NAME(b) + (w ? '。' + (((w === 1 ? r.host : r.guest) || {}).name || '') + ' の勝ち' : '。引き分け'); patch.turn = 1;
+        if (s1 >= 3 || s2 >= 3) patch.winner = s1 >= 3 ? 1 : 2;
+      } else patch.turn = ot;
+    }
+    dlPush(patch);
+  }
+  /* --- 丁半(対人・5回勝負) --- */
+  function chohRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, dc = r.dice || [], myP = r['p' + me], otP = r['p' + ot];
+    box.append(bt('p', 'dl-msg', names[0] + ' ' + (Number(r.s1) || 0) + ' - ' + (Number(r.s2) || 0) + ' ' + names[1] + '(' + (Number(r.rd) || 1) + '回戦/5)'));
+    const dv = bt('div', 'cg-mid'); dc.forEach((n) => dv.append(bt('div', 'dc-die', ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][n]))); if (!dc.length) dv.append(bt('div', 'dc-die', '🎲')); box.append(dv);
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    box.append(bt('p', 'bt-me', myP ? 'あなたは「' + myP + '」を選びました' : 'あなたの予想は?'));
+    const row = bt('div', 'dl-row');
+    chohJudge(r, d);
+    if (!win) { if (!myP) ['丁(偶数)', '半(奇数)'].forEach((t, i) => { const b = bt('button', 'btn' + (i ? ' ghost' : ''), t); b.type = 'button'; b.addEventListener('click', () => chohPick(i ? '半' : '丁')); row.append(b); }); else if (!otP) row.append(bt('p', 'sub', 'あいてを待っています…')); }
+    return row;
+  }
+  function chohPick(v) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me; if (r.winner || r['p' + me]) return;
+    const o = {}; o['p' + me] = v; d.room = Object.assign({}, d.room, o); d.sig = ''; duelRender(); rtdb('PATCH', '/duel/' + d.code, o).catch(() => {});
+  }
+  function chohJudge(r, d) {
+    if (d.role !== 'host' || r.winner || !r.p1 || !r.p2 || d.judging) return; d.judging = true;
+    const dc = [rndInt(1, 6), rndInt(1, 6)], sum = dc[0] + dc[1], ans = sum % 2 === 0 ? '丁' : '半'; let s1 = Number(r.s1) || 0, s2 = Number(r.s2) || 0; if (r.p1 === ans) s1++; if (r.p2 === ans) s2++;
+    const rd = (Number(r.rd) || 1) + 1, done = rd > 5, patch = { dice: dc, s1: s1, s2: s2, p1: null, p2: null, rd: done ? 5 : rd, msg: '出目 ' + dc[0] + '+' + dc[1] + '=' + sum + ' → 「' + ans + '」!', seq: (Number(r.seq) || 0) + 1 };
+    if (done) patch.winner = s1 === s2 ? 3 : s1 > s2 ? 1 : 2;
+    rtdb('PATCH', '/duel/' + d.code, patch).catch(() => {}).then(() => { d.judging = false; });
+  }
+
+  const CG2 = ['dai', 'sev', 'dbt', 'bj', 'pok', 'chi', 'choh', 'mj'], CARD_G = ['uno', 'bbp'].concat(CG2);
+  function cardInit2(g, prev) {
+    const z = { seq: 0, winner: null, msg: '', turn: 1 };
+    if (g === 'dai') { const dk = stdDeck(2), h1 = dk.splice(0, 13), h2 = dk.splice(0, 13); return Object.assign(z, { h1: h1, h2: h2, fld: null, rev: false, back: false, lk: '', rules: Object.assign({}, prev && prev.rules ? prev.rules : DL_RULES) }); }
+    if (g === 'sev') { const dk = stdDeck(0).filter((x) => crR(x) !== 7), h1 = dk.splice(0, 24), h2 = dk.splice(0, 24); return Object.assign(z, { h1: h1, h2: h2, bd: [7, 7, 7, 7, 7, 7, 7, 7], ps1: 0, ps2: 0 }); }
+    if (g === 'dbt') { const dk = stdDeck(0), h1 = dk.splice(0, 26), h2 = dk.splice(0, 26); return Object.assign(z, { h1: h1, h2: h2, pile: null, req: 1, ph: 'p', last: null }); }
+    if (g === 'bj') { const dk = stdDeck(0), h1 = dk.splice(0, 2), h2 = dk.splice(0, 2); return Object.assign(z, { h1: h1, h2: h2, deck: dk, dn1: 0, dn2: 0 }); }
+    if (g === 'pok') return pkInit(prev);
+    if (g === 'mj') return mjDuelInit(prev);
+    if (g === 'chi') return Object.assign(z, { s1: 0, s2: 0, tries: 0, dice: null, v1: null, v2: null });
+    return Object.assign(z, { s1: 0, s2: 0, rd: 1, p1: null, p2: null, dice: null });
+  }
+  const CG2_TITLE = { dai: '大富豪', sev: '七並べ', dbt: 'ダウト', bj: 'ブラックジャック', pok: 'ポーカー', chi: 'チンチロ', choh: '丁半' };
+  function cardRender2(r, d, names, opp) {
+    const g = d.game, me = d.me, win = r.winner ? Number(r.winner) : 0, mine = Number(r.turn) === me && !win && !d.gone;
+    const box = bt('section', 'bt-card'); box.append(bt('h2', '', names[0] + ' vs ' + names[1]));
+    const fn = { dai: daiRender, sev: sevRender, dbt: dbtRender, bj: bjRender, pok: pokRender, chi: chiRender, choh: chohRender, mj: mjDuelRender }[g];
+    const row = fn(r, d, names, opp, box, mine, win);
+    const msg = win ? (win === 3 ? '引き分け!' : win === me ? '🎉 あなたの勝ち!' : 'あなたの負け…') : d.gone ? 'あいてがいなくなりました。' : g === 'choh' ? '' : mine ? 'あなたの番です' : 'あいての番です…';
+    if (msg) box.append(bt('p', 'bt-msg dl-msg' + (win === me ? ' won' : ''), msg));
+    bbox.append(box); if (row && row.children.length) bbox.append(row);
+    if (win && !d.fin) { d.fin = true; if (win === me) { try { winJingle(); } catch (e) {} } else if (win !== 3) A.beep(220, 0.25, 'sawtooth', 0.05, -60); }
+    const r2 = bt('div', 'dl-row');
+    if (win && d.role === 'host') { const rm = bt('button', 'btn', 'もう一戦'); rm.type = 'button'; rm.addEventListener('click', async () => { rm.disabled = true; d.fin = false; try { const n = cardInit2(g, Object.assign({}, d.room, { first: d.room.first })); n.seq = (Number(d.room.seq) || 0) + 1; if (g !== 'pok' && g !== 'mj') n.turn = (win === 3 || g === 'chi' || g === 'choh') ? 1 : 3 - win; n.show = 0; n.fld = n.fld || null; await rtdb('PATCH', '/duel/' + d.code, n); } catch (e) {} }); r2.append(rm); }
+    const lv = bt('button', 'btn ghost', win || d.gone ? 'おわる' : 'ぬける'); lv.type = 'button'; lv.addEventListener('click', async () => { await duelLeave(); duelMenu(); }); r2.append(lv);
+    bbox.append(r2);
+  }
+  /* ===== 遊び大全: チンチロ / 丁半 / ヨット ===== */
+  const DIE = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+  function createChinchiro(stage, api) {
+    const { root, k } = sgBuild(stage, 0); k('tm').parentNode.remove(); k('score').parentNode.querySelector('.lbl').textContent = '所持金';
+    const body = k('body'); let money = 1000, round = 1, bet = 100, tries = 0, dice = [], phase = 'bet', pv = 0, log = [];
+    const ROUNDS = 8, T = mkTimers();
+    body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="cg-mid" data-k="dice"></div><div class="dl-row" data-k="acts"></div><p class="tmsg" data-k="log"></p>';
+    const draw = () => { k('score').textContent = String(money); k('dice').textContent = ''; dice.forEach((n) => k('dice').append(bt('div', 'dc-die', DIE[n]))); };
+    const acts = (list) => { const a = k('acts'); a.textContent = ''; list.forEach(([t, f, g]) => { const b = bt('button', 'btn' + (g ? ' ghost' : ''), t); b.type = 'button'; b.addEventListener('click', f); a.append(b); }); };
+    function betPhase() {
+      phase = 'bet'; dice = []; tries = 0; draw(); k('h').textContent = round + '/' + ROUNDS + '回戦: かけ金をえらんで、サイコロをふろう(あなたは子、CPUは親)';
+      acts([100, 300, 500].filter((x) => x <= money).map((x) => ['かける ' + x, () => { bet = x; roll(true); }, x !== 100]));
+    }
+    function roll(first) {
+      if (first) tries = 0; tries++; A.beep(300, 0.05, 'square', 0.04);
+      dice = [rndInt(1, 6), rndInt(1, 6), rndInt(1, 6)]; draw(); const v = chRole(dice);
+      if (v === 0 && tries < 3) { k('h').textContent = '目なし! ふりなおし(' + tries + '/3)'; acts([['もういちどふる', () => roll(false)]]); return; }
+      pv = v; k('h').textContent = 'あなた: ' + CH_NAME(v); acts([]); T.later(cpuRoll, 900);
+    }
+    function cpuRoll() {
+      let v = 0, d3 = []; for (let t = 0; t < 3; t++) { d3 = [rndInt(1, 6), rndInt(1, 6), rndInt(1, 6)]; v = chRole(d3); if (v !== 0) break; }
+      dice = d3; draw(); const mul = (x) => x >= 100 ? 5 : x >= 90 ? 3 : x >= 80 ? 2 : x < 0 ? 2 : 1;
+      let res = 0; if (pv > v) res = mul(pv) * bet; else if (pv < v) res = -mul(v) * bet;
+      if (pv < 0 && v >= 0) res = -2 * bet; if (v < 0 && pv >= 0) res = 2 * bet;
+      money += res; draw();
+      k('h').textContent = '親: ' + CH_NAME(v) + ' → ' + (res > 0 ? 'あなたの勝ち +' + res : res < 0 ? 'あなたの負け ' + res : '引き分け');
+      if (res > 0) winJingle(); else if (res < 0) A.beep(200, 0.2, 'sawtooth', 0.05);
+      acts([]);
+      T.later(() => { round++; if (round > ROUNDS || money < 100) { sgEndJingle(); api.end(Math.max(0, money), [['最終所持金', money], ['回戦', Math.min(round - 1, ROUNDS)]]); } else betPhase(); }, 1800);
+    }
+    return { start() { money = 1000; round = 1; betPhase(); }, pause() { T.pause(); }, resume() { T.resume(); }, destroy() { T.clear(); } };
+  }
+  function createChoHan(stage, api) {
+    const { root, k } = sgBuild(stage, 0); k('tm').parentNode.remove(); k('score').parentNode.querySelector('.lbl').textContent = '所持金';
+    const body = k('body'); let money = 1000, round = 1, bet = 100, streak = 0, pick = '', T = mkTimers(); const ROUNDS = 10;
+    body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="cg-mid" data-k="dice"></div><div class="dl-row" data-k="betr"></div><div class="dl-row" data-k="acts"></div><p class="tmsg" data-k="log"></p>';
+    const draw = (d) => { k('score').textContent = String(money); k('dice').textContent = ''; (d || []).forEach((n) => k('dice').append(bt('div', 'dc-die', DIE[n]))); if (!d || !d.length) k('dice').append(bt('div', 'dc-die', '🎲')); };
+    function setup() {
+      draw(); k('h').textContent = round + '/' + ROUNDS + '回戦: かけ金をえらんで、丁(偶数)か半(奇数)を予想!' + (streak >= 2 ? ' 🔥' + streak + '連勝中(ボーナス)' : '');
+      const br = k('betr'); br.textContent = ''; [100, 200, 500, 1000].filter((x) => x <= money).forEach((x) => { const b = bt('button', 'btn mini' + (x === bet ? '' : ' ghost'), String(x)); b.type = 'button'; b.addEventListener('click', () => { bet = x; setup(); }); br.append(b); });
+      if (bet > money) bet = Math.min(100, money);
+      const a = k('acts'); a.textContent = ''; ['丁', '半'].forEach((t) => { const b = bt('button', 'btn', t + (t === '丁' ? '(偶数)' : '(奇数)')); b.type = 'button'; b.addEventListener('click', () => go(t)); a.append(b); });
+    }
+    function go(p) {
+      pick = p; k('acts').textContent = ''; k('betr').textContent = ''; let n = 0;
+      const spin = () => { draw([rndInt(1, 6), rndInt(1, 6)]); A.beep(250 + n * 20, 0.03, 'square', 0.03); if (++n < 8) T.later(spin, 90); else done(); };
+      k('h').textContent = '「' + p + '」に ' + bet + ' かけた! さあ…'; spin();
+    }
+    function done() {
+      const d = [rndInt(1, 6), rndInt(1, 6)], sum = d[0] + d[1], ans = sum % 2 === 0 ? '丁' : '半', zoro = d[0] === d[1]; draw(d);
+      if (ans === pick) { streak++; let g = Math.round(bet * (zoro ? 1.5 : 0.9) + (streak >= 3 ? bet * 0.2 : 0)); money += g; k('h').textContent = '出目 ' + d[0] + '+' + d[1] + '=' + sum + ' 「' + ans + '」!' + (zoro ? ' ゾロ目!' : '') + ' 当たり +' + g; winJingle(); }
+      else { streak = 0; money -= bet; k('h').textContent = '出目 ' + d[0] + '+' + d[1] + '=' + sum + ' 「' + ans + '」… はずれ -' + bet; A.beep(200, 0.2, 'sawtooth', 0.05); }
+      draw(d);
+      T.later(() => { round++; if (round > ROUNDS || money <= 0) { sgEndJingle(); api.end(Math.max(0, money), [['最終所持金', money], ['連勝', streak]]); } else setup(); }, 1700);
+    }
+    return { start() { money = 1000; round = 1; bet = 100; streak = 0; setup(); }, pause() { T.pause(); }, resume() { T.resume(); }, destroy() { T.clear(); } };
+  }
+  const YT_CATS = [['1の目', 1], ['2の目', 2], ['3の目', 3], ['4の目', 4], ['5の目', 5], ['6の目', 6], ['チョイス', 0], ['フォーカード', 0], ['フルハウス', 0], ['Sストレート', 0], ['Lストレート', 0], ['ヨット', 0]];
+  function ytScore(ci, d) {
+    const cnt = [0, 0, 0, 0, 0, 0, 0]; d.forEach((x) => { cnt[x]++; }); const sum = d.reduce((a, b) => a + b, 0), vals = cnt.slice(1);
+    if (ci < 6) return cnt[ci + 1] * (ci + 1);
+    if (ci === 6) return sum; if (ci === 7) return vals.some((x) => x >= 4) ? sum : 0;
+    if (ci === 8) return (vals.includes(3) && vals.includes(2)) || vals.includes(5) ? sum : 0;
+    const has = (a) => a.every((x) => cnt[x] > 0);
+    if (ci === 9) return has([1, 2, 3, 4]) || has([2, 3, 4, 5]) || has([3, 4, 5, 6]) ? 15 : 0;
+    if (ci === 10) return has([1, 2, 3, 4, 5]) || has([2, 3, 4, 5, 6]) ? 30 : 0;
+    return vals.includes(5) ? 50 : 0;
+  }
+  function createYacht(stage, api) {
+    const { root, k } = sgBuild(stage, 0); k('tm').parentNode.remove();
+    const body = k('body'); let dice = [1, 1, 1, 1, 1], held = [0, 0, 0, 0, 0], rolls = 0, used = [], total = 0, ended = false;
+    body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="cg-mid" data-k="dice"></div><div class="dl-row" data-k="acts"></div><div class="yt-cats" data-k="cats"></div>';
+    const upper = () => used.reduce((a, v, i) => a + (i < 6 && v != null ? v : 0), 0), sc = () => used.reduce((a, v) => a + (v || 0), 0) + (upper() >= 63 ? 35 : 0);
+    function draw() {
+      k('score').textContent = String(sc()); const dv = k('dice'); dv.textContent = '';
+      dice.forEach((n, i) => { const b = bt('button', 'dc-die yt-d' + (held[i] ? ' held' : ''), rolls ? DIE[n] : '🎲'); b.type = 'button'; b.addEventListener('click', () => { if (rolls && rolls < 3) { held[i] ^= 1; draw(); } }); dv.append(b); });
+      const a = k('acts'); a.textContent = ''; const rb = bt('button', 'btn', rolls >= 3 ? 'ふりおわり(役をえらぼう)' : rolls ? 'ふりなおす(のこり' + (3 - rolls) + '回)' : 'サイコロをふる'); rb.type = 'button'; rb.disabled = rolls >= 3; rb.addEventListener('click', roll); a.append(rb);
+      k('h').textContent = (used.filter((x) => x != null).length + 1) + '/12ターン: ' + (rolls ? 'キープするサイコロをタップ → ふりなおし、または役をえらぶ' : 'まずサイコロをふろう') + (upper() ? ' ・ 上の段 ' + upper() + '/63(+35ボーナス)' : '');
+      const cs = k('cats'); cs.textContent = '';
+      YT_CATS.forEach(([n], i) => { const done = used[i] != null; const b = bt('button', 'yt-c' + (done ? ' done' : ''), n + '  ' + (done ? used[i] : (rolls ? '+' + ytScore(i, dice) : '-'))); b.type = 'button'; b.disabled = done || !rolls; b.addEventListener('click', () => take(i)); cs.append(b); });
+    }
+    function roll() { if (rolls >= 3 || ended) return; dice = dice.map((n, i) => held[i] && rolls ? n : rndInt(1, 6)); rolls++; A.beep(300 + rolls * 60, 0.05, 'square', 0.04); draw(); }
+    function take(i) {
+      if (!rolls || used[i] != null) return; used[i] = ytScore(i, dice); if (used[i] === 50) winJingle(); rolls = 0; held = [0, 0, 0, 0, 0]; dice = [1, 1, 1, 1, 1]; draw();
+      if (used.filter((x) => x != null).length >= 12) { ended = true; sgEndJingle(); setTimeout(() => api.end(sc(), [['合計', sc()], ['ヨット', used[11] === 50 ? 'できた!' : '-']]), 600); }
+    }
+    return { start() { used = Array(12).fill(null); rolls = 0; held = [0, 0, 0, 0, 0]; ended = false; draw(); }, pause() {}, resume() {}, destroy() { ended = true; } };
+  }
+  /* ===== ハイ&ロー(ダブルアップ式): かしこく攻めるか、持ち帰るか ===== */
+  function createHiLo2(stage, api) {
+    const root = el('div', 'pg tbl-game', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">持ち帰り</span><span class="num" data-k="score">0</span></div>
+        <span class="chip" data-k="rd">1 / 6</span>
+      </div>
+      <p class="tmsg" data-k="info"></p>
+      <div class="cg-mid" data-k="mid"></div>
+      <p class="tmsg" data-k="msg" aria-live="polite"></p>
+      <div class="dl-row" data-k="acts"></div>
+      <div class="cg-hand" data-k="hist"></div>
+      <div class="pg-foot"><span data-k="left"></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]'), T = mkTimers(), ROUNDS = 6;
+    let deck = [], cur = null, pot = 0, bank = 0, round = 1, streak = 0, best = 0, hist = [], phase = 'idle', ended = false;
+    const val = (c) => { const r = crR(c); return r === 1 ? 14 : r; };
+    function probs() { const v = val(cur); let hi = 0, lo = 0; deck.forEach((c) => { const x = val(c); if (x > v) hi++; else if (x < v) lo++; }); const n = deck.length || 1; return { hi: hi, lo: lo, ph: hi / n, pl: lo / n }; }
+    const mult = (p) => p <= 0 ? 0 : Math.max(1.1, Math.round((0.92 / p) * 10) / 10);
+    function render() {
+      k('score').textContent = String(bank); k('rd').textContent = Math.min(round, ROUNDS) + ' / ' + ROUNDS; k('left').textContent = '山札のこり ' + deck.length + '枚';
+      const mid = k('mid'); mid.textContent = ''; if (cur) mid.append(stdCard(cur)); mid.append(bt('span', 'cg-col', 'ポット ' + pot));
+      const h = k('hist'); h.textContent = ''; hist.slice(-10).forEach((c) => { const x = stdCard(c); x.style.opacity = '.6'; x.style.transform = 'scale(.8)'; h.append(x); });
+    }
+    function startRound() {
+      if (round > ROUNDS) { finish(); return; }
+      if (deck.length < 12) deck = stdDeck(0);
+      cur = deck.pop(); pot = 10; streak = 0; phase = 'play'; render(); choose('ラウンド ' + round + ': ポット10から スタート!');
+    }
+    function choose(m) {
+      const p = probs(); k('msg').textContent = ''; k('info').textContent = m + ' 次のカードは?';
+      const a = k('acts'); a.textContent = '';
+      const mk = (t, f, g) => { const b = bt('button', 'btn' + (g ? ' ghost' : ''), t); b.type = 'button'; b.addEventListener('click', f); a.append(b); };
+      if (p.hi) mk('ハイ 高い ×' + mult(p.ph) + ' (' + Math.round(p.ph * 100) + '%)', () => guess(1));
+      if (p.lo) mk('ロー 低い ×' + mult(p.pl) + ' (' + Math.round(p.pl * 100) + '%)', () => guess(-1));
+      if (streak > 0) mk('持ち帰る +' + pot, take, true);
+      if (!p.hi && !p.lo) { T.later(take, 400); }
+    }
+    function guess(dir) {
+      if (phase !== 'play') return; phase = 'rev'; const p = probs(), nx = deck.pop(), v0 = val(cur), v1 = val(nx), m = mult(dir > 0 ? p.ph : p.pl);
+      hist.push(cur); cur = nx; render(); k('acts').textContent = '';
+      const ok = dir > 0 ? v1 > v0 : v1 < v0;
+      if (v1 === v0) { k('msg').textContent = '同じ数字! ポットはそのまま'; T.later(() => { phase = 'play'; choose(''); }, 900); return; }
+      if (ok) { streak++; pot = Math.round(pot * m); best = Math.max(best, pot); k('msg').textContent = 'あたり! ポット → ' + pot + (streak >= 3 ? ' 🔥' + streak + '連続' : ''); A.beep(520 + streak * 40, 0.08, 'triangle', 0.05); render(); T.later(() => { phase = 'play'; choose(''); }, 900); }
+      else { k('msg').textContent = 'はずれ… ポット ' + pot + ' をうしなった'; A.beep(170, 0.2, 'sawtooth', 0.05, -80); flash(stage, 'はずれ', 'lose'); pot = 0; render(); T.later(() => { round++; startRound(); }, 1400); }
+    }
+    function take() { if (phase !== 'play') return; bank += pot; k('msg').textContent = pot + ' を持ち帰った!'; winJingle(); pot = 0; render(); k('acts').textContent = ''; phase = 'next'; T.later(() => { round++; startRound(); }, 1200); }
+    function finish() { if (ended) return; ended = true; T.clear(); endJingle(); api.end(bank, [['持ち帰り', bank], ['最高ポット', best]], bank >= 120 ? 'win' : 'lose'); }
+    const resetQuit = quitBtn(root, () => { if (phase === 'play' && pot && streak) bank += pot; finish(); });
+    return { start() { T.clear(); resetQuit(); ended = false; deck = stdDeck(0); bank = 0; round = 1; best = 0; hist = []; startRound(); }, pause() { T.pause(); }, resume() { T.resume(); }, destroy() { T.clear(); } };
+  }
+  /* ===== ポーカー(対CPU3人・5枚ドロー・チップ戦) ===== */
+  function createPokerTable(stage, api) {
+    const root = el('div', 'pg tbl-game', `
+      <div class="pg-hud">
+        <div class="score"><span class="lbl">チップ</span><span class="num" data-k="score">200</span></div>
+        <span class="chip" data-k="hd">1 / 8</span>
+      </div>
+      <div class="pk-opps" data-k="opps"></div>
+      <p class="dl-msg" data-k="pot"></p>
+      <p class="tmsg" data-k="msg" aria-live="polite"></p>
+      <div class="cg-hand" data-k="hand"></div>
+      <div class="dl-row" data-k="acts"></div>
+      <div class="pg-foot"><span></span><button class="pill" type="button" data-k="quit">おわる</button></div>`);
+    stage.append(root);
+    const k = (n) => root.querySelector('[data-k="' + n + '"]'), T = mkTimers();
+    const NM = ['あなた', 'ハル', 'ミナ', 'ソラ'], HANDS = 8, ANTE = 5, BETU = 10;
+    let chips = [200, 200, 200, 200], hands = [[], [], [], []], fold = [false, false, false, false], pot = 0, deck = [], hn = 0, phase = 'idle', sel = [], show = false, bets = [0, 0, 0, 0], cur = 0, ended = false, wonHands = 0, peak = 200, last = ['', '', '', ''];
+    const strength = (h) => pkEval(h)[0];
+    function render() {
+      k('score').textContent = String(chips[0]); k('hd').textContent = Math.min(hn, HANDS) + ' / ' + HANDS; k('pot').textContent = '🪙 ポット ' + pot;
+      const ob = k('opps'); ob.textContent = '';
+      [1, 2, 3].forEach((s) => { const d = bt('div', 'pk-o' + (fold[s] ? ' out' : '')); d.append(bt('b', '', NM[s] + '  🪙' + chips[s]), bt('small', '', fold[s] ? 'おりた' : last[s]));
+        const row = bt('div', 'cg-hand'); hands[s].forEach((c) => { const f = show && !fold[s] ? stdCard(c) : backCard(); f.style.transform = 'scale(.7)'; f.style.margin = '-6px'; row.append(f); }); d.append(row); ob.append(d); });
+      const hb = k('hand'); hb.textContent = ''; hands[0].forEach((c, i) => { const f = stdCard(c, 'mine'); if (sel.indexOf(i) >= 0) f.classList.add('sel', 'ok'); f.addEventListener('click', () => { if (phase !== 'draw') return; const j = sel.indexOf(i); if (j >= 0) sel.splice(j, 1); else sel.push(i); render(); setDrawBtn(); }); hb.append(f); });
+    }
+    const acts = (list) => { const a = k('acts'); a.textContent = ''; list.forEach(([t, f, g]) => { const b = bt('button', 'btn' + (g ? ' ghost' : ''), t); b.type = 'button'; b.addEventListener('click', f); a.append(b); }); };
+    const setDrawBtn = () => acts([[sel.length ? sel.length + '枚 こうかん' : 'このままいく', doDraw]]);
+    function newHand() {
+      if (hn >= HANDS || chips[0] < ANTE) { finish(); return; }
+      hn++; deck = stdDeck(0); pot = 0; show = false; sel = []; fold = [false, false, false, false]; last = ['', '', '', ''];
+      for (let s = 0; s < 4; s++) { if (chips[s] < ANTE) { chips[s] = 200; } chips[s] -= ANTE; pot += ANTE; hands[s] = deck.splice(0, 5).sort((a, b) => crR(a) - crR(b)); }
+      render(); msg0('アンティ ' + ANTE + ' を出しました。ベットのラウンド!'); T.later(() => betRound(1), 600);
+    }
+    const msg0 = (t) => { k('msg').textContent = t; };
+    function active() { return [0, 1, 2, 3].filter((s) => !fold[s]); }
+    function betRound(rn) {
+      phase = 'bet'; bets = [0, 0, 0, 0]; let curBet = 0, raises = 0; let need = active().slice();
+      const step = () => {
+        if (ended) return; const al = active(); if (al.length === 1) { settle(); return; } need = need.filter((s) => !fold[s]); if (!need.length) { done(); return; }
+        const s = need[0];
+        if (s === 0) {
+          const diff = curBet - bets[0], can = chips[0] > diff + 0;
+          const l = []; if (diff > 0) l.push(['コール ' + Math.min(diff, chips[0]), () => { pay(0, diff); need.shift(); next(); }]); else l.push(['チェック', () => { need.shift(); next(); }]);
+          if (raises < 2 && chips[0] > diff + BETU) l.push([(diff > 0 ? 'レイズ +' : 'ベット ') + BETU, () => { pay(0, diff + BETU); curBet += BETU; raises++; need = al.filter((x) => x !== 0); next(); }]);
+          l.push(['おりる', () => { fold[0] = true; last[0] = 'おりた'; need.shift(); next(); }, true]);
+          msg0(rn === 1 ? 'ドロー前: あなたの手は ' + PK_N[strength(hands[0])] : 'ドロー後: あなたの手は ' + PK_N[strength(hands[0])] + (diff ? '(コールするには ' + diff + ')' : '')); acts(l); render(); return;
+        }
+        // CPU
+        const st = strength(hands[s]) + (rn === 1 ? 0 : 0.2), diff = curBet - bets[s]; let act = 'check';
+        const rnd = Math.random();
+        if (diff > 0) { if (st >= 3 || (st >= 1 && rnd < 0.7) || rnd < 0.25) act = (st >= 4 && raises < 2 && rnd < 0.5) ? 'raise' : 'call'; else act = 'fold'; }
+        else if (st >= 2 || (st >= 1 && rnd < 0.5) || rnd < 0.12) act = raises < 2 && chips[s] > BETU ? 'raise' : 'check';
+        T.later(() => {
+          if (act === 'fold') { fold[s] = true; last[s] = 'おりた'; need.shift(); }
+          else if (act === 'call') { pay(s, diff); last[s] = 'コール'; need.shift(); }
+          else if (act === 'raise') { pay(s, diff + BETU); curBet += BETU; raises++; last[s] = diff > 0 ? 'レイズ!' : 'ベット!'; need = al.filter((x) => x !== s); }
+          else { last[s] = 'チェック'; need.shift(); }
+          A.beep(380, 0.04, 'square', 0.03); render(); next();
+        }, 600);
+      };
+      const next = () => { acts([]); render(); step(); };
+      const pay = (s, x) => { x = Math.min(x, chips[s]); chips[s] -= x; bets[s] += x; pot += x; };
+      const done = () => { if (rn === 1) drawPhase(); else settle(); };
+      step();
+    }
+    function drawPhase() {
+      phase = 'draw'; sel = []; last = ['', '', '', '']; msg0('いらないカードをタップして こうかん'); setDrawBtn(); render();
+    }
+    function doDraw() {
+      if (phase !== 'draw') return; phase = 'cpu';
+      sel.forEach((i) => { hands[0][i] = deck.pop(); }); hands[0].sort((a, b) => crR(a) - crR(b));
+      for (let s = 1; s < 4; s++) { if (fold[s]) continue; const e = pkEval(hands[s]), keep = new Set(); const cnt = {}; hands[s].forEach((c) => { cnt[crR(c)] = (cnt[crR(c)] || 0) + 1; }); hands[s].forEach((c, i) => { if (cnt[crR(c)] >= 2 || e[0] >= 4) keep.add(i); });
+        if (!keep.size) { let bi = 0; hands[s].forEach((c, i) => { if ((crR(c) === 1 ? 14 : crR(c)) > (crR(hands[s][bi]) === 1 ? 14 : crR(hands[s][bi]))) bi = i; }); keep.add(bi); }
+        let n = 0; hands[s].forEach((c, i) => { if (!keep.has(i)) { hands[s][i] = deck.pop(); n++; } }); last[s] = n + '枚交換'; }
+      acts([]); render(); msg0('こうかん完了! 2回目のベット'); T.later(() => betRound(2), 800);
+    }
+    function settle() {
+      phase = 'result'; show = true; const al = active(); let w = [al[0]];
+      if (al.length > 1) { al.forEach((s) => { if (pkCmp(pkEval(hands[s]), pkEval(hands[w[0]])) > 0) w = [s]; else if (s !== w[0] && pkCmp(pkEval(hands[s]), pkEval(hands[w[0]])) === 0) w.push(s); }); }
+      const sh = Math.floor(pot / w.length); w.forEach((s) => { chips[s] += sh; }); pot = 0; peak = Math.max(peak, chips[0]);
+      const names = w.map((s) => NM[s]).join('・'), me = w.indexOf(0) >= 0; if (me) { wonHands++; winJingle(); } else A.beep(180, 0.2, 'sawtooth', 0.05, -70);
+      last = [0, 1, 2, 3].map((s) => fold[s] ? 'おりた' : PK_N[strength(hands[s])]);
+      render(); msg0((al.length === 1 ? NM[w[0]] + 'の勝ち(みんなおりた)' : names + ' の勝ち! ' + PK_N[strength(hands[w[0]])]) + (me ? ' +' + sh : ''));
+      flash(stage, me ? '勝ち!' : '負け…', me ? 'win' : 'lose'); acts([['つぎのハンド', () => { if (phase === 'result') newHand(); }]]);
+    }
+    function finish() { if (ended) return; ended = true; T.clear(); endJingle(); api.end(chips[0], [['ハンド', Math.min(hn, HANDS)], ['勝ち', wonHands], ['最高チップ', peak]], chips[0] > 200 ? 'win' : chips[0] === 200 ? 'draw' : 'lose'); }
+    const resetQuit = quitBtn(root, finish);
+    return { start() { T.clear(); resetQuit(); ended = false; chips = [200, 200, 200, 200]; hn = 0; wonHands = 0; peak = 200; newHand(); }, pause() { T.pause(); }, resume() { T.resume(); }, destroy() { T.clear(); } };
+  }
+  /* ===== 対人戦: 二人麻雀(リーチ・ロン・ツモ。チー/ポンなし) ===== */
+  const mjCnt = (h) => { const c = new Array(34).fill(0); h.forEach((x) => { c[x]++; }); return c; };
+  function mjDuelInit(prev) {
+    const arr = []; for (let i = 0; i < 34; i++) for (let j = 0; j < 4; j++) arr.push(i);
+    const wall = shuffle(arr), h1 = wall.splice(0, 13).sort((a, b) => a - b), h2 = wall.splice(0, 13).sort((a, b) => a - b); h1.push(wall.pop());
+    return { wall: wall, h1: h1, h2: h2, r1: null, r2: null, ri1: 0, ri2: 0, c1: prev ? Number(prev.c1) : 25000, c2: prev ? Number(prev.c2) : 25000, ph: 'd', turn: 1, ld: null, seq: 0, winner: null, msg: '東1局', yk: null };
+  }
+  const mjSeat = (me) => me - 1;
+  function mjFuriten(h, river) { const w = mjWaits(mjCnt(h)); return w.some((x) => (river || []).indexOf(x) >= 0); }
+  function mjDuelRender(r, d, names, opp, box, mine, win) {
+    const me = d.me, ot = 3 - me, hm = (r['h' + me] || []).slice(), ho = r['h' + ot] || [], mr = r['r' + me] || [], orv = r['r' + ot] || [], myRi = !!Number(r['ri' + me]), oRi = !!Number(r['ri' + ot]);
+    box.style.setProperty('--tw', '24px');
+    box.append(bt('p', 'bt-me', (opp && opp.name || 'あいて') + (oRi ? ' 【リーチ】' : '') + ' 持ち点 ' + (Number(r['c' + ot]) || 0) + ' / 山のこり ' + (r.wall || []).length));
+    const oh = bt('div', 'cg-hand'); ho.forEach(() => oh.append(backCard())); box.append(oh);
+    const orow = bt('div', 'mj-river'); orv.forEach((x) => orow.append(mjTile(x, 'sx'))); box.append(bt('p', 'bt-me', 'あいての捨て牌')); box.append(orow);
+    const mrow = bt('div', 'mj-river'); mr.forEach((x) => mrow.append(mjTile(x, 'sx'))); box.append(bt('p', 'bt-me', 'あなたの捨て牌' + (myRi ? ' 【リーチ中】' : ''))); box.append(mrow);
+    if (r.msg) box.append(bt('p', 'bt-me', r.msg));
+    const row = bt('div', 'dl-row');
+    if (win && r.winner !== 3 && r.hw) { const t = bt('div', 'mj-wrow'); (r['h' + r.winner] || []).forEach((x) => t.append(mjTile(x, 'sm2'))); if (r.ld != null && r.how === 'ron') t.append(mjTile(r.ld, 'sm2')); box.append(t); }
+    const my = bt('div', 'mj-hand'), draw = hm.length % 3 === 2, riMode = !!d.riMode;
+    const cnt = mjCnt(hm), s = mjSeat(me);
+    let canTsumo = null; if (mine && r.ph === 'd' && draw && !win) canTsumo = mjScore(cnt, { tsumo: true, riichi: myRi, seat: s, melds: [] });
+    const riKinds = new Set(); if (mine && r.ph === 'd' && draw && !myRi && !riMode !== true) { /* 事前計算 */ }
+    if (mine && r.ph === 'd' && draw && !myRi && (r.wall || []).length >= 2 && (Number(r['c' + me]) || 0) >= 1000) { for (let i = 0; i < 34; i++) { if (!cnt[i]) continue; cnt[i]--; if (mjWaits(cnt).length) riKinds.add(i); cnt[i]++; } }
+    hm.forEach((x, i) => {
+      const t = mjTile(x, draw && i === hm.length - 1 ? 'draw' : ''); const can = mine && r.ph === 'd' && draw && !win && (!myRi || i === hm.length - 1) && (!riMode || riKinds.has(x));
+      if (!can && mine) t.style.opacity = '.55'; t.style.cursor = can ? 'pointer' : 'default';
+      t.addEventListener('click', () => { if (can) mjDiscard(i, riMode); }); my.append(t);
+    });
+    box.append(my);
+    if (mine && !win) {
+      if (r.ph === 'd' && draw) {
+        if (canTsumo) { const b = bt('button', 'btn', 'ツモ! (' + canTsumo.yaku.map((y) => y[0]).join('・') + ')'); b.type = 'button'; b.addEventListener('click', () => mjWin('tsumo', canTsumo)); row.append(b); }
+        if (riKinds.size && !riMode) { const b = bt('button', 'btn ghost', 'リーチ'); b.type = 'button'; b.addEventListener('click', () => { d.riMode = true; d.sig = ''; duelRender(); }); row.append(b); }
+        if (riMode) { const b = bt('button', 'btn ghost', 'リーチをやめる'); b.type = 'button'; b.addEventListener('click', () => { d.riMode = false; d.sig = ''; duelRender(); }); row.append(b); }
+        box.append(bt('p', 'bt-me', riMode ? '切る牌をえらんでリーチ(光っている牌)' : '捨てる牌をタップ'));
+      } else if (r.ph === 'r') {
+        const c2 = mjCnt(hm); const t = r.ld; c2[t]++; const ron = mjScore(c2, { tsumo: false, riichi: myRi, seat: s, melds: [] }); const fu = ron ? mjFuriten(hm, mr) : false;
+        if (ron && !fu) { const b = bt('button', 'btn', 'ロン! (' + ron.yaku.map((y) => y[0]).join('・') + ')'); b.type = 'button'; b.addEventListener('click', () => mjWin('ron', ron)); const p = bt('button', 'btn ghost', 'パス'); p.type = 'button'; p.addEventListener('click', mjDrawNext); row.append(b, p); }
+        else { if (ron && fu) box.append(bt('p', 'bt-me', 'フリテンのためロンできません')); if (d.autoSeq !== r.seq) { d.autoSeq = r.seq; setTimeout(mjDrawNext, 500); } }
+      }
+    }
+    return row;
+  }
+  function mjDiscard(i, ri) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me; if (Number(r.turn) !== me || r.ph !== 'd' || r.winner) return;
+    const h = (r['h' + me] || []).slice(), t = h.splice(i, 1)[0]; h.sort((a, b) => a - b); const rv = (r['r' + me] || []).slice(); rv.push(t);
+    const patch = { ph: 'r', turn: ot, ld: t, msg: Rank.name() + ' が「' + mjKindName(t) + '」を捨てました' }; patch['h' + me] = h; patch['r' + me] = rv;
+    if (ri && !Number(r['ri' + me])) { patch['ri' + me] = 1; patch['c' + me] = (Number(r['c' + me]) || 0) - 1000; patch.msg += ' リーチ!'; patch.sticks = (Number(r.sticks) || 0) + 1; }
+    d.riMode = false; dlPush(patch);
+  }
+  function mjDrawNext() {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me; if (Number(r.turn) !== me || r.ph !== 'r' || r.winner) return;
+    const wall = (r.wall || []).slice(); if (wall.length <= 0) { dlPush({ winner: 3, msg: '流局(山がなくなりました)' }); return; }
+    const h = (r['h' + me] || []).slice(); h.push(wall.pop()); const patch = { wall: wall, ph: 'd', turn: me }; patch['h' + me] = h; dlPush(patch);
+  }
+  function mjWin(how, res) {
+    const d = dl; if (!d || d.moving) return; const r = d.room, me = d.me, ot = 3 - me; let b = mjPoints(res.han); const dealer = me === 1; if (dealer) b = Math.ceil(b * 1.5 / 100) * 100;
+    const stk = (Number(r.sticks) || 0) * 1000, patch = { winner: me, how: how, hw: 1, ph: 'end', msg: Rank.name() + ' の' + (how === 'ron' ? 'ロン' : 'ツモ') + '和了! ' + res.yaku.map((y) => y[0] + y[1] + '翻').join(' ') + ' → ' + res.han + '翻 ' + b + '点' };
+    patch['c' + me] = (Number(r['c' + me]) || 0) + b + stk; patch['c' + ot] = (Number(r['c' + ot]) || 0) - b; dlPush(patch);
   }
   async function duelMove(i) {
     const d = dl; if (!d || !d.room || d.moving) return;
