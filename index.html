@@ -2059,7 +2059,7 @@
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
     const pads = Array.from(root.querySelectorAll('.pad'));
-    let seq = [], round = 0, idx = 0, accept = false, score = 0, lives = 2, misses = 0, completed = 0, over = true, timers = [];
+    let rev = false, seq = [], round = 0, idx = 0, accept = false, score = 0, lives = 2, misses = 0, completed = 0, over = true, timers = [];
     const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
     const msg = (t) => { k('msg').textContent = t; };
     function size() { root.style.setProperty('--side', Math.max(200, Math.min(420, stage.clientWidth - 32, stage.clientHeight - 200)) + 'px'); }
@@ -2075,16 +2075,16 @@
       later(() => pads[p].classList.remove('on'), ms);
     }
     function playSeq() {
-      accept = false; idx = 0;
+      accept = false; idx = 0; rev = round >= 4 && round % 4 === 0;
       const dur = Math.max(240, 520 - round * 18), gap = Math.max(110, 220 - round * 6);
       let i = 0;
       const step = () => {
         if (over) return;
-        if (i >= seq.length) { accept = true; msg('くり返してね'); return; }
+        if (i >= seq.length) { accept = true; msg(rev ? 'ぎゃくじゅんで入れてね!' : 'くり返してね'); return; }
         light(seq[i], dur); i++;
         later(step, dur + gap);
       };
-      msg('よく見てね  ラウンド ' + round);
+      msg('よく見てね  ラウンド ' + round + (rev ? ' (ぎゃく順で答えるよ!)' : ''));
       later(step, 600);
     }
     function nextRound() {
@@ -2096,7 +2096,7 @@
     function press(p) {
       if (!accept || over) return;
       light(p, 170);
-      if (p === seq[idx]) {
+      if (p === (rev ? seq[seq.length - 1 - idx] : seq[idx])) {
         idx++;
         if (idx === seq.length) {
           accept = false; completed = round; score += 10 * round; hud();
@@ -2412,7 +2412,8 @@
     const getMult = () => Math.min(5, 1 + Math.floor(S.combo / 3));
     const cNow = () => Math.max(S.w / 2 + 0.01, Math.min(1 - S.w / 2 - 0.01, S.c0 + S.amp * Math.sin(S.t * 1.4)));
     function moveMarker(dt) {
-      S.m += S.d * S.speed * dt;
+      const wv = S.round >= 4 ? (S.round % 3 === 1 ? 1 + 0.55 * Math.sin(S.t * 2.6) : S.round % 3 === 2 ? (Math.sin(S.t * 1.2) > 0.4 ? 1.7 : 0.7) : 1) : 1; if (S.round >= 7 && S.round % 3 === 0 && Math.random() < dt * 0.5) S.d = -S.d;
+      S.m += S.d * S.speed * wv * dt;
       if (S.m >= 1) { S.m = 1; S.d = -1; } else if (S.m <= 0) { S.m = 0; S.d = 1; }
     }
 
@@ -2570,7 +2571,7 @@
     const grid = k('grid');
     const TOTAL = 60, TMAX = 90;
     let raf = 0, last = 0, timers = [], phase = 'idle', paused = false, lock = false, quitArm = 0, curN = 8;
-    let time = TOTAL, score = 0, combo = 0, maxCombo = 0, board = 0, pairsDone = 0, cards = [], open = [], remaining = 0;
+    let time = TOTAL, score = 0, combo = 0, maxCombo = 0, board = 0, pairsDone = 0, cards = [], open = [], remaining = 0, pmode = 'normal', missCnt = 0;
     const cache = {};
     const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
     const node = (i) => grid.children[i];
@@ -2593,15 +2594,22 @@
       const pool = shuffle(Array.from({ length: PSYM.length }, (_, i) => i)).slice(0, pairs);
       const deck = shuffle(pool.concat(pool));
       cards = deck.map((s) => ({ s, up: true, done: false }));
-      remaining = pairs; open = []; lock = false; curN = deck.length;
+      remaining = pairs; open = []; lock = false; curN = deck.length; missCnt = 0;
+      pmode = board < 1 ? 'normal' : ['normal', 'quick', 'swap', 'blind'][board % 4];
       size(curN);
       grid.innerHTML = cards.map((c, i) => '<button class="pc up" type="button" data-i="' + i + '" aria-label="' + PSYM[c.s][0] + '">' + BACK_SVG + frontSvg(c.s) + '</button>').join('');
       phase = 'peek';
-      msg('おぼえてね');
+      msg(pmode === 'quick' ? 'はやい! おぼえてね' : pmode === 'swap' ? '3回まちがえると、のこりがシャッフル!' : pmode === 'blind' ? 'いっしゅんだけ…' : 'おぼえてね');
       later(() => {
         cards.forEach((c, i) => { c.up = false; const n = node(i); if (n) { n.classList.remove('up'); n.setAttribute('aria-label', '伏せたカード'); } });
         phase = 'play'; msg('');
-      }, 900 + pairs * 200);
+      }, pmode === 'quick' ? 500 + pairs * 90 : pmode === 'blind' ? 450 : 900 + pairs * 200);
+    }
+    function reshuffle() {
+      const idx = cards.map((c, i) => i).filter((i) => !cards[i].done);
+      const sy = shuffle(idx.map((i) => cards[i].s));
+      idx.forEach((i, q) => { cards[i].s = sy[q]; const n = node(i); if (n) n.innerHTML = BACK_SVG + frontSvg(cards[i].s); });
+      msg('シャッフル!'); A.beep(260, 0.12, 'sawtooth', 0.04);
     }
     function flipDown(i) {
       cards[i].up = false;
@@ -2640,7 +2648,7 @@
         }, 300);
       } else {
         combo = 0;
-        later(() => { flipDown(a); flipDown(bb); open = []; lock = false; }, 650);
+        later(() => { flipDown(a); flipDown(bb); open = []; lock = false; if (pmode === 'swap' && ++missCnt % 3 === 0) reshuffle(); }, 650);
       }
     }
 
@@ -3726,10 +3734,17 @@
     const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
     const msg = (t) => { k('msg').textContent = t || ''; };
     const sizeFor = (b) => (b < 2 ? 3 : b < 5 ? 4 : 5);
-
+    const LPATS = [
+      { n: '✚', d: [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]] },
+      { n: '✖', d: [[0, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]] },
+      { n: '■', d: [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]] },
+      { n: '━', d: [[0, 0], [0, 1], [0, -1]] },
+      { n: '┃', d: [[0, 0], [1, 0], [-1, 0]] }
+    ];
+    let pat = LPATS[0];
     function flip(i) {
       const n = curN, r = Math.floor(i / n), c = i % n;
-      [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].forEach((d) => {
+      pat.d.forEach((d) => {
         const rr = r + d[0], cc = c + d[1];
         if (rr >= 0 && rr < n && cc >= 0 && cc < n) cells[rr * n + cc] = !cells[rr * n + cc];
       });
@@ -3738,6 +3753,7 @@
       Array.prototype.forEach.call(grid.children, (b, i) => b.classList.toggle('on', !!cells[i]));
     }
     function build(n, active) {
+      pat = boardNo < 1 ? LPATS[0] : LPATS[rndInt(0, LPATS.length - 1)];
       curN = n; gridSize(root, stage, n);
       const total = n * n;
       const kk = n === 3 ? rndInt(3, 4) : n === 4 ? rndInt(4, 6) : rndInt(6, 9);
@@ -3778,7 +3794,7 @@
       const w = clampN(time / TOTAL * 100, 0, 100).toFixed(1) + '%';
       if (cache.w !== w) { cache.w = w; k('tFill').style.width = w; }
       setText('mv', phase === 'idle' ? '全部のライトを消そう' : '手数 ' + moves + ' / めやす ' + par);
-      setText('sz', curN + '×' + curN);
+      setText('sz', curN + '×' + curN + ' ' + pat.n);
     }
     function frame(ts) {
       const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
@@ -4112,13 +4128,15 @@
     let raf = 0, last = 0, timers = [], phase = 'idle', paused = false, quitArm = 0;
     let round = 0, score = 0, waitLeft = 0, goAt = 0, pausedAt = 0, times = [], early = 0;
     const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
-    const setPad = (cls, t, s) => { pad.className = 'rx-pad ' + cls; k('t').textContent = t; k('s').textContent = s || ''; };
+    let kindR = 'plain', decoys = 0, decoyLeft = 0; const DECOYS = ['#d63a4a', '#d9a21a'];
+    const setPad = (cls, t, s) => { pad.style.background = ''; pad.className = 'rx-pad ' + cls; k('t').textContent = t; k('s').textContent = s || ''; };
     const histPush = (txt, cls) => { const c = el('span', 'chip ' + (cls || '')); c.textContent = txt; k('hist').append(c); };
     function beginRound() {
       if (round >= ROUNDS) { finish(); return; }
       k('rd').textContent = (round + 1) + ' / ' + ROUNDS;
+      kindR = round < 1 ? 'plain' : ['plain', 'fake', 'color', 'fake', 'color'][rndInt(0, 4)]; decoys = kindR === 'fake' ? 1 : kindR === 'color' ? 2 : 0;
       phase = 'wait'; waitLeft = Math.max(0.6, (1.2 + Math.random() * 2.2) * (1 - 0.13 * round));
-      setPad('wait', 'まって…', '緑になったらタップ');
+      setPad('wait', 'まって…', kindR === 'color' ? '青になったらタップ!(赤・黄色はダミー)' : kindR === 'fake' ? '緑になったらタップ(赤はにせもの!)' : '緑になったらタップ');
     }
     function endRound(txt, cls) {
       histPush(txt, cls); round++; phase = 'between';
@@ -4127,7 +4145,7 @@
     }
     function tap() {
       if (paused) return;
-      if (phase === 'wait') {
+      if (phase === 'wait' || phase === 'decoy') {
         early++; setPad('idle', 'はやすぎ!', '0点'); A.beep(160, 0.2, 'sawtooth', 0.06, -80);
         endRound('はやい', 'off2');
       } else if (phase === 'go') {
@@ -4154,13 +4172,18 @@
       last = ts;
       if (phase === 'wait' && !paused) {
         waitLeft -= dt;
-        if (waitLeft <= 0) { phase = 'go'; goAt = performance.now(); setPad('go', 'いま!', 'タップ!'); A.beep(880, 0.06, 'square', 0.04); }
+        if (waitLeft <= 0) {
+          if (decoys > 0) { decoys--; phase = 'decoy'; decoyLeft = 0.5 + Math.random() * 0.8; setPad('wait', kindR === 'color' ? (decoys ? 'あか!' : 'きいろ!') : 'あか!', 'まだ!タップしない'); pad.style.background = DECOYS[decoys % 2]; A.beep(300, 0.06, 'square', 0.03); }
+          else { phase = 'go'; goAt = performance.now(); setPad('go', 'いま!', 'タップ!'); if (kindR === 'color') pad.style.background = '#3b82f6'; A.beep(880, 0.06, 'square', 0.04); }
+        }
+      } else if (phase === 'decoy' && !paused) {
+        decoyLeft -= dt; if (decoyLeft <= 0) { phase = 'wait'; waitLeft = 0.4 + Math.random() * 1.0; setPad('wait', 'まって…', kindR === 'color' ? '青になったらタップ!' : '緑になったらタップ'); }
       }
       k('score').textContent = String(score);
       raf = requestAnimationFrame(frame);
     }
     const onDown = (e) => { e.preventDefault(); tap(); };
-    const onKey = (e) => { if ((e.code === 'Space' || e.code === 'Enter') && (phase === 'wait' || phase === 'go')) { e.preventDefault(); tap(); } };
+    const onKey = (e) => { if ((e.code === 'Space' || e.code === 'Enter') && (phase === 'wait' || phase === 'go' || phase === 'decoy')) { e.preventDefault(); tap(); } };
     const onQuit = () => {
       if (phase === 'over' || phase === 'idle') return;
       if (!quitArm) {
@@ -4258,7 +4281,10 @@
     const cache = {};
     const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
     const sizeFor = (b) => (b < 2 ? 3 : 4);
-
+    let smode = 0;
+    const KANA = 'あいうえおかきくけこさしすせそた', ABCS = 'ABCDEFGHIJKLMNOP';
+    const SMN = ['1から順に', 'あいうえお順に', 'ABC順に', '大きい順に(最大から)'];
+    const lab = (v) => (smode === 1 ? KANA[v - 1] : smode === 2 ? ABCS[v - 1] : smode === 3 ? String(N * N - v) : String(v));
     function solvedState(n) { const a = []; for (let i = 1; i < n * n; i++) a.push(i); a.push(0); return a; }
     function shuffled(n) {
       let a = solvedState(n), e = n * n - 1, prev = -1;
@@ -4275,7 +4301,7 @@
     function paint() {
       Array.prototype.forEach.call(grid.children, (b, i) => {
         const v = tiles[i];
-        b.textContent = v ? String(v) : '';
+        b.textContent = v ? lab(v) : '';
         b.classList.toggle('blank', !v);
         b.classList.toggle('home', v === i + 1);
         b.tabIndex = v ? 0 : -1;
@@ -4295,7 +4321,7 @@
       else { const d = r < er ? 1 : -1; for (let y = er; y !== r; y -= d) tiles[y * N + ec] = tiles[(y - d) * N + ec]; }
       tiles[i] = 0; return true;
     }
-    function newBoard() { build(sizeFor(solved)); phase = 'play'; k('msg').textContent = ''; }
+    function newBoard() { smode = solved < 1 ? 0 : [0, 1, 2, 3][solved % 4]; build(sizeFor(solved)); phase = 'play'; k('msg').textContent = smode ? SMN[smode] + 'ならべよう' : ''; }
     function onGrid(e) {
       const b = e.target.closest('.sl[data-i]');
       if (!b || phase !== 'play' || paused) return;
@@ -4323,7 +4349,7 @@
       setText('tm', Math.max(0, Math.ceil(time)) + '秒');
       const w = clampN(time / TOTAL * 100, 0, 100).toFixed(1) + '%';
       if (cache.w !== w) { cache.w = w; k('tFill').style.width = w; }
-      setText('mv', phase === 'idle' ? '1から順にならべよう' : '手数 ' + moves);
+      setText('mv', phase === 'idle' ? '1から順にならべよう' : '手数 ' + moves + ' ・ ' + SMN[smode]);
       setText('sz', N + '×' + N);
     }
     function frame(ts) {
@@ -4508,12 +4534,19 @@
     const pad = k('pad'), TOTAL = 12;
     let raf = 0, last = 0, phase = 'idle', paused = false, time = TOTAL, score = 0, taps = 0, bonusTaps = 0;
     const cache = {};
-    const inBonus = () => { const e = TOTAL - time; return phase === 'play' && ((e >= 3 && e < 5) || (e >= 7 && e < 9)); };
+    let wins = [];
+    function mkWins() {
+      const s1 = 2 + Math.random() * 1.5, e1 = s1 + 2, n1 = e1 + 1, n2 = n1 + 1.5, s2 = n2 + 0.6 + Math.random() * 0.8;
+      wins = [{ s: s1, e: e1, t: 'b' }, { s: n1, e: n2, t: 'x' }, { s: s2, e: s2 + 2, t: 'b' }];
+    }
+    mkWins();
+    const winNow = () => { const e = TOTAL - time; if (phase !== 'play') return ''; for (const w of wins) if (e >= w.s && e < w.e) return w.t; return ''; };
+    const inBonus = () => winNow() === 'b';
     function tap() {
       if (phase !== 'play' || paused) return;
-      const m = inBonus() ? 3 : 1;
+      const wn = winNow(), m = wn === 'b' ? 3 : wn === 'x' ? -2 : 1;
       taps++; if (m > 1) bonusTaps++;
-      score += m;
+      score = Math.max(0, score + m);
       pad.classList.remove('hitp'); void pad.offsetWidth; pad.classList.add('hitp');
       A.beep(420 + Math.min(500, taps * 4), 0.03, 'square', 0.03);
     }
@@ -4531,8 +4564,9 @@
       const b = inBonus();
       setText('score', String(score)); setText('tm', Math.max(0, Math.ceil(time)) + '秒');
       const w = clampN(time / TOTAL * 100, 0, 100).toFixed(1) + '%'; if (cache.w !== w) { cache.w = w; k('tFill').style.width = w; }
-      setText('mul', b ? '×3 ボーナス!' : '×1');
-      if (cache.b !== b) { cache.b = b; pad.classList.toggle('go', b); pad.classList.toggle('idle', !b); }
+      const wn = winNow();
+      setText('mul', wn === 'b' ? '×3 ボーナス!' : wn === 'x' ? 'さわるな! −2' : '×1');
+      if (cache.b !== wn) { cache.b = wn; pad.classList.toggle('go', wn === 'b'); pad.classList.toggle('idle', wn !== 'b'); pad.style.background = wn === 'x' ? '#c0334d' : ''; }
       raf = requestAnimationFrame(frame);
     }
     const onDown = (e) => { e.preventDefault(); tap(); };
@@ -4540,7 +4574,7 @@
     pad.addEventListener('pointerdown', onDown); window.addEventListener('keydown', onKey);
     raf = requestAnimationFrame(frame);
     return {
-      start() { time = TOTAL; score = 0; taps = 0; bonusTaps = 0; paused = false; Object.keys(cache).forEach((n) => delete cache[n]); phase = 'play'; k('s').textContent = '3〜5秒と7〜9秒は ×3 ボーナス'; },
+      start() { time = TOTAL; score = 0; taps = 0; bonusTaps = 0; paused = false; mkWins(); Object.keys(cache).forEach((n) => delete cache[n]); phase = 'play'; k('s').textContent = 'ボーナス(×3)は2回。赤い間はタップすると −2'; },
       pause() { paused = true; },
       resume() { paused = false; },
       destroy() { cancelAnimationFrame(raf); pad.removeEventListener('pointerdown', onDown); window.removeEventListener('keydown', onKey); }
@@ -4662,24 +4696,26 @@
     const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', '0', 'OK'];
     pad.innerHTML = KEYS.map((t) => '<button class="kp" type="button" data-v="' + t + '">' + t + '</button>').join('');
     let raf = 0, last = 0, phase = 'idle', paused = false, quitArm = 0, timer = 0;
-    let len = 3, seq = '', typed = '', score = 0, lives = 3, cleared = 0, best = 0;
+    let rmode = 'fwd', ans = '', len = 3, seq = '', typed = '', score = 0, lives = 3, cleared = 0, best = 0;
     const cache = {};
     const msg = (t) => { k('msg').textContent = t || ''; };
     function newRound() {
       seq = ''; for (let i = 0; i < len; i++) seq += String(rndInt(0, 9));
+      const rms = cleared < 2 ? ['fwd'] : len < 5 ? ['fwd', 'rev', 'fwd'] : ['fwd', 'rev', 'plus', 'sort', 'rev']; rmode = rms[rndInt(0, rms.length - 1)];
+      ans = rmode === 'rev' ? seq.split('').reverse().join('') : rmode === 'plus' ? seq.split('').map((c) => String((Number(c) + 1) % 10)).join('') : rmode === 'sort' ? seq.split('').sort().join('') : seq;
       typed = ''; phase = 'show'; timer = 0.9 + len * 0.42;
-      disp.textContent = seq; disp.className = 'nm-disp show'; msg('おぼえてね');
+      disp.textContent = seq; disp.className = 'nm-disp show'; msg({ fwd: 'おぼえてね', rev: 'おぼえてね (あとで「ぎゃくから」入れるよ!)', plus: 'おぼえてね (あとで「ぜんぶ+1」して入れるよ! 9は0)', sort: 'おぼえてね (あとで「小さい順」に入れるよ!)' }[rmode]);
     }
     function showTyped() { disp.textContent = typed.padEnd(len, '・').split('').join(' '); }
     function submit() {
       if (phase !== 'input') return;
       phase = 'fb';
-      if (typed === seq) {
+      if (typed === ans) {
         const pts = len * 10 + (len >= 6 ? 20 : 0); score += pts; cleared++; best = Math.max(best, len);
         disp.className = 'nm-disp ok'; msg('せいかい! +' + pts); [523, 659, 784].forEach((f, i) => A.beep(f, 0.12, 'triangle', 0.06, 0, i * 0.07));
         len++; timer = 0.7;
       } else {
-        lives--; disp.className = 'nm-disp ng'; disp.textContent = seq; msg('こたえは ' + seq); A.beep(170, 0.25, 'sawtooth', 0.06, -90);
+        lives--; disp.className = 'nm-disp ng'; disp.textContent = ans; msg('こたえは ' + ans); A.beep(170, 0.25, 'sawtooth', 0.06, -90);
         len = Math.max(3, len - 1); timer = 1.2;
       }
     }
@@ -4701,7 +4737,7 @@
     function frame(ts) {
       const dt = Math.min(0.05, (ts - last) / 1000 || 0) * DT();
       last = ts;
-      if (!paused && phase === 'show') { timer -= dt; if (timer <= 0) { phase = 'input'; typed = ''; disp.className = 'nm-disp'; showTyped(); msg('おぼえた数字を入れてね'); } }
+      if (!paused && phase === 'show') { timer -= dt; if (timer <= 0) { phase = 'input'; typed = ''; disp.className = 'nm-disp'; showTyped(); msg({ fwd: 'おぼえた数字を入れてね', rev: 'ぎゃく順に入れてね!', plus: 'ぜんぶ+1して入れてね!', sort: '小さい順に入れてね!' }[rmode]); } }
       else if (!paused && phase === 'fb') { timer -= dt; if (timer <= 0) { if (lives <= 0) finish(); else newRound(); } }
       setText('score', String(score)); setText('life', '♥'.repeat(Math.max(0, lives)) || '—'); setText('len', len + 'けた');
       raf = requestAnimationFrame(frame);
@@ -6168,11 +6204,21 @@
       box.textContent = ''; const pts = [];
       for (let i = 0; i < n; i++) { let x, y, tries = 0; do { x = rndInt(6, 88); y = rndInt(6, 88); tries++; } while (tries < 40 && pts.some((p) => Math.abs(p[0] - x) < 9 && Math.abs(p[1] - y) < 9)); pts.push([x, y]); const d = el('i', 'sg-dot'); d.style.left = x + '%'; d.style.top = y + '%'; box.append(d); }
     }
+    let mode = 'more';
     function next() {
       locked = false; const lv = Math.min(8, Math.floor(ok / 4)), base = rndInt(8, 16), diff = Math.max(1, 6 - Math.floor(lv * 0.65));
-      const n1 = base, n2 = base + diff; big = Math.random() < 0.5 ? 0 : 1;
-      const d = k('d'); d.textContent = '';
-      [0, 1].forEach((i) => { const b = el('button', 'sg-box'); b.type = 'button'; fill(b, i === big ? n2 : n1); b.addEventListener('click', () => pickB(i)); d.append(b); });
+      const MODES = ok < 3 ? ['more'] : ok < 8 ? ['more', 'less', 'red'] : ['more', 'less', 'red', 'three', 'size', 'less', 'red']; mode = MODES[rndInt(0, MODES.length - 1)];
+      const hint = body.querySelector('.sg-hint'), d = k('d'); d.textContent = ''; d.style.gridTemplateColumns = mode === 'three' ? '1fr 1fr 1fr' : '1fr 1fr';
+      hint.textContent = { more: 'ドットが多いほうをタップ!', less: 'ドットが少ないほうをタップ!', red: 'ピンクのドットが多いほうをタップ!', three: '3つの中でいちばん多いのをタップ!', size: 'ドットの合計の大きさが大きいほうをタップ!' }[mode];
+      if (mode === 'three') { const ns = [base, base + diff, base + diff * 2]; const order = shuffle([0, 1, 2]); big = order.indexOf(2); order.forEach((v, i) => { const b = el('button', 'sg-box'); b.type = 'button'; fill(b, ns[v]); b.addEventListener('click', () => pickB(i)); d.append(b); }); return; }
+      const T = base + 6; big = Math.random() < 0.5 ? 0 : 1;
+      [0, 1].forEach((i) => {
+        const b = el('button', 'sg-box'); b.type = 'button';
+        if (mode === 'red') { fill(b, T); const r = i === big ? 6 + diff : 6; const dots = shuffle(Array.from(b.querySelectorAll('.sg-dot'))); dots.forEach((x, q) => { x.style.background = q < r ? '#ff8fd1' : '#5fe3f0'; }); }
+        else if (mode === 'size') { fill(b, base); const bigBox = i === big; b.querySelectorAll('.sg-dot').forEach((x) => { const sz = bigBox ? 14 + diff * 0.8 : 14; x.style.width = x.style.height = sz + 'px'; }); }
+        else { const nBig = base + diff, nSm = base; fill(b, (mode === 'less' ? (i === big ? nSm : nBig) : (i === big ? nBig : nSm))); }
+        b.addEventListener('click', () => pickB(i)); d.append(b);
+      });
     }
     function pickB(i) {
       if (locked || clock.over) return; locked = true;
@@ -6195,7 +6241,10 @@
     function next() {
       locked = false; const lv = Math.min(5, Math.floor(ok / 4)), n = [3, 4, 4, 5, 5, 6][lv], p = CH_PAIRS[rndInt(0, CH_PAIRS.length - 1)], sw = Math.random() < 0.5 ? 1 : 0;
       const g = k('g'); g.textContent = ''; g.style.setProperty('--n', n); odd = rndInt(0, n * n - 1);
-      for (let i = 0; i < n * n; i++) { const b = el('button', 'dc-c', i === odd ? p[1 - sw] : p[sw]); b.type = 'button'; b.style.fontSize = Math.round(200 / n) + 'px'; b.addEventListener('click', () => pick(i)); g.append(b); }
+      const vk = ok < 4 ? 'char' : ['char', 'color', 'flip', 'size', 'char'][rndInt(0, 4)], hs = rndInt(0, 359); k('hint') && 0;
+      body.querySelector('.sg-hint').textContent = { char: '1つだけちがう文字をタップ!', color: '1つだけ色がちがう文字をタップ!', flip: '1つだけ上下さかさまの文字をタップ!', size: '1つだけ大きさがちがう文字をタップ!' }[vk];
+      for (let i = 0; i < n * n; i++) { const isO = i === odd; const b = el('button', 'dc-c', vk === 'char' ? (isO ? p[1 - sw] : p[sw]) : p[sw]); b.type = 'button'; b.style.fontSize = Math.round(200 / n) * (vk === 'size' && isO ? 1.25 : 1) + 'px';
+        if (vk === 'color') b.style.color = isO ? 'hsl(' + hs + ',70%,72%)' : 'hsl(' + hs + ',45%,82%)'; if (vk === 'flip' && isO) b.style.transform = 'rotate(180deg)'; b.addEventListener('click', () => pick(i)); g.append(b); }
     }
     function pick(i) {
       if (locked || clock.over) return; locked = true;
@@ -6216,8 +6265,9 @@
     function next() {
       locked = true; const lv = Math.min(6, Math.floor(ok / 3)); ans = rndInt(3, 5 + lv);
       const box = k('b'); box.textContent = ''; k('ch').textContent = ''; k('h').textContent = 'よく見て…';
-      const pts = [];
-      for (let i = 0; i < ans; i++) { let x, y, t = 0; do { x = rndInt(6, 86); y = rndInt(6, 86); t++; } while (t < 40 && pts.some((p) => Math.abs(p[0] - x) < 14 && Math.abs(p[1] - y) < 14)); pts.push([x, y]); const d = el('i', 'fc-s', '★'); d.style.left = x + '%'; d.style.top = y + '%'; box.append(d); }
+      const pts = []; const fk = ok < 3 ? 'star' : ['star', 'color', 'emoji', 'color', 'emoji'][rndInt(0, 4)], FE = ['🍎', '🍌', '🍇', '🍓'], tg = FE[rndInt(0, 3)], decoy = fk === 'star' ? 0 : rndInt(2, 5 + Math.floor(lv / 2));
+      k('h').textContent = fk === 'color' ? 'よく見て… (ピンクの星だけかぞえる)' : fk === 'emoji' ? 'よく見て… (' + tg + ' だけかぞえる)' : 'よく見て…';
+      for (let i = 0; i < ans + decoy; i++) { let x, y, t = 0; do { x = rndInt(6, 86); y = rndInt(6, 86); t++; } while (t < 40 && pts.some((p) => Math.abs(p[0] - x) < 14 && Math.abs(p[1] - y) < 14)); pts.push([x, y]); const tgt = i < ans; const d = el('i', 'fc-s', fk === 'emoji' ? (tgt ? tg : FE.filter((e) => e !== tg)[rndInt(0, 2)]) : '★'); if (fk === 'color') d.style.color = tgt ? '#ff8fd1' : '#5fe3f0'; d.style.left = x + '%'; d.style.top = y + '%'; box.append(d); }
       tm = setTimeout(() => {
         if (clock.over) return; box.textContent = ''; k('h').textContent = 'いくつあった?';
         const set = new Set([ans]); while (set.size < 3) { const d = rndInt(1, 2) * (Math.random() < 0.5 ? -1 : 1); if (ans + d > 0) set.add(ans + d); }
@@ -6244,9 +6294,10 @@
     const pad = k('pad');
     DIRS.forEach(([ch, d]) => { const b = el('button', 'btn sg-d sg-' + d); b.type = 'button'; b.textContent = ch; b.addEventListener('click', () => pickD(d)); pad.append(b); });
     function next() {
-      locked = false; const d = rnd2(DIRS)[1], rev = ok >= 5 && Math.random() < 0.4;
-      want = rev ? OPP[d] : d; const ar = k('ar'); ar.textContent = DIRS.find((x) => x[1] === d)[0]; ar.style.color = rev ? '#ff6b81' : '#6fe3cf';
-      k('h').textContent = rev ? '赤い矢印は ぎゃく向きをタップ!' : '同じ向きをタップ!';
+      locked = false; const d = rnd2(DIRS)[1], CW = { up: 'right', right: 'down', down: 'left', left: 'up' }, CCW = { up: 'left', left: 'down', down: 'right', right: 'up' };
+      const kinds = ok < 5 ? ['same'] : ok < 10 ? ['same', 'rev', 'same'] : ['same', 'rev', 'cw', 'ccw', 'rev', 'cw']; const kd = kinds[rndInt(0, kinds.length - 1)];
+      want = kd === 'rev' ? OPP[d] : kd === 'cw' ? CW[d] : kd === 'ccw' ? CCW[d] : d; const ar = k('ar'); ar.textContent = DIRS.find((x) => x[1] === d)[0]; ar.style.color = { same: '#6fe3cf', rev: '#ff6b81', cw: '#ffd45e', ccw: '#b48cff' }[kd];
+      ar.style.transform = ''; k('h').textContent = { same: '同じ向きをタップ!', rev: '赤い矢印は ぎゃく向きをタップ!', cw: '黄色い矢印は 右に90度まわした向き(時計まわり)!', ccw: '紫の矢印は 左に90度まわした向き(反時計まわり)!' }[kd];
     }
     const rnd2 = (a) => a[rndInt(0, a.length - 1)];
     function pickD(d) {
@@ -6269,31 +6320,34 @@
     body.innerHTML = '<div class="sg-bl" data-k="f"></div>'; const f = k('f');
     const COL = ['#ff6b81', '#6fe3cf', '#ffd45e', '#8f8cff', '#ff9f5e'];
     function spawn() {
-      const r = Math.random(), kind = r < 0.08 ? 'gold' : r < 0.2 ? 'bomb' : 'n', sz = kind === 'gold' ? 40 : rndInt(46, 66), W = f.clientWidth || 300;
-      const b = el('button', 'sg-b ' + kind); b.type = 'button'; b.style.width = b.style.height = sz + 'px'; b.textContent = kind === 'bomb' ? '💣' : kind === 'gold' ? '★' : '';
+      const r = Math.random(), kind = r < 0.06 ? 'gold' : r < 0.17 ? 'bomb' : (r < 0.22 && popped > 4) ? 'heart' : (r < 0.32 && popped > 8) ? 'ice' : (r < 0.40 && popped > 12) ? 'split' : 'n', sz = kind === 'gold' ? 40 : kind === 'ice' ? 70 : rndInt(46, 66), W = f.clientWidth || 300;
+      const b = el('button', 'sg-b ' + kind); b.type = 'button'; b.style.width = b.style.height = sz + 'px'; b.textContent = kind === 'bomb' ? '💣' : kind === 'gold' ? '★' : kind === 'heart' ? '💗' : kind === 'ice' ? '❄️' : kind === 'split' ? '✚' : '';
       if (kind === 'n') b.style.background = COL[rndInt(0, COL.length - 1)];
-      const o = { b, x: rndInt(0, Math.max(1, W - sz)), y: (f.clientHeight || 360) + 10, v: rndInt(70, 130) + Math.min(80, popped * 1.5), kind, w: sz };
+      const o = { b, x: rndInt(0, Math.max(1, W - sz)), y: (f.clientHeight || 360) + 10, v: rndInt(70, 130) + Math.min(80, popped * 1.5), kind, w: sz, zig: kind === 'n' && popped > 6 && Math.random() < 0.25, ph: Math.random() * 6, hp: kind === 'ice' ? 2 : 1 };
       b.style.left = o.x + 'px';
       b.addEventListener('pointerdown', (e) => { e.preventDefault(); hit(o); });
       f.append(b); list.push(o);
     }
     function hit(o) {
       if (over || paused || !o.b.isConnected) return;
+      if (o.kind === 'ice' && o.hp > 1) { o.hp--; o.b.textContent = '💥'; A.beep(300, 0.04, 'square', 0.05); return; }
+      if (o.kind === 'heart') { clock.add(2); k('msg').textContent = '💗 +2秒!'; }
+      if (o.kind === 'split') { for (let q = 0; q < 2; q++) { const sz = 36, W = f.clientWidth || 300; const b2 = el('button', 'sg-b n'); b2.type = 'button'; b2.style.width = b2.style.height = sz + 'px'; b2.style.background = COL[rndInt(0, COL.length - 1)]; const o2 = { b: b2, x: Math.max(0, Math.min(W - sz, o.x + (q ? 40 : -40))), y: o.y, v: o.v + 30, kind: 'n', w: sz, zig: true, ph: q * 3, hp: 1 }; b2.style.left = o2.x + 'px'; b2.addEventListener('pointerdown', (e) => { e.preventDefault(); hit(o2); }); f.append(b2); list.push(o2); } }
       if (o.kind === 'bomb') { combo = 0; score = Math.max(0, score - 15); clock.add(-2); sgFb(body, false); k('msg').textContent = 'ばくだん! -2秒'; }
-      else { popped++; combo++; maxC = Math.max(maxC, combo); score += (o.kind === 'gold' ? 30 : 5) + Math.min(combo, 10); A.beep(500 + Math.min(combo, 12) * 40, 0.05, 'triangle', 0.05); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : ''; if (o.kind === 'gold') clock.add(1); }
+      else { popped++; combo++; maxC = Math.max(maxC, combo); score += (o.kind === 'gold' ? 30 : o.kind === 'ice' ? 15 : 5) + Math.min(combo, 10); A.beep(500 + Math.min(combo, 12) * 40, 0.05, 'triangle', 0.05); k('msg').textContent = combo >= 3 ? combo + 'コンボ!' : ''; if (o.kind === 'gold') clock.add(1); }
       o.b.classList.add('pop'); list = list.filter((x) => x !== o); setTimeout(() => o.b.remove(), 160); k('score').textContent = String(score);
     }
     function frame(ts) {
       const dt = Math.min(0.05, (ts - last) / 1000 || 0); last = ts;
       if (!paused && !over) {
         spawnT -= dt; if (spawnT <= 0) { spawn(); spawnT = Math.max(0.28, 0.7 - popped * 0.008) * (0.7 + Math.random() * 0.6); }
-        list.forEach((o) => { o.y -= o.v * dt; o.b.style.transform = 'translateY(' + o.y + 'px)'; if (o.y < -o.w - 10) { if (o.kind === 'n') combo = 0; o.b.remove(); o.dead = true; } });
+        list.forEach((o) => { o.y -= o.v * dt; o.ph += dt * 3; o.b.style.transform = 'translate(' + (o.zig ? Math.sin(o.ph) * 34 : 0) + 'px,' + o.y + 'px)'; if (o.y < -o.w - 10) { if (o.kind === 'n') combo = 0; o.b.remove(); o.dead = true; } });
         list = list.filter((o) => !o.dead);
       }
       raf = requestAnimationFrame(frame);
     }
     return {
-      start() { score = popped = combo = maxC = 0; over = false; list.forEach((o) => o.b.remove()); list = []; spawnT = 0.2; k('score').textContent = '0'; k('msg').textContent = 'ふうせんをタップ! 💣はさける'; clock.start(); cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame); },
+      start() { score = popped = combo = maxC = 0; over = false; list.forEach((o) => o.b.remove()); list = []; spawnT = 0.2; k('score').textContent = '0'; k('msg').textContent = 'ふうせんをタップ! 💣はさける / 💗=+2秒 ❄️=2回タップ ✚=われると分裂'; clock.start(); cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame); },
       pause() { paused = true; clock.pause(); }, resume() { paused = false; clock.resume(); last = performance.now(); },
       destroy() { clock.stop(); cancelAnimationFrame(raf); }
     };
@@ -6346,7 +6400,7 @@
     const place = (dur) => pieces.forEach((p, i) => { p.w.style.transitionDuration = dur + 's'; p.w.style.left = slots[i] * 33.3 + '%'; });
     function swapOnce(dur) { const a = rndInt(0, 2); let b = rndInt(0, 2); while (b === a) b = rndInt(0, 2); const t = slots[a]; slots[a] = slots[b]; slots[b] = t; place(dur); A.beep(300 + rndInt(0, 5) * 40, 0.04, 'sine', 0.03); }
     function round() {
-      phase = 'show'; ball = rndInt(0, 2); k('h').textContent = 'ほしの場所をおぼえて…'; k('lv').textContent = 'ラウンド ' + level + ' ・ ライフ ' + '♥'.repeat(lives);
+      phase = 'show'; ball = rndInt(0, 2); const EM = ['⭐', '🍎', '💎', '🐟', '🍪', '🔔'][rndInt(0, 5)]; pieces.forEach((p) => { p.bl.textContent = EM; }); k('h').textContent = EM + 'の場所をおぼえて…'; k('lv').textContent = 'ラウンド ' + level + ' ・ ライフ ' + '♥'.repeat(lives);
       pieces.forEach((p) => { p.cup.classList.remove('up', 'right', 'wrong'); p.bl.style.opacity = '0'; }); slots[0] = 0; slots[1] = 1; slots[2] = 2; place(0.2);
       pieces[ball].bl.style.opacity = '1'; T.later(() => pieces[ball].cup.classList.add('up'), 350);
       T.later(() => { pieces[ball].cup.classList.remove('up'); }, 1400);
@@ -6367,19 +6421,23 @@
     body.innerHTML = '<div class="sg-hint" data-k="h"></div><div class="sg-nums" data-k="g"></div>';
     let score = 0, clears = 0, need = 1, size = 3, bestSize = 3;
     const clock = sgClock(k, 45, () => { sgEndJingle(); api.end(score, [['クリア', clears], ['さいだい', bestSize + '×' + bestSize]]); });
+    let seq = [], mode = 'up';
     function board() {
-      need = 1; const g = k('g'); g.textContent = ''; g.style.gridTemplateColumns = 'repeat(' + size + ',1fr)';
-      k('h').textContent = '1から ' + size * size + ' まで じゅんばんにタップ!';
-      shuffle(Array.from({ length: size * size }, (_, i) => i + 1)).forEach((n) => {
-        const b = el('button', 'sg-n'); b.type = 'button'; b.textContent = String(n); b.style.fontSize = (size > 4 ? 22 : 28) + 'px';
+      need = 0; const g = k('g'); g.textContent = ''; g.style.gridTemplateColumns = 'repeat(' + size + ',1fr)'; const N = size * size;
+      mode = clears < 1 ? 'up' : ['up', 'down', 'even', 'kana', 'abc', 'down', 'kana'][rndInt(0, 6)];
+      if (mode === 'up') seq = Array.from({ length: N }, (_, i) => String(i + 1)); else if (mode === 'down') seq = Array.from({ length: N }, (_, i) => String(N - i)); else if (mode === 'even') seq = Array.from({ length: N }, (_, i) => String((i + 1) * 2));
+      else if (mode === 'kana') seq = 'あいうえおかきくけこさしすせそたちつてとなにぬね'.split('').slice(0, N); else seq = 'ABCDEFGHIJKLMNOPQRSTUVWXY'.split('').slice(0, N);
+      k('h').textContent = { up: '1から ' + N + ' まで じゅんばんにタップ!', down: N + ' から 1 まで 大きいほうから じゅんばんに!', even: '2から ' + N * 2 + ' まで 2ずつ(ぐうすう)じゅんばんに!', kana: 'ひらがなを「あいうえお」の順にタップ!', abc: 'アルファベットを A B C… の順にタップ!' }[mode];
+      shuffle(seq.slice()).forEach((n) => {
+        const b = el('button', 'sg-n'); b.type = 'button'; b.textContent = n; b.style.fontSize = (size > 4 ? 22 : 28) + 'px';
         b.addEventListener('pointerdown', (e) => { e.preventDefault(); tap(b, n); }); g.append(b);
       });
     }
     function tap(b, n) {
       if (clock.over || b.classList.contains('done')) return;
-      if (n === need) {
-        b.classList.add('done'); need++; score += 3; A.beep(400 + n * 25, 0.04, 'triangle', 0.05); k('score').textContent = String(score);
-        if (need > size * size) { clears++; score += size * size * 3; bestSize = Math.max(bestSize, size); clock.add(size); k('msg').textContent = 'クリア! +' + size + '秒'; sgFb(body, true); size = Math.min(5, size + (clears % 2 === 0 ? 1 : 0)); k('score').textContent = String(score); setTimeout(() => { if (!clock.over) board(); }, 350); }
+      if (n === seq[need]) {
+        b.classList.add('done'); need++; score += 3; A.beep(400 + need * 25, 0.04, 'triangle', 0.05); k('score').textContent = String(score);
+        if (need >= size * size) { clears++; score += size * size * 3; bestSize = Math.max(bestSize, size); clock.add(size); k('msg').textContent = 'クリア! +' + size + '秒'; sgFb(body, true); size = Math.min(5, size + (clears % 2 === 0 ? 1 : 0)); k('score').textContent = String(score); setTimeout(() => { if (!clock.over) board(); }, 350); }
       } else { clock.add(-1); sgFb(body, false); b.classList.add('ng'); setTimeout(() => b.classList.remove('ng'), 250); }
     }
     return { start() { score = clears = 0; size = 3; bestSize = 3; k('score').textContent = '0'; k('msg').textContent = ''; board(); clock.start(); }, pause: clock.pause, resume: clock.resume, destroy() { clock.stop(); } };
@@ -9939,13 +9997,15 @@
     };
     go(nums); return ways;
   }
-  function mtPools() {
-    if (MT_POOLS) return MT_POOLS;
+  const MT_PC = {};
+  function mtPools(T) {
+    T = T || 10; if (MT_PC[T]) return MT_PC[T];
     const easy = [], mid = [], hard = [];
     for (let a = 1; a <= 9; a++) for (let b = a; b <= 9; b++) for (let c = b; c <= 9; c++) for (let d = c; d <= 9; d++) {
-      const w = mtWays([a, b, c, d], 10); if (w === 0) continue; const q = [a, b, c, d]; if (w >= 14) easy.push(q); else if (w >= 5) mid.push(q); else hard.push(q);
+      const w = mtWays([a, b, c, d], T); if (w === 0) continue; const q = [a, b, c, d]; if (w >= 14) easy.push(q); else if (w >= 5) mid.push(q); else hard.push(q);
     }
-    MT_POOLS = { easy, mid, hard }; return MT_POOLS;
+    if (!easy.length && !mid.length) mid.push([1, 2, 3, 4]);
+    MT_PC[T] = { easy, mid, hard }; return MT_PC[T];
   }
   function createMaketen(stage, api) {
     const root = el('div', 'pg mt', `
@@ -9953,7 +10013,7 @@
         <div class="score"><span class="lbl">スコア</span><span class="num" data-k="score">0</span></div>
         <div class="pg-time"><span class="chip" data-k="tm">75秒</span><div class="lv-track wide"><i data-k="tFill" style="width:100%"></i></div></div>
       </div>
-      <div class="mt-goal">この4つの数で <b>10</b> をつくろう</div>
+      <div class="mt-goal">この4つの数で <b data-k="tg">10</b> をつくろう</div>
       <div class="mt-tiles" data-k="tiles"></div>
       <div class="mt-ops" data-k="ops"></div>
       <div class="mt-msg" data-k="msg"></div>
@@ -9961,12 +10021,13 @@
     stage.append(root);
     const k = (n) => root.querySelector('[data-k="' + n + '"]');
     const TOTAL = 75; let time = TOTAL, score = 0, solved = 0, skipped = 0, raf = 0, last = 0, phase = 'idle', paused = false, quitArm = 0, timers = [];
-    let nums = [], tiles = [], hist = [], selA = -1, op = '', n0 = [];
+    let nums = [], tiles = [], hist = [], selA = -1, op = '', n0 = [], target = 10;
     const cache = {};
     const later = (fn, ms) => { const id = setTimeout(fn, ms); timers.push(id); return id; };
     const msg = (t) => { k('msg').textContent = t || ''; };
     function nextPuzzle() {
-      const P = mtPools(), pick = (a) => a[rndInt(0, a.length - 1)], lv = solved < 3 ? 0 : solved < 7 ? 1 : 2;
+      target = solved < 2 ? 10 : [10, 10, 8, 12, 24, 6][rndInt(0, 5)]; k('tg').textContent = String(target);
+      const P = mtPools(target), pick = (a) => a[rndInt(0, a.length - 1)], lv = solved < 3 ? 0 : solved < 7 ? 1 : 2;
       const pool = lv === 0 ? P.easy : lv === 1 ? (Math.random() < 0.7 ? P.mid : P.easy) : (Math.random() < 0.6 ? P.hard : P.mid);
       n0 = shuffle(pick(pool.length ? pool : P.mid).slice()); reset();
     }
@@ -9990,9 +10051,9 @@
     }
     function check() {
       const f = tiles[0].f;
-      if (f.d === 1 && f.n === 10) {
+      if (f.d === 1 && f.n === target) {
         solved++; const bonus = Math.max(0, Math.round(10 - (performance.now() - qStart) / 1000)); score += 100 + bonus * 5; msg('せいかい! +' + (100 + bonus * 5)); flash(stage, 'せいかい!', 'ok'); A.beep(880, 0.12, 'sine', 0.06); phase = 'wait'; later(() => { phase = 'play'; nextPuzzle(); qStart = performance.now(); }, 500);
-      } else { msg(mtStr(f) + ' になりました。10にならない…'); A.beep(170, 0.2, 'sawtooth', 0.06, -80); phase = 'wait'; later(() => { phase = 'play'; reset(); msg('もういちど!'); }, 900); }
+      } else { msg(mtStr(f) + ' になりました。' + target + 'にならない…'); A.beep(170, 0.2, 'sawtooth', 0.06, -80); phase = 'wait'; later(() => { phase = 'play'; reset(); msg('もういちど!'); }, 900); }
     }
     let qStart = 0;
     function undo() { if (phase !== 'play' || !hist.length) return; tiles = hist.pop().tiles; selA = -1; op = ''; render(); }
